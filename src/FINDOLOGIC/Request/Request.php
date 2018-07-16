@@ -1,8 +1,10 @@
 <?php
 
-namespace Request;
+namespace FINDOLOGIC\Request;
 
-use Request\ParameterBuilder\ParameterBuilder;
+use FINDOLOGIC\Request\ParameterBuilder\ParameterBuilder;
+use FINDOLOGIC\Request\Requests\NavigationRequest\NavigationRequest;
+use FINDOLOGIC\Request\Requests\SearchRequest\SearchRequest;
 
 class Request extends ParameterBuilder
 {
@@ -24,16 +26,32 @@ class Request extends ParameterBuilder
      */
     const FINDOLOGIC_RESPONSE_TIMEOUT_MS = 3000;
 
-    const NAVIGATION_FILE = 'selector.php';
-    const SEARCH_FILE = 'index.php';
-
     const TYPE_SEARCH = 0;
     const TYPE_NAVIGATION = 1;
 
     /**
      * @param $type int decides if it is a search or a navigation request. Use available constants for that.
+     * @return NavigationRequest|SearchRequest
      */
-    public function send($type)
+    public static function create($type)
+    {
+        switch ($type) {
+            case self::TYPE_SEARCH:
+                $exporter = new SearchRequest();
+                break;
+            case self::TYPE_NAVIGATION:
+                $exporter = new NavigationRequest();
+                break;
+            default:
+                throw new \InvalidArgumentException('Unsupported request type.');
+        }
+        return $exporter;
+    }
+
+    /**
+     *
+     */
+    public function send()
     {
         //TODO: Send the request. Make sure that the timeout will be respected.
     }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Request\ParameterBuilder;
+namespace FINDOLOGIC\Request\ParameterBuilder;
 
-use Request\Parameters\Types\Shopkey;
+use FINDOLOGIC\Request\Parameters\Types\Shopkey;
 
 class ParameterBuilder
 {

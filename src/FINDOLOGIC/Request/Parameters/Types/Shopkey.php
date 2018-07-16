@@ -1,8 +1,8 @@
 <?php
 
-namespace Request\Parameters\Types;
+namespace FINDOLOGIC\Request\Parameters\Types;
 
-use Request\ParameterValidator\ParameterValidator;
+use FINDOLOGIC\Request\ParameterValidator\ParameterValidator;
 
 class Shopkey
 {
