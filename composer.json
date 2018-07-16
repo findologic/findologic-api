@@ -9,5 +9,9 @@
             "email": "d.brader@findologic.com"
         }
     ],
-    "require": {}
+    "require": {},
+    "repositories": [
+        {"type": "composer", "url": "https://repo.packagist.com/brader/"},
+        {"packagist.org": false}
+    ]
 }
