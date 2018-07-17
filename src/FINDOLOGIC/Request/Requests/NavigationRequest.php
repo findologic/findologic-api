@@ -1,8 +1,10 @@
 <?php
 
-namespace FINDOLOGIC\Request\Requests\NavigationRequest;
+namespace FINDOLOGIC\Request\Requests;
 
-class NavigationRequest
+use FINDOLOGIC\Request\Requester;
+
+class NavigationRequest extends Requester
 {
     private $action = 'selector.php';
 }

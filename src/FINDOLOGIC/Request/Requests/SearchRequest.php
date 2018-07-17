@@ -1,10 +1,10 @@
 <?php
 
-namespace FINDOLOGIC\Request\Requests\SearchRequest;
+namespace FINDOLOGIC\Request\Requests;
 
-use FINDOLOGIC\Request\Request;
+use FINDOLOGIC\Request\Requester;
 
-class SearchRequest extends Request
+class SearchRequest extends Requester
 {
     private $action = 'index.php';
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC\Request\ParameterBuilder;
+namespace FINDOLOGIC\Request\Parameters;
 
 use FINDOLOGIC\Request\Parameters\Types\Referer;
 use FINDOLOGIC\Request\Parameters\Types\Revision;

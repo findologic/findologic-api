@@ -2,14 +2,14 @@
 
 namespace FINDOLOGIC\Request;
 
-use FINDOLOGIC\Request\ParameterBuilder\ParameterBuilder;
-use FINDOLOGIC\Request\ParameterValidator\ParameterValidator;
-use FINDOLOGIC\Request\Requests\NavigationRequest\NavigationRequest;
-use FINDOLOGIC\Request\Requests\SearchRequest\SearchRequest;
+use FINDOLOGIC\Request\Parameters\ParameterBuilder;
+use FINDOLOGIC\Request\Parameters\ParameterValidator;
+use FINDOLOGIC\Request\Requests\NavigationRequest;
+use FINDOLOGIC\Request\Requests\SearchRequest;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
-class Request extends ParameterBuilder
+class Requester extends ParameterBuilder
 {
     /** FINDOLOGIC API URL that is used for each request. */
     const FINDOLOGIC_API_URL = 'https://service.findologic.com/ps/%s/%s';
@@ -70,7 +70,7 @@ class Request extends ParameterBuilder
         try {
             $res = $client->request($alivetestUrl);
         } catch (GuzzleException $e) {
-            //TODO: Throw own exception but errormessage as above.
+            //TODO: Throw own exception but error message as above.
         }
 
         if ($res->getStatusCode() == 200) {

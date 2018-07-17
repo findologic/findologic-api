@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC\Request\ParameterValidator;
+namespace FINDOLOGIC\Request\Parameters;
 
 use InvalidArgumentException;
 
