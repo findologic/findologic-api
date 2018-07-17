@@ -6,5 +6,5 @@ use FINDOLOGIC\Request\Request;
 
 class SearchRequest extends Request
 {
-    public $requestFile = 'index.php';
+    private $action = 'index.php';
 }

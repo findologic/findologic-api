@@ -53,8 +53,8 @@ foreach ($filters as $filter) {
 // Print some product data.
 foreach ($products as $product) {
     $productId = $product->getId();
-    // This may be shop specific. Map products to get available data like the name.
-    echo $shopDatabase->getArticleName($productId);
+    // This may be shop specific. Map products to display a product in the shop.
+    $shop->printArticleById($productId);
 }
 ```
 

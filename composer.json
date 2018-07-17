@@ -12,5 +12,8 @@
     "repositories": [
         {"type": "composer", "url": "https://repo.packagist.com/brader/"},
         {"packagist.org": false}
-    ]
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    }
 }

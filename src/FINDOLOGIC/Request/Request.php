@@ -3,8 +3,11 @@
 namespace FINDOLOGIC\Request;
 
 use FINDOLOGIC\Request\ParameterBuilder\ParameterBuilder;
+use FINDOLOGIC\Request\ParameterValidator\ParameterValidator;
 use FINDOLOGIC\Request\Requests\NavigationRequest\NavigationRequest;
 use FINDOLOGIC\Request\Requests\SearchRequest\SearchRequest;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 class Request extends ParameterBuilder
 {
@@ -15,7 +18,7 @@ class Request extends ParameterBuilder
      * FINDOLOGIC alivetest file. It is used to determine if a service can answer requests.
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#fallback_mechanism
      */
-    const FINDOLOGIC_ALIVETEST_FILE = 'alivetest.php';
+    const FINDOLOGIC_ALIVETEST_ACTION = 'alivetest.php';
 
     const FINDOLOGIC_ALIVETEST_TIMEOUT_MS = 1000;
 
@@ -29,6 +32,8 @@ class Request extends ParameterBuilder
     const TYPE_SEARCH = 0;
     const TYPE_NAVIGATION = 1;
 
+    private $action;
+
     /**
      * @param $type int decides if it is a search or a navigation request. Use available constants for that.
      * @return NavigationRequest|SearchRequest
@@ -37,22 +42,42 @@ class Request extends ParameterBuilder
     {
         switch ($type) {
             case self::TYPE_SEARCH:
-                $exporter = new SearchRequest();
+                $request = new SearchRequest();
                 break;
             case self::TYPE_NAVIGATION:
-                $exporter = new NavigationRequest();
+                $request = new NavigationRequest();
                 break;
             default:
                 throw new \InvalidArgumentException('Unsupported request type.');
         }
-        return $exporter;
+        return $request;
     }
 
     /**
-     *
+     * Sends the request with all set params and makes sure that all required params are in place. It respects the
+     * alivetest, alivetest timeout and search timeout.
      */
     public function send()
     {
+        $rawParams = $this->getParams();
+        ParameterValidator::requiredParamsAreSet($rawParams);
+
+        $alivetestUrl = sprintf(self::FINDOLOGIC_API_URL, [$rawParams['shopurl'],
+            self::FINDOLOGIC_ALIVETEST_ACTION]);
+        $searchUrl = sprintf(self::FINDOLOGIC_API_URL, [$rawParams['shopurl'], $this->action]);
+
+        $client = new Client();
+        try {
+            $res = $client->request($alivetestUrl);
+        } catch (GuzzleException $e) {
+            //TODO: Throw own exception but errormessage as above.
+        }
+
+        if ($res->getStatusCode() == 200) {
+            echo $res->getBody();
+        } else {
+            //TODO: Throw exception that the service is not alive.
+        }
         //TODO: Send the request. Make sure that the timeout will be respected.
     }
 }

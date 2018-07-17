@@ -4,9 +4,9 @@ namespace FINDOLOGIC\Request\Parameters\Types;
 
 use FINDOLOGIC\Request\ParameterValidator\ParameterValidator;
 
-class Shopkey
+class Referer
 {
-    const PARAM_KEY = 'shopkey';
+    const PARAM_KEY = 'referer';
 
     public $value;
     public $required = true;
@@ -24,7 +24,7 @@ class Shopkey
      */
     public function setValue($value)
     {
-        ParameterValidator::validateShopkey($value);
+        ParameterValidator::validateReferer($value);
         $this->value = $value;
     }
 }
