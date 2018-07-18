@@ -62,18 +62,19 @@ class Requester extends ParameterBuilder
         $rawParams = $this->getParams();
         ParameterValidator::requiredParamsAreSet($rawParams);
 
-        $alivetestUrl = sprintf(self::FINDOLOGIC_API_URL, [$rawParams['shopurl'],
-            self::FINDOLOGIC_ALIVETEST_ACTION]);
-        $searchUrl = sprintf(self::FINDOLOGIC_API_URL, [$rawParams['shopurl'], $this->action]);
+        $alivetestUrl = sprintf(self::FINDOLOGIC_API_URL, $rawParams['shopurl'],
+            self::FINDOLOGIC_ALIVETEST_ACTION);
+        $searchUrl = sprintf(self::FINDOLOGIC_API_URL, $rawParams['shopurl'], $this->action);
 
         $client = new Client();
         try {
             $res = $client->request($alivetestUrl);
         } catch (GuzzleException $e) {
+            $res = null;
             //TODO: Throw own exception but error message as above.
         }
 
-        if ($res->getStatusCode() == 200) {
+        if ($res !== null && $res->getStatusCode() == 200) {
             echo $res->getBody();
         } else {
             //TODO: Throw exception that the service is not alive.
