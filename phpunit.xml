@@ -12,7 +12,7 @@
     bootstrap                   = "vendor/autoload.php"
 >
     <testsuites>
-        <testsuite name="FINDOLOGIC request library">
+        <testsuite name="Library for FINDOLOGIC API requests">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
