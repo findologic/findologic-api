@@ -42,6 +42,7 @@ class ParameterValidator
      */
     public static function validateUserip($value)
     {
+        // TODO: Support IPv6.
         $useripRegex = '/^(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})(.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})){3}$/';
 
         if (!preg_match($useripRegex, $value)) {
@@ -70,7 +71,7 @@ class ParameterValidator
      */
     public static function validateRevision($value)
     {
-        if (!preg_match('^(\d+\.)?(\d+\.)?(\*|\d+)$', $value)) {
+        if (!preg_match('/^(\d+\.)?(\d+\.)?(\*|\d+)$/', $value)) {
             throw new InvalidArgumentException('Revision format is invalid.');
         }
     }

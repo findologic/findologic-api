@@ -2,7 +2,7 @@
 
 namespace FINDOLOGIC\Request\Parameters\Types;
 
-use FINDOLOGIC\Request\ParameterValidator\ParameterValidator;
+use FINDOLOGIC\Request\Parameters\ParameterValidator;
 
 class Shopurl
 {

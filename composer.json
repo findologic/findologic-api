@@ -9,11 +9,20 @@
             "email": "d.brader@findologic.com"
         }
     ],
-    "repositories": [
-        {"type": "composer", "url": "https://repo.packagist.com/brader/"},
-        {"packagist.org": false}
-    ],
     "require": {
         "guzzlehttp/guzzle": "^6.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.4 || ^7.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "FINDOLOGIC\\Request": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-0": {
+            "FINDOLOGIC\\Request\\Tests": "tests/"
+        }
     }
 }

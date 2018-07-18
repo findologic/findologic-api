@@ -82,6 +82,6 @@ class ParameterBuilder
      */
     private function addParam($key, $value)
     {
-        $this->params[] = [$key => $value];
+        $this->params[$key] = $value;
     }
 }
