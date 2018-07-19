@@ -2,7 +2,17 @@
 
 namespace FINDOLOGIC\Request\Requests;
 
-class SuggestRequest
+use FINDOLOGIC\Helpers\FindologicClient;
+use FINDOLOGIC\Request\Request;
+
+class SuggestRequest extends Request
 {
-    private $action = 'autocomplete.php';
+    private $action = FindologicClient::SUGGEST_ACTION;
+    /**
+     * @return string
+     */
+    public function getAction()
+    {
+        return $this->action;
+    }
 }

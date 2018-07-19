@@ -2,9 +2,17 @@
 
 namespace FINDOLOGIC\Request\Requests;
 
-use FINDOLOGIC\Request\Requester;
+use FINDOLOGIC\Helpers\FindologicClient;
+use FINDOLOGIC\Request\Request;
 
-class SearchRequest extends Requester
+class SearchRequest extends Request
 {
-    private $action = 'index.php';
+    private $action = FindologicClient::SEARCH_ACTION;
+    /**
+     * @return string
+     */
+    public function getAction()
+    {
+        return $this->action;
+    }
 }

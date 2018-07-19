@@ -4,8 +4,8 @@ namespace FINDOLOGIC\Exceptions;
 
 class ServiceNotAliveException extends \RuntimeException
 {
-    public function __construct($alivetestUrl)
+    public function __construct()
     {
-        parent::__construct(sprintf('The service is not alive! Alivetest URL was %s.', $alivetestUrl));
+        parent::__construct('The service is not alive!');
     }
 }

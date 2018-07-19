@@ -3,7 +3,7 @@
 namespace FINDOLOGIC\Request\Tests;
 
 
-use FINDOLOGIC\Request\Requester;
+use FINDOLOGIC\Request\Request;
 use PHPUnit\Framework\TestCase;
 
 class RequesterTest extends TestCase
@@ -15,7 +15,7 @@ class RequesterTest extends TestCase
 
     public function testRequestIsSent()
     {
-        $requester = Requester::create(Requester::TYPE_SEARCH);
+        $requester = Request::create(Request::TYPE_SEARCH);
         $requester->setShopkey('80AB18D4BE2654A78244106AD315DC2C');
         $requester->setReferer('https://converschig24.com/');
         $requester->setRevision('1.33.7');
