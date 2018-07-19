@@ -16,7 +16,7 @@ class ParameterBuilder
      * @param $value string Required shopkey. It is used to determine the service.
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#required_parameters
      */
-    public function addShopkey($value)
+    public function setShopkey($value)
     {
         $shopkey = new Shopkey();
         $shopkey->setValue($value);
@@ -27,7 +27,7 @@ class ParameterBuilder
      * @param $value string Required shopurl. It is used to determine the service url.
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#required_parameters
      */
-    public function addShopurl($value)
+    public function setShopurl($value)
     {
         $shopurl = new Shopurl();
         $shopurl->setValue($value);
@@ -38,7 +38,7 @@ class ParameterBuilder
      * @param $value string Required userip. It is used for billing and for the user identifier.
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#required_parameters
      */
-    public function addUserip($value)
+    public function setUserip($value)
     {
         $userip = new Userip();
         $userip->setValue($value);
@@ -49,7 +49,7 @@ class ParameterBuilder
      * @param $value string Required referer. It is used to track the search history.
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#required_parameters
      */
-    public function addReferer($value)
+    public function setReferer($value)
     {
         $referer = new Referer();
         $referer->setValue($value);
@@ -61,7 +61,7 @@ class ParameterBuilder
      *      you are not sure which value you should pass to the API.
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#required_parameters
      */
-    public function addRevision($value)
+    public function setRevision($value)
     {
         $revision = new Revision();
         $revision->setValue($value);
@@ -69,10 +69,16 @@ class ParameterBuilder
     }
 
     /**
-     * @return array Returns all params as an array.
+     * Returns a specific param or all if no explicit param is given.
+     *
+     * @param string|null $param
+     * @return string|array
      */
-    public function getParams()
+    public function getParam($param = null)
     {
+        if ($param !== null) {
+            return $this->params[$param];
+        }
         return $this->params;
     }
 

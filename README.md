@@ -22,11 +22,11 @@ use \FINDOLOGIC\Request;
 $request = new Request::create(Request::TYPE_SEARCH);
 
 // Now add all required params.
-$request->addShopkey('ABCDABCDABCDABCDABCDABCDABCDABCD');
-$request->addShopurl('https://blubbergurken.de/');
-$request->addUserip('10.0.0.1');
-$request->addReferer('https://blubbergurken.de/somewhere/on/the/website');
-$request->addRevision('1.0.0');
+$request->setShopkey('ABCDABCDABCDABCDABCDABCDABCDABCD');
+$request->setShopurl('https://blubbergurken.de/');
+$request->setUserip('10.0.0.1');
+$request->setReferer('https://blubbergurken.de/somewhere/on/the/website');
+$request->setRevision('1.0.0');
 
 $response = $request->send();
 
