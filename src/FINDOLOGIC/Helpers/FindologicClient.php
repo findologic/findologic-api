@@ -93,8 +93,11 @@ class FindologicClient
         $alivetestUrl = $this->buildAlivetestUrl();
 
         try {
-            $request = $this->httpClient->request(self::GET_METHOD, $alivetestUrl,
-                ['timeout' => $this->alivetestTimeout]);
+            $request = $this->httpClient->request(
+                self::GET_METHOD,
+                $alivetestUrl,
+                ['timeout' => $this->alivetestTimeout]
+            );
         } catch (GuzzleException $e) {
             $request = null;
         }
