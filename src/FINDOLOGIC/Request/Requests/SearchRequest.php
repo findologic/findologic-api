@@ -8,6 +8,7 @@ use FINDOLOGIC\Request\Request;
 class SearchRequest extends Request
 {
     private $action = FindologicClient::SEARCH_ACTION;
+
     /**
      * @return string
      */

@@ -17,28 +17,34 @@ class FindologicClient
     const FINDOLOGIC_ALIVETEST_ACTION = 'alivetest.php';
 
     /**
-     * Timeout in seconds. If the response takes longer than the timeout, an exception is thrown. Make sure to catch it
+     * Timeout in seconds. If the alivetest takes longer than the timeout, an exception is thrown. Make sure to catch it
      * to have a working fallback mechanism.
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#fallback_mechanism
      */
     const FINDOLOGIC_ALIVETEST_TIMEOUT = 1;
+
+    /**
+     * Timeout in seconds. If the response takes longer than the timeout, an exception is thrown. Make sure to catch it
+     * to have a working fallback mechanism.
+     * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#fallback_mechanism
+     */
     const FINDOLOGIC_RESPONSE_TIMEOUT = 3;
 
-    const SEARCH_ACTION = 'search.php';
-    const NAVIGATION_ACTION = 'navigation.php';
-    const SUGGEST_ACTION = 'suggest.php';
+    const SEARCH_ACTION = 'index.php';
+    const NAVIGATION_ACTION = 'selector.php';
+    const SUGGEST_ACTION = 'autocomplete.php';
 
-    public $shopkey;
-    public $apiUrl;
-    public $alivetestTimeout;
-    public $requestTimeout;
-    public $httpClient;
+    const GET_METHOD = 'GET';
 
-    public $shopurl;
+    private $params;
+    private $apiUrl;
+    private $alivetestTimeout;
+    private $requestTimeout;
+    private $httpClient;
 
-    public function __construct($shopkey, $apiUrl, $alivetestTimeout, $requestTimeout, $httpClient)
+    public function __construct($params, $apiUrl, $alivetestTimeout, $requestTimeout, $httpClient)
     {
-        $this->shopkey = $shopkey;
+        $this->params = $params;
         // Set defaults if they are not explicitly set.
         $this->apiUrl = $apiUrl ?: self::FINDOLOGIC_API_URL;
         $this->alivetestTimeout = $alivetestTimeout ?: self::FINDOLOGIC_ALIVETEST_TIMEOUT;
@@ -46,22 +52,30 @@ class FindologicClient
         $this->httpClient = $httpClient ?: new Client();
     }
 
-    public function search($params)
+    /**
+     * @throws ServiceNotAliveException
+     */
+    public function search()
     {
-        $this->shopurl = $params['shopurl'];
         if ($this->isAlive()) {
             //TODO: Do a search request with given params.
         }
     }
 
-    public function navigate($params)
+    /**
+     * @throws ServiceNotAliveException
+     */
+    public function navigate()
     {
         if ($this->isAlive()) {
             //TODO: Do a navigation request with given params.
         }
     }
 
-    public function suggest($params)
+    /**
+     * @throws ServiceNotAliveException
+     */
+    public function suggest()
     {
         if ($this->isAlive()) {
             //TODO: Do a suggestion request with given params.
@@ -69,18 +83,18 @@ class FindologicClient
     }
 
     /**
-     * Checks weither the service is alive or not.
+     * Checks whether the service is alive or not. Returns true or throws an exception if the service is not alive.
      *
-     * @return bool returns true if the alivetest was successful.
-     *
-     * @throws ServiceNotAliveException if the alivetest was not successful.
+     * @return bool
+     * @throws ServiceNotAliveException
      */
     private function isAlive()
     {
-        $alivetestUrl = $this->getAlivetestUrl();
+        $alivetestUrl = $this->buildAlivetestUrl();
 
         try {
-            $request = $this->httpClient->request('GET', $alivetestUrl, ['timeout' => $this->alivetestTimeout]);
+            $request = $this->httpClient->request(self::GET_METHOD, $alivetestUrl,
+                ['timeout' => $this->alivetestTimeout]);
         } catch (GuzzleException $e) {
             $request = null;
         }
@@ -92,15 +106,19 @@ class FindologicClient
         throw new ServiceNotAliveException();
     }
 
-    private function getAlivetestUrl()
+    /**
+     * @return string
+     */
+    private function buildAlivetestUrl()
     {
-        return sprintf(self::FINDOLOGIC_API_URL, $this->shopurl, self::FINDOLOGIC_ALIVETEST_ACTION) .
-            '?' . http_build_query(['shopkey' => $this->shopkey]);
+        $params = '?' . http_build_query(['shopkey' => $this->params['shopkey']]);
+        $alivetestUrl = sprintf($this->apiUrl, $this->params['shopurl'], self::FINDOLOGIC_ALIVETEST_ACTION);
+        return $alivetestUrl . $params;
     }
 
-    private function getUrlByRequestType()
+    private function getUrlByRequestType($type)
     {
-        //TODO: Fix that.
+        //TODO: Generate request URL by action type.
         sprintf(self::FINDOLOGIC_API_URL, $this->shopkey, $this->action);
     }
 }
