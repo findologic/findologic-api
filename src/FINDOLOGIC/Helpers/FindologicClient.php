@@ -57,7 +57,23 @@ class FindologicClient
      */
     public function search()
     {
+        $action = FindologicClient::SEARCH_ACTION;
         if ($this->isAlive()) {
+            $requestUrl = $this->buildRequestUrlByAction($action);
+
+            try {
+                $request = $this->httpClient->request(
+                    self::GET_METHOD,
+                    $requestUrl,
+                    ['timeout' => $this->requestTimeout]
+                );
+            } catch (GuzzleException $e) {
+                $request = null;
+            }
+
+            if ($request !== null && $request->getStatusCode() === 200) {
+                return $request->getBody();
+            }
             //TODO: Do a search request with given params.
         }
     }
@@ -67,7 +83,23 @@ class FindologicClient
      */
     public function navigate()
     {
+        $action = FindologicClient::NAVIGATION_ACTION;
         if ($this->isAlive()) {
+            $requestUrl = $this->buildRequestUrlByAction($action);
+
+            try {
+                $request = $this->httpClient->request(
+                    self::GET_METHOD,
+                    $requestUrl,
+                    ['timeout' => $this->requestTimeout]
+                );
+            } catch (GuzzleException $e) {
+                $request = null;
+            }
+
+            if ($request !== null && $request->getStatusCode() === 200) {
+                return $request->getBody();
+            }
             //TODO: Do a navigation request with given params.
         }
     }
@@ -77,7 +109,23 @@ class FindologicClient
      */
     public function suggest()
     {
+        $action = FindologicClient::SUGGEST_ACTION;
         if ($this->isAlive()) {
+            $requestUrl = $this->buildRequestUrlByAction($action);
+
+            try {
+                $request = $this->httpClient->request(
+                    self::GET_METHOD,
+                    $requestUrl,
+                    ['timeout' => $this->requestTimeout]
+                );
+            } catch (GuzzleException $e) {
+                $request = null;
+            }
+
+            if ($request !== null && $request->getStatusCode() === 200) {
+                return $request->getBody();
+            }
             //TODO: Do a suggestion request with given params.
         }
     }
@@ -119,9 +167,18 @@ class FindologicClient
         return $alivetestUrl . $params;
     }
 
-    private function getUrlByRequestType($type)
+    /**
+     * @param $action
+     * @return string
+     */
+    private function buildRequestUrlByAction($action)
     {
-        //TODO: Generate request URL by action type.
-        sprintf(self::FINDOLOGIC_API_URL, $this->shopkey, $this->action);
+        $apiUrl = $this->apiUrl;
+        $rawParams = $this->params;
+        $shopurl = $rawParams['shopurl'];
+
+        $params = '?' . http_build_query($this->params);
+        $requestUrl = sprintf($apiUrl, $shopurl, $action);
+        return $requestUrl . $params;
     }
 }
