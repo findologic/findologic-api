@@ -4,9 +4,9 @@ namespace FINDOLOGIC\Request\Parameters\Types;
 
 use FINDOLOGIC\Request\Parameters\ParameterValidator;
 
-class Shopkey
+class Shopurl
 {
-    const PARAM_KEY = 'shopkey';
+    const PARAM_KEY = 'shopurl';
 
     public $value;
     public $required = true;
@@ -24,7 +24,7 @@ class Shopkey
      */
     public function setValue($value)
     {
-        ParameterValidator::validateShopkey($value);
+        ParameterValidator::validateShopurl($value);
         $this->value = $value;
     }
 }

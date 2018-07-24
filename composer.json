@@ -6,11 +6,31 @@
     "authors": [
         {
             "name": "Dominik Brader",
-            "email": "d.brader@findologic.com"
+            "email": "d.brader@findologic.com",
+            "role": "Maintainer"
+        },
+        {
+            "name": "Chris Ortner",
+            "email": "chris@codexfons.com",
+            "role": "Developer"
         }
     ],
-    "repositories": [
-        {"type": "composer", "url": "https://repo.packagist.com/brader/"},
-        {"packagist.org": false}
-    ]
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.4 || ^7.0",
+        "symfony/console": "v3.2.9",
+        "friendsofphp/php-cs-fixer": "v2.8.2"
+    },
+    "autoload": {
+        "psr-0": {
+            "FINDOLOGIC": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-0": {
+            "FINDOLOGIC\\Request\\Tests": "tests/"
+        }
+    }
 }

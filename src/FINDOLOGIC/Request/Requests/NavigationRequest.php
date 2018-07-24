@@ -1,8 +1,18 @@
 <?php
 
-namespace FINDOLOGIC\Request\Requests\NavigationRequest;
+namespace FINDOLOGIC\Request\Requests;
 
-class NavigationRequest
+use FINDOLOGIC\Helpers\FindologicClient;
+use FINDOLOGIC\Request\Request;
+
+class NavigationRequest extends Request
 {
-    public $requestFile = 'selector.php';
+    private $action = FindologicClient::NAVIGATION_ACTION;
+    /**
+     * @return string
+     */
+    public function getAction()
+    {
+        return $this->action;
+    }
 }

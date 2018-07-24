@@ -1,5 +1,7 @@
 # FINDOLOGIC API
 
+[![Travis](https://travis-ci.org/TheKeymaster/findologic-api.svg?branch=master)](https://travis-ci.org/TheKeymaster/findologic-api)
+
 **Please note**: This repository is still WIP and therefor either not usable or only partially usable. Use it at your own risk!
 
 ## Synopsis
@@ -22,11 +24,11 @@ use \FINDOLOGIC\Request;
 $request = new Request::create(Request::TYPE_SEARCH);
 
 // Now add all required params.
-$request->addShopkey('ABCDABCDABCDABCDABCDABCDABCDABCD');
-$request->addShopurl('https://blubbergurken.de/');
-$request->addUserip('10.0.0.1');
-$request->addReferer('https://blubbergurken.de/somewhere/on/the/website');
-$request->addRevision('1.0.0');
+$requester->setShopkey('ABCDABCDABCDABCDABCDABCDABCDABCD')
+    ->setReferer('https://converschig24.com/')
+    ->setRevision('1.33.7')
+    ->setShopurl('www.blubbergurken24.io')
+    ->setUserip('127.0.0.1');
 
 $response = $request->send();
 
@@ -53,8 +55,8 @@ foreach ($filters as $filter) {
 // Print some product data.
 foreach ($products as $product) {
     $productId = $product->getId();
-    // This may be shop specific. Map products to get available data like the name.
-    echo $shopDatabase->getArticleName($productId);
+    // This may be shop specific. Map products to display a product in the shop.
+    $shop->printArticleById($productId);
 }
 ```
 

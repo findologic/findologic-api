@@ -2,57 +2,83 @@
 
 namespace FINDOLOGIC\Request;
 
-use FINDOLOGIC\Request\ParameterBuilder\ParameterBuilder;
-use FINDOLOGIC\Request\Requests\NavigationRequest\NavigationRequest;
-use FINDOLOGIC\Request\Requests\SearchRequest\SearchRequest;
+use FINDOLOGIC\Exceptions\ServiceNotAliveException;
+use FINDOLOGIC\Helpers\FindologicClient;
+use FINDOLOGIC\Request\Parameters\ParameterBuilder;
+use FINDOLOGIC\Request\Parameters\ParameterValidator;
+use FINDOLOGIC\Request\Requests\NavigationRequest;
+use FINDOLOGIC\Request\Requests\SearchRequest;
+use FINDOLOGIC\Request\Requests\SuggestRequest;
+use InvalidArgumentException;
 
-class Request extends ParameterBuilder
+abstract class Request extends ParameterBuilder
 {
-    /** FINDOLOGIC API URL that is used for each request. */
-    const FINDOLOGIC_API_URL = 'https://service.findologic.com/ps/%s/%s';
-
-    /**
-     * FINDOLOGIC alivetest file. It is used to determine if a service can answer requests.
-     * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#fallback_mechanism
-     */
-    const FINDOLOGIC_ALIVETEST_FILE = 'alivetest.php';
-
-    const FINDOLOGIC_ALIVETEST_TIMEOUT_MS = 1000;
-
-    /**
-     * If the response takes longer than the timeout, an exception is thrown. Make sure to catch it to have a working
-     * fallback mechanism.
-     * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#fallback_mechanism
-     */
-    const FINDOLOGIC_RESPONSE_TIMEOUT_MS = 3000;
-
     const TYPE_SEARCH = 0;
     const TYPE_NAVIGATION = 1;
+    const TYPE_SUGGEST = 2;
 
     /**
-     * @param $type int decides if it is a search or a navigation request. Use available constants for that.
+     * @param $type int Decides if it is a search, navigation or suggest request. Use available constants for that.
      * @return NavigationRequest|SearchRequest
      */
     public static function create($type)
     {
         switch ($type) {
             case self::TYPE_SEARCH:
-                $exporter = new SearchRequest();
+                $request = new SearchRequest();
                 break;
             case self::TYPE_NAVIGATION:
-                $exporter = new NavigationRequest();
+                $request = new NavigationRequest();
+                break;
+            case self::TYPE_SUGGEST:
+                $request = new SuggestRequest();
                 break;
             default:
-                throw new \InvalidArgumentException('Unsupported request type.');
+                throw new InvalidArgumentException('Unsupported request type.');
         }
-        return $exporter;
+        return $request;
     }
 
     /**
+     * Sends the request with all set params and makes sure that all required params are in place. It respects the
+     * alivetest, alivetest timeout and search timeout.
      *
+     * @param string $apiUrl If not set, will be set in FindologicClient. Convention is https://example.com/%s/%s
+     *      since the first string will be the shopurl and the second one the action e.g. abc.de/autocomplete.php.
+     * @param null $alivetestTimeout
+     * @param null $requestTimeout
+     * @param null|\GuzzleHttp\Client $httpClient
+     *
+     * @throws ServiceNotAliveException Catch this exception to have a valid fallback.
      */
-    public function send()
+    public function send($apiUrl = null, $alivetestTimeout = null, $requestTimeout = null, $httpClient = null)
     {
-        //TODO: Send the request. Make sure that the timeout will be respected.
+        $params = $this->getParam();
+        ParameterValidator::requiredParamsAreSet($params);
+        $findologicClient = new FindologicClient(
+            $params,
+            $apiUrl,
+            $alivetestTimeout,
+            $requestTimeout,
+            $httpClient
+        );
+        switch ($this->getAction()) {
+            case FindologicClient::SEARCH_ACTION:
+                $findologicClient->search();
+                break;
+            case FindologicClient::NAVIGATION_ACTION:
+                $findologicClient->navigate();
+                break;
+            case FindologicClient::SUGGEST_ACTION:
+                $findologicClient->suggest();
+                break;
+            default:
+                throw new InvalidArgumentException('Unsupported action type.');
+        }
+    }
+
+    public function getAction()
+    {
+        // This method is overridden by the request types.
     }
 }

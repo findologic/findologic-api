@@ -5,10 +5,9 @@ namespace FINDOLOGIC\Request\Requests;
 use FINDOLOGIC\Helpers\FindologicClient;
 use FINDOLOGIC\Request\Request;
 
-class SearchRequest extends Request
+class SuggestRequest extends Request
 {
-    private $action = FindologicClient::SEARCH_ACTION;
-
+    private $action = FindologicClient::SUGGEST_ACTION;
     /**
      * @return string
      */
