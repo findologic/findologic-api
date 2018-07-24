@@ -1,5 +1,7 @@
 # FINDOLOGIC API
 
+[![Travis](https://travis-ci.org/TheKeymaster/findologic-api.svg?branch=master)](https://travis-ci.org/TheKeymaster/findologic-api)
+
 **Please note**: This repository is still WIP and therefor either not usable or only partially usable. Use it at your own risk!
 
 ## Synopsis
