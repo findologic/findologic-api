@@ -1,8 +1,10 @@
 # FINDOLOGIC API
 
 [![Travis](https://travis-ci.org/TheKeymaster/findologic-api.svg?branch=master)](https://travis-ci.org/TheKeymaster/findologic-api)
+[![Maintainability](https://api.codeclimate.com/v1/badges/d604675c46586292c20f/maintainability)](https://codeclimate.com/github/TheKeymaster/findologic-api/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/d604675c46586292c20f/test_coverage)](https://codeclimate.com/github/TheKeymaster/findologic-api/test_coverage)
 
-**Please note**: This repository is still WIP and therefor either not usable or only partially usable. Use it at your own risk!
+**Please note**: This repository is still WIP and therefore either not usable or only partially usable. Use it at your own risk!
 
 ## Synopsis
 
@@ -14,54 +16,13 @@ To have a better understanding about the API, please make sure to read the gener
  
 ## Usage
 
-The usage is pretty simple. Here is a detailed example:
+The usage is pretty simple. Here is an example:
 
 ```php
-require_once './vendor/autoload.php';
-
-use \FINDOLOGIC\Request;
-
-$request = new Request::create(Request::TYPE_SEARCH);
-
-// Now add all required params.
-$requester->setShopkey('ABCDABCDABCDABCDABCDABCDABCDABCD')
-    ->setReferer('https://converschig24.com/')
-    ->setRevision('1.33.7')
-    ->setShopurl('www.blubbergurken24.io')
-    ->setUserip('127.0.0.1');
-
-$response = $request->send();
-
-$resultAmount = $response->getResultsCount();
-$filters = $response->getAvailableFilters();
-$products = $response->getAvailableProducts();
-
-// Print some result amount text.
-if (count($resultAmount) < 1) {
-    echo 'There were no results found for your query.';
-} else {
-    // Print found products.
-    echo sprintf('%d results were found for your query.', $resultAmount);
-}
-
-// Print some filters.
-foreach ($filters as $filter) {
-    echo $filter->getName();
-    if ($filter->getType() === 'range-slider') {
-        // Create some sort of slider.
-    }
-}
-
-// Print some product data.
-foreach ($products as $product) {
-    $productId = $product->getId();
-    // This may be shop specific. Map products to display a product in the shop.
-    $shop->printArticleById($productId);
-}
+// Since this is WIP, no examples yet.
 ```
-
-All response functions (e.g. filters and results) will return PHP arrays containing multiple PHP objects.
 
 ## Requirements
 
- * PHP >= 5.6.
+ * [Composer](https://getcomposer.org/)
+ * [PHP 5.6 or higher](https://php.net/)
