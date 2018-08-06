@@ -118,12 +118,34 @@ class FindologicApi extends ParameterBuilder
 
     public function sendNavigationRequest()
     {
+        $requiredParams = $this->getRequiredParams();
+
+        // Check if all required params are set.
+        foreach ($requiredParams as $paramName => $paramValue) {
+            if (!array_key_exists($paramValue, $this->getParam())) {
+                throw new ParamException($paramValue);
+            }
+        }
+
+        $this->sendRequest(RequestType::ALIVETEST_REQUEST);
+        return new Response($this->sendRequest(RequestType::NAVIGATION_REQUEST));
         //TODO: Send the navigation request with the set params.
         //TODO: Works with XML only. HTML will most likely not be supported.
     }
 
     public function sendSuggestionRequest()
     {
+        $requiredParams = $this->getRequiredParams();
+
+        // Check if all required params are set.
+        foreach ($requiredParams as $paramName => $paramValue) {
+            if (!array_key_exists($paramValue, $this->getParam())) {
+                throw new ParamException($paramValue);
+            }
+        }
+
+        $this->sendRequest(RequestType::ALIVETEST_REQUEST);
+        return new Response($this->sendRequest(RequestType::SUGGESTION_REQUEST));
         //TODO: Send the suggestion request with the set params.
         //TODO: Works with JSON.
     }
@@ -160,10 +182,11 @@ class FindologicApi extends ParameterBuilder
         }
 
         $responseBody = $request->getBody();
+        $statusCode = $request->getStatusCode();
 
         // If it is an alivetest, the 'alive' body needs to be set. In any case the status code needs to be OK 200.
         if ((($requestType == RequestType::ALIVETEST_REQUEST && $responseBody == self::SERVICE_ALIVE_BODY) ||
-                $requestType !== RequestType::ALIVETEST_REQUEST) && $request->getStatusCode() === 200) {
+                $requestType !== RequestType::ALIVETEST_REQUEST) && $statusCode === 200) {
             return $responseBody;
         }
 

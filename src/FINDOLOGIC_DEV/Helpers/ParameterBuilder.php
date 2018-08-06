@@ -328,7 +328,7 @@ class ParameterBuilder
         if ($requestType !== RequestType::ALIVETEST_REQUEST) {
             $queryParams = http_build_query($this->params);
             // Removes indexes from attrib[] param.
-            $fullQueryString = preg_replace('/%5B\d+%5D/', '%5B%5D', http_build_query($queryParams));
+            $fullQueryString = preg_replace('/%5B\d+%5D/', '%5B%5D', $queryParams);
         } else {
             $fullQueryString = http_build_query([self::SHOPKEY => $this->config[self::SHOPKEY]]);
         }
