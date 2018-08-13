@@ -64,7 +64,11 @@ class ParameterBuilder
     const SET_VALUE = 'set';
     const ADD_VALUE = 'add';
 
+    const SLIDER_MIN = 'min';
+    const SLIDER_MAX = 'max';
+
     const GET_METHOD = 'GET';
+    const STATUS_OK = 200;
 
     protected $requiredParams = [
         //self::SHOPKEY, Is already required in the config and validated.
@@ -298,7 +302,11 @@ class ParameterBuilder
         if ($method == self::SET_VALUE) {
             $this->params[$key] = $value;
         } elseif ($method == self::ADD_VALUE) {
-            $this->params[$key] = array_merge_recursive($this->params[$key], $value);
+            try {
+                $this->params[$key] = array_merge_recursive($this->params[$key], $value);
+            } catch (\Exception $e) {
+                $this->params[$key] = $value;
+            }
         } else {
             throw new InvalidArgumentException('Unknown method type.');
         }
@@ -315,7 +323,7 @@ class ParameterBuilder
     }
 
     /**
-     * Builds the request URL based on the request type and returns it.
+     * Builds the request URL based on the request type and the set params and returns it.
      *
      * @param $requestType string
      * @return string
@@ -324,15 +332,16 @@ class ParameterBuilder
     {
         $shopUrl = $this->params[self::SHOP_URL];
 
-        // The alivetest only requires the shopkey param.
         if ($requestType !== RequestType::ALIVETEST_REQUEST) {
             $queryParams = http_build_query($this->params);
             // Removes indexes from attrib[] param.
             $fullQueryString = preg_replace('/%5B\d+%5D/', '%5B%5D', $queryParams);
         } else {
+            // The alivetest only requires the shopkey param.
             $fullQueryString = http_build_query([self::SHOPKEY => $this->config[self::SHOPKEY]]);
         }
 
-        return sprintf($this->config[self::API_URL], $shopUrl, $requestType) . '?' . $fullQueryString;
+        $apiUrl = sprintf($this->config[self::API_URL], $shopUrl, $requestType);
+        return sprintf('%s?%s', $apiUrl, $fullQueryString);
     }
 }

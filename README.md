@@ -13,16 +13,22 @@ To have a better understanding about the API, please make sure to read the gener
 
  * [Requesting the API](https://docs.findologic.com/doku.php?id=integration_documentation:request).
  * [XML response](https://docs.findologic.com/doku.php?id=integration_documentation:response_xml).
+
+## Installation
+
+You can install this in two ways, either you use [Composer](https://getcomposer.org/) or clone the master branch of this 
+repository and load the files manually with your own autoloader. Regardless of the installation type all examples are 
+using Composer.
  
 ## Usage
 
 The usage is pretty simple. Here is an example:
 
 ```php
-// Since this is WIP, no examples yet.
+// Examples will be added in a future release.
 ```
 
 ## Requirements
 
+ * [PHP 5.6 or higher](https://php.net/) older versions are not supported.
  * [Composer](https://getcomposer.org/)
- * [PHP 5.6 or higher](https://php.net/)

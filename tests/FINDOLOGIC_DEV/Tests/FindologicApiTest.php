@@ -2,6 +2,8 @@
 
 namespace FINDOLOGIC_DEV\Tests;
 
+use FINDOLOGIC_DEV\Exceptions\ConfigException;
+use FINDOLOGIC_DEV\Exceptions\ParamException;
 use FINDOLOGIC_DEV\FindologicApi;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
@@ -32,12 +34,15 @@ class FindologicApiTest extends TestCase
      */
     public function setDefaultExpectations()
     {
+        // Get contents from a real response locally.
+        $realResponseData = file_get_contents(__DIR__ . '/../Mockdata/demoResponse.xml');
+
         // Alivetest.
         $this->responseMock->expects($this->at(0))->method('getBody')->willReturn('alive');
         $this->responseMock->expects($this->at(1))->method('getStatusCode')->willReturn(200);
 
         // Search, Navigation or Suggest request.
-        $this->responseMock->expects($this->at(2))->method('getBody')->willReturn('alive');
+        $this->responseMock->expects($this->at(2))->method('getBody')->willReturn($realResponseData);
         $this->responseMock->expects($this->at(3))->method('getStatusCode')->willReturn(200);
 
         // Both requests should respond with the responseMock.
@@ -64,7 +69,7 @@ class FindologicApiTest extends TestCase
 
     /**
      * @dataProvider requestProvider
-     * @param $requestType
+     * @param $requestType string
      */
     public function testAlivetestWorks($requestType)
     {
@@ -80,9 +85,115 @@ class FindologicApiTest extends TestCase
         $findologicApi->{$requestType}();
     }
 
-    public function testRequiredParamShopurlMissingWillThrowAnException()
+    /**
+     * @dataProvider requestProvider
+     * @param $requestType string
+     */
+    public function testRequiredParamShopurlMissingWillThrowAnException($requestType)
     {
-        //$this->setDefaultExpectations();
-        //TODO: Implement tests for all params missing.
+        $findologicApi = $this->getDefaultFindologicApi();
+
+        $findologicApi
+            ->setUserip('127.0.0.1')
+            ->setReferer('www.blubbergurken.io/blubbergurken-sale')
+            ->setRevision('1.0.0');
+
+        try {
+            $findologicApi->{$requestType}();
+            $this->fail('A ParamException was expected to occur when the shopurl parameter is missing.');
+        } catch (ParamException $e) {
+            $this->assertEquals('Required param shopurl is not set.', $e->getMessage());
+        }
+    }
+
+    /**
+     * @dataProvider requestProvider
+     * @param $requestType string
+     */
+    public function testRequiredParamUseripMissingWillThrowAnException($requestType)
+    {
+        $findologicApi = $this->getDefaultFindologicApi();
+
+        $findologicApi
+            ->setShopurl('www.blubbergurken.io')
+            ->setReferer('www.blubbergurken.io/blubbergurken-sale')
+            ->setRevision('1.0.0');
+
+        try {
+            $findologicApi->{$requestType}();
+            $this->fail('A ParamException was expected to occur when the userip parameter is missing.');
+        } catch (ParamException $e) {
+            $this->assertEquals('Required param userip is not set.', $e->getMessage());
+        }
+    }
+
+    /**
+     * @dataProvider requestProvider
+     * @param $requestType string
+     */
+    public function testRequiredParamRefererMissingWillThrowAnException($requestType)
+    {
+        $findologicApi = $this->getDefaultFindologicApi();
+
+        $findologicApi
+            ->setShopurl('www.blubbergurken.io')
+            ->setUserip('127.0.0.1')
+            ->setRevision('1.0.0');
+
+        try {
+            $findologicApi->{$requestType}();
+            $this->fail('A ParamException was expected to occur when the referer parameter is missing.');
+        } catch (ParamException $e) {
+            $this->assertEquals('Required param referer is not set.', $e->getMessage());
+        }
+    }
+
+    /**
+     * @dataProvider requestProvider
+     * @param $requestType string
+     */
+    public function testRequiredParamRevisionMissingWillThrowAnException($requestType)
+    {
+        $findologicApi = $this->getDefaultFindologicApi();
+
+        $findologicApi
+            ->setShopurl('www.blubbergurken.io')
+            ->setUserip('127.0.0.1')
+            ->setReferer('www.blubbergurken.io/blubbergurken-sale');
+
+        try {
+            $findologicApi->{$requestType}();
+            $this->fail('A ParamException was expected to occur when the revision parameter is missing.');
+        } catch (ParamException $e) {
+            $this->assertEquals('Required param revision is not set.', $e->getMessage());
+        }
+    }
+
+    public function invalidShopkeyProvider()
+    {
+        return [
+            'shopkey length not optimal' => ['INVALIDAF'],
+            'shopkey contains invalid characters' => ['80AB18D4BE2654R78244106AD315DC2C'],
+            'shopkey is lowercased' => ['80ab18d4be2654r78244106ad315dc2c'],
+            'shopkey contains spaces' => ['80AB18D4BE2654A7 8244106AD315DC2C'],
+            'shopkey contains special characters' => ['AAAAAA.AAAAAAÄAAAAAAAAAAAAAAAAA_'],
+        ];
+    }
+
+    /**
+     * @dataProvider invalidShopkeyProvider
+     * @param $shopkey string
+     */
+    public function testExceptionIsThrownIfShopkeyIsInvalid($shopkey)
+    {
+        try {
+            $findologicApi = new FindologicApi([
+                FindologicApi::SHOPKEY => $shopkey
+            ]);
+
+            $this->fail('A ConfigException was expected to occur when the shopkey is invalid.');
+        } catch (ConfigException $e) {
+            $this->assertEquals('Shopkey format is invalid.', $e->getMessage());
+        }
     }
 }

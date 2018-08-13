@@ -16,7 +16,7 @@ class FindologicApi extends ParameterBuilder
     /**
      * FindologicApi constructor.
      *
-     * @param $config array containing the necessary config.
+     * @param array $config containing the necessary config.
      *      $config = [
      *          FindologicApi::SHOPKEY              => (string) Service's shopkey. Required.
      *          FindologicApi::API_URL              => (string) Findologic API URL. Optional.
@@ -31,7 +31,7 @@ class FindologicApi extends ParameterBuilder
         $this->validateConfig($config);
 
         // Set default httpClient if not explicitly set.
-        $config[self::HTTP_CLIENT] = $config[self::HTTP_CLIENT]?: new Client();
+        $config[self::HTTP_CLIENT] = $config[self::HTTP_CLIENT] ?: new Client();
 
         // Config is validated and defaults are set.
         $this->config = array_merge($this->getConfig(), $config);
@@ -41,7 +41,7 @@ class FindologicApi extends ParameterBuilder
      * Internal function to check whether the config is valid. Returns nothing and will throw an exception if the
      * config is not valid.
      *
-     * @param $config array
+     * @param array $config
      * @throws ConfigException
      */
     private function validateConfig($config)
@@ -83,7 +83,7 @@ class FindologicApi extends ParameterBuilder
      * Returns the currently set config or only one setting when requesting a specific key.
      *
      * @param string|null $key
-     * @return mixed
+     * @return array
      */
     public function getConfig($key = null)
     {
@@ -94,21 +94,15 @@ class FindologicApi extends ParameterBuilder
     }
 
     /**
-     * Sends a search request with all set params.
+     * Sends a search request to FINDOLOGIC and returns a Response object.
      *
      * @throws ServiceNotAliveException if the service is unable to respond.
-     * @throws ParamException
+     * @throws ParamException if the required params are not set.
+     * @return Response
      */
     public function sendSearchRequest()
     {
-        $requiredParams = $this->getRequiredParams();
-
-        // Check if all required params are set.
-        foreach ($requiredParams as $paramName => $paramValue) {
-            if (!array_key_exists($paramValue, $this->getParam())) {
-                throw new ParamException($paramValue);
-            }
-        }
+        $this->checkRequiredParamsAreSet();
 
         $this->sendRequest(RequestType::ALIVETEST_REQUEST);
         return new Response($this->sendRequest(RequestType::SEARCH_REQUEST));
@@ -116,16 +110,16 @@ class FindologicApi extends ParameterBuilder
         //TODO: Works with XML only. HTML will most likely not be supported.
     }
 
+    /**
+     * Sends a navigation request to FINDOLOGIC and returns a Response object.
+     *
+     * @throws ServiceNotAliveException if the service is unable to respond.
+     * @throws ParamException if the required params are not set.
+     * @return Response
+     */
     public function sendNavigationRequest()
     {
-        $requiredParams = $this->getRequiredParams();
-
-        // Check if all required params are set.
-        foreach ($requiredParams as $paramName => $paramValue) {
-            if (!array_key_exists($paramValue, $this->getParam())) {
-                throw new ParamException($paramValue);
-            }
-        }
+        $this->checkRequiredParamsAreSet();
 
         $this->sendRequest(RequestType::ALIVETEST_REQUEST);
         return new Response($this->sendRequest(RequestType::NAVIGATION_REQUEST));
@@ -133,17 +127,18 @@ class FindologicApi extends ParameterBuilder
         //TODO: Works with XML only. HTML will most likely not be supported.
     }
 
+    /**
+     * Sends a suggestion request to FINDOLOGIC and returns a Response object.
+     *
+     * @throws ServiceNotAliveException if the service is unable to respond.
+     * @throws ParamException if the required params are not set.
+     * @return Response
+     */
     public function sendSuggestionRequest()
     {
-        $requiredParams = $this->getRequiredParams();
+        $this->checkRequiredParamsAreSet();
 
-        // Check if all required params are set.
-        foreach ($requiredParams as $paramName => $paramValue) {
-            if (!array_key_exists($paramValue, $this->getParam())) {
-                throw new ParamException($paramValue);
-            }
-        }
-
+        //TODO: Check if a suggestion request requires an alivetest. If not this can be removed.
         $this->sendRequest(RequestType::ALIVETEST_REQUEST);
         return new Response($this->sendRequest(RequestType::SUGGESTION_REQUEST));
         //TODO: Send the suggestion request with the set params.
@@ -154,10 +149,11 @@ class FindologicApi extends ParameterBuilder
      * Internal function that is used to send a request. It builds the URL and respects the timeout when sending a
      * request.
      *
-     * @param $requestType
-     * @return string Response body.
+     * @param string $requestType RequestType that is being used.
      *
-     * @throws ServiceNotAliveException
+     * @return string Response body.
+     * @throws ServiceNotAliveException If the url is unreachable, returns an error message, unexpected body/code or
+     * the timeout has been exceeded.
      */
     private function sendRequest($requestType)
     {
@@ -186,10 +182,29 @@ class FindologicApi extends ParameterBuilder
 
         // If it is an alivetest, the 'alive' body needs to be set. In any case the status code needs to be OK 200.
         if ((($requestType == RequestType::ALIVETEST_REQUEST && $responseBody == self::SERVICE_ALIVE_BODY) ||
-                $requestType !== RequestType::ALIVETEST_REQUEST) && $statusCode === 200) {
+                $requestType !== RequestType::ALIVETEST_REQUEST) && $statusCode === self::STATUS_OK) {
             return $responseBody;
         }
 
         throw new ServiceNotAliveException($responseBody);
+    }
+
+    /**
+     * Internal function that takes care of checking the required params and whether they are set or not.
+     *
+     * @return bool Returns true on success, otherwise an ParamException will be thrown.
+     */
+    private function checkRequiredParamsAreSet()
+    {
+        $requiredParams = $this->getRequiredParams();
+
+        // Check if all required params are set.
+        foreach ($requiredParams as $paramName => $paramValue) {
+            if (!array_key_exists($paramValue, $this->getParam())) {
+                throw new ParamException($paramValue);
+            }
+        }
+
+        return true;
     }
 }
