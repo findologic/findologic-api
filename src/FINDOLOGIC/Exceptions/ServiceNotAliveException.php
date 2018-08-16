@@ -2,10 +2,12 @@
 
 namespace FINDOLOGIC\Exceptions;
 
-class ServiceNotAliveException extends \RuntimeException
+use RuntimeException;
+
+class ServiceNotAliveException extends RuntimeException
 {
-    public function __construct()
+    public function __construct($message)
     {
-        parent::__construct('The service is not alive!');
+        parent::__construct($message);
     }
 }

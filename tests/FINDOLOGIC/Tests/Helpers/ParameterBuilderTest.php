@@ -1,10 +1,10 @@
 <?php
 
-namespace FINDOLOGIC_DEV\Tests\Helpers;
+namespace FINDOLOGIC\Tests\Helpers;
 
-use FINDOLOGIC_DEV\Definitions\OrderType;
-use FINDOLOGIC_DEV\Exceptions\InvalidParamException;
-use FINDOLOGIC_DEV\Helpers\ParameterBuilder;
+use FINDOLOGIC\Definitions\OrderType;
+use FINDOLOGIC\Exceptions\InvalidParamException;
+use FINDOLOGIC\Helpers\ParameterBuilder;
 use PHPUnit\Framework\TestCase;
 
 class ParameterBuilderTest extends TestCase

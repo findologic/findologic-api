@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC_DEV\Exceptions;
+namespace FINDOLOGIC\Exceptions;
 
 use RuntimeException;
 

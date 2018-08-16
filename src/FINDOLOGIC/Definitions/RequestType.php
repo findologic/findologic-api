@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC_DEV\Definitions;
+namespace FINDOLOGIC\Definitions;
 
 class RequestType
 {

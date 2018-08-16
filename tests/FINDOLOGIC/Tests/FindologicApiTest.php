@@ -1,11 +1,10 @@
 <?php
 
-namespace FINDOLOGIC_DEV\Tests;
+namespace FINDOLOGIC\Tests;
 
-use FINDOLOGIC_DEV\Exceptions\ConfigException;
-use FINDOLOGIC_DEV\Exceptions\InvalidParamException;
-use FINDOLOGIC_DEV\Exceptions\ParamNotSetException;
-use FINDOLOGIC_DEV\FindologicApi;
+use FINDOLOGIC\Exceptions\ConfigException;
+use FINDOLOGIC\Exceptions\ParamNotSetException;
+use FINDOLOGIC\FindologicApi;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;

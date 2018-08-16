@@ -1,13 +1,13 @@
 <?php
 
-namespace FINDOLOGIC_DEV;
+namespace FINDOLOGIC;
 
-use FINDOLOGIC_DEV\Definitions\RequestType;
-use FINDOLOGIC_DEV\Exceptions\ConfigException;
-use FINDOLOGIC_DEV\Exceptions\ParamNotSetException;
-use FINDOLOGIC_DEV\Exceptions\ServiceNotAliveException;
-use FINDOLOGIC_DEV\Helpers\ParameterBuilder;
-use FINDOLOGIC_DEV\Objects\Response;
+use FINDOLOGIC\Definitions\RequestType;
+use FINDOLOGIC\Exceptions\ConfigException;
+use FINDOLOGIC\Exceptions\ParamNotSetException;
+use FINDOLOGIC\Exceptions\ServiceNotAliveException;
+use FINDOLOGIC\Helpers\ParameterBuilder;
+use FINDOLOGIC\Objects\Response;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 

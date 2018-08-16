@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC_DEV\Objects;
+namespace FINDOLOGIC\Objects;
 
 class Response
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace FINDOLOGIC_DEV\Helpers;
+namespace FINDOLOGIC\Helpers;
 
-use FINDOLOGIC_DEV\Definitions\OrderType;
-use FINDOLOGIC_DEV\Definitions\RequestType;
-use FINDOLOGIC_DEV\Exceptions\InvalidParamException;
+use FINDOLOGIC\Definitions\OrderType;
+use FINDOLOGIC\Definitions\RequestType;
+use FINDOLOGIC\Exceptions\InvalidParamException;
 use InvalidArgumentException;
 
 class ParameterBuilder
