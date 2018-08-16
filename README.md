@@ -2,7 +2,6 @@
 
 [![Travis](https://travis-ci.org/TheKeymaster/findologic-api.svg?branch=master)](https://travis-ci.org/TheKeymaster/findologic-api)
 [![Maintainability](https://api.codeclimate.com/v1/badges/d604675c46586292c20f/maintainability)](https://codeclimate.com/github/TheKeymaster/findologic-api/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/d604675c46586292c20f/test_coverage)](https://codeclimate.com/github/TheKeymaster/findologic-api/test_coverage)
 [![codecov](https://codecov.io/gh/TheKeymaster/findologic-api/branch/master/graph/badge.svg)](https://codecov.io/gh/TheKeymaster/findologic-api)
 
 **Please note**: This repository is still WIP and therefore either not usable or only partially usable. Use it at your own risk!
