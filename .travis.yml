@@ -33,3 +33,5 @@ script:
   - ./vendor/bin/php-cs-fixer fix --dry-run src
   - ./vendor/bin/php-cs-fixer fix --dry-run tests
   - ./vendor/bin/phpunit --configuration phpunit.xml --coverage-text --coverage-clover=coverage.xml
+after_success:
+- bash <(curl -s https://codecov.io/bash)
