@@ -4,7 +4,7 @@ namespace FINDOLOGIC_DEV\Exceptions;
 
 use RuntimeException;
 
-class ParamException extends RuntimeException
+class ParamNotSetException extends RuntimeException
 {
     public function __construct($param)
     {

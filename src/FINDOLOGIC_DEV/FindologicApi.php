@@ -4,7 +4,7 @@ namespace FINDOLOGIC_DEV;
 
 use FINDOLOGIC_DEV\Definitions\RequestType;
 use FINDOLOGIC_DEV\Exceptions\ConfigException;
-use FINDOLOGIC_DEV\Exceptions\ParamException;
+use FINDOLOGIC_DEV\Exceptions\ParamNotSetException;
 use FINDOLOGIC_DEV\Exceptions\ServiceNotAliveException;
 use FINDOLOGIC_DEV\Helpers\ParameterBuilder;
 use FINDOLOGIC_DEV\Objects\Response;
@@ -97,7 +97,7 @@ class FindologicApi extends ParameterBuilder
      * Sends a search request to FINDOLOGIC and returns a Response object.
      *
      * @throws ServiceNotAliveException if the service is unable to respond.
-     * @throws ParamException if the required params are not set.
+     * @throws ParamNotSetException if the required params are not set.
      * @return Response
      */
     public function sendSearchRequest()
@@ -114,7 +114,7 @@ class FindologicApi extends ParameterBuilder
      * Sends a navigation request to FINDOLOGIC and returns a Response object.
      *
      * @throws ServiceNotAliveException if the service is unable to respond.
-     * @throws ParamException if the required params are not set.
+     * @throws ParamNotSetException if the required params are not set.
      * @return Response
      */
     public function sendNavigationRequest()
@@ -131,7 +131,7 @@ class FindologicApi extends ParameterBuilder
      * Sends a suggestion request to FINDOLOGIC and returns a Response object.
      *
      * @throws ServiceNotAliveException if the service is unable to respond.
-     * @throws ParamException if the required params are not set.
+     * @throws ParamNotSetException if the required params are not set.
      * @return Response
      */
     public function sendSuggestionRequest()
@@ -201,7 +201,7 @@ class FindologicApi extends ParameterBuilder
         // Check if all required params are set.
         foreach ($requiredParams as $paramName => $paramValue) {
             if (!array_key_exists($paramValue, $this->getParam())) {
-                throw new ParamException($paramValue);
+                throw new ParamNotSetException($paramValue);
             }
         }
 

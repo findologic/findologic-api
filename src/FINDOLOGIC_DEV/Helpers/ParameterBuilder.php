@@ -2,7 +2,9 @@
 
 namespace FINDOLOGIC_DEV\Helpers;
 
+use FINDOLOGIC_DEV\Definitions\OrderType;
 use FINDOLOGIC_DEV\Definitions\RequestType;
+use FINDOLOGIC_DEV\Exceptions\InvalidParamException;
 use InvalidArgumentException;
 
 class ParameterBuilder
@@ -51,6 +53,8 @@ class ParameterBuilder
 
     const GROUP = 'group';
 
+    const INDIVIDUAL_PARAM = 'individualParam';
+
     // Defaults
     /** @var string URL Convention is https://API_URL/SHOP_URL/ACTION.php */
     const DEFAULT_API_URL = 'https://service.findologic.com/%s/%s';
@@ -95,6 +99,10 @@ class ParameterBuilder
      */
     public function setShopkey($value)
     {
+        if (!is_string($value) || !preg_match('/^[A-F0-9]{32,32}$/', $value)) {
+            throw new InvalidParamException(self::SHOPKEY);
+        }
+
         $this->addParam(self::SHOPKEY, $value);
         return $this;
     }
@@ -108,6 +116,11 @@ class ParameterBuilder
      */
     public function setShopurl($value)
     {
+        $shopUrlRegex = '/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&\'\(\)\*\+,;=.]+$/';
+        if (!is_string($value) ||!preg_match($shopUrlRegex, $value)) {
+            throw new InvalidParamException(self::SHOP_URL);
+        }
+
         $this->addParam(self::SHOP_URL, $value);
         return $this;
     }
@@ -121,6 +134,13 @@ class ParameterBuilder
      */
     public function setUserip($value)
     {
+        // TODO: Support IPv6.
+        $useripRegex = '/^(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})(.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})){3}$/';
+
+        if (!is_string($value) || !preg_match($useripRegex, $value)) {
+            throw new InvalidParamException(self::USER_IP);
+        }
+
         $this->addParam(self::USER_IP, $value);
         return $this;
     }
@@ -134,6 +154,10 @@ class ParameterBuilder
      */
     public function setReferer($value)
     {
+        if (!is_string($value) || !preg_match('/^((^https?:\/\/)|^www\.)/', $value)) {
+            throw new InvalidParamException(self::REFERER);
+        }
+
         $this->addParam(self::REFERER, $value);
         return $this;
     }
@@ -148,6 +172,10 @@ class ParameterBuilder
      */
     public function setRevision($value)
     {
+        if (!is_string($value) || !preg_match('/^(\d+\.)?(\d+\.)?(\*|\d+)$/', $value)) {
+            throw new InvalidParamException(self::REVISION);
+        }
+
         $this->addParam(self::REVISION, $value);
         return $this;
     }
@@ -161,6 +189,10 @@ class ParameterBuilder
      */
     public function setQuery($value)
     {
+        if (!is_string($value)) {
+            throw new InvalidParamException(self::QUERY);
+        }
+
         $this->addParam(self::QUERY, $value);
         return $this;
     }
@@ -176,6 +208,11 @@ class ParameterBuilder
      */
     public function addAttribute($filterName, $value, $specifier = null)
     {
+        if (!(is_string($filterName) && (is_string($value) || is_integer($value) || is_float($value)) &&
+            (is_string($specifier) || $specifier === null))) {
+            throw new InvalidParamException(self::ATTRIB);
+        }
+
         $this->addParam(self::ATTRIB, [$filterName => [$specifier => $value]], self::ADD_VALUE);
         return $this;
     }
@@ -190,6 +227,10 @@ class ParameterBuilder
      */
     public function setOrder($value)
     {
+        if (!is_string($value) || !array_key_exists($value, OrderType::getList())) {
+            throw new InvalidParamException(self::ORDER);
+        }
+
         $this->addParam(self::ORDER, $value);
         return $this;
     }
@@ -203,6 +244,10 @@ class ParameterBuilder
      */
     public function addProperty($value)
     {
+        if (!is_string($value)) {
+            throw new InvalidParamException(self::PROPERTIES);
+        }
+
         $this->addParam(self::PROPERTIES, ['' => $value], self::ADD_VALUE);
         return $this;
     }
@@ -220,6 +265,10 @@ class ParameterBuilder
      */
     public function addPushAttrib($key, $value, $factor)
     {
+        if (!(is_string($key) && is_string($value) && (is_int($factor) || is_float($factor)))) {
+            throw new InvalidParamException(self::PUSH_ATTRIB);
+        }
+
         $this->addParam(self::PUSH_ATTRIB, [$key => [$value => $factor]], self::ADD_VALUE);
         return $this;
     }
@@ -233,6 +282,10 @@ class ParameterBuilder
      */
     public function setCount($value)
     {
+        if (!is_integer($value)) {
+            throw new InvalidParamException(self::COUNT);
+        }
+
         $this->addParam(self::COUNT, $value);
         return $this;
     }
@@ -242,11 +295,15 @@ class ParameterBuilder
      * to the second page, set this parameter to 20 --> the first product on the next page. Do not set the parameter to
      * 21, because the product listing is 0-based.
      *
-     * @param $value
+     * @param $value int
      * @return ParameterBuilder
      */
     public function setFirst($value)
     {
+        if (!is_integer($value)) {
+            throw new InvalidParamException(self::FIRST);
+        }
+
         $this->addParam(self::FIRST, $value);
         return $this;
     }
@@ -259,6 +316,10 @@ class ParameterBuilder
      */
     public function setIdentifier($value)
     {
+        if (!is_string($value)) {
+            throw new InvalidParamException(self::IDENTIFIER);
+        }
+
         $this->addParam(self::IDENTIFIER, $value);
         return $this;
     }
@@ -271,7 +332,27 @@ class ParameterBuilder
      */
     public function addGroup($value)
     {
+        if (!is_string($value)) {
+            throw new InvalidParamException(self::GROUP);
+        }
+
         $this->addParam(self::GROUP, ['' => $value], self::ADD_VALUE);
+        return $this;
+    }
+
+    /**
+     * Adds an own param to the parameter list. This can be useful if you want to put some special key value pairs to
+     * get a different response from FINDOLOGIC.
+     * IMPORTANT: Both $key or $value are NOT validated and NOT tested. **Using this is neither recommended nor
+     * supported.**
+     *
+     * @param $key mixed
+     * @param $value mixed
+     * @return ParameterBuilder
+     */
+    public function addIndividualParam($key, $value)
+    {
+        $this->addParam($key, $value, self::ADD_VALUE);
         return $this;
     }
 
@@ -323,7 +404,7 @@ class ParameterBuilder
     }
 
     /**
-     * Builds the request URL based on the request type and the set params and returns it.
+     * Builds the request URL based on the request type and the set params.
      *
      * @param $requestType string
      * @return string

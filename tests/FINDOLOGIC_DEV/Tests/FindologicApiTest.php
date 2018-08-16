@@ -3,7 +3,8 @@
 namespace FINDOLOGIC_DEV\Tests;
 
 use FINDOLOGIC_DEV\Exceptions\ConfigException;
-use FINDOLOGIC_DEV\Exceptions\ParamException;
+use FINDOLOGIC_DEV\Exceptions\InvalidParamException;
+use FINDOLOGIC_DEV\Exceptions\ParamNotSetException;
 use FINDOLOGIC_DEV\FindologicApi;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
@@ -101,7 +102,7 @@ class FindologicApiTest extends TestCase
         try {
             $findologicApi->{$requestType}();
             $this->fail('A ParamException was expected to occur when the shopurl parameter is missing.');
-        } catch (ParamException $e) {
+        } catch (ParamNotSetException $e) {
             $this->assertEquals('Required param shopurl is not set.', $e->getMessage());
         }
     }
@@ -122,7 +123,7 @@ class FindologicApiTest extends TestCase
         try {
             $findologicApi->{$requestType}();
             $this->fail('A ParamException was expected to occur when the userip parameter is missing.');
-        } catch (ParamException $e) {
+        } catch (ParamNotSetException $e) {
             $this->assertEquals('Required param userip is not set.', $e->getMessage());
         }
     }
@@ -143,7 +144,7 @@ class FindologicApiTest extends TestCase
         try {
             $findologicApi->{$requestType}();
             $this->fail('A ParamException was expected to occur when the referer parameter is missing.');
-        } catch (ParamException $e) {
+        } catch (ParamNotSetException $e) {
             $this->assertEquals('Required param referer is not set.', $e->getMessage());
         }
     }
@@ -164,7 +165,7 @@ class FindologicApiTest extends TestCase
         try {
             $findologicApi->{$requestType}();
             $this->fail('A ParamException was expected to occur when the revision parameter is missing.');
-        } catch (ParamException $e) {
+        } catch (ParamNotSetException $e) {
             $this->assertEquals('Required param revision is not set.', $e->getMessage());
         }
     }
