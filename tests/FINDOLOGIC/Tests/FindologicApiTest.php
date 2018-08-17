@@ -121,8 +121,10 @@ class FindologicApiTest extends TestCase
             $findologicApi->{$requestType}();
             $this->fail('If Guzzle fails a ServiceNotAliveException should occur!');
         } catch (ServiceNotAliveException $e) {
-            $this->assertEquals(sprintf('The service is not alive. Reason: %s', $expectedExceptionMessage),
-                $e->getMessage());
+            $this->assertEquals(
+                sprintf('The service is not alive. Reason: %s', $expectedExceptionMessage),
+                $e->getMessage()
+            );
         }
     }
 

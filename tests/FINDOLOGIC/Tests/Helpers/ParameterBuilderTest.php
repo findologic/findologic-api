@@ -801,11 +801,16 @@ class ParameterBuilderTest extends TestCase
      * @param $expectedIndividualParamValue string
      * @param $expectedMethod string
      */
-    public function testAddIndividualParamWillSetItInAValidFormat($expectedIndividualParamKey,
-                                                                  $expectedIndividualParamValue, $expectedMethod)
-    {
-        $this->parameterBuilder->addIndividualParam($expectedIndividualParamKey, $expectedIndividualParamValue,
-            $expectedMethod);
+    public function testAddIndividualParamWillSetItInAValidFormat(
+        $expectedIndividualParamKey,
+                                                                  $expectedIndividualParamValue,
+        $expectedMethod
+    ) {
+        $this->parameterBuilder->addIndividualParam(
+            $expectedIndividualParamKey,
+            $expectedIndividualParamValue,
+            $expectedMethod
+        );
         $individualParam = $this->parameterBuilder->getParam($expectedIndividualParamKey);
 
         $this->assertEquals($expectedIndividualParamValue, $individualParam);
