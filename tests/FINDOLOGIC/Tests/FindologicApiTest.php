@@ -2,10 +2,14 @@
 
 namespace FINDOLOGIC\Tests;
 
+use FINDOLOGIC\Definitions\RequestType;
 use FINDOLOGIC\Exceptions\ConfigException;
 use FINDOLOGIC\Exceptions\ParamNotSetException;
+use FINDOLOGIC\Exceptions\ServiceNotAliveException;
 use FINDOLOGIC\FindologicApi;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -54,7 +58,8 @@ class FindologicApiTest extends TestCase
     {
         return new FindologicApi([
             FindologicApi::SHOPKEY => '80AB18D4BE2654A78244106AD315DC2C',
-            FindologicApi::HTTP_CLIENT => $this->httpClientMock
+            FindologicApi::HTTP_CLIENT => $this->httpClientMock,
+            FindologicApi::API_URL => 'https://blubbergurken.io/%s/%s',
         ]);
     }
 
@@ -65,6 +70,62 @@ class FindologicApiTest extends TestCase
             ['sendNavigationRequest'],
             ['sendSuggestionRequest'],
         ];
+    }
+
+    public function invalidConfigProvider()
+    {
+        return [
+            'object as config' => [new \stdClass()],
+            'apiUrl as object' => [[FindologicApi::API_URL => new \stdClass()]],
+            'apiUrl as integer' => [[FindologicApi::API_URL => 46]],
+            'alivetest timeout as object' => [[FindologicApi::ALIVETEST_TIMEOUT => new \stdClass()]],
+            'alivetest timeout as string' => [[FindologicApi::ALIVETEST_TIMEOUT => 'A timeout of 50 years pls!']],
+            'request timeout as object' => [[FindologicApi::REQUEST_TIMEOUT => new \stdClass()]],
+            'request timeout as string' => [[FindologicApi::REQUEST_TIMEOUT => 'A timeout of 90 quadrillion yrs pls!']],
+        ];
+    }
+
+    /**
+     * @dataProvider invalidConfigProvider
+     * @param $config mixed
+     */
+    public function testInvalidFindologicApiConfigThrowsAnException($config)
+    {
+        try {
+            new FindologicApi($config);
+            $this->fail('An invalid FindologicApi config should throw an exception!');
+        } catch (ConfigException $e) {
+            $this->assertEquals('Invalid FindologicApi config.', $e->getMessage());
+        }
+    }
+
+    /**
+     * @dataProvider requestProvider
+     * @param $requestType
+     */
+    public function testGuzzleFailsWillThrowAnException($requestType)
+    {
+        $expectedExceptionMessage = 'Guzzle is dying. Maybe it can be saved with a heart massage.';
+
+        $this->httpClientMock->expects($this->at(0))
+            ->method('request')
+            ->willThrowException(new RequestException($expectedExceptionMessage, new Request('GET', 'a')));
+
+        $findologicApi = $this->getDefaultFindologicApi()
+            ->setShopurl('www.blubbergurken.io')
+            ->setUserip('127.0.0.1')
+            ->setReferer('www.blubbergurken.io/blubbergurken-sale')
+            ->setRevision('1.0.0');
+
+        try {
+            $findologicApi->{$requestType}();
+            $this->fail('If Guzzle fails a ServiceNotAliveException should occur!');
+        } catch (ServiceNotAliveException $e) {
+            $this->assertEquals(
+                sprintf('The service is not alive. Reason: %s', $expectedExceptionMessage),
+                $e->getMessage()
+            );
+        }
     }
 
     /**
@@ -83,6 +144,47 @@ class FindologicApiTest extends TestCase
             ->setRevision('1.0.0');
 
         $findologicApi->{$requestType}();
+    }
+
+    public function failingAlivetestProvider()
+    {
+        return [
+            'alivetest is not alive' => ['not alive', 200],
+            'alivetest is alive but http code is 500' => ['alive', 500],
+            'alivetest is not alive and http code is 500' => ['definitely not alive', 500],
+        ];
+    }
+
+    /**
+     * @dataProvider failingAlivetestProvider
+     * @param string $responseBody
+     * @param int $httpCode
+     */
+    public function testExceptionIsThrownIfServiceIsNotAlive($responseBody, $httpCode)
+    {
+        $this->responseMock->expects($this->any())->method('getBody')->willReturn($responseBody);
+        $this->responseMock->expects($this->any())->method('getStatusCode')->willReturn($httpCode);
+
+        $this->httpClientMock->expects($this->any())->method('request')->willReturn($this->responseMock);
+
+        $findologicApi = $this->getDefaultFindologicApi();
+        $findologicApi
+            ->setShopurl('www.blubbergurken.io')
+            ->setUserip('127.0.0.1')
+            ->setReferer('www.blubbergurken.io/blubbergurken-sale')
+            ->setRevision('1.0.0');
+
+        $requestTypes = $this->requestProvider();
+
+        foreach ($requestTypes as $requestType) {
+            try {
+                $findologicApi->{$requestType[0]}();
+                $this->fail('A ServiceNotAliveException should occur if the service is not alive!');
+            } catch (ServiceNotAliveException $e) {
+                $expectedErrorMessage = 'The service is not alive. Reason: %s';
+                $this->assertEquals(sprintf($expectedErrorMessage, $responseBody), $e->getMessage());
+            }
+        }
     }
 
     /**
@@ -184,7 +286,7 @@ class FindologicApiTest extends TestCase
      * @dataProvider invalidShopkeyProvider
      * @param $shopkey string
      */
-    public function testExceptionIsThrownIfShopkeyIsInvalid($shopkey)
+    public function testExceptionIsThrownIfShopkeyInConfigIsInvalid($shopkey)
     {
         try {
             $findologicApi = new FindologicApi([
@@ -195,5 +297,18 @@ class FindologicApiTest extends TestCase
         } catch (ConfigException $e) {
             $this->assertEquals('Shopkey format is invalid.', $e->getMessage());
         }
+    }
+
+    public function testAllRequestTypesAreAvailable()
+    {
+        $expectedAvailableRequestTypes = [
+            'alivetest.php' => 'alivetest.php',
+            'index.php' => 'index.php',
+            'selector.php' => 'selector.php',
+            'autocomplete.php' => 'autocomplete.php',
+        ];
+        $availableRequestTypes = RequestType::getList();
+
+        $this->assertEquals($expectedAvailableRequestTypes, $availableRequestTypes);
     }
 }

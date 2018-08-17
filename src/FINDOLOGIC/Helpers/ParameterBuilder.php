@@ -348,11 +348,14 @@ class ParameterBuilder
      *
      * @param $key mixed
      * @param $value mixed
+     * @param $method string Use ParameterBuilder::ADD_VALUE to add the param and not overwrite existing ones and
+     * ParameterBuilder::SET_VALUE to overwrite existing params.
+     * params.
      * @return ParameterBuilder
      */
-    public function addIndividualParam($key, $value)
+    public function addIndividualParam($key, $value, $method)
     {
-        $this->addParam($key, $value, self::ADD_VALUE);
+        $this->addParam($key, $value, $method);
         return $this;
     }
 

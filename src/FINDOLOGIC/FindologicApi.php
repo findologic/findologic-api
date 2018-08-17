@@ -174,19 +174,23 @@ class FindologicApi extends ParameterBuilder
                 ['connect_timeout' => $timeout]
             );
         } catch (GuzzleException $e) {
-            throw new ServiceNotAliveException($e);
+            throw new ServiceNotAliveException($e->getMessage());
         }
 
         $responseBody = $request->getBody();
         $statusCode = $request->getStatusCode();
 
-        // If it is an alivetest, the 'alive' body needs to be set. In any case the status code needs to be OK 200.
-        if ((($requestType == RequestType::ALIVETEST_REQUEST && $responseBody == self::SERVICE_ALIVE_BODY) ||
-                $requestType !== RequestType::ALIVETEST_REQUEST) && $statusCode === self::STATUS_OK) {
-            return $responseBody;
+        $isAlivetestRequest = $requestType == RequestType::ALIVETEST_REQUEST;
+        $responseIsAlive = $responseBody == self::SERVICE_ALIVE_BODY;
+        $httpCodeIsOk = $statusCode === self::STATUS_OK;
+
+        // If it is an alivetest, the 'alive' body needs to be set. If it is not an alivetest, then we do not care about
+        // the body. The http code always needs to be 200 OK.
+        if (!((($isAlivetestRequest && $responseIsAlive) || !$isAlivetestRequest) && $httpCodeIsOk)) {
+            throw new ServiceNotAliveException($responseBody);
         }
 
-        throw new ServiceNotAliveException($responseBody);
+        return $responseBody;
     }
 
     /**
