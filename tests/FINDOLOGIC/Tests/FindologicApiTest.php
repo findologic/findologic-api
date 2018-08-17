@@ -8,7 +8,6 @@ use FINDOLOGIC\Exceptions\ParamNotSetException;
 use FINDOLOGIC\Exceptions\ServiceNotAliveException;
 use FINDOLOGIC\FindologicApi;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
@@ -59,7 +58,8 @@ class FindologicApiTest extends TestCase
     {
         return new FindologicApi([
             FindologicApi::SHOPKEY => '80AB18D4BE2654A78244106AD315DC2C',
-            FindologicApi::HTTP_CLIENT => $this->httpClientMock
+            FindologicApi::HTTP_CLIENT => $this->httpClientMock,
+            FindologicApi::API_URL => 'https://blubbergurken.io/%s/%s',
         ]);
     }
 
