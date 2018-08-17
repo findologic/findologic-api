@@ -174,7 +174,7 @@ class FindologicApi extends ParameterBuilder
                 ['connect_timeout' => $timeout]
             );
         } catch (GuzzleException $e) {
-            throw new ServiceNotAliveException($e);
+            throw new ServiceNotAliveException($e->getMessage());
         }
 
         $responseBody = $request->getBody();

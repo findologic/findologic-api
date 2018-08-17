@@ -46,6 +46,35 @@ class ParameterBuilderTest extends TestCase
         $this->assertEquals($expectedShopkey, $shopkey);
     }
 
+    public function invalidShopkeyProvider()
+    {
+        return [
+            'shopkey is not a shopkey' => ['invalidShopkey'],
+            'shopkey is an integer' => [5],
+            'shopkey is an array' => [['80AB18D4BE2654A78244106AD315DC2C']],
+            'shopkey is an object' => [new \stdClass()],
+            'shopkey length not optimal' => ['INVALIDAF'],
+            'shopkey contains invalid characters' => ['80AB18D4BE2654R78244106AD315DC2C'],
+            'shopkey is lowercased' => ['80ab18d4be2654r78244106ad315dc2c'],
+            'shopkey contains spaces' => ['80AB18D4BE2654A7 8244106AD315DC2C'],
+            'shopkey contains special characters' => ['AAAAAA.AAAAAAÄAAAAAAAAAAAAAAAAA_'],
+        ];
+    }
+
+    /**
+     * @dataProvider invalidShopkeyProvider
+     * @param $invalidShopkey mixed
+     */
+    public function testExceptionIsThrownIfShopkeyIsInvalid($invalidShopkey)
+    {
+        try {
+            $this->parameterBuilder->setShopkey($invalidShopkey);
+            $this->fail('A InvalidParamException was expected to occur when the shopkey param is invalid.');
+        } catch (InvalidParamException $e) {
+            $this->assertEquals('Parameter shopkey is not valid.', $e->getMessage());
+        }
+    }
+
     /**
      * Returns some shopurls that might be set by users. Invalid shopurls are not tested since they should not even get
      * to this point.
@@ -229,7 +258,7 @@ class ParameterBuilderTest extends TestCase
     public function invalidRevisionProvider()
     {
         return [
-            'revision is not an ip' => ['invalidRevision'],
+            'revision is not a revision' => ['invalidRevision'],
             'revision is an integer' => [5],
             'revision is an array' => [['1.0.0']],
             'revision is an object' => [new \stdClass()],
@@ -241,7 +270,7 @@ class ParameterBuilderTest extends TestCase
      * @dataProvider invalidRevisionProvider
      * @param $invalidRevision mixed
      */
-    public function testExceptionIsThrownIfRevisionlIsInvalid($invalidRevision)
+    public function testExceptionIsThrownIfRevisionIsInvalid($invalidRevision)
     {
         try {
             $this->parameterBuilder->setRevision($invalidRevision);
@@ -472,7 +501,7 @@ class ParameterBuilderTest extends TestCase
     {
         try {
             $this->parameterBuilder->addProperty($invalidProperty);
-            $this->fail('A InvalidParamException was expected to occur when the shopurl param is invalid.');
+            $this->fail('A InvalidParamException was expected to occur when the properties param is invalid.');
         } catch (InvalidParamException $e) {
             $this->assertEquals('Parameter properties is not valid.', $e->getMessage());
         }
@@ -663,17 +692,17 @@ class ParameterBuilderTest extends TestCase
     }
 
     /**
-     * @dataProvider firstProvider
-     * @param $expectedFirst string
+     * @dataProvider identifierProvider
+     * @param $expectedIdentifier string
      */
-    public function testSetIdentifierWillSetItInAValidFormat($expectedFirst)
+    public function testSetIdentifierWillSetItInAValidFormat($expectedIdentifier)
     {
-        $paramName = ParameterBuilder::FIRST;
+        $paramName = ParameterBuilder::IDENTIFIER;
 
-        $this->parameterBuilder->setFirst($expectedFirst);
-        $first = $this->parameterBuilder->getParam($paramName);
+        $this->parameterBuilder->setIdentifier($expectedIdentifier);
+        $identifier = $this->parameterBuilder->getParam($paramName);
 
-        $this->assertEquals($expectedFirst, $first);
+        $this->assertEquals($expectedIdentifier, $identifier);
     }
 
     public function invalidIdentifierProvider()
@@ -749,6 +778,49 @@ class ParameterBuilderTest extends TestCase
             $this->fail('A InvalidParamException was expected to occur when the group param is invalid.');
         } catch (InvalidParamException $e) {
             $this->assertEquals('Parameter group is not valid.', $e->getMessage());
+        }
+    }
+
+    /**
+     * Returns some individual param that might be set by users. The individual param is not validated!
+     *
+     * @return array
+     */
+    public function individualParamProvider()
+    {
+        return [
+            'normal individual param' => ['shoes', 'abc', 'set'],
+            'other individual param' => ['really good shoes', 'what?!', 'set'],
+            'more different individual param' => ['best & *_\' shoes &copy; ever!', 'very very FuNnY!!!', 'set']
+        ];
+    }
+
+    /**
+     * @dataProvider individualParamProvider
+     * @param $expectedIndividualParamKey string
+     * @param $expectedIndividualParamValue string
+     * @param $expectedMethod string
+     */
+    public function testAddIndividualParamWillSetItInAValidFormat($expectedIndividualParamKey,
+                                                                  $expectedIndividualParamValue, $expectedMethod)
+    {
+        $this->parameterBuilder->addIndividualParam($expectedIndividualParamKey, $expectedIndividualParamValue,
+            $expectedMethod);
+        $individualParam = $this->parameterBuilder->getParam($expectedIndividualParamKey);
+
+        $this->assertEquals($expectedIndividualParamValue, $individualParam);
+    }
+
+    public function testAddingParamsWithARandomValueWillThrowAnException()
+    {
+        $expectedKey = 'someKey';
+        $expectedValue = 'someValue';
+        $expectedInvalidMethod = 'invalidMethod';
+
+        try {
+            $this->parameterBuilder->addIndividualParam($expectedKey, $expectedValue, $expectedInvalidMethod);
+        } catch (\InvalidArgumentException $e) {
+            $this->assertEquals('Unknown method type.', $e->getMessage());
         }
     }
 }
