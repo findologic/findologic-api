@@ -2,8 +2,10 @@
 
 namespace FINDOLOGIC\Tests;
 
+use FINDOLOGIC\Definitions\RequestType;
 use FINDOLOGIC\Exceptions\ConfigException;
 use FINDOLOGIC\Exceptions\ParamNotSetException;
+use FINDOLOGIC\Exceptions\ServiceNotAliveException;
 use FINDOLOGIC\FindologicApi;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
@@ -83,6 +85,47 @@ class FindologicApiTest extends TestCase
             ->setRevision('1.0.0');
 
         $findologicApi->{$requestType}();
+    }
+
+    public function failingAlivetestProvider()
+    {
+        return [
+            'alivetest is not alive' => ['not alive', 200],
+            'alivetest is alive but http code is 500' => ['alive', 500],
+            'alivetest is not alive and http code is 500' => ['definitely not alive', 500],
+        ];
+    }
+
+    /**
+     * @dataProvider failingAlivetestProvider
+     * @param string $responseBody
+     * @param int $httpCode
+     */
+    public function testExceptionIsThrownIfServiceIsNotAlive($responseBody, $httpCode)
+    {
+        $this->responseMock->expects($this->any())->method('getBody')->willReturn($responseBody);
+        $this->responseMock->expects($this->any())->method('getStatusCode')->willReturn($httpCode);
+
+        $this->httpClientMock->expects($this->any())->method('request')->willReturn($this->responseMock);
+
+        $findologicApi = $this->getDefaultFindologicApi();
+        $findologicApi
+            ->setShopurl('www.blubbergurken.io')
+            ->setUserip('127.0.0.1')
+            ->setReferer('www.blubbergurken.io/blubbergurken-sale')
+            ->setRevision('1.0.0');
+
+        $requestTypes = $this->requestProvider();
+
+        foreach ($requestTypes as $requestType) {
+            try {
+                $findologicApi->{$requestType[0]}();
+                $this->fail('A ServiceNotAliveException should occur if the service is not alive!');
+            } catch (ServiceNotAliveException $e) {
+                $expectedErrorMessage = 'The service is not alive. Reason: %s';
+                $this->assertEquals(sprintf($expectedErrorMessage, $responseBody), $e->getMessage());
+            }
+        }
     }
 
     /**
@@ -195,5 +238,18 @@ class FindologicApiTest extends TestCase
         } catch (ConfigException $e) {
             $this->assertEquals('Shopkey format is invalid.', $e->getMessage());
         }
+    }
+
+    public function testAllRequestTypesAreAvailable()
+    {
+        $expectedAvailableRequestTypes = [
+            'alivetest.php' => 'alivetest.php',
+            'index.php' => 'index.php',
+            'selector.php' => 'selector.php',
+            'autocomplete.php' => 'autocomplete.php',
+        ];
+        $availableRequestTypes = RequestType::getList();
+
+        $this->assertEquals($expectedAvailableRequestTypes, $availableRequestTypes);
     }
 }
