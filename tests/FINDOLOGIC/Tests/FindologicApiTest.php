@@ -76,12 +76,12 @@ class FindologicApiTest extends TestCase
     {
         return [
             'object as config' => [new \stdClass()],
-            'apiUrl as object' => [FindologicApi::API_URL => new \stdClass()],
-            'apiUrl as integer' => [FindologicApi::API_URL => 46],
-            'alivetest timeout as object' => [FindologicApi::ALIVETEST_TIMEOUT => new \stdClass()],
-            'alivetest timeout as string' => [FindologicApi::ALIVETEST_TIMEOUT => 'A timeout of 50 years pls!'],
-            'request timeout as object' => [FindologicApi::REQUEST_TIMEOUT => new \stdClass()],
-            'request timeout as string' => [FindologicApi::REQUEST_TIMEOUT => 'A timeout of 90 quadrillion yrs pls!'],
+            'apiUrl as object' => [[FindologicApi::API_URL => new \stdClass()]],
+            'apiUrl as integer' => [[FindologicApi::API_URL => 46]],
+            'alivetest timeout as object' => [[FindologicApi::ALIVETEST_TIMEOUT => new \stdClass()]],
+            'alivetest timeout as string' => [[FindologicApi::ALIVETEST_TIMEOUT => 'A timeout of 50 years pls!']],
+            'request timeout as object' => [[FindologicApi::REQUEST_TIMEOUT => new \stdClass()]],
+            'request timeout as string' => [[FindologicApi::REQUEST_TIMEOUT => 'A timeout of 90 quadrillion yrs pls!']],
         ];
     }
 
