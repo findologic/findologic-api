@@ -345,16 +345,11 @@ class ParameterBuilder
     /**
      * Adds the forceOriginalQuery param. It is used for Smart Did You Mean.
      *
-     * @param $value string
      * @return ParameterBuilder
      */
-    public function setForceOriginalQuery($value)
+    public function setForceOriginalQuery()
     {
-        if (!is_string($value)) {
-            throw new InvalidParamException(self::GROUP);
-        }
-
-        $this->addParam(self::GROUP, ['' => $value], self::ADD_VALUE);
+        $this->addParam(self::FORCE_ORIGINAL_QUERY, 1);
         return $this;
     }
 
