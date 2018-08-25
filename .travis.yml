@@ -23,10 +23,11 @@ matrix:
   allow_failures:
   - php: nightly
 
+before_install: phpenv config-add phpconfig.ini
+
 install:
   - if [[ "$PHPUNIT_VERSION" = "6.5" ]]; then composer require --dev --no-update phpunit/phpunit:~6.5; fi
   - if [[ "$PHPUNIT_VERSION" = "7.0" ]]; then composer require --dev --no-update phpunit/phpunit:~7.0; fi
-  - sudo apt-get install php-xml
   - composer install
 script:
   # Run style fixer in test mode on all source files. Will exit with a non-zero
