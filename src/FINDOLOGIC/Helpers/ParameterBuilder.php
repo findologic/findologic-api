@@ -53,6 +53,8 @@ class ParameterBuilder
 
     const GROUP = 'group';
 
+    const FORCE_ORIGINAL_QUERY = 'forceOriginalQuery';
+
     const INDIVIDUAL_PARAM = 'individualParam';
 
     // Defaults
@@ -331,6 +333,22 @@ class ParameterBuilder
      * @return ParameterBuilder
      */
     public function addGroup($value)
+    {
+        if (!is_string($value)) {
+            throw new InvalidParamException(self::GROUP);
+        }
+
+        $this->addParam(self::GROUP, ['' => $value], self::ADD_VALUE);
+        return $this;
+    }
+
+    /**
+     * Adds the forceOriginalQuery param. It is used for Smart Did You Mean.
+     *
+     * @param $value string
+     * @return ParameterBuilder
+     */
+    public function setForceOriginalQuery($value)
     {
         if (!is_string($value)) {
             throw new InvalidParamException(self::GROUP);

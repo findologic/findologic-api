@@ -54,6 +54,9 @@ class FindologicApiTest extends TestCase
         $this->httpClientMock->expects($this->at(1))->method('request')->willReturn($this->responseMock);
     }
 
+    /**
+     * @return FindologicApi FindologicApi
+     */
     public function getDefaultFindologicApi()
     {
         return new FindologicApi([
@@ -101,7 +104,7 @@ class FindologicApiTest extends TestCase
 
     /**
      * @dataProvider requestProvider
-     * @param $requestType
+     * @param $requestType string
      */
     public function testGuzzleFailsWillThrowAnException($requestType)
     {
@@ -310,5 +313,27 @@ class FindologicApiTest extends TestCase
         $availableRequestTypes = RequestType::getList();
 
         $this->assertEquals($expectedAvailableRequestTypes, $availableRequestTypes);
+    }
+
+    /**
+     * @dataProvider requestProvider
+     * @param $requestType string
+     */
+    public function testFindologicResponseTimeCanBeSeen($requestType)
+    {
+        $this->setDefaultExpectations();
+
+        /** @var FindologicApi $findologicApi */
+        $findologicApi = $this->getDefaultFindologicApi()
+            ->setShopurl('www.blubbergurken.io')
+            ->setUserip('127.0.0.1')
+            ->setReferer('www.blubbergurken.io/blubbergurken-sale')
+            ->setRevision('1.0.0');
+
+        $findologicApi->{$requestType}();
+
+        // Please note that the response times in the tests are fast af, because they do load the response directly from
+        // the file system.
+        $this->assertEquals(0, $findologicApi->getResponseTime(), '', 0.0001);
     }
 }
