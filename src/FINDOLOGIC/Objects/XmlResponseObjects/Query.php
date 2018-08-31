@@ -18,8 +18,8 @@ class Query
     /** @var OriginalQuery $originalQuery */
     private $originalQuery;
 
-    /** @var int $searchWordCount */
-    private $searchWordCount;
+    /** @var int $searchedWordsCount */
+    private $searchedWordsCount;
 
     /** @var int $foundWordsCount */
     private $foundWordsCount;
@@ -34,7 +34,7 @@ class Query
         $this->queryString = new QueryString($response->queryString);
         $this->didYouMeanQuery = (string)$response->didYouMeanQuery;
         $this->originalQuery = new OriginalQuery($response->originalQuery);
-        $this->searchWordCount = (int)$response->searchWordCount;
+        $this->searchedWordsCount = (int)$response->searchedWordCount;
         $this->foundWordsCount = (int)$response->foundWordsCount;
     }
 
@@ -73,9 +73,9 @@ class Query
     /**
      * @return int
      */
-    public function getSearchWordCount()
+    public function getSearchedWordsCount()
     {
-        return $this->searchWordCount;
+        return $this->searchedWordsCount;
     }
 
     /**

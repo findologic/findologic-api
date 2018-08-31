@@ -57,11 +57,13 @@ class XmlResponse
 
         foreach ($xmlResponse->products->children() as $product) {
             $productId = (string)$product->attributes()->id;
+            // Set product ids as keys for the products.
             $this->products[$productId] = new Product($product);
         }
 
         foreach ($xmlResponse->filters->children() as $filter) {
             $filterName = (string)$filter->name;
+            // Set filter names as keys for the filters.
             $this->filters[$filterName] = new Filter($filter);
         }
     }
