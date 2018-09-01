@@ -58,7 +58,7 @@ class XmlResponseTest extends TestCase
     public function testResponseWillReturnQueryStringAsExpected()
     {
         $expectedValue = 'ps3';
-        $expectedType = null;
+        $expectedType = '';
 
         $response = $this->getRealResponseData();
 

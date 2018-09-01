@@ -20,12 +20,7 @@ class QueryString
     public function __construct($response)
     {
         $this->value = (string)$response;
-
-        try {
-            $this->type = (string)$response->attributes()->type;
-        } catch (Exception $e) {
-            $this->type = null;
-        }
+        $this->type = (string)$response->attributes()->type;
     }
 
     /**
