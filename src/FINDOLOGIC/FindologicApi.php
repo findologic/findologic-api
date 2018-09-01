@@ -65,7 +65,7 @@ class FindologicApi extends ParameterBuilder
                     break;
                 case self::ALIVETEST_TIMEOUT:
                 case self::REQUEST_TIMEOUT:
-                    if (!is_int($value) || !is_float($value)) {
+                    if (!is_int($value) && !is_float($value)) {
                         throw new ConfigException();
                     }
                     break;

@@ -64,6 +64,7 @@ class FindologicApiTest extends TestCase
             FindologicApi::HTTP_CLIENT => $this->httpClientMock,
             FindologicApi::API_URL => 'https://blubbergurken.io/%s/%s',
             FindologicApi::REQUEST_TIMEOUT => 1,
+            FindologicApi::ALIVETEST_TIMEOUT => 1,
         ]);
     }
 
