@@ -63,6 +63,7 @@ class FindologicApiTest extends TestCase
             FindologicApi::SHOPKEY => '80AB18D4BE2654A78244106AD315DC2C',
             FindologicApi::HTTP_CLIENT => $this->httpClientMock,
             FindologicApi::API_URL => 'https://blubbergurken.io/%s/%s',
+            FindologicApi::REQUEST_TIMEOUT => 1,
         ]);
     }
 
@@ -78,7 +79,6 @@ class FindologicApiTest extends TestCase
     public function invalidConfigProvider()
     {
         return [
-            'object as config' => [new \stdClass()],
             'apiUrl as object' => [[FindologicApi::API_URL => new \stdClass()]],
             'apiUrl as integer' => [[FindologicApi::API_URL => 46]],
             'alivetest timeout as object' => [[FindologicApi::ALIVETEST_TIMEOUT => new \stdClass()]],

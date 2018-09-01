@@ -14,7 +14,11 @@ use GuzzleHttp\Exception\GuzzleException;
 
 class FindologicApi extends ParameterBuilder
 {
-    /** @var float $responseTime */
+    /**
+     * Can be used to get the response time from the FINDOLOGIC API in microseconds.
+     *
+     * @var float $responseTime
+     */
     private $responseTime;
 
     /**
@@ -48,13 +52,8 @@ class FindologicApi extends ParameterBuilder
      * @param array $config
      * @throws ConfigException
      */
-    private function validateConfig($config)
+    private function validateConfig(array $config)
     {
-        // The config needs to be an array.
-        if (!is_array($config)) {
-            throw new ConfigException();
-        }
-
         // All configuration values need to have a valid type.
         foreach ($config as $key => $value) {
             switch ($key) {
