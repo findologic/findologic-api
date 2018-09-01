@@ -334,6 +334,6 @@ class FindologicApiTest extends TestCase
 
         // Please note that the response times in the tests are fast af, because they do load the response directly from
         // the file system.
-        $this->assertEquals(0, $findologicApi->getResponseTime(), '', 0.0001);
+        $this->assertEquals(0, $findologicApi->getResponseTime(), '', 0.01);
     }
 }
