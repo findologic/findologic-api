@@ -172,7 +172,7 @@ class FindologicApi extends ParameterBuilder
         $requestUrl = $this->buildRequestUrl($requestType);
 
         try {
-            $requestStartTime = microtime();
+            $requestStartTime = microtime(true);
             $request = $requestClient->request(
                 self::GET_METHOD,
                 $requestUrl,
@@ -181,7 +181,7 @@ class FindologicApi extends ParameterBuilder
         } catch (GuzzleException $e) {
             throw new ServiceNotAliveException($e->getMessage());
         }
-        $requestEndTime = microtime();
+        $requestEndTime = microtime(true);
         $this->responseTime = $requestEndTime - $requestStartTime;
 
         $responseBody = $request->getBody();
