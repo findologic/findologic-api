@@ -22,7 +22,7 @@ class QueryString
         $this->value = (string)$response;
 
         try {
-            $this->type = $response->attributes()->type;
+            $this->type = (string)$response->attributes()->type;
         } catch (Exception $e) {
             $this->type = null;
         }
