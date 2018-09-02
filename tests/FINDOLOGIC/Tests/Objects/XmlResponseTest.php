@@ -281,8 +281,12 @@ class XmlResponseTest extends TestCase
                     foreach ($item->getItems() as $subItem) {
                         $this->assertEquals($expectedSubItemDetails['display'], $subItem->getDisplay());
                         $this->assertEquals($expectedSubItemDetails['select'], $subItem->getSelect());
-                        $this->assertEquals($expectedSubItemDetails['weight'], $subItem->getWeight(), '',
-                            1);
+                        $this->assertEquals(
+                            $expectedSubItemDetails['weight'],
+                            $subItem->getWeight(),
+                            '',
+                            1
+                        );
                         $this->assertEquals($expectedSubItemDetails['name'], $subItem->getName());
                         $this->assertEquals($expectedSubItemDetails['image'], $subItem->getImage());
                         $this->assertEquals($expectedSubItemDetails['color'], $subItem->getColor());
