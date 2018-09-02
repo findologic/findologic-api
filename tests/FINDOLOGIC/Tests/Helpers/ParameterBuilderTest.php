@@ -804,7 +804,7 @@ class ParameterBuilderTest extends TestCase
      */
     public function testAddIndividualParamWillSetItInAValidFormat(
         $expectedIndividualParamKey,
-                                                                  $expectedIndividualParamValue,
+        $expectedIndividualParamValue,
         $expectedMethod
     ) {
         $this->parameterBuilder->addIndividualParam(
@@ -815,6 +815,16 @@ class ParameterBuilderTest extends TestCase
         $individualParam = $this->parameterBuilder->getParam($expectedIndividualParamKey);
 
         $this->assertEquals($expectedIndividualParamValue, $individualParam);
+    }
+
+    public function testAddSetForceOriginalQueryWillSetInAValidFormat()
+    {
+        $expectedOriginalQuery = 1;
+        $this->parameterBuilder->setForceOriginalQuery();
+
+        $originalQuery = $this->parameterBuilder->getParam('forceOriginalQuery');
+
+        $this->assertEquals($expectedOriginalQuery, $originalQuery);
     }
 
     public function testAddingParamsWithARandomValueWillThrowAnException()

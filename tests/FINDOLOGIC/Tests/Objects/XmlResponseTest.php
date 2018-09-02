@@ -150,11 +150,11 @@ class XmlResponseTest extends TestCase
 
     public function testResponseWillReturnFiltersAsExpected()
     {
-        $expectedFilterDisplays = ['Preis', 'Farbe', 'Material', 'Hersteller'];
-        $expectedFilterTypes = ['range-slider', 'color', 'select', 'select'];
-        $expectedFilterNames = ['price', 'Farbe', 'Material', 'vendor'];
-        $expectedFilterSelects = ['single', 'multiselect', 'multiple', 'multiple'];
-        $expectedFilterSelectedItems = [0, 1, 0, 0];
+        $expectedFilterDisplays = ['Preis', 'Farbe', 'Material', 'Hersteller', 'Kategorie'];
+        $expectedFilterTypes = ['range-slider', 'color', 'select', 'select', 'select'];
+        $expectedFilterNames = ['price', 'Farbe', 'Material', 'vendor', 'cat'];
+        $expectedFilterSelects = ['single', 'multiselect', 'multiple', 'multiple', 'single'];
+        $expectedFilterSelectedItems = [0, 1, 0, 0, 0];
 
         $response = $this->getRealResponseData();
 
@@ -201,6 +201,7 @@ class XmlResponseTest extends TestCase
             '', '', '', // Color
             '', 'Leder', '', // Material
             '', '', '', // Vendor
+            '', // Category
         ];
 
         $expectedSelect = [
@@ -208,6 +209,7 @@ class XmlResponseTest extends TestCase
             '', '', '', // Color
             '', '', '', // Material
             '', '', '', // Vendor
+            '', // Category
         ];
 
         // Weights do have a float value, but checking the value to its 1:1 value is unnecessary.
@@ -216,6 +218,7 @@ class XmlResponseTest extends TestCase
             0.1, 0.1, 0.1, // Color
             0.1, 0.1, 0.1, // Material
             0.1, 0.1, 0.1, // Vendor
+            0.1, // Category
         ];
 
         $expectedNames = [
@@ -223,6 +226,7 @@ class XmlResponseTest extends TestCase
             'beige', 'blau', 'braun', // Color
             'Hartgepäck', 'Leder', 'Nylon', // Material
             'Bodenschatz', 'Braun Büffel', 'Camel Active', // Vendor
+            'Buch', // Category
         ];
 
         $expectedImages = [
@@ -231,6 +235,7 @@ class XmlResponseTest extends TestCase
             'https://blubbergurken.io/farbfilter/braun.gif', // Color
             '', '', '', // Material
             '', '', '', // Vendor
+            '', // Category
         ];
 
         $expectedColors = [
@@ -238,6 +243,7 @@ class XmlResponseTest extends TestCase
             '#F5F5DC', '#3c6380', '#94651e', // Color
             '', '', '', // Material
             '', '', '', // Vendor
+            '', // Category
         ];
 
         $expectedFrequency = [
@@ -245,6 +251,17 @@ class XmlResponseTest extends TestCase
             0, 0, 0, // Color
             35, 1238, 110, // Material
             2, 77, 122, // Vendor
+            5, // Category
+        ];
+
+        $expectedSubItemDetails = [
+            'display' => '',
+            'select' => '',
+            'weight' => 0.1,
+            'name' => 'Beste Bücher',
+            'image' => '',
+            'color' => '',
+            'frequency' => 5,
         ];
 
         $response = $this->getRealResponseData();
@@ -259,6 +276,19 @@ class XmlResponseTest extends TestCase
                 $this->assertEquals($expectedImages[$count], $item->getImage());
                 $this->assertEquals($expectedColors[$count], $item->getColor());
                 $this->assertEquals($expectedFrequency[$count], $item->getFrequency());
+                // For subcategories.
+                if ($item->getItems()) {
+                    foreach ($item->getItems() as $subItem) {
+                        $this->assertEquals($expectedSubItemDetails['display'], $subItem->getDisplay());
+                        $this->assertEquals($expectedSubItemDetails['select'], $subItem->getSelect());
+                        $this->assertEquals($expectedSubItemDetails['weight'], $subItem->getWeight(), '',
+                            1);
+                        $this->assertEquals($expectedSubItemDetails['name'], $subItem->getName());
+                        $this->assertEquals($expectedSubItemDetails['image'], $subItem->getImage());
+                        $this->assertEquals($expectedSubItemDetails['color'], $subItem->getColor());
+                        $this->assertEquals($expectedSubItemDetails['frequency'], $subItem->getFrequency());
+                    }
+                }
                 $count++;
             }
         }
