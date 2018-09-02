@@ -73,7 +73,6 @@ class FindologicApiTest extends TestCase
         return [
             ['sendSearchRequest'],
             ['sendNavigationRequest'],
-            ['sendSuggestionRequest'],
         ];
     }
 
