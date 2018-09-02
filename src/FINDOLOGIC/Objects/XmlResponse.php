@@ -48,7 +48,6 @@ class XmlResponse
     {
         $xmlResponse = new SimpleXMLElement($response);
 
-
         $this->servers = new Servers($xmlResponse->servers[0]);
         $this->query = new Query($xmlResponse->query[0]);
         $this->landingPage = new Landingpage($xmlResponse->landingPage[0]->attributes());

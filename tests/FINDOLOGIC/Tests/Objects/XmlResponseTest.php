@@ -147,4 +147,120 @@ class XmlResponseTest extends TestCase
             }
         }
     }
+
+    public function testResponseWillReturnFiltersAsExpected()
+    {
+        $expectedFilterDisplays = ['Preis', 'Farbe', 'Material', 'Hersteller'];
+        $expectedFilterTypes = ['range-slider', 'color', 'select', 'select'];
+        $expectedFilterNames = ['price', 'Farbe', 'Material', 'vendor'];
+        $expectedFilterSelects = ['single', 'multiselect', 'multiple', 'multiple'];
+        $expectedFilterSelectedItems = [0, 1, 0, 0];
+
+        $response = $this->getRealResponseData();
+
+        $count = 0;
+        foreach ($response->getFilters() as $filter) {
+            $this->assertEquals($expectedFilterDisplays[$count], $filter->getDisplay());
+            $this->assertEquals($expectedFilterTypes[$count], $filter->getType());
+            $this->assertEquals($expectedFilterNames[$count], $filter->getName());
+            $this->assertEquals($expectedFilterSelects[$count], $filter->getSelect());
+            $this->assertEquals($expectedFilterSelectedItems[$count], $filter->getSelectedItems());
+            $count++;
+        }
+    }
+
+    public function testResponseWillReturnAttributesAsExpected()
+    {
+        $expectedSelectedRange = ['min' => 0.39, 'max' => 2239.10];
+        // There is no difference between selected and total if the result was not filtered by a range-slider.
+        $expectedTotalRange = ['min' => 0.39, 'max' => 2239.10];
+        $expectedStepSize = 0.1;
+        $expectedUnit = '€';
+
+        $response = $this->getRealResponseData();
+
+        foreach ($response->getFilters() as $filter) {
+            // Only range-slider does have attributes.
+            if ($filter->getType() === 'range-slider') {
+                $this->assertEquals($expectedSelectedRange, $filter->getAttributes()->getSelectedRange());
+                $this->assertEquals($expectedTotalRange, $filter->getAttributes()->getTotalRange());
+                $this->assertEquals($expectedStepSize, $filter->getAttributes()->getStepSize());
+                $this->assertEquals($expectedUnit, $filter->getAttributes()->getUnit());
+            } else {
+                // All other filter types do not have attributes.
+                $this->assertEquals(null, $filter->getAttributes());
+            }
+        }
+    }
+
+    public function testResponseWillReturnItemsAsExpected()
+    {
+        // Usually items do not have a display or select, but documentation says differently.
+        $expectedDisplays = [
+            '', '', '', // Price
+            '', '', '', // Color
+            '', 'Leder', '', // Material
+            '', '', '', // Vendor
+        ];
+
+        $expectedSelect = [
+            '', '', '', // Price
+            '', '', '', // Color
+            '', '', '', // Material
+            '', '', '', // Vendor
+        ];
+
+        // Weights do have a float value, but checking the value to its 1:1 value is unnecessary.
+        $expectedWeight = [
+            0.1, 0.1, 0.1, // Price
+            0.1, 0.1, 0.1, // Color
+            0.1, 0.1, 0.1, // Material
+            0.1, 0.1, 0.1, // Vendor
+        ];
+
+        $expectedNames = [
+            '0.39 - 13.4', '13.45 - 25.99', '26 - 40.3', // Price
+            'beige', 'blau', 'braun', // Color
+            'Hartgepäck', 'Leder', 'Nylon', // Material
+            'Bodenschatz', 'Braun Büffel', 'Camel Active', // Vendor
+        ];
+
+        $expectedImages = [
+            '', '', '', // Price
+            'https://blubbergurken.io/farbfilter/beige.gif', 'https://blubbergurken.io/farbfilter/blau.gif',
+            'https://blubbergurken.io/farbfilter/braun.gif', // Color
+            '', '', '', // Material
+            '', '', '', // Vendor
+        ];
+
+        $expectedColors = [
+            '', '', '', // Price
+            '#F5F5DC', '#3c6380', '#94651e', // Color
+            '', '', '', // Material
+            '', '', '', // Vendor
+        ];
+
+        $expectedFrequency = [
+            0, 0, 0, // Price
+            0, 0, 0, // Color
+            35, 1238, 110, // Material
+            2, 77, 122, // Vendor
+        ];
+
+        $response = $this->getRealResponseData();
+
+        $count = 0;
+        foreach ($response->getFilters() as $filter) {
+            foreach ($filter->getItems() as $item) {
+                $this->assertEquals($expectedDisplays[$count], $item->getDisplay());
+                $this->assertEquals($expectedSelect[$count], $item->getSelect());
+                $this->assertEquals($expectedWeight[$count], $item->getWeight(), '', 1);
+                $this->assertEquals($expectedNames[$count], $item->getName());
+                $this->assertEquals($expectedImages[$count], $item->getImage());
+                $this->assertEquals($expectedColors[$count], $item->getColor());
+                $this->assertEquals($expectedFrequency[$count], $item->getFrequency());
+                $count++;
+            }
+        }
+    }
 }

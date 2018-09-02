@@ -90,7 +90,7 @@ class Filter
     }
 
     /**
-     * @return Attributes
+     * @return Attributes|null
      */
     public function getAttributes()
     {
