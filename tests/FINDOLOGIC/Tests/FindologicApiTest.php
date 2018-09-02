@@ -54,12 +54,17 @@ class FindologicApiTest extends TestCase
         $this->httpClientMock->expects($this->at(1))->method('request')->willReturn($this->responseMock);
     }
 
+    /**
+     * @return FindologicApi FindologicApi
+     */
     public function getDefaultFindologicApi()
     {
         return new FindologicApi([
             FindologicApi::SHOPKEY => '80AB18D4BE2654A78244106AD315DC2C',
             FindologicApi::HTTP_CLIENT => $this->httpClientMock,
             FindologicApi::API_URL => 'https://blubbergurken.io/%s/%s',
+            FindologicApi::REQUEST_TIMEOUT => 1,
+            FindologicApi::ALIVETEST_TIMEOUT => 1,
         ]);
     }
 
@@ -75,7 +80,6 @@ class FindologicApiTest extends TestCase
     public function invalidConfigProvider()
     {
         return [
-            'object as config' => [new \stdClass()],
             'apiUrl as object' => [[FindologicApi::API_URL => new \stdClass()]],
             'apiUrl as integer' => [[FindologicApi::API_URL => 46]],
             'alivetest timeout as object' => [[FindologicApi::ALIVETEST_TIMEOUT => new \stdClass()]],
@@ -101,7 +105,7 @@ class FindologicApiTest extends TestCase
 
     /**
      * @dataProvider requestProvider
-     * @param $requestType
+     * @param $requestType string
      */
     public function testGuzzleFailsWillThrowAnException($requestType)
     {
@@ -310,5 +314,27 @@ class FindologicApiTest extends TestCase
         $availableRequestTypes = RequestType::getList();
 
         $this->assertEquals($expectedAvailableRequestTypes, $availableRequestTypes);
+    }
+
+    /**
+     * @dataProvider requestProvider
+     * @param $requestType string
+     */
+    public function testFindologicResponseTimeCanBeSeen($requestType)
+    {
+        $this->setDefaultExpectations();
+
+        /** @var FindologicApi $findologicApi */
+        $findologicApi = $this->getDefaultFindologicApi()
+            ->setShopurl('www.blubbergurken.io')
+            ->setUserip('127.0.0.1')
+            ->setReferer('www.blubbergurken.io/blubbergurken-sale')
+            ->setRevision('1.0.0');
+
+        $findologicApi->{$requestType}();
+
+        // Please note that the response times in the tests are fast af, because they do load the response directly from
+        // the file system.
+        $this->assertEquals(0, $findologicApi->getResponseTime(), '', 0.01);
     }
 }

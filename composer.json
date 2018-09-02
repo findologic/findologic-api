@@ -6,7 +6,7 @@
     "authors": [
         {
             "name": "Dominik Brader",
-            "email": "d.brader@findologic.com",
+            "email": "dominik@brader.co.at",
             "role": "Maintainer"
         },
         {
@@ -16,12 +16,13 @@
         }
     ],
     "require": {
-        "guzzlehttp/guzzle": "^6.3"
+        "guzzlehttp/guzzle": "^6.3",
+        "ext-SimpleXML": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.4 || ^7.0",
         "symfony/console": "v3.2.9",
-        "friendsofphp/php-cs-fixer": "v2.8.2"
+        "friendsofphp/php-cs-fixer": "^2.13"
     },
     "autoload": {
         "psr-0": {

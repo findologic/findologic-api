@@ -140,7 +140,8 @@ class ParameterBuilderTest extends TestCase
         return [
             'normal userip' => ['127.0.0.1'],
             'other userip' => ['183.12.42.33'],
-            'more different userip' => ['255.255.255.255']
+            'more different userip' => ['255.255.255.255'],
+            'ipv6 userip' => ['2001:0db8:85a3:0000:0000:8a2e:0370:7334'],
         ];
     }
 
@@ -177,7 +178,7 @@ class ParameterBuilderTest extends TestCase
     {
         try {
             $this->parameterBuilder->setUserip($invalidShopurl);
-            $this->fail('A InvalidParamException was expected to occur when the shopurl param is invalid.');
+            $this->fail('A InvalidParamException was expected to occur when the userip param is invalid.');
         } catch (InvalidParamException $e) {
             $this->assertEquals('Parameter userip is not valid.', $e->getMessage());
         }
@@ -803,7 +804,7 @@ class ParameterBuilderTest extends TestCase
      */
     public function testAddIndividualParamWillSetItInAValidFormat(
         $expectedIndividualParamKey,
-                                                                  $expectedIndividualParamValue,
+        $expectedIndividualParamValue,
         $expectedMethod
     ) {
         $this->parameterBuilder->addIndividualParam(
@@ -814,6 +815,16 @@ class ParameterBuilderTest extends TestCase
         $individualParam = $this->parameterBuilder->getParam($expectedIndividualParamKey);
 
         $this->assertEquals($expectedIndividualParamValue, $individualParam);
+    }
+
+    public function testAddSetForceOriginalQueryWillSetInAValidFormat()
+    {
+        $expectedOriginalQuery = 1;
+        $this->parameterBuilder->setForceOriginalQuery();
+
+        $originalQuery = $this->parameterBuilder->getParam('forceOriginalQuery');
+
+        $this->assertEquals($expectedOriginalQuery, $originalQuery);
     }
 
     public function testAddingParamsWithARandomValueWillThrowAnException()

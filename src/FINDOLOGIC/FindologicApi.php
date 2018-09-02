@@ -7,12 +7,20 @@ use FINDOLOGIC\Exceptions\ConfigException;
 use FINDOLOGIC\Exceptions\ParamNotSetException;
 use FINDOLOGIC\Exceptions\ServiceNotAliveException;
 use FINDOLOGIC\Helpers\ParameterBuilder;
-use FINDOLOGIC\Objects\Response;
+use FINDOLOGIC\Objects\JsonResponse;
+use FINDOLOGIC\Objects\XmlResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
 class FindologicApi extends ParameterBuilder
 {
+    /**
+     * Can be used to get the response time from the FINDOLOGIC API in microseconds.
+     *
+     * @var float $responseTime
+     */
+    private $responseTime;
+
     /**
      * FindologicApi constructor.
      *
@@ -44,13 +52,8 @@ class FindologicApi extends ParameterBuilder
      * @param array $config
      * @throws ConfigException
      */
-    private function validateConfig($config)
+    private function validateConfig(array $config)
     {
-        // The config needs to be an array.
-        if (!is_array($config)) {
-            throw new ConfigException();
-        }
-
         // All configuration values need to have a valid type.
         foreach ($config as $key => $value) {
             switch ($key) {
@@ -62,7 +65,7 @@ class FindologicApi extends ParameterBuilder
                     break;
                 case self::ALIVETEST_TIMEOUT:
                 case self::REQUEST_TIMEOUT:
-                    if (!is_int($value) || !is_float($value)) {
+                    if (!is_int($value) && !is_float($value)) {
                         throw new ConfigException();
                     }
                     break;
@@ -94,45 +97,45 @@ class FindologicApi extends ParameterBuilder
     }
 
     /**
-     * Sends a search request to FINDOLOGIC and returns a Response object.
+     * Sends a search request to FINDOLOGIC and returns a XmlResponse object.
      *
      * @throws ServiceNotAliveException if the service is unable to respond.
      * @throws ParamNotSetException if the required params are not set.
-     * @return Response
+     * @return XmlResponse
      */
     public function sendSearchRequest()
     {
         $this->checkRequiredParamsAreSet();
 
         $this->sendRequest(RequestType::ALIVETEST_REQUEST);
-        return new Response($this->sendRequest(RequestType::SEARCH_REQUEST));
+        return new XmlResponse($this->sendRequest(RequestType::SEARCH_REQUEST));
         //TODO: Send the search request with the set params.
         //TODO: Works with XML only. HTML will most likely not be supported.
     }
 
     /**
-     * Sends a navigation request to FINDOLOGIC and returns a Response object.
+     * Sends a navigation request to FINDOLOGIC and returns a XmlResponse object.
      *
      * @throws ServiceNotAliveException if the service is unable to respond.
      * @throws ParamNotSetException if the required params are not set.
-     * @return Response
+     * @return XmlResponse
      */
     public function sendNavigationRequest()
     {
         $this->checkRequiredParamsAreSet();
 
         $this->sendRequest(RequestType::ALIVETEST_REQUEST);
-        return new Response($this->sendRequest(RequestType::NAVIGATION_REQUEST));
+        return new XmlResponse($this->sendRequest(RequestType::NAVIGATION_REQUEST));
         //TODO: Send the navigation request with the set params.
         //TODO: Works with XML only. HTML will most likely not be supported.
     }
 
     /**
-     * Sends a suggestion request to FINDOLOGIC and returns a Response object.
+     * Sends a suggestion request to FINDOLOGIC and returns a XmlResponse object.
      *
      * @throws ServiceNotAliveException if the service is unable to respond.
      * @throws ParamNotSetException if the required params are not set.
-     * @return Response
+     * @return JsonResponse
      */
     public function sendSuggestionRequest()
     {
@@ -140,7 +143,7 @@ class FindologicApi extends ParameterBuilder
 
         //TODO: Check if a suggestion request requires an alivetest. If not this can be removed.
         $this->sendRequest(RequestType::ALIVETEST_REQUEST);
-        return new Response($this->sendRequest(RequestType::SUGGESTION_REQUEST));
+        return new JsonResponse($this->sendRequest(RequestType::SUGGESTION_REQUEST));
         //TODO: Send the suggestion request with the set params.
         //TODO: Works with JSON.
     }
@@ -151,7 +154,7 @@ class FindologicApi extends ParameterBuilder
      *
      * @param string $requestType RequestType that is being used.
      *
-     * @return string Response body.
+     * @return string XmlResponse body.
      * @throws ServiceNotAliveException If the url is unreachable, returns an error message, unexpected body/code or
      * the timeout has been exceeded.
      */
@@ -168,6 +171,7 @@ class FindologicApi extends ParameterBuilder
         $requestUrl = $this->buildRequestUrl($requestType);
 
         try {
+            $requestStartTime = microtime(true);
             $request = $requestClient->request(
                 self::GET_METHOD,
                 $requestUrl,
@@ -176,6 +180,8 @@ class FindologicApi extends ParameterBuilder
         } catch (GuzzleException $e) {
             throw new ServiceNotAliveException($e->getMessage());
         }
+        $requestEndTime = microtime(true);
+        $this->responseTime = $requestEndTime - $requestStartTime;
 
         $responseBody = $request->getBody();
         $statusCode = $request->getStatusCode();
@@ -210,5 +216,13 @@ class FindologicApi extends ParameterBuilder
         }
 
         return true;
+    }
+
+    /**
+     * @return float
+     */
+    public function getResponseTime()
+    {
+        return $this->responseTime;
     }
 }

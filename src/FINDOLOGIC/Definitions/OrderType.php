@@ -23,7 +23,7 @@ class OrderType
     ];
 
     /**
-     * Returns an array of all available request types.
+     * Returns an array of all available order types.
      * @return array
      */
     public static function getList()

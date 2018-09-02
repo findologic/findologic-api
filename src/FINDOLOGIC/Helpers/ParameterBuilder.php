@@ -53,6 +53,8 @@ class ParameterBuilder
 
     const GROUP = 'group';
 
+    const FORCE_ORIGINAL_QUERY = 'forceOriginalQuery';
+
     const INDIVIDUAL_PARAM = 'individualParam';
 
     // Defaults
@@ -134,10 +136,11 @@ class ParameterBuilder
      */
     public function setUserip($value)
     {
-        // TODO: Support IPv6.
-        $useripRegex = '/^(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})(.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})){3}$/';
+        $ipv4Regex= '/^(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})(.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})){3}$/';
+        $ipv6Regex = '/(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/';
 
-        if (!is_string($value) || !preg_match($useripRegex, $value)) {
+        // The parameter needs to be a string and an ipv4 or an ipv6 address.
+        if (!is_string($value) || (!preg_match($ipv4Regex, $value) && !preg_match($ipv6Regex, $value))) {
             throw new InvalidParamException(self::USER_IP);
         }
 
@@ -341,6 +344,17 @@ class ParameterBuilder
     }
 
     /**
+     * Adds the forceOriginalQuery param. It is used for Smart Did You Mean.
+     *
+     * @return ParameterBuilder
+     */
+    public function setForceOriginalQuery()
+    {
+        $this->addParam(self::FORCE_ORIGINAL_QUERY, 1);
+        return $this;
+    }
+
+    /**
      * Adds an own param to the parameter list. This can be useful if you want to put some special key value pairs to
      * get a different response from FINDOLOGIC.
      * IMPORTANT: Both $key or $value are NOT validated and NOT tested. **Using this is neither recommended nor
@@ -350,7 +364,7 @@ class ParameterBuilder
      * @param $value mixed
      * @param $method string Use ParameterBuilder::ADD_VALUE to add the param and not overwrite existing ones and
      * ParameterBuilder::SET_VALUE to overwrite existing params.
-     * params.
+     *
      * @return ParameterBuilder
      */
     public function addIndividualParam($key, $value, $method)

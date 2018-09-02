@@ -8,7 +8,7 @@
 
 ## Synopsis
 
-This repository helps requesting the FINDOLOGIC API and getting data from the response.
+This repository not only helps requesting the FINDOLOGIC API but also getting data from the response and mapping them to equally objects.
 To have a better understanding about the API, please make sure to read the general FINDOLOGIC API documentation. Some quicklinks to the documentation:
 
  * [Requesting the API](https://docs.findologic.com/doku.php?id=integration_documentation:request)
@@ -32,3 +32,9 @@ The usage is pretty simple. Here is an example:
 
  * [PHP 5.6 or higher](https://php.net/) older versions are not supported.
  * [Composer](https://getcomposer.org/)
+ 
+## Found a bug?
+
+We need your help! If you find any bug, please submit an issue and use our template! Be as precise as possible 
+so we can reproduce your case easier. For further information, please refer to our issue template at 
+`.github/ISSUE_TEMPLATE/bug_report.md`.
