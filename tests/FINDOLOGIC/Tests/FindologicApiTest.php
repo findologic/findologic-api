@@ -35,11 +35,17 @@ class FindologicApiTest extends TestCase
 
     /**
      * Sets default expectations that are required in basically every test that should work when requesting.
+     * @param string $requestType
      */
-    public function setDefaultExpectations()
+    public function setDefaultExpectations($requestType = 'sendSearchRequest')
     {
-        // Get contents from a real response locally.
-        $realResponseData = file_get_contents(__DIR__ . '/../Mockdata/demoResponse.xml');
+        if ($requestType !== 'sendSuggestionRequest') {
+            // Get contents from a real response locally.
+            $realResponseData = file_get_contents(__DIR__ . '/../Mockdata/demoResponse.xml');
+        } else {
+            // Get contents from a real response locally.
+            $realResponseData = file_get_contents(__DIR__ . '/../Mockdata/demoResponseSuggest.json');
+        }
 
         // Alivetest.
         $this->responseMock->expects($this->at(0))->method('getBody')->willReturn('alive');
@@ -73,6 +79,7 @@ class FindologicApiTest extends TestCase
         return [
             ['sendSearchRequest'],
             ['sendNavigationRequest'],
+            ['sendSuggestionRequest'],
         ];
     }
 
@@ -137,7 +144,7 @@ class FindologicApiTest extends TestCase
      */
     public function testAlivetestWorks($requestType)
     {
-        $this->setDefaultExpectations();
+        $this->setDefaultExpectations($requestType);
         $findologicApi = $this->getDefaultFindologicApi();
 
         $findologicApi
@@ -321,7 +328,7 @@ class FindologicApiTest extends TestCase
      */
     public function testFindologicResponseTimeCanBeSeen($requestType)
     {
-        $this->setDefaultExpectations();
+        $this->setDefaultExpectations($requestType);
 
         /** @var FindologicApi $findologicApi */
         $findologicApi = $this->getDefaultFindologicApi()
