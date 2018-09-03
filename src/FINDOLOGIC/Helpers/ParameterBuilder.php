@@ -211,8 +211,11 @@ class ParameterBuilder
      */
     public function addAttribute($filterName, $value, $specifier = null)
     {
-        if (!(is_string($filterName) && (is_string($value) || is_integer($value) || is_float($value)) &&
-            (is_string($specifier) || $specifier === null))) {
+        $filterNameIsString = (is_string($filterName));
+        $valueIsStringIntegerOrFloat = (is_string($value) || is_integer($value) || is_float($value));
+        $specifierIsStringOrNull = (is_string($specifier) || $specifier === null);
+
+        if ((!$filterNameIsString || !$valueIsStringIntegerOrFloat || !$specifierIsStringOrNull)) {
             throw new InvalidParamException(self::ATTRIB);
         }
 
