@@ -78,8 +78,7 @@ class XmlResponse
     {
         if ($xmlResponse->landingPage) {
             return new LandingPage($xmlResponse->landingPage[0]->attributes());
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -94,8 +93,7 @@ class XmlResponse
     {
         if ($xmlResponse->promotion) {
             return new Promotion($xmlResponse->promotion[0]->attributes());
-        }
-        else {
+        } else {
             return null;
         }
     }
