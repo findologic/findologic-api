@@ -45,12 +45,16 @@ class Item
         $this->image = (string)$response->image;
         $this->color = (string)$response->color;
 
-        try {
-            foreach ($response->items->children() as $item) {
-                $itemName = (string)$item->name;
-                $this->items[$itemName] = new Item($item);
+        if ($response->items) {
+            try {
+                foreach ($response->items->children() as $item) {
+                    $itemName = (string)$item->name;
+                    $this->items[$itemName] = new Item($item);
+                }
+            } catch (Exception $e) {
             }
-        } catch (Exception $e) {
+        } else {
+            $this->items = null;
         }
     }
 
