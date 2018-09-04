@@ -404,7 +404,7 @@ class ParameterBuilder
             $this->params[$key] = $value;
         } elseif ($method == self::ADD_VALUE) {
             if (isset($this->params[$key])) {
-                array_merge_recursive($this->params[$key], $value);
+                $this->params[$key] = array_merge_recursive($this->params[$key], $value);
             } else {
                 $this->params[$key] = $value;
             }
