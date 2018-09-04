@@ -46,7 +46,9 @@ class FindologicApi extends ParameterBuilder
         $this->validateConfig($config);
 
         // Set default httpClient if not explicitly set.
-        $config[self::HTTP_CLIENT] = $config[self::HTTP_CLIENT] ?: new Client();
+        if (!isset($config[self::HTTP_CLIENT])) {
+            $config[self::HTTP_CLIENT] = new Client();
+        }
 
         // Config is validated and defaults are set.
         $this->config = array_merge($this->getConfig(), $config);
@@ -215,12 +217,13 @@ class FindologicApi extends ParameterBuilder
     private function checkResponseIsValid($requestType, $responseBody, $statusCode)
     {
         $isAlivetestRequest = $requestType === RequestType::ALIVETEST_REQUEST;
-        $responseBodyIsAlive = $responseBody === self::SERVICE_ALIVE_BODY;
+        $responseBodyIsAlive = $responseBody == self::SERVICE_ALIVE_BODY;
+        $isAlivetestAndBodyIsOk = $isAlivetestRequest && $responseBodyIsAlive;
         $httpCodeIsOk = $statusCode === self::STATUS_OK;
 
         // If it is an alivetest, the 'alive' body needs to be set. If it is not an alivetest, then we do not
         // care about the body. The http code always needs to be 200 OK.
-        if (!((($isAlivetestRequest && $responseBodyIsAlive) || !$isAlivetestRequest) && $httpCodeIsOk)) {
+        if (!(($isAlivetestAndBodyIsOk && $httpCodeIsOk) || !$isAlivetestRequest && $httpCodeIsOk)) {
             throw new ServiceNotAliveException($responseBody);
         }
 

@@ -58,8 +58,8 @@ class ParameterBuilder
     const INDIVIDUAL_PARAM = 'individualParam';
 
     // Defaults
-    /** @var string URL Convention is https://API_URL/SHOP_URL/ACTION.php */
-    const DEFAULT_API_URL = 'https://service.findologic.com/%s/%s';
+    /** @var string URL Convention is https://API_URL/ps/SHOP_URL/ACTION.php */
+    const DEFAULT_API_URL = 'https://service.findologic.com/ps/%s/%s';
     /** @var int|float */
     const DEFAULT_ALIVETEST_TIMEOUT = 1.0;
     /** @var int|float */
@@ -403,9 +403,9 @@ class ParameterBuilder
         if ($method == self::SET_VALUE) {
             $this->params[$key] = $value;
         } elseif ($method == self::ADD_VALUE) {
-            try {
-                $this->params[$key] = array_merge_recursive($this->params[$key], $value);
-            } catch (\Exception $e) {
+            if (isset($this->params[$key])) {
+                array_merge_recursive($this->params[$key], $value);
+            } else {
                 $this->params[$key] = $value;
             }
         } else {
@@ -434,6 +434,7 @@ class ParameterBuilder
         $shopUrl = $this->params[self::SHOP_URL];
 
         if ($requestType !== RequestType::ALIVETEST_REQUEST) {
+            $this->params[self::SHOPKEY] = $this->config[self::SHOPKEY];
             $queryParams = http_build_query($this->params);
             // Removes indexes from attrib[] param.
             $fullQueryString = preg_replace('/%5B\d+%5D/', '%5B%5D', $queryParams);

@@ -30,13 +30,15 @@ class Product
         $this->relevance = (float)$attributes->relevance;
         $this->direct = (int)$attributes->direct;
 
-        try {
-            foreach ($result->properties->children() as $property) {
-                $propertyName = (string)$property->attributes()->name;
-                $propertyValue = (string)$property;
-                $this->properties[$propertyName] = $propertyValue;
+        if ($result->properties) {
+            try {
+                foreach ($result->properties->children() as $property) {
+                    $propertyName = (string)$property->attributes()->name;
+                    $propertyValue = (string)$property;
+                    $this->properties[$propertyName] = $propertyValue;
+                }
+            } catch (Exception $e) {
             }
-        } catch (Exception $e) {
         }
     }
 

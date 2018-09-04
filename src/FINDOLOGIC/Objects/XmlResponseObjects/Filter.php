@@ -43,9 +43,12 @@ class Filter
             $this->attributes = new Attributes($response->attributes);
         }
 
-        foreach ($response->items->children() as $item) {
-            $itemName = (string)$item->name;
-            $this->items[$itemName] = new Item($item);
+        if ($response->items) {
+            // Get the first <items> element, containing all <item>s.
+            foreach($response->items[0] as $item) {
+                $itemName = (string)$item->name;
+                $this->items[$itemName] = new Item($item);
+            }
         }
     }
 

@@ -15,7 +15,7 @@ class Query
     /** @var string $didYouMeanQuery */
     private $didYouMeanQuery;
 
-    /** @var OriginalQuery $originalQuery */
+    /** @var OriginalQuery|null $originalQuery */
     private $originalQuery;
 
     /** @var int $searchedWordsCount */
@@ -33,7 +33,11 @@ class Query
         $this->limit = new Limit($response->limit->attributes());
         $this->queryString = new QueryString($response->queryString);
         $this->didYouMeanQuery = (string)$response->didYouMeanQuery;
-        $this->originalQuery = new OriginalQuery($response->originalQuery);
+        if ($response->originalQuery) {
+            $this->originalQuery = new OriginalQuery($response->originalQuery);
+        } else {
+            $this->originalQuery = null;
+        }
         $this->searchedWordsCount = (int)$response->searchedWordCount;
         $this->foundWordsCount = (int)$response->foundWordsCount;
     }

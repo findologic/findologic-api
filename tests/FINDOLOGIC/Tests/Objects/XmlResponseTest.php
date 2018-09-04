@@ -268,32 +268,34 @@ class XmlResponseTest extends TestCase
 
         $count = 0;
         foreach ($response->getFilters() as $filter) {
-            foreach ($filter->getItems() as $item) {
-                $this->assertEquals($expectedDisplays[$count], $item->getDisplay());
-                $this->assertEquals($expectedSelect[$count], $item->getSelect());
-                $this->assertEquals($expectedWeight[$count], $item->getWeight(), '', 1);
-                $this->assertEquals($expectedNames[$count], $item->getName());
-                $this->assertEquals($expectedImages[$count], $item->getImage());
-                $this->assertEquals($expectedColors[$count], $item->getColor());
-                $this->assertEquals($expectedFrequency[$count], $item->getFrequency());
-                // For subcategories.
-                if ($item->getItems()) {
-                    foreach ($item->getItems() as $subItem) {
-                        $this->assertEquals($expectedSubItemDetails['display'], $subItem->getDisplay());
-                        $this->assertEquals($expectedSubItemDetails['select'], $subItem->getSelect());
-                        $this->assertEquals(
-                            $expectedSubItemDetails['weight'],
-                            $subItem->getWeight(),
-                            '',
-                            1
-                        );
-                        $this->assertEquals($expectedSubItemDetails['name'], $subItem->getName());
-                        $this->assertEquals($expectedSubItemDetails['image'], $subItem->getImage());
-                        $this->assertEquals($expectedSubItemDetails['color'], $subItem->getColor());
-                        $this->assertEquals($expectedSubItemDetails['frequency'], $subItem->getFrequency());
+            if (count($filter->getItems()) > 0) {
+                foreach ($filter->getItems() as $item) {
+                    $this->assertEquals($expectedDisplays[$count], $item->getDisplay());
+                    $this->assertEquals($expectedSelect[$count], $item->getSelect());
+                    $this->assertEquals($expectedWeight[$count], $item->getWeight(), '', 1);
+                    $this->assertEquals($expectedNames[$count], $item->getName());
+                    $this->assertEquals($expectedImages[$count], $item->getImage());
+                    $this->assertEquals($expectedColors[$count], $item->getColor());
+                    $this->assertEquals($expectedFrequency[$count], $item->getFrequency());
+                    // For subcategories.
+                    if ($item->getItems()) {
+                        foreach ($item->getItems() as $subItem) {
+                            $this->assertEquals($expectedSubItemDetails['display'], $subItem->getDisplay());
+                            $this->assertEquals($expectedSubItemDetails['select'], $subItem->getSelect());
+                            $this->assertEquals(
+                                $expectedSubItemDetails['weight'],
+                                $subItem->getWeight(),
+                                '',
+                                1
+                            );
+                            $this->assertEquals($expectedSubItemDetails['name'], $subItem->getName());
+                            $this->assertEquals($expectedSubItemDetails['image'], $subItem->getImage());
+                            $this->assertEquals($expectedSubItemDetails['color'], $subItem->getColor());
+                            $this->assertEquals($expectedSubItemDetails['frequency'], $subItem->getFrequency());
+                        }
                     }
+                    $count++;
                 }
-                $count++;
             }
         }
     }
