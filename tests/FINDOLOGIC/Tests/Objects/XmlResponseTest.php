@@ -326,4 +326,13 @@ class XmlResponseTest extends TestCase
 
         $this->assertEquals($expectedAllowOverride, $allowOverride);
     }
+
+    public function testResponseWithoutOriginalQueryWillReturnNullWhenCallingIt()
+    {
+        $expectedOriginalQuery = null;
+        $response = $this->getRealResponseData('demoResponseWithoutOriginalQuery.xml');
+        $originalQuery = $response->getQuery()->getOriginalQuery();
+
+        $this->assertEquals($expectedOriginalQuery, $originalQuery);
+    }
 }
