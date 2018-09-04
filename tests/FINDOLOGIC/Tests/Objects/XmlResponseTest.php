@@ -299,4 +299,31 @@ class XmlResponseTest extends TestCase
             }
         }
     }
+
+    public function testResponseWithoutLandingPageWillReturnNullWhenCallingIt()
+    {
+        $expectedLandingPage = null;
+        $response = $this->getRealResponseData('demoResponseWithoutLandingPage.xml');
+        $landingpage = $response->getLandingPage();
+
+        $this->assertEquals($expectedLandingPage, $landingpage);
+    }
+
+    public function testResponseWithoutPromotionWillReturnNullWhenCallingIt()
+    {
+        $expectedPromotion = null;
+        $response = $this->getRealResponseData('demoResponseWithoutPromotion.xml');
+        $promotion = $response->getPromotion();
+
+        $this->assertEquals($expectedPromotion, $promotion);
+    }
+
+    public function testResponseWithoutAllowOverrideWillReturnNullWhenCallingIt()
+    {
+        $expectedAllowOverride = null;
+        $response = $this->getRealResponseData('demoResponseWithoutAllowOverride.xml');
+        $allowOverride = $response->getQuery()->getOriginalQuery()->getAllowOverride();
+
+        $this->assertEquals($expectedAllowOverride, $allowOverride);
+    }
 }
