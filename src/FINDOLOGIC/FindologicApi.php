@@ -264,6 +264,9 @@ class FindologicApi extends ParameterBuilder
     }
 
     /**
+     * Returns the response time as float in seconds. E.g. 0.1337 seconds. Please note that this is only the
+     * time that takes until FINDOLOGIC returns the response.
+     *
      * @return float
      */
     public function getResponseTime()

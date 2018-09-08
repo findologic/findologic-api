@@ -40,6 +40,12 @@ class XmlResponse
     /** @var Filter[] $filters */
     private $filters;
 
+    /** @var bool $hasFilters */
+    private $hasFilters = false;
+
+    /** @var int $filterAmount */
+    private $filterAmount = 0;
+
     /**
      * XmlResponse constructor.
      * @param $response
@@ -65,6 +71,8 @@ class XmlResponse
             $filterName = (string)$filter->name;
             // Set filter names as keys for the filters.
             $this->filters[$filterName] = new Filter($filter);
+            $this->hasFilters = true;
+            $this->filterAmount++;
         }
     }
 
@@ -152,5 +160,21 @@ class XmlResponse
     public function getFilters()
     {
         return $this->filters;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasFilters()
+    {
+        return $this->hasFilters;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFilterAmount()
+    {
+        return $this->filterAmount;
     }
 }
