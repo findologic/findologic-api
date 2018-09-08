@@ -155,6 +155,7 @@ class XmlResponseTest extends TestCase
         $expectedFilterNames = ['price', 'Farbe', 'Material', 'vendor', 'cat'];
         $expectedFilterSelects = ['single', 'multiselect', 'multiple', 'multiple', 'single'];
         $expectedFilterSelectedItems = [0, 1, 0, 0, 0];
+        $expectedFilterAmount = 5;
 
         $response = $this->getRealResponseData();
 
@@ -165,6 +166,7 @@ class XmlResponseTest extends TestCase
             $this->assertEquals($expectedFilterNames[$count], $filter->getName());
             $this->assertEquals($expectedFilterSelects[$count], $filter->getSelect());
             $this->assertEquals($expectedFilterSelectedItems[$count], $filter->getSelectedItems());
+            $this->assertEquals($expectedFilterAmount, $response->getFilterAmount());
             $count++;
         }
     }
@@ -267,34 +269,78 @@ class XmlResponseTest extends TestCase
         $response = $this->getRealResponseData();
 
         $count = 0;
-        foreach ($response->getFilters() as $filter) {
-            foreach ($filter->getItems() as $item) {
-                $this->assertEquals($expectedDisplays[$count], $item->getDisplay());
-                $this->assertEquals($expectedSelect[$count], $item->getSelect());
-                $this->assertEquals($expectedWeight[$count], $item->getWeight(), '', 1);
-                $this->assertEquals($expectedNames[$count], $item->getName());
-                $this->assertEquals($expectedImages[$count], $item->getImage());
-                $this->assertEquals($expectedColors[$count], $item->getColor());
-                $this->assertEquals($expectedFrequency[$count], $item->getFrequency());
-                // For subcategories.
-                if ($item->getItems()) {
-                    foreach ($item->getItems() as $subItem) {
-                        $this->assertEquals($expectedSubItemDetails['display'], $subItem->getDisplay());
-                        $this->assertEquals($expectedSubItemDetails['select'], $subItem->getSelect());
-                        $this->assertEquals(
-                            $expectedSubItemDetails['weight'],
-                            $subItem->getWeight(),
-                            '',
-                            1
-                        );
-                        $this->assertEquals($expectedSubItemDetails['name'], $subItem->getName());
-                        $this->assertEquals($expectedSubItemDetails['image'], $subItem->getImage());
-                        $this->assertEquals($expectedSubItemDetails['color'], $subItem->getColor());
-                        $this->assertEquals($expectedSubItemDetails['frequency'], $subItem->getFrequency());
+        if ($response->hasFilters() && $response->getFilterAmount() > 0) {
+            foreach ($response->getFilters() as $filter) {
+                if ($filter->hasItems() && $filter->getItemAmount() > 0) {
+                    foreach ($filter->getItems() as $item) {
+                        $this->assertEquals($expectedDisplays[$count], $item->getDisplay());
+                        $this->assertEquals($expectedSelect[$count], $item->getSelect());
+                        $this->assertEquals($expectedWeight[$count], $item->getWeight(), '', 1);
+                        $this->assertEquals($expectedNames[$count], $item->getName());
+                        $this->assertEquals($expectedImages[$count], $item->getImage());
+                        $this->assertEquals($expectedColors[$count], $item->getColor());
+                        $this->assertEquals($expectedFrequency[$count], $item->getFrequency());
+                        // For subcategories.
+                        if ($item->getItems()) {
+                            foreach ($item->getItems() as $subItem) {
+                                $this->assertEquals($expectedSubItemDetails['display'], $subItem->getDisplay());
+                                $this->assertEquals($expectedSubItemDetails['select'], $subItem->getSelect());
+                                $this->assertEquals(
+                                    $expectedSubItemDetails['weight'],
+                                    $subItem->getWeight(),
+                                    '',
+                                    1
+                                );
+                                $this->assertEquals($expectedSubItemDetails['name'], $subItem->getName());
+                                $this->assertEquals($expectedSubItemDetails['image'], $subItem->getImage());
+                                $this->assertEquals($expectedSubItemDetails['color'], $subItem->getColor());
+                                $this->assertEquals($expectedSubItemDetails['frequency'], $subItem->getFrequency());
+                            }
+                        }
+                        $count++;
                     }
+                } else {
+                    $this->fail('The demo response should have items.');
                 }
-                $count++;
             }
+        } else {
+            $this->fail('The demo response should have filters.');
         }
+    }
+
+    public function testResponseWithoutLandingPageWillReturnNullWhenCallingIt()
+    {
+        $expectedLandingPage = null;
+        $response = $this->getRealResponseData('demoResponseWithoutLandingPage.xml');
+        $landingpage = $response->getLandingPage();
+
+        $this->assertEquals($expectedLandingPage, $landingpage);
+    }
+
+    public function testResponseWithoutPromotionWillReturnNullWhenCallingIt()
+    {
+        $expectedPromotion = null;
+        $response = $this->getRealResponseData('demoResponseWithoutPromotion.xml');
+        $promotion = $response->getPromotion();
+
+        $this->assertEquals($expectedPromotion, $promotion);
+    }
+
+    public function testResponseWithoutAllowOverrideWillReturnNullWhenCallingIt()
+    {
+        $expectedAllowOverride = null;
+        $response = $this->getRealResponseData('demoResponseWithoutAllowOverride.xml');
+        $allowOverride = $response->getQuery()->getOriginalQuery()->getAllowOverride();
+
+        $this->assertEquals($expectedAllowOverride, $allowOverride);
+    }
+
+    public function testResponseWithoutOriginalQueryWillReturnNullWhenCallingIt()
+    {
+        $expectedOriginalQuery = null;
+        $response = $this->getRealResponseData('demoResponseWithoutOriginalQuery.xml');
+        $originalQuery = $response->getQuery()->getOriginalQuery();
+
+        $this->assertEquals($expectedOriginalQuery, $originalQuery);
     }
 }

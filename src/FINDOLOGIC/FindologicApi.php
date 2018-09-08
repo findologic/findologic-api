@@ -22,6 +22,13 @@ class FindologicApi extends ParameterBuilder
     private $responseTime;
 
     /**
+     * Saves the unix timestamp in microseconds of the last made request.
+     *
+     * @var float $requestUnixTimestamp
+     */
+    private $requestUnixTimestamp;
+
+    /**
      * FindologicApi constructor.
      *
      * @param array $config containing the necessary config.
@@ -39,7 +46,9 @@ class FindologicApi extends ParameterBuilder
         $this->validateConfig($config);
 
         // Set default httpClient if not explicitly set.
-        $config[self::HTTP_CLIENT] = $config[self::HTTP_CLIENT] ?: new Client();
+        if (!isset($config[self::HTTP_CLIENT])) {
+            $config[self::HTTP_CLIENT] = new Client();
+        }
 
         // Config is validated and defaults are set.
         $this->config = array_merge($this->getConfig(), $config);
@@ -86,7 +95,7 @@ class FindologicApi extends ParameterBuilder
      * Returns the currently set config or only one setting when requesting a specific key.
      *
      * @param string|null $key
-     * @return array
+     * @return mixed
      */
     public function getConfig($key = null)
     {
@@ -109,8 +118,6 @@ class FindologicApi extends ParameterBuilder
 
         $this->sendRequest(RequestType::ALIVETEST_REQUEST);
         return new XmlResponse($this->sendRequest(RequestType::SEARCH_REQUEST));
-        //TODO: Send the search request with the set params.
-        //TODO: Works with XML only. HTML will most likely not be supported.
     }
 
     /**
@@ -126,8 +133,6 @@ class FindologicApi extends ParameterBuilder
 
         $this->sendRequest(RequestType::ALIVETEST_REQUEST);
         return new XmlResponse($this->sendRequest(RequestType::NAVIGATION_REQUEST));
-        //TODO: Send the navigation request with the set params.
-        //TODO: Works with XML only. HTML will most likely not be supported.
     }
 
     /**
@@ -141,18 +146,15 @@ class FindologicApi extends ParameterBuilder
     {
         $this->checkRequiredParamsAreSet();
 
-        //TODO: Check if a suggestion request requires an alivetest. If not this can be removed.
         $this->sendRequest(RequestType::ALIVETEST_REQUEST);
         return new JsonResponse($this->sendRequest(RequestType::SUGGESTION_REQUEST));
-        //TODO: Send the suggestion request with the set params.
-        //TODO: Works with JSON.
     }
 
     /**
      * Internal function that is used to send a request. It builds the URL and respects the timeout when sending a
      * request.
      *
-     * @param string $requestType RequestType that is being used.
+     * @param string $requestType Request type that is being used.
      *
      * @return string XmlResponse body.
      * @throws ServiceNotAliveException If the url is unreachable, returns an error message, unexpected body/code or
@@ -162,16 +164,11 @@ class FindologicApi extends ParameterBuilder
     {
         /** @var Client $requestClient */
         $requestClient = $this->getConfig(self::HTTP_CLIENT);
-        $timeout = $this->getConfig(self::REQUEST_TIMEOUT);
-
-        if ($requestType == RequestType::ALIVETEST_REQUEST) {
-            $timeout = $this->getConfig(self::ALIVETEST_TIMEOUT);
-        }
-
         $requestUrl = $this->buildRequestUrl($requestType);
+        $timeout = $this->getRequestTimeout($requestType);
 
         try {
-            $requestStartTime = microtime(true);
+            $this->startResponseTime();
             $request = $requestClient->request(
                 self::GET_METHOD,
                 $requestUrl,
@@ -180,21 +177,11 @@ class FindologicApi extends ParameterBuilder
         } catch (GuzzleException $e) {
             throw new ServiceNotAliveException($e->getMessage());
         }
-        $requestEndTime = microtime(true);
-        $this->responseTime = $requestEndTime - $requestStartTime;
+        $this->endResponseTime();
 
         $responseBody = $request->getBody();
         $statusCode = $request->getStatusCode();
-
-        $isAlivetestRequest = $requestType == RequestType::ALIVETEST_REQUEST;
-        $responseIsAlive = $responseBody == self::SERVICE_ALIVE_BODY;
-        $httpCodeIsOk = $statusCode === self::STATUS_OK;
-
-        // If it is an alivetest, the 'alive' body needs to be set. If it is not an alivetest, then we do not care about
-        // the body. The http code always needs to be 200 OK.
-        if (!((($isAlivetestRequest && $responseIsAlive) || !$isAlivetestRequest) && $httpCodeIsOk)) {
-            throw new ServiceNotAliveException($responseBody);
-        }
+        $this->checkResponseIsValid($requestType, $responseBody, $statusCode);
 
         return $responseBody;
     }
@@ -219,6 +206,67 @@ class FindologicApi extends ParameterBuilder
     }
 
     /**
+     * Internal function for checking if the response is correct for the request type.
+     *
+     * @param string $requestType
+     * @param string $responseBody
+     * @param int $statusCode
+     *
+     * @return bool Returns true on success, otherwise an ServiceNotAliveException will be thrown.
+     */
+    private function checkResponseIsValid($requestType, $responseBody, $statusCode)
+    {
+        $isAlivetestRequest = $requestType === RequestType::ALIVETEST_REQUEST;
+        $responseBodyIsAlive = $responseBody == self::SERVICE_ALIVE_BODY;
+        $isAlivetestAndBodyIsOk = $isAlivetestRequest && $responseBodyIsAlive;
+        $httpCodeIsOk = $statusCode === self::STATUS_OK;
+
+        // If it is an alivetest, the 'alive' body needs to be set. If it is not an alivetest, then we do not
+        // care about the body. The http code always needs to be 200 OK.
+        if (!(($isAlivetestAndBodyIsOk && $httpCodeIsOk) || !$isAlivetestRequest && $httpCodeIsOk)) {
+            throw new ServiceNotAliveException($responseBody);
+        }
+
+        return true;
+    }
+
+    /**
+     * Sets the unix timestamp in microseconds for the request.
+     */
+    private function startResponseTime()
+    {
+        $this->requestUnixTimestamp = microtime(true);
+    }
+
+    /**
+     * Calculates how much time has been passed since the request has been made to
+     * determine the full time duration for the request (in microseconds).
+     */
+    private function endResponseTime()
+    {
+        $requestEndTime = microtime(true);
+        $this->responseTime = $requestEndTime - $this->requestUnixTimestamp;
+    }
+
+    /**
+     * Returns the request timeout for the currently used request type.
+     *
+     * @param $requestType
+     * @return int|float
+     */
+    private function getRequestTimeout($requestType)
+    {
+        if ($requestType == RequestType::ALIVETEST_REQUEST) {
+            return $this->getConfig(self::ALIVETEST_TIMEOUT);
+        } else {
+            return $this->getConfig(self::REQUEST_TIMEOUT);
+        }
+    }
+
+    /**
+     * Returns the response time as float in seconds. E.g. 0.1337 seconds. Please note that this is only the
+     * time that takes until FINDOLOGIC returns the response.
+     *
      * @return float
      */
     public function getResponseTime()

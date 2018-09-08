@@ -839,4 +839,17 @@ class ParameterBuilderTest extends TestCase
             $this->assertEquals('Unknown method type.', $e->getMessage());
         }
     }
+
+    public function testAddParamsOverTheSameKeyWillMergeThemTogether()
+    {
+        $expectedGroups = ['groupOne', 'groupTwo', 'muchMoreGroups'];
+
+        $this->parameterBuilder->addGroup($expectedGroups[0]);
+        $this->parameterBuilder->addGroup($expectedGroups[1]);
+        $this->parameterBuilder->addGroup($expectedGroups[2]);
+
+        $groups = $this->parameterBuilder->getParam('group')[''];
+
+        $this->assertEquals($expectedGroups, $groups);
+    }
 }

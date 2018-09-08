@@ -343,4 +343,12 @@ class FindologicApiTest extends TestCase
         // the file system.
         $this->assertEquals(0, $findologicApi->getResponseTime(), '', 0.01);
     }
+
+    public function testWhenNoExplicitClientIsSetTheDefaultClientIsSet()
+    {
+        $findologicApi = new FindologicApi(['shopkey' => 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA']);
+        $httpClient = $findologicApi->getConfig('httpClient');
+
+        $this->assertInstanceOf('GuzzleHttp\Client', $httpClient);
+    }
 }

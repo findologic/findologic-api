@@ -58,8 +58,8 @@ class ParameterBuilder
     const INDIVIDUAL_PARAM = 'individualParam';
 
     // Defaults
-    /** @var string URL Convention is https://API_URL/SHOP_URL/ACTION.php */
-    const DEFAULT_API_URL = 'https://service.findologic.com/%s/%s';
+    /** @var string URL Convention is https://API_URL/ps/SHOP_URL/ACTION.php */
+    const DEFAULT_API_URL = 'https://service.findologic.com/ps/%s/%s';
     /** @var int|float */
     const DEFAULT_ALIVETEST_TIMEOUT = 1.0;
     /** @var int|float */
@@ -211,8 +211,11 @@ class ParameterBuilder
      */
     public function addAttribute($filterName, $value, $specifier = null)
     {
-        if (!(is_string($filterName) && (is_string($value) || is_integer($value) || is_float($value)) &&
-            (is_string($specifier) || $specifier === null))) {
+        $filterNameIsString = (is_string($filterName));
+        $valueIsStringIntegerOrFloat = (is_string($value) || is_integer($value) || is_float($value));
+        $specifierIsStringOrNull = (is_string($specifier) || $specifier === null);
+
+        if ((!$filterNameIsString || !$valueIsStringIntegerOrFloat || !$specifierIsStringOrNull)) {
             throw new InvalidParamException(self::ATTRIB);
         }
 
@@ -400,9 +403,9 @@ class ParameterBuilder
         if ($method == self::SET_VALUE) {
             $this->params[$key] = $value;
         } elseif ($method == self::ADD_VALUE) {
-            try {
+            if (isset($this->params[$key])) {
                 $this->params[$key] = array_merge_recursive($this->params[$key], $value);
-            } catch (\Exception $e) {
+            } else {
                 $this->params[$key] = $value;
             }
         } else {
@@ -431,6 +434,7 @@ class ParameterBuilder
         $shopUrl = $this->params[self::SHOP_URL];
 
         if ($requestType !== RequestType::ALIVETEST_REQUEST) {
+            $this->params[self::SHOPKEY] = $this->config[self::SHOPKEY];
             $queryParams = http_build_query($this->params);
             // Removes indexes from attrib[] param.
             $fullQueryString = preg_replace('/%5B\d+%5D/', '%5B%5D', $queryParams);
