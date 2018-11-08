@@ -24,7 +24,6 @@ class OriginalQuery
         try {
             $this->allowOverride = (bool)$response->attributes()['allow-override'];
         } catch (Exception $e) {
-            $this->allowOverride = null;
         }
     }
 
