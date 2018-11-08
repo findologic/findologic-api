@@ -18,8 +18,7 @@ class ParameterBuilderTest extends TestCase
     }
 
     /**
-     * Returns some shopkeys that might be set by users. Invalid shopkeys are not tested since they should not even get
-     * to this point.
+     * Returns some shopkeys that might be set by users.
      *
      * @return array
      */
@@ -76,8 +75,7 @@ class ParameterBuilderTest extends TestCase
     }
 
     /**
-     * Returns some shopurls that might be set by users. Invalid shopurls are not tested since they should not even get
-     * to this point.
+     * Returns some shopurls that might be set by users.
      *
      * @return array
      */
@@ -130,8 +128,7 @@ class ParameterBuilderTest extends TestCase
     }
 
     /**
-     * Returns some userip that might be set by users. Invalid userips are not tested since they should not even get
-     * to this point.
+     * Returns some userip that might be set by users.
      *
      * @return array
      */
@@ -185,8 +182,7 @@ class ParameterBuilderTest extends TestCase
     }
 
     /**
-     * Returns some referer that might be set by users. Invalid referer are not tested since they should not even get
-     * to this point.
+     * Returns some referer that might be set by users.
      *
      * @return array
      */
@@ -228,8 +224,7 @@ class ParameterBuilderTest extends TestCase
     }
 
     /**
-     * Returns some revision that might be set by users. Invalid revisions are not tested since they should not even get
-     * to this point.
+     * Returns some revision that might be set by users.
      *
      * @return array
      */
@@ -282,8 +277,7 @@ class ParameterBuilderTest extends TestCase
     }
 
     /**
-     * Returns some query that might be set by users. Invalid queries are not tested since they should not even get
-     * to this point.
+     * Returns some query that might be set by users.
      *
      * @return array
      */
@@ -334,8 +328,7 @@ class ParameterBuilderTest extends TestCase
     }
 
     /**
-     * Returns some attribute that might be set by users. Invalid attributes are not tested since they should not even
-     * get to this point.
+     * Returns some attribute that might be set by users.
      *
      * @return array
      */
@@ -402,8 +395,7 @@ class ParameterBuilderTest extends TestCase
     }
 
     /**
-     * Returns some order that might be set by users. Invalid orders are not tested since they should not even get
-     * to this point.
+     * Returns some order that might be set by users.
      *
      * @return array
      */
@@ -456,8 +448,7 @@ class ParameterBuilderTest extends TestCase
     }
 
     /**
-     * Returns some property that might be set by users. Invalid properties are not tested since they should not even
-     * get to this point.
+     * Returns some property that might be set by users.
      *
      * @return array
      */
@@ -509,8 +500,7 @@ class ParameterBuilderTest extends TestCase
     }
 
     /**
-     * Returns some pushAttrib that might be set by users. Invalid pushAttribs are not tested since they should not even
-     * get to this point.
+     * Returns some pushAttrib that might be set by users.
      *
      * @return array
      */
@@ -519,7 +509,7 @@ class ParameterBuilderTest extends TestCase
         return [
             'normal pushAttrib' => ['vendor', 'Tom Tailor', 0.3],
             'other pushAttrib' => ['Material', 'Leather', 2.1],
-            'more different pushAttrib' => ['Color', 'Black', 3]
+            'more different pushAttrib' => ['Color', 'Black', 3.0]
         ];
     }
 
@@ -574,8 +564,7 @@ class ParameterBuilderTest extends TestCase
     }
 
     /**
-     * Returns some count that might be set by users. Invalid counts are not tested since they should not even
-     * get to this point.
+     * Returns some count that might be set by users.
      *
      * @return array
      */
@@ -608,6 +597,7 @@ class ParameterBuilderTest extends TestCase
             'count is a string' => ['abc'],
             'count is an array' => [['aaaah']],
             'count is an object' => [new \stdClass()],
+            'count is below zero' => [-5],
         ];
     }
 
@@ -626,8 +616,7 @@ class ParameterBuilderTest extends TestCase
     }
 
     /**
-     * Returns some first params that might be set by users. Invalid first params are not tested since they should not
-     * even get to this point.
+     * Returns some first params that might be set by users.
      *
      * @return array
      */
@@ -636,7 +625,7 @@ class ParameterBuilderTest extends TestCase
         return [
             'normal first' => [20],
             'other first' => [25],
-            'more different first' => [256]
+            'more different first' => [256],
         ];
     }
 
@@ -657,9 +646,10 @@ class ParameterBuilderTest extends TestCase
     public function invalidFirstProvider()
     {
         return [
-            'count is a string' => ['abc'],
-            'count is an array' => [['aaaah']],
-            'count is an object' => [new \stdClass()],
+            'first is a string' => ['abc'],
+            'first is an array' => [['aaaah']],
+            'first is an object' => [new \stdClass()],
+            'first is below zero' => [-91],
         ];
     }
 
@@ -678,8 +668,7 @@ class ParameterBuilderTest extends TestCase
     }
 
     /**
-     * Returns some identifier that might be set by users. Invalid identifiers are not tested since they should not
-     * even get to this point.
+     * Returns some identifier that might be set by users.
      *
      * @return array
      */
@@ -730,8 +719,7 @@ class ParameterBuilderTest extends TestCase
     }
 
     /**
-     * Returns some group that might be set by users. Invalid groups are not tested since they should not
-     * even get to this point.
+     * Returns some group that might be set by users.
      *
      * @return array
      */

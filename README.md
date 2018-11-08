@@ -8,7 +8,7 @@
 
 ## Synopsis
 
-This repository not only helps requesting the FINDOLOGIC API but also getting data from the response and mapping them to equally objects.
+This repository not only helps requesting the FINDOLOGIC API but also getting data from the response and mapping them to corresponding objects.
 To have a better understanding about the API, please make sure to read the general FINDOLOGIC API documentation. Some quicklinks to the documentation:
 
  * [Requesting the API](https://docs.findologic.com/doku.php?id=integration_documentation:request)

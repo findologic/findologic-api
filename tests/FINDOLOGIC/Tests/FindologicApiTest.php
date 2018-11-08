@@ -7,6 +7,8 @@ use FINDOLOGIC\Exceptions\ConfigException;
 use FINDOLOGIC\Exceptions\ParamNotSetException;
 use FINDOLOGIC\Exceptions\ServiceNotAliveException;
 use FINDOLOGIC\FindologicApi;
+use FINDOLOGIC\Objects\JsonResponse;
+use FINDOLOGIC\Objects\XmlResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
@@ -153,7 +155,15 @@ class FindologicApiTest extends TestCase
             ->setReferer('www.blubbergurken.io/blubbergurken-sale')
             ->setRevision('1.0.0');
 
-        $findologicApi->{$requestType}();
+        $response = $findologicApi->{$requestType}();
+
+        if ($requestType === 'sendSearchRequest' || $requestType == 'sendNavigationRequest') {
+            $this->assertInstanceOf(XmlResponse::class, $response);
+        } elseif ($requestType === 'sendSuggestionRequest') {
+            $this->assertInstanceOf(JsonResponse::class, $response);
+        } else {
+            $this->fail('Unknown request type.');
+        }
     }
 
     public function failingAlivetestProvider()
@@ -191,7 +201,11 @@ class FindologicApiTest extends TestCase
                 $findologicApi->{$requestType[0]}();
                 $this->fail('A ServiceNotAliveException should occur if the service is not alive!');
             } catch (ServiceNotAliveException $e) {
-                $expectedErrorMessage = 'The service is not alive. Reason: %s';
+                if ($httpCode === 200 || $responseBody !== 'alive') {
+                    $expectedErrorMessage = 'The service is not alive. Reason: %s';
+                } else {
+                    $expectedErrorMessage = sprintf('The service is not alive. Reason: Unexpected status code %s.', $httpCode);
+                }
                 $this->assertEquals(sprintf($expectedErrorMessage, $responseBody), $e->getMessage());
             }
         }
@@ -305,17 +319,17 @@ class FindologicApiTest extends TestCase
 
             $this->fail('A ConfigException was expected to occur when the shopkey is invalid.');
         } catch (ConfigException $e) {
-            $this->assertEquals('Shopkey format is invalid.', $e->getMessage());
+            $this->assertEquals('Invalid FindologicApi config.', $e->getMessage());
         }
     }
 
     public function testAllRequestTypesAreAvailable()
     {
         $expectedAvailableRequestTypes = [
-            'alivetest.php' => 'alivetest.php',
-            'index.php' => 'index.php',
-            'selector.php' => 'selector.php',
-            'autocomplete.php' => 'autocomplete.php',
+            'alivetest.php',
+            'index.php',
+            'selector.php',
+            'autocomplete.php',
         ];
         $availableRequestTypes = RequestType::getList();
 
@@ -347,7 +361,7 @@ class FindologicApiTest extends TestCase
     public function testWhenNoExplicitClientIsSetTheDefaultClientIsSet()
     {
         $findologicApi = new FindologicApi(['shopkey' => 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA']);
-        $httpClient = $findologicApi->getConfig('httpClient');
+        $httpClient = $findologicApi->getConfigByKey('httpClient');
 
         $this->assertInstanceOf('GuzzleHttp\Client', $httpClient);
     }

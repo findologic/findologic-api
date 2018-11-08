@@ -37,9 +37,9 @@ class Suggestion
         $this->block = (string)$response->block;
         $this->frequency = (string)$response->frequency;
         $this->imageUrl = (string)$response->imageUrl;
-        $this->price = (string)$response->price;
+        $this->price = (float)$response->price; // TODO: Set to NULL if it is zero
         $this->identifier = (string)$response->identifier;
-        $this->basePrice = (string)$response->basePrice;
+        $this->basePrice = (float)$response->basePrice; // TODO: Set to NULL if it is zero
         $this->basePriceUnit = (string)$response->basePriceUnit;
         $this->url = (string)$response->url;
     }
@@ -69,7 +69,7 @@ class Suggestion
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getImageUrl()
     {
@@ -85,7 +85,7 @@ class Suggestion
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getIdentifier()
     {
@@ -101,7 +101,7 @@ class Suggestion
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getBasePriceUnit()
     {
@@ -109,7 +109,7 @@ class Suggestion
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getUrl()
     {

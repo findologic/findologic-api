@@ -10,10 +10,10 @@ class RequestType
     const SUGGESTION_REQUEST = 'autocomplete.php';
 
     public static $list = [
-        self::ALIVETEST_REQUEST => self::ALIVETEST_REQUEST,
-        self::SEARCH_REQUEST => self::SEARCH_REQUEST,
-        self::NAVIGATION_REQUEST => self::NAVIGATION_REQUEST,
-        self::SUGGESTION_REQUEST => self::SUGGESTION_REQUEST,
+        self::ALIVETEST_REQUEST,
+        self::SEARCH_REQUEST,
+        self::NAVIGATION_REQUEST,
+        self::SUGGESTION_REQUEST,
     ];
 
     /**

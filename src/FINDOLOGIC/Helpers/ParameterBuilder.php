@@ -21,7 +21,7 @@ class ParameterBuilder
 
     protected $config = [
         self::SHOPKEY,
-        self::API_URL => self::DEFAULT_API_URL,
+        self::API_URL => self::DEFAULT_TEMPLATE_API_URL,
         self::ALIVETEST_TIMEOUT => self::DEFAULT_ALIVETEST_TIMEOUT,
         self::REQUEST_TIMEOUT => self::DEFAULT_REQUEST_TIMEOUT,
         self::HTTP_CLIENT
@@ -59,10 +59,10 @@ class ParameterBuilder
 
     // Defaults
     /** @var string URL Convention is https://API_URL/ps/SHOP_URL/ACTION.php */
-    const DEFAULT_API_URL = 'https://service.findologic.com/ps/%s/%s';
-    /** @var int|float */
+    const DEFAULT_TEMPLATE_API_URL = 'https://service.findologic.com/ps/%s/%s';
+    /** @var float */
     const DEFAULT_ALIVETEST_TIMEOUT = 1.0;
-    /** @var int|float */
+    /** @var float */
     const DEFAULT_REQUEST_TIMEOUT = 3.0;
 
     const SERVICE_ALIVE_BODY = 'alive';
@@ -84,7 +84,6 @@ class ParameterBuilder
         self::REVISION
     ];
 
-    // TODO: Documentation does not require more params. But are userip etc. not relevant?
     protected $requiredParamsSuggest = [
         self::SHOPKEY,
         self::QUERY
@@ -101,7 +100,7 @@ class ParameterBuilder
      */
     public function setShopkey($value)
     {
-        if (!is_string($value) || !preg_match('/^[A-F0-9]{32,32}$/', $value)) {
+        if ($this->validateShopkey($value) === false) {
             throw new InvalidParamException(self::SHOPKEY);
         }
 
@@ -136,11 +135,10 @@ class ParameterBuilder
      */
     public function setUserip($value)
     {
-        $ipv4Regex= '/^(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})(.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})){3}$/';
         $ipv6Regex = '/(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/';
 
         // The parameter needs to be a string and an ipv4 or an ipv6 address.
-        if (!is_string($value) || (!preg_match($ipv4Regex, $value) && !preg_match($ipv6Regex, $value))) {
+        if (!is_string($value) || (!ip2long($value) && !preg_match($ipv6Regex, $value))) {
             throw new InvalidParamException(self::USER_IP);
         }
 
@@ -149,7 +147,7 @@ class ParameterBuilder
     }
 
     /**
-     * Sets the referer param. It is used to track the user's search history. Required.
+     * Sets the referer param. It is used to determine on which page a search was fired. Required.
      *
      * @param $value string
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#required_parameters
@@ -233,7 +231,7 @@ class ParameterBuilder
      */
     public function setOrder($value)
     {
-        if (!is_string($value) || !array_key_exists($value, OrderType::getList())) {
+        if (!is_string($value) || !in_array($value, OrderType::getList())) {
             throw new InvalidParamException(self::ORDER);
         }
 
@@ -259,19 +257,18 @@ class ParameterBuilder
     }
 
     /**
-     * Adds the pushAttrib param. It is used to push products based on their attributes and on the factor. We recommend
-     * using weights between 1 and 3 for the factor.
+     * Adds the pushAttrib param. It is used to push products based on their attributes and the factor.
      *
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#search_parameter
      * @see https://docs.findologic.com/doku.php?id=personalization
      * @param $key string Name of the Filter. E.g. Color
      * @param $value string Value of the Filter. E.g. Black
-     * @param $factor int|float Indicates how much the pushed filter influences the result.
+     * @param $factor float Indicates how much the pushed filter influences the result.
      * @return ParameterBuilder
      */
     public function addPushAttrib($key, $value, $factor)
     {
-        if (!(is_string($key) && is_string($value) && (is_int($factor) || is_float($factor)))) {
+        if (!(is_string($key) && is_string($value) && (is_float($factor)))) {
             throw new InvalidParamException(self::PUSH_ATTRIB);
         }
 
@@ -288,7 +285,7 @@ class ParameterBuilder
      */
     public function setCount($value)
     {
-        if (!is_integer($value)) {
+        if (!is_integer($value) || $value <= 0) {
             throw new InvalidParamException(self::COUNT);
         }
 
@@ -306,7 +303,7 @@ class ParameterBuilder
      */
     public function setFirst($value)
     {
-        if (!is_integer($value)) {
+        if (!is_integer($value) || $value <= 0) {
             throw new InvalidParamException(self::FIRST);
         }
 
@@ -395,8 +392,10 @@ class ParameterBuilder
      *
      * @param $key string The key or the param name, that identifies the param.
      * @param $value string The value for the param.
-     * @param string $method Can be either 'set' or 'add'. 'add' allows the value to be set multiple times and 'set'
-     *      will override any existing ones.
+     * @param string $method Can be either ParameterBuilder::SET_VALUE or ParameterBuilder::ADD_VALUE.
+     * ParameterBuilder::ADD_VALUE allows the value to be set multiple times and ParameterBuilder::SET_VALUE will
+     * override any existing ones.
+     * @var ParameterBuilder::ADD_VALUE|ParameterBuilder::SET_VALUE $method
      */
     private function addParam($key, $value, $method = self::SET_VALUE)
     {
@@ -411,6 +410,17 @@ class ParameterBuilder
         } else {
             throw new InvalidArgumentException('Unknown method type.');
         }
+    }
+
+    /**
+     * Checks if the given shopkey is valid.
+     *
+     * @param string $shopkey The service's shopkey.
+     * @return bool Returns true if it is valid, otherwise false.
+     */
+    protected function validateShopkey($shopkey)
+    {
+        return (is_string($shopkey) && preg_match('/^[A-F0-9]{32}$/', $shopkey));
     }
 
     /**

@@ -115,12 +115,12 @@ class JsonResponseTest extends TestCase
     public function testResponseWillReturnExpectedPrice()
     {
         $expectedPrice = [
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
             2305.75,
             678.00,
             1355.65,
@@ -161,16 +161,16 @@ class JsonResponseTest extends TestCase
     public function testResponseWillReturnExpectedBasePrice()
     {
         $expectedBasePrice = [
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
             1355.65,
-            '',
+            0,
         ];
         $response = $this->getRealResponseData();
 
