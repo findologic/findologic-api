@@ -374,16 +374,27 @@ class ParameterBuilder
     }
 
     /**
-     * Returns a specific param or all if no explicit param is given.
+     * Returns a specific param.
      *
-     * @param string|null $param
-     * @return string|array
+     * @param string $key
+     * @return mixed
      */
-    public function getParam($param = null)
+    public function getParam($key)
     {
-        if ($param !== null) {
-            return $this->params[$param];
+        if (!isset($this->params[$key])) {
+            throw new InvalidArgumentException('Unknown or unset param.');
+        } else {
+            return $this->params[$key];
         }
+    }
+
+    /**
+     * Returns all set params.
+     *
+     * @return array
+     */
+    public function getAllParams()
+    {
         return $this->params;
     }
 

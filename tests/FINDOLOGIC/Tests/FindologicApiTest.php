@@ -389,4 +389,49 @@ class FindologicApiTest extends TestCase
 
         $this->assertInstanceOf('GuzzleHttp\Client', $httpClient);
     }
+
+    public function testConfigByKeyWillThrowAnExceptionWhenTheKeyIsUnknown()
+    {
+        $findologicApi = $this->getDefaultFindologicApi();
+        try {
+            $findologicApi->getConfigByKey('thisKeyDoesNotExist');
+            $this->fail('An InvalidArgumentException should happen if a key does not exist.');
+        } catch (\InvalidArgumentException $e) {
+            $this->assertEquals('Unknown or unset configuration value.', $e->getMessage());
+        }
+    }
+
+    public function testGetAllParamsWillReturnAllSetParams()
+    {
+        $expectedShopurl = 'www.blubbergurken.io';
+        $expectedUserIp = '127.0.0.1';
+        $expectedReferer = 'www.blubbergurken.io/blubbergurken-sale';
+        $expectedRevision = '1.0.0';
+
+        $expectedParams = [
+            'shopurl' => $expectedShopurl,
+            'userip' => $expectedUserIp,
+            'referer' => $expectedReferer,
+            'revision' => $expectedRevision,
+        ];
+
+        $findologicApi = $this->getDefaultFindologicApi()
+            ->setShopurl($expectedShopurl)
+            ->setUserip($expectedUserIp)
+            ->setReferer($expectedReferer)
+            ->setRevision($expectedRevision);
+
+        $this->assertEquals($expectedParams, $findologicApi->getAllParams());
+    }
+
+    public function testGetParamThatDoesNotExistWillThrowAnException()
+    {
+        $findologicApi = $this->getDefaultFindologicApi();
+        try {
+            $findologicApi->getParam('geilerParam');
+            $this->fail('An InvalidArgumentException should happen if a key does not exist.');
+        } catch (\InvalidArgumentException $e) {
+            $this->assertEquals('Unknown or unset param.', $e->getMessage());
+        }
+    }
 }
