@@ -24,7 +24,7 @@ To have a better understanding about the API, please make sure to read the gener
 For a simple installation you can use [Composer](https://getcomposer.org/).
 Since we are _not yet_ on Packagist you might want to require this library via [Composer VCS](https://getcomposer.org/doc/05-repositories.md#vcs):
 
-```
+```json
 {
     "repositories": [
         {
