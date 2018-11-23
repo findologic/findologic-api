@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpParamsInspection (Not relevant for tests) */
 
 namespace FINDOLOGIC\Tests;
 
@@ -155,6 +155,14 @@ class FindologicApiTest extends TestCase
             ->setReferer('www.blubbergurken.io/blubbergurken-sale')
             ->setRevision('1.0.0');
 
+        if ($requestType === 'sendSuggestionRequest') {
+            try {
+                $findologicApi->{$requestType}();
+                $this->fail('A suggestion request should not require an alivetest.');
+            } catch (\Exception $exception) {
+                // Send another request that will respond with real data.
+            }
+        }
         $response = $findologicApi->{$requestType}();
 
         if ($requestType === 'sendSearchRequest' || $requestType == 'sendNavigationRequest') {
@@ -197,16 +205,24 @@ class FindologicApiTest extends TestCase
         $requestTypes = $this->requestProvider();
 
         foreach ($requestTypes as $requestType) {
-            try {
-                $findologicApi->{$requestType[0]}();
-                $this->fail('A ServiceNotAliveException should occur if the service is not alive!');
-            } catch (ServiceNotAliveException $e) {
-                if ($httpCode === 200 || $responseBody !== 'alive') {
-                    $expectedErrorMessage = 'The service is not alive. Reason: %s';
-                } else {
-                    $expectedErrorMessage = sprintf('The service is not alive. Reason: Unexpected status code %s.', $httpCode);
+            if ($requestType[0] === 'sendSuggestionRequest') {
+                // A suggestion request does not need an alivetest.
+                $this->assertTrue(true);
+            } else {
+                try {
+                    $findologicApi->{$requestType[0]}();
+                    $this->fail('A ServiceNotAliveException should occur if the service is not alive!');
+                } catch (ServiceNotAliveException $e) {
+                    if ($httpCode === 200 || $responseBody !== 'alive') {
+                        $expectedErrorMessage = 'The service is not alive. Reason: %s';
+                    } else {
+                        $expectedErrorMessage = sprintf(
+                            'The service is not alive. Reason: Unexpected status code %s.',
+                            $httpCode
+                        );
+                    }
+                    $this->assertEquals(sprintf($expectedErrorMessage, $responseBody), $e->getMessage());
                 }
-                $this->assertEquals(sprintf($expectedErrorMessage, $responseBody), $e->getMessage());
             }
         }
     }
@@ -351,6 +367,14 @@ class FindologicApiTest extends TestCase
             ->setReferer('www.blubbergurken.io/blubbergurken-sale')
             ->setRevision('1.0.0');
 
+        if ($requestType === 'sendSuggestionRequest') {
+            try {
+                $findologicApi->{$requestType}();
+                $this->fail('A suggestion request should not require an alivetest.');
+            } catch (\Exception $exception) {
+                // Send another request that will respond with real data.
+            }
+        }
         $findologicApi->{$requestType}();
 
         // Please note that the response times in the tests are fast af, because they do load the response directly from

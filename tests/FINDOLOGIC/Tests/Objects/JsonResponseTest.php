@@ -36,10 +36,8 @@ class JsonResponseTest extends TestCase
         ];
         $response = $this->getRealResponseData();
 
-        $count = 0;
-        foreach ($response->getSuggestions() as $suggestion) {
-            $this->assertEquals($expectedLabels[$count], $suggestion->getLabel());
-            $count++;
+        foreach ($response->getSuggestions() as $key => $suggestion) {
+            $this->assertEquals($expectedLabels[$key], $suggestion->getLabel());
         }
     }
 
@@ -59,10 +57,8 @@ class JsonResponseTest extends TestCase
         ];
         $response = $this->getRealResponseData();
 
-        $count = 0;
-        foreach ($response->getSuggestions() as $suggestion) {
-            $this->assertEquals($expectedBlocks[$count], $suggestion->getBlock());
-            $count++;
+        foreach ($response->getSuggestions() as $key => $suggestion) {
+            $this->assertEquals($expectedBlocks[$key], $suggestion->getBlock());
         }
     }
 
@@ -82,10 +78,8 @@ class JsonResponseTest extends TestCase
         ];
         $response = $this->getRealResponseData();
 
-        $count = 0;
-        foreach ($response->getSuggestions() as $suggestion) {
-            $this->assertEquals($expectedFrequencies[$count], $suggestion->getFrequency());
-            $count++;
+        foreach ($response->getSuggestions() as $key => $suggestion) {
+            $this->assertEquals($expectedFrequencies[$key], $suggestion->getFrequency());
         }
     }
 
@@ -105,10 +99,8 @@ class JsonResponseTest extends TestCase
         ];
         $response = $this->getRealResponseData();
 
-        $count = 0;
-        foreach ($response->getSuggestions() as $suggestion) {
-            $this->assertEquals($expectedImageUrls[$count], $suggestion->getImageUrl());
-            $count++;
+        foreach ($response->getSuggestions() as $key => $suggestion) {
+            $this->assertEquals($expectedImageUrls[$key], $suggestion->getImageUrl());
         }
     }
 
@@ -128,10 +120,8 @@ class JsonResponseTest extends TestCase
         ];
         $response = $this->getRealResponseData();
 
-        $count = 0;
-        foreach ($response->getSuggestions() as $suggestion) {
-            $this->assertEquals($expectedPrice[$count], $suggestion->getPrice());
-            $count++;
+        foreach ($response->getSuggestions() as $key => $suggestion) {
+            $this->assertEquals($expectedPrice[$key], $suggestion->getPrice());
         }
     }
 
@@ -151,10 +141,8 @@ class JsonResponseTest extends TestCase
         ];
         $response = $this->getRealResponseData();
 
-        $count = 0;
-        foreach ($response->getSuggestions() as $suggestion) {
-            $this->assertEquals($expectedIdentifier[$count], $suggestion->getIdentifier());
-            $count++;
+        foreach ($response->getSuggestions() as $key => $suggestion) {
+            $this->assertEquals($expectedIdentifier[$key], $suggestion->getIdentifier());
         }
     }
 
@@ -174,10 +162,8 @@ class JsonResponseTest extends TestCase
         ];
         $response = $this->getRealResponseData();
 
-        $count = 0;
-        foreach ($response->getSuggestions() as $suggestion) {
-            $this->assertEquals($expectedBasePrice[$count], $suggestion->getBasePrice());
-            $count++;
+        foreach ($response->getSuggestions() as $key => $suggestion) {
+            $this->assertEquals($expectedBasePrice[$key], $suggestion->getBasePrice());
         }
     }
 
@@ -197,10 +183,8 @@ class JsonResponseTest extends TestCase
         ];
         $response = $this->getRealResponseData();
 
-        $count = 0;
-        foreach ($response->getSuggestions() as $suggestion) {
-            $this->assertEquals($expectedBasePriceUnit[$count], $suggestion->getBasePriceUnit());
-            $count++;
+        foreach ($response->getSuggestions() as $key => $suggestion) {
+            $this->assertEquals($expectedBasePriceUnit[$key], $suggestion->getBasePriceUnit());
         }
     }
 
@@ -220,10 +204,8 @@ class JsonResponseTest extends TestCase
         ];
         $response = $this->getRealResponseData();
 
-        $count = 0;
-        foreach ($response->getSuggestions() as $suggestion) {
-            $this->assertEquals($expectedUrl[$count], $suggestion->getUrl());
-            $count++;
+        foreach ($response->getSuggestions() as $key => $suggestion) {
+            $this->assertEquals($expectedUrl[$key], $suggestion->getUrl());
         }
     }
 }

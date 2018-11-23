@@ -44,14 +44,19 @@ class Item
         $this->select = (string)$response->select;
         $this->image = (string)$response->image;
         $this->color = (string)$response->color;
+        $this->addSubItems($response);
+    }
 
-        if ($response->items) {
-            try {
-                foreach ($response->items->children() as $item) {
-                    $itemName = (string)$item->name;
-                    $this->items[$itemName] = new Item($item);
-                }
-            } catch (Exception $e) {
+    /**
+     * Items might have sub items. Sub items may only be set for subcategories.
+     * @param SimpleXMLElement $response
+     */
+    private function addSubItems($response)
+    {
+        if (isset($response->items)) {
+            foreach ($response->items->children() as $item) {
+                $itemName = (string)$item->name;
+                $this->items[$itemName] = new Item($item);
             }
         } else {
             $this->items = null;

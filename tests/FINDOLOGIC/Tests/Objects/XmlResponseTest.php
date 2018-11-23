@@ -195,7 +195,7 @@ class XmlResponseTest extends TestCase
         }
     }
 
-    public function testResponseWillReturnItemsAsExpected()
+    public function testResponseWillReturnDisplaysOfItemsAsExpected()
     {
         // Usually items do not have a display or select, but documentation says differently.
         $expectedDisplays = [
@@ -206,6 +206,27 @@ class XmlResponseTest extends TestCase
             '', // Category
         ];
 
+        $response = $this->getRealResponseData();
+        if ($response->hasFilters() && $response->getFilterAmount() > 0) {
+            $count = 0;
+            foreach ($response->getFilters() as $filter) {
+                if ($filter->hasItems() && $filter->getItemAmount() > 0) {
+                    foreach ($filter->getItems() as $item) {
+                        $this->assertEquals($expectedDisplays[$count], $item->getDisplay());
+                        $count++;
+                    }
+                } else {
+                    $this->fail('The demo response should have items.');
+                }
+            }
+        } else {
+            $this->fail('The demo response should have filters.');
+        }
+    }
+
+    public function testResponseWillReturnSelectsOfItemsAsExpected()
+    {
+        // Usually items do not have a display or select, but documentation says differently.
         $expectedSelect = [
             '', '', '', // Price
             '', '', '', // Color
@@ -214,6 +235,26 @@ class XmlResponseTest extends TestCase
             '', // Category
         ];
 
+        $response = $this->getRealResponseData();
+        if ($response->hasFilters() && $response->getFilterAmount() > 0) {
+            $count = 0;
+            foreach ($response->getFilters() as $filter) {
+                if ($filter->hasItems() && $filter->getItemAmount() > 0) {
+                    foreach ($filter->getItems() as $item) {
+                        $this->assertEquals($expectedSelect[$count], $item->getSelect());
+                        $count++;
+                    }
+                } else {
+                    $this->fail('The demo response should have items.');
+                }
+            }
+        } else {
+            $this->fail('The demo response should have filters.');
+        }
+    }
+
+    public function testResponseWillReturnWeightsOfItemsAsExpected()
+    {
         // Weights do have a float value, but checking the value to its 1:1 value is unnecessary.
         $expectedWeight = [
             0.1, 0.1, 0.1, // Price
@@ -223,6 +264,26 @@ class XmlResponseTest extends TestCase
             0.1, // Category
         ];
 
+        $response = $this->getRealResponseData();
+        if ($response->hasFilters() && $response->getFilterAmount() > 0) {
+            $count = 0;
+            foreach ($response->getFilters() as $filter) {
+                if ($filter->hasItems() && $filter->getItemAmount() > 0) {
+                    foreach ($filter->getItems() as $item) {
+                        $this->assertEquals($expectedWeight[$count], $item->getWeight(), '', 1);
+                        $count++;
+                    }
+                } else {
+                    $this->fail('The demo response should have items.');
+                }
+            }
+        } else {
+            $this->fail('The demo response should have filters.');
+        }
+    }
+
+    public function testResponseWillReturnNamesOfItemsAsExpected()
+    {
         $expectedNames = [
             '0.39 - 13.4', '13.45 - 25.99', '26 - 40.3', // Price
             'beige', 'blau', 'braun', // Color
@@ -231,6 +292,26 @@ class XmlResponseTest extends TestCase
             'Buch', // Category
         ];
 
+        $response = $this->getRealResponseData();
+        if ($response->hasFilters() && $response->getFilterAmount() > 0) {
+            $count = 0;
+            foreach ($response->getFilters() as $filter) {
+                if ($filter->hasItems() && $filter->getItemAmount() > 0) {
+                    foreach ($filter->getItems() as $item) {
+                        $this->assertEquals($expectedNames[$count], $item->getName());
+                        $count++;
+                    }
+                } else {
+                    $this->fail('The demo response should have items.');
+                }
+            }
+        } else {
+            $this->fail('The demo response should have filters.');
+        }
+    }
+
+    public function testResponseWillReturnImagesOfItemsAsExpected()
+    {
         $expectedImages = [
             '', '', '', // Price
             'https://blubbergurken.io/farbfilter/beige.gif', 'https://blubbergurken.io/farbfilter/blau.gif',
@@ -240,6 +321,26 @@ class XmlResponseTest extends TestCase
             '', // Category
         ];
 
+        $response = $this->getRealResponseData();
+        if ($response->hasFilters() && $response->getFilterAmount() > 0) {
+            $count = 0;
+            foreach ($response->getFilters() as $filter) {
+                if ($filter->hasItems() && $filter->getItemAmount() > 0) {
+                    foreach ($filter->getItems() as $item) {
+                        $this->assertEquals($expectedImages[$count], $item->getImage());
+                        $count++;
+                    }
+                } else {
+                    $this->fail('The demo response should have items.');
+                }
+            }
+        } else {
+            $this->fail('The demo response should have filters.');
+        }
+    }
+
+    public function testResponseWillReturnColorsOfItemsAsExpected()
+    {
         $expectedColors = [
             '', '', '', // Price
             '#F5F5DC', '#3c6380', '#94651e', // Color
@@ -248,6 +349,26 @@ class XmlResponseTest extends TestCase
             '', // Category
         ];
 
+        $response = $this->getRealResponseData();
+        if ($response->hasFilters() && $response->getFilterAmount() > 0) {
+            $count = 0;
+            foreach ($response->getFilters() as $filter) {
+                if ($filter->hasItems() && $filter->getItemAmount() > 0) {
+                    foreach ($filter->getItems() as $item) {
+                        $this->assertEquals($expectedColors[$count], $item->getColor());
+                        $count++;
+                    }
+                } else {
+                    $this->fail('The demo response should have items.');
+                }
+            }
+        } else {
+            $this->fail('The demo response should have filters.');
+        }
+    }
+
+    public function testResponseWillReturnFrequencyOfItemsAsExpected()
+    {
         $expectedFrequency = [
             0, 0, 0, // Price
             0, 0, 0, // Color
@@ -256,6 +377,26 @@ class XmlResponseTest extends TestCase
             5, // Category
         ];
 
+        $response = $this->getRealResponseData();
+        if ($response->hasFilters() && $response->getFilterAmount() > 0) {
+            $count = 0;
+            foreach ($response->getFilters() as $filter) {
+                if ($filter->hasItems() && $filter->getItemAmount() > 0) {
+                    foreach ($filter->getItems() as $item) {
+                        $this->assertEquals($expectedFrequency[$count], $item->getFrequency());
+                        $count++;
+                    }
+                } else {
+                    $this->fail('The demo response should have items.');
+                }
+            }
+        } else {
+            $this->fail('The demo response should have filters.');
+        }
+    }
+
+    public function testResponseWillReturnSubItemsOfItemsAsExpected()
+    {
         $expectedSubItemDetails = [
             'display' => '',
             'select' => '',
@@ -267,20 +408,11 @@ class XmlResponseTest extends TestCase
         ];
 
         $response = $this->getRealResponseData();
-
-        $count = 0;
         if ($response->hasFilters() && $response->getFilterAmount() > 0) {
+            $count = 0;
             foreach ($response->getFilters() as $filter) {
                 if ($filter->hasItems() && $filter->getItemAmount() > 0) {
                     foreach ($filter->getItems() as $item) {
-                        $this->assertEquals($expectedDisplays[$count], $item->getDisplay());
-                        $this->assertEquals($expectedSelect[$count], $item->getSelect());
-                        $this->assertEquals($expectedWeight[$count], $item->getWeight(), '', 1);
-                        $this->assertEquals($expectedNames[$count], $item->getName());
-                        $this->assertEquals($expectedImages[$count], $item->getImage());
-                        $this->assertEquals($expectedColors[$count], $item->getColor());
-                        $this->assertEquals($expectedFrequency[$count], $item->getFrequency());
-                        // For subcategories.
                         if ($item->getItems()) {
                             foreach ($item->getItems() as $subItem) {
                                 $this->assertEquals($expectedSubItemDetails['display'], $subItem->getDisplay());

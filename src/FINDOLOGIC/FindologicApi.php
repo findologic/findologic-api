@@ -6,12 +6,14 @@ use FINDOLOGIC\Definitions\RequestType;
 use FINDOLOGIC\Exceptions\ConfigException;
 use FINDOLOGIC\Exceptions\ParamNotSetException;
 use FINDOLOGIC\Exceptions\ServiceNotAliveException;
+use FINDOLOGIC\Helpers\ConfigValidator;
 use FINDOLOGIC\Helpers\ParameterBuilder;
 use FINDOLOGIC\Objects\JsonResponse;
 use FINDOLOGIC\Objects\XmlResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use InvalidArgumentException;
+use Valitron\Validator;
 
 class FindologicApi extends ParameterBuilder
 {
@@ -60,38 +62,24 @@ class FindologicApi extends ParameterBuilder
      * config is not valid.
      *
      * @param array $config
+     * @return bool
      * @throws ConfigException
      */
     private function validateConfig(array $config)
     {
-        if (!isset($config[self::SHOPKEY])) {
+        $validator = new ConfigValidator($config);
+
+        $validator->rule('required', self::SHOPKEY)
+            ->rule('shopkey', self::SHOPKEY)
+            ->rule('lengthMin', self::API_URL, 5)
+            ->rule('numeric', [self::ALIVETEST_TIMEOUT, self::REQUEST_TIMEOUT])
+            ->rule('object', self::HTTP_CLIENT);
+
+        if (!$validator->validate()) {
             throw new ConfigException();
         }
-        // All configuration values need to have a valid type.
-        foreach ($config as $key => $value) {
-            switch ($key) {
-                case self::SHOPKEY:
-                    if ($this->validateShopkey($value) === false) {
-                        throw new ConfigException();
-                    }
-                    break;
-                case self::API_URL:
-                    if (!is_string($value)) {
-                        throw new ConfigException();
-                    }
-                    break;
-                case self::ALIVETEST_TIMEOUT:
-                case self::REQUEST_TIMEOUT:
-                    if (!is_int($value) && !is_float($value)) {
-                        throw new ConfigException();
-                    }
-                    break;
-                case self::HTTP_CLIENT:
-                    if (!is_object($value)) {
-                        throw new ConfigException();
-                    }
-            }
-        }
+
+        return true;
     }
 
     /**
@@ -161,7 +149,6 @@ class FindologicApi extends ParameterBuilder
     {
         $this->checkRequiredParamsAreSet();
 
-        $this->sendRequest(RequestType::ALIVETEST_REQUEST);
         return new JsonResponse($this->sendRequest(RequestType::SUGGESTION_REQUEST));
     }
 
@@ -208,13 +195,11 @@ class FindologicApi extends ParameterBuilder
      */
     private function checkRequiredParamsAreSet()
     {
-        $requiredParams = $this->getRequiredParams();
+        $validator = new Validator($this->params);
+        $validator->rule('required', $this->getRequiredParams());
 
-        // Check if all required params are set.
-        foreach ($requiredParams as $paramName => $paramValue) {
-            if (!array_key_exists($paramValue, $this->getParam())) {
-                throw new ParamNotSetException($paramValue);
-            }
+        if (!$validator->validate()) {
+            throw new ParamNotSetException(key($validator->errors()));
         }
 
         return true;

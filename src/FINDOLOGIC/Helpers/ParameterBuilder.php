@@ -391,11 +391,10 @@ class ParameterBuilder
      * Internal function that adds a certain param to all params array.
      *
      * @param $key string The key or the param name, that identifies the param.
-     * @param $value string The value for the param.
+     * @param $value mixed The value for the param.
      * @param string $method Can be either ParameterBuilder::SET_VALUE or ParameterBuilder::ADD_VALUE.
      * ParameterBuilder::ADD_VALUE allows the value to be set multiple times and ParameterBuilder::SET_VALUE will
      * override any existing ones.
-     * @var ParameterBuilder::ADD_VALUE|ParameterBuilder::SET_VALUE $method
      */
     private function addParam($key, $value, $method = self::SET_VALUE)
     {

@@ -10,21 +10,19 @@
 
 This library not only helps requesting the FINDOLOGIC API but also getting data from the response and mapping them to corresponding objects.
 You won't have to mess around with sending requests and getting the data from the FINDOLOGICs response anymore.  
+
 You want to get filters? Just call `->getFilters()` on your response object. It really is that simple and if you dont trust us,
 try out the [Basic Usage](#basic-usage) or test the [Examples](#examples).
 
-To have a better understanding about the API, please make sure to read the general FINDOLOGIC API documentation. We already got you covered with quicklinks to the documentation:
+To have a better understanding about the API, please make sure to read the general FINDOLOGIC API documentation. We already got you covered with quicklinks to it:
 
  * [Requesting the API](https://docs.findologic.com/doku.php?id=integration_documentation:request)
  * [XML response](https://docs.findologic.com/doku.php?id=integration_documentation:response_xml)
 
 ## Installation
 
-There are two ways, either you use [Composer](https://getcomposer.org/) or clone the master branch of this 
-repository and load the files manually with your own autoloader. Regardless of the installation type all examples are 
-using Composer.
-
-Since we are _not yet_ on Packagist you might want to require this library via `composer.json`:
+For a simple installation you can use [Composer](https://getcomposer.org/).
+Since we are _not yet_ on Packagist you might want to require this library via [Composer VCS](https://getcomposer.org/doc/05-repositories.md#vcs):
 
 ```
 {

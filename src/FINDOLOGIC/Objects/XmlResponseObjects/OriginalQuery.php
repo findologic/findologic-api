@@ -21,9 +21,10 @@ class OriginalQuery
     {
         $this->value = (string)$response;
 
-        try {
+        if (isset($response->attributes()['allow-override'])) {
             $this->allowOverride = (bool)$response->attributes()['allow-override'];
-        } catch (Exception $e) {
+        } else {
+            $this->allowOverride = null;
         }
     }
 
