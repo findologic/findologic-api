@@ -31,6 +31,9 @@ class Suggestion
     /** @var string|null $basePriceUnit */
     private $url;
 
+    /** @var string|null $ordernumber */
+    private $ordernumber;
+
     public function __construct($response)
     {
         $this->label = (string)$response->label;
@@ -42,6 +45,7 @@ class Suggestion
         $this->basePrice = (float)$response->basePrice; // TODO: Set to NULL if it is zero
         $this->basePriceUnit = (string)$response->basePriceUnit;
         $this->url = (string)$response->url;
+        $this->ordernumber = property_exists($response, 'ordernumber') ? (string)$response->ordernumber : null;
     }
 
     /**
@@ -114,5 +118,13 @@ class Suggestion
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOrdernumber()
+    {
+        return $this->ordernumber;
     }
 }

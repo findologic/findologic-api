@@ -208,4 +208,25 @@ class JsonResponseTest extends TestCase
             $this->assertEquals($expectedUrl[$key], $suggestion->getUrl());
         }
     }
+
+    public function testResponseWillReturnExpectedOrdernumber()
+    {
+        $expectedOrdernumber = [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            'MDR-007',
+            null,
+            null,
+            null
+        ];
+        $response = $this->getRealResponseData();
+
+        foreach ($response->getSuggestions() as $key => $suggestion) {
+            $this->assertEquals($expectedOrdernumber[$key], $suggestion->getOrdernumber());
+        }
+    }
 }
