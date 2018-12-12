@@ -208,4 +208,20 @@ class JsonResponseTest extends TestCase
             $this->assertEquals($expectedUrl[$key], $suggestion->getUrl());
         }
     }
+
+    public function testResposeWillReturnFilteredSuggestions()
+    {
+        $expectedBlock = [
+            'suggest',
+            'suggest',
+            'cat',
+            'cat'
+        ];
+
+        $response = $this->getRealResponseData();
+
+        foreach ($response->getFilteredSuggestions(['suggest', 'cat']) as $key => $suggestion) {
+            $this->assertEquals($expectedBlock[$key], $suggestion->getBlock());
+        }
+    }
 }
