@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Tests;
 
+use FINDOLOGIC\Definitions\BlockType;
 use FINDOLOGIC\Definitions\RequestType;
 use FINDOLOGIC\Exceptions\ConfigException;
 use FINDOLOGIC\Exceptions\ParamNotSetException;
@@ -350,6 +351,21 @@ class FindologicApiTest extends TestCase
         $availableRequestTypes = RequestType::getList();
 
         $this->assertEquals($expectedAvailableRequestTypes, $availableRequestTypes);
+    }
+
+    public function testAllBlockTypesAreAvailable()
+    {
+        $expectedAvailableBlockTypes = [
+            'suggest',
+            'landingpage',
+            'cat',
+            'vendor',
+            'product',
+            'promotion'
+        ];
+        $availableBlockTypes = BlockType::getList();
+
+        $this->assertEquals($expectedAvailableBlockTypes, $availableBlockTypes);
     }
 
     /**

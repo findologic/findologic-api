@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Tests\Objects;
 
+use FINDOLOGIC\Definitions\BlockType;
 use FINDOLOGIC\Objects\JsonResponse;
 use PHPUnit\Framework\TestCase;
 
@@ -53,7 +54,7 @@ class JsonResponseTest extends TestCase
             'product',
             'product',
             'product',
-            'product',
+            'product'
         ];
         $response = $this->getRealResponseData();
 
@@ -227,6 +228,24 @@ class JsonResponseTest extends TestCase
 
         foreach ($response->getSuggestions() as $key => $suggestion) {
             $this->assertEquals($expectedOrdernumber[$key], $suggestion->getOrdernumber());
+        }
+    }
+
+    public function testResponseWillReturnFilteredSuggestions()
+    {
+        $expectedBlockType = [
+            'suggest',
+            'suggest',
+            'cat',
+            'cat'
+        ];
+
+        $response = $this->getRealResponseData();
+
+        $blockFilter = [BlockType::SUGGEST_BLOCK, BlockType::CAT_BLOCK];
+
+        foreach ($response->getFilteredSuggestions($blockFilter) as $key => $suggestion) {
+            $this->assertEquals($expectedBlockType[$key], $suggestion->getBlock());
         }
     }
 }
