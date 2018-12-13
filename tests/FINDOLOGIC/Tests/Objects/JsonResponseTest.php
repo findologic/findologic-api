@@ -45,16 +45,16 @@ class JsonResponseTest extends TestCase
     public function testResponseWillReturnExpectedBlocks()
     {
         $expectedBlocks = [
-            BlockType::SUGGEST_BLOCK,
-            BlockType::SUGGEST_BLOCK,
-            BlockType::VENDOR_BLOCK,
-            BlockType::VENDOR_BLOCK,
-            BlockType::CAT_BLOCK,
-            BlockType::CAT_BLOCK,
-            BlockType::PRODUCT_BLOCK,
-            BlockType::PRODUCT_BLOCK,
-            BlockType::PRODUCT_BLOCK,
-            BlockType::PRODUCT_BLOCK
+            'suggest',
+            'suggest',
+            'vendor',
+            'vendor',
+            'cat',
+            'cat',
+            'product',
+            'product',
+            'product',
+            'product'
         ];
         $response = $this->getRealResponseData();
 
@@ -213,10 +213,10 @@ class JsonResponseTest extends TestCase
     public function testResponseWillReturnFilteredSuggestions()
     {
         $expectedBlockType = [
-            BlockType::SUGGEST_BLOCK,
-            BlockType::SUGGEST_BLOCK,
-            BlockType::CAT_BLOCK,
-            BlockType::CAT_BLOCK
+            'suggest',
+            'suggest',
+            'cat',
+            'cat'
         ];
 
         $response = $this->getRealResponseData();
