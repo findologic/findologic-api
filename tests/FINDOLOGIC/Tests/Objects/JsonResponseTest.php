@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Tests\Objects;
 
+use FINDOLOGIC\Definitions\BlockType;
 use FINDOLOGIC\Objects\JsonResponse;
 use PHPUnit\Framework\TestCase;
 
@@ -44,16 +45,16 @@ class JsonResponseTest extends TestCase
     public function testResponseWillReturnExpectedBlocks()
     {
         $expectedBlocks = [
-            'suggest',
-            'suggest',
-            'vendor',
-            'vendor',
-            'cat',
-            'cat',
-            'product',
-            'product',
-            'product',
-            'product',
+            BlockType::SUGGEST_BLOCK,
+            BlockType::SUGGEST_BLOCK,
+            BlockType::VENDOR_BLOCK,
+            BlockType::VENDOR_BLOCK,
+            BlockType::CAT_BLOCK,
+            BlockType::CAT_BLOCK,
+            BlockType::PRODUCT_BLOCK,
+            BlockType::PRODUCT_BLOCK,
+            BlockType::PRODUCT_BLOCK,
+            BlockType::PRODUCT_BLOCK
         ];
         $response = $this->getRealResponseData();
 
@@ -209,19 +210,21 @@ class JsonResponseTest extends TestCase
         }
     }
 
-    public function testResposeWillReturnFilteredSuggestions()
+    public function testResponseWillReturnFilteredSuggestions()
     {
-        $expectedBlock = [
-            'suggest',
-            'suggest',
-            'cat',
-            'cat'
+        $expectedBlockType = [
+            BlockType::SUGGEST_BLOCK,
+            BlockType::SUGGEST_BLOCK,
+            BlockType::CAT_BLOCK,
+            BlockType::CAT_BLOCK
         ];
 
         $response = $this->getRealResponseData();
 
-        foreach ($response->getFilteredSuggestions(['suggest', 'cat']) as $key => $suggestion) {
-            $this->assertEquals($expectedBlock[$key], $suggestion->getBlock());
+        $blockFilter = [BlockType::SUGGEST_BLOCK, BlockType::CAT_BLOCK];
+
+        foreach ($response->getFilteredSuggestions($blockFilter) as $key => $suggestion) {
+            $this->assertEquals($expectedBlockType[$key], $suggestion->getBlock());
         }
     }
 }

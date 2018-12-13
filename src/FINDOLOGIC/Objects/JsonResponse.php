@@ -37,12 +37,12 @@ class JsonResponse
     }
 
     /**
-     * Filter the suggestions base on the specified block types.
+     * Filter the suggestions based on the specified block types.
      *
-     * @param array $blockTypes The expected block types.
+     * @param array $blockTypes A list of block types which should be returned from the response.
      * @return Suggestion[]
      */
-    public function getFilteredSuggestions($blockTypes)
+    public function getFilteredSuggestions(array $blockTypes)
     {
         return array_values(array_filter($this->getSuggestions(), function ($suggestion) use ($blockTypes) {
             return in_array($suggestion->getBlock(), $blockTypes);
