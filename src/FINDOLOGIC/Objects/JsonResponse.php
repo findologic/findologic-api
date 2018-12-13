@@ -44,7 +44,7 @@ class JsonResponse
      */
     public function getFilteredSuggestions($blockTypes)
     {
-        return array_values(array_filter($this->getSuggestions(), function($suggestion) use($blockTypes){
+        return array_values(array_filter($this->getSuggestions(), function ($suggestion) use ($blockTypes) {
             return in_array($suggestion->getBlock(), $blockTypes);
         }));
     }
