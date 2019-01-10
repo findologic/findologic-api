@@ -11,7 +11,7 @@ class BlockType
     const PRODUCT_BLOCK = 'product';
     const PROMOTION_BLOCK = 'promotion';
 
-    public static $list = [
+    private static $availableBlockTypes = [
         self::SUGGEST_BLOCK,
         self::LANDINGPAGE_BLOCK,
         self::CAT_BLOCK,
@@ -24,8 +24,8 @@ class BlockType
      * Returns an array of all available block types.
      * @return array
      */
-    public static function getList()
+    public static function getAvailableBlockTypes()
     {
-        return self::$list;
+        return self::$availableBlockTypes;
     }
 }

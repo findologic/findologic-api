@@ -402,7 +402,7 @@ class ParameterBuilderTest extends TestCase
     public function orderProvider()
     {
         return [
-            'normal order' => [OrderType::EXPENSIVE_FIRST],
+            'normal order' => [OrderType::EXPENSIVE_PRODUCTS_FIRST],
             'other order' => [OrderType::RELEVANCE],
             'more different order' => [OrderType::NEWEST_PRODUCTS_FIRST]
         ];

@@ -5,6 +5,7 @@ namespace FINDOLOGIC\Helpers;
 use FINDOLOGIC\Definitions\OrderType;
 use FINDOLOGIC\Definitions\RequestType;
 use FINDOLOGIC\Exceptions\InvalidParamException;
+use FINDOLOGIC\Validators\ParameterValidator;
 use InvalidArgumentException;
 
 class ParameterBuilder
@@ -92,7 +93,8 @@ class ParameterBuilder
     protected $params = [];
 
     /**
-     * Sets the shopkey param. It is used to determine the service. Required.
+     * Sets the shopkey param. It is used to determine the service. The shopkey param is set by default (from the
+     * config). Only override this param if you are 100% sure you know what you're doing. Required.
      *
      * @param $value string
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#required_parameters
@@ -100,7 +102,10 @@ class ParameterBuilder
      */
     public function setShopkey($value)
     {
-        if ($this->validateShopkey($value) === false) {
+        $validator = new ParameterValidator([self::SHOPKEY => $value]);
+        $validator->rule('shopkey', self::SHOPKEY);
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::SHOPKEY);
         }
 
@@ -117,6 +122,7 @@ class ParameterBuilder
      */
     public function setShopurl($value)
     {
+        // TODO: Validate URLs with Valitron if the bug with objects as URLs is fixed.
         $shopUrlRegex = '/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&\'\(\)\*\+,;=.]+$/';
         if (!is_string($value) ||!preg_match($shopUrlRegex, $value)) {
             throw new InvalidParamException(self::SHOP_URL);
@@ -135,10 +141,10 @@ class ParameterBuilder
      */
     public function setUserip($value)
     {
-        $ipv6Regex = '/(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/';
+        $validator = new ParameterValidator([self::USER_IP => $value]);
+        $validator->rule('ip', self::USER_IP);
 
-        // The parameter needs to be a string and an ipv4 or an ipv6 address.
-        if (!is_string($value) || (!ip2long($value) && !preg_match($ipv6Regex, $value))) {
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::USER_IP);
         }
 
@@ -155,6 +161,7 @@ class ParameterBuilder
      */
     public function setReferer($value)
     {
+        // TODO: Validate URLs with Valitron if the bug with objects as URLs is fixed.
         if (!is_string($value) || !preg_match('/^((^https?:\/\/)|^www\.)/', $value)) {
             throw new InvalidParamException(self::REFERER);
         }
@@ -165,7 +172,7 @@ class ParameterBuilder
 
     /**
      * Sets the revision param. It is used to identify the version of the plugin. Can be set to 1.0.0 if you are not
-     *      sure which value you should pass to the API. Required.
+     * sure which value should be passed to the API. Required.
      *
      * @param $value string
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#required_parameters
@@ -173,7 +180,10 @@ class ParameterBuilder
      */
     public function setRevision($value)
     {
-        if (!is_string($value) || !preg_match('/^(\d+\.)?(\d+\.)?(\*|\d+)$/', $value)) {
+        $validator = new ParameterValidator([self::REVISION => $value]);
+        $validator->rule('revision', self::REVISION);
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::REVISION);
         }
 
@@ -190,7 +200,10 @@ class ParameterBuilder
      */
     public function setQuery($value)
     {
-        if (!is_string($value)) {
+        $validator = new ParameterValidator([self::QUERY => $value]);
+        $validator->rule('string', self::QUERY);
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::QUERY);
         }
 
@@ -209,11 +222,17 @@ class ParameterBuilder
      */
     public function addAttribute($filterName, $value, $specifier = null)
     {
-        $filterNameIsString = (is_string($filterName));
-        $valueIsStringIntegerOrFloat = (is_string($value) || is_integer($value) || is_float($value));
-        $specifierIsStringOrNull = (is_string($specifier) || $specifier === null);
+        $validator = new ParameterValidator([
+            'filterName' => $filterName,
+            'value' => $value,
+            'specifier' => $specifier,
+        ]);
 
-        if ((!$filterNameIsString || !$valueIsStringIntegerOrFloat || !$specifierIsStringOrNull)) {
+        $validator->rule('string', 'filterName');
+        $validator->rule('stringOrNumeric', 'value');
+        $validator->rule('stringOrNull', 'specifier');
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::ATTRIB);
         }
 
@@ -231,7 +250,10 @@ class ParameterBuilder
      */
     public function setOrder($value)
     {
-        if (!is_string($value) || !in_array($value, OrderType::getList())) {
+        $validator = new ParameterValidator([self::ORDER => $value]);
+        $validator->rule('isOrderParam', self::ORDER);
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::ORDER);
         }
 
@@ -248,7 +270,10 @@ class ParameterBuilder
      */
     public function addProperty($value)
     {
-        if (!is_string($value)) {
+        $validator = new ParameterValidator([self::PROPERTIES => $value]);
+        $validator->rule('string', self::PROPERTIES);
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::PROPERTIES);
         }
 
@@ -268,7 +293,15 @@ class ParameterBuilder
      */
     public function addPushAttrib($key, $value, $factor)
     {
-        if (!(is_string($key) && is_string($value) && (is_float($factor)))) {
+        $validator = new ParameterValidator([
+            'key' => $key,
+            'value' => $value,
+            'factor' => $factor,
+        ]);
+        $validator->rule('string', ['key', 'value']);
+        $validator->rule('numeric', 'factor');
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::PUSH_ATTRIB);
         }
 
@@ -285,7 +318,10 @@ class ParameterBuilder
      */
     public function setCount($value)
     {
-        if (!is_integer($value) || $value <= 0) {
+        $validator = new ParameterValidator([self::COUNT => $value]);
+        $validator->rule('equalOrHigherThanZero', self::COUNT);
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::COUNT);
         }
 
@@ -303,7 +339,10 @@ class ParameterBuilder
      */
     public function setFirst($value)
     {
-        if (!is_integer($value) || $value <= 0) {
+        $validator = new ParameterValidator([self::FIRST => $value]);
+        $validator->rule('equalOrHigherThanZero', self::FIRST);
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::FIRST);
         }
 
@@ -319,7 +358,10 @@ class ParameterBuilder
      */
     public function setIdentifier($value)
     {
-        if (!is_string($value)) {
+        $validator = new ParameterValidator([self::IDENTIFIER => $value]);
+        $validator->rule('string', self::IDENTIFIER);
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::IDENTIFIER);
         }
 
@@ -335,7 +377,10 @@ class ParameterBuilder
      */
     public function addGroup($value)
     {
-        if (!is_string($value)) {
+        $validator = new ParameterValidator([self::GROUP => $value]);
+        $validator->rule('string', self::GROUP);
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::GROUP);
         }
 
@@ -420,17 +465,6 @@ class ParameterBuilder
         } else {
             throw new InvalidArgumentException('Unknown method type.');
         }
-    }
-
-    /**
-     * Checks if the given shopkey is valid.
-     *
-     * @param string $shopkey The service's shopkey.
-     * @return bool Returns true if it is valid, otherwise false.
-     */
-    protected function validateShopkey($shopkey)
-    {
-        return (is_string($shopkey) && preg_match('/^[A-F0-9]{32}$/', $shopkey));
     }
 
     /**

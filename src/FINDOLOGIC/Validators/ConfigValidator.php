@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC\Helpers;
+namespace FINDOLOGIC\Validators;
 
 use Valitron\Validator;
 
@@ -11,9 +11,6 @@ class ConfigValidator extends Validator
         parent::__construct($data, $fields, $lang, $langDir);
         $this->addInstanceRule('shopkey', function ($field, $value) {
             return (is_string($value) && preg_match('/^[A-F0-9]{32}$/', $value));
-        }, self::ERROR_DEFAULT);
-        $this->addInstanceRule('object', function ($field, $value) {
-            return (is_object($value));
         }, self::ERROR_DEFAULT);
     }
 }

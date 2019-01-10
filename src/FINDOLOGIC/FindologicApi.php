@@ -6,10 +6,10 @@ use FINDOLOGIC\Definitions\RequestType;
 use FINDOLOGIC\Exceptions\ConfigException;
 use FINDOLOGIC\Exceptions\ParamNotSetException;
 use FINDOLOGIC\Exceptions\ServiceNotAliveException;
-use FINDOLOGIC\Helpers\ConfigValidator;
 use FINDOLOGIC\Helpers\ParameterBuilder;
 use FINDOLOGIC\Objects\JsonResponse;
 use FINDOLOGIC\Objects\XmlResponse;
+use FINDOLOGIC\Validators\ConfigValidator;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use InvalidArgumentException;
@@ -71,9 +71,10 @@ class FindologicApi extends ParameterBuilder
 
         $validator->rule('required', self::SHOPKEY)
             ->rule('shopkey', self::SHOPKEY)
+            // TODO: Validate URLs with Valitron if the bug with objects as URLs is fixed.
             ->rule('lengthMin', self::API_URL, 5)
             ->rule('numeric', [self::ALIVETEST_TIMEOUT, self::REQUEST_TIMEOUT])
-            ->rule('object', self::HTTP_CLIENT);
+            ->rule('instanceOf', 'GuzzleHttp\Client', self::HTTP_CLIENT);
 
         if (!$validator->validate()) {
             throw new ConfigException();

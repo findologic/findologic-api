@@ -14,15 +14,15 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockBuilder;
 
 class FindologicApiTest extends TestCase
 {
-    /** @var $httpClientMock MockObject */
+    /** @var $httpClientMock PHPUnit_Framework_MockObject_MockBuilder */
     public $httpClientMock;
 
-    /** @var $httpClientMock MockObject */
+    /** @var $httpClientMock PHPUnit_Framework_MockObject_MockBuilder */
     public $responseMock;
 
     public function setUp()
@@ -348,7 +348,7 @@ class FindologicApiTest extends TestCase
             'selector.php',
             'autocomplete.php',
         ];
-        $availableRequestTypes = RequestType::getList();
+        $availableRequestTypes = RequestType::getAvailableRequestTypes();
 
         $this->assertEquals($expectedAvailableRequestTypes, $availableRequestTypes);
     }
@@ -363,7 +363,7 @@ class FindologicApiTest extends TestCase
             'product',
             'promotion'
         ];
-        $availableBlockTypes = BlockType::getList();
+        $availableBlockTypes = BlockType::getAvailableBlockTypes();
 
         $this->assertEquals($expectedAvailableBlockTypes, $availableBlockTypes);
     }

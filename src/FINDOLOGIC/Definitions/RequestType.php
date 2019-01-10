@@ -9,7 +9,7 @@ class RequestType
     const NAVIGATION_REQUEST = 'selector.php';
     const SUGGESTION_REQUEST = 'autocomplete.php';
 
-    public static $list = [
+    private static $availableRequestTypes = [
         self::ALIVETEST_REQUEST,
         self::SEARCH_REQUEST,
         self::NAVIGATION_REQUEST,
@@ -20,8 +20,8 @@ class RequestType
      * Returns an array of all available request types.
      * @return array
      */
-    public static function getList()
+    public static function getAvailableRequestTypes()
     {
-        return self::$list;
+        return self::$availableRequestTypes;
     }
 }
