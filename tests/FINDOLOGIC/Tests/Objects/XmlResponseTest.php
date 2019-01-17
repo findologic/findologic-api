@@ -3,6 +3,7 @@
 namespace FINDOLOGIC\Tests\Objects;
 
 use FINDOLOGIC\Objects\XmlResponse;
+use FINDOLOGIC\Objects\XmlResponseObjects\Filter;
 use PHPUnit\Framework\TestCase;
 
 class XmlResponseTest extends TestCase

@@ -15,14 +15,14 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockBuilder;
+use PHPUnit_Framework_MockObject_MockObject;
 
 class FindologicApiTest extends TestCase
 {
-    /** @var $httpClientMock PHPUnit_Framework_MockObject_MockBuilder */
+    /** @var $httpClientMock PHPUnit_Framework_MockObject_MockObject */
     public $httpClientMock;
 
-    /** @var $httpClientMock PHPUnit_Framework_MockObject_MockBuilder */
+    /** @var $httpClientMock PHPUnit_Framework_MockObject_MockObject */
     public $responseMock;
 
     public function setUp()
@@ -37,24 +37,31 @@ class FindologicApiTest extends TestCase
     }
 
     /**
-     * Sets default expectations that are required in basically every test that should work when requesting.
-     * @param string $requestType
+     * Gets mock data that may be returned from FINDOLOGIC.
+     *
+     * @param bool $json If true, will return a mock JSON response. If false it will return a XML response instead.
+     * @return false|string Returns the read data or false on failure.
      */
-    public function setDefaultExpectations($requestType = 'sendSearchRequest')
+    private function getMockData($json = false)
     {
-        if ($requestType !== 'sendSuggestionRequest') {
-            // Get contents from a real response locally.
-            $realResponseData = file_get_contents(__DIR__ . '/../Mockdata/demoResponse.xml');
-        } else {
-            // Get contents from a real response locally.
-            $realResponseData = file_get_contents(__DIR__ . '/../Mockdata/demoResponseSuggest.json');
+        if ($json) {
+            return file_get_contents(__DIR__ . '/../Mockdata/demoResponseSuggest.json');
         }
 
+        return file_get_contents(__DIR__ . '/../Mockdata/demoResponse.xml');
+    }
+
+    /**
+     * Sets default expectations that are required in basically every test that should work when requesting.
+     */
+    public function setDefaultExpectationsForXmlResponse()
+    {
         // Alivetest.
         $this->responseMock->expects($this->at(0))->method('getBody')->willReturn('alive');
         $this->responseMock->expects($this->at(1))->method('getStatusCode')->willReturn(200);
 
-        // Search, Navigation or Suggest request.
+        // Search or Navigation request.
+        $realResponseData = $this->getMockData();
         $this->responseMock->expects($this->at(2))->method('getBody')->willReturn($realResponseData);
         $this->responseMock->expects($this->at(3))->method('getStatusCode')->willReturn(200);
 
@@ -83,6 +90,14 @@ class FindologicApiTest extends TestCase
             ['sendSearchRequest'],
             ['sendNavigationRequest'],
             ['sendSuggestionRequest'],
+        ];
+    }
+
+    public function xmlRequestProvider()
+    {
+        return [
+            ['sendSearchRequest'],
+            ['sendNavigationRequest'],
         ];
     }
 
@@ -142,12 +157,24 @@ class FindologicApiTest extends TestCase
     }
 
     /**
-     * @dataProvider requestProvider
+     * @dataProvider xmlRequestProvider
      * @param $requestType string
      */
-    public function testAlivetestWorks($requestType)
+    public function testAlivetestIsSentForXmlResponse($requestType)
     {
-        $this->setDefaultExpectations($requestType);
+        // Alivetest.
+        $this->responseMock->expects($this->at(0))->method('getBody')->willReturn('alive');
+        $this->responseMock->expects($this->at(1))->method('getStatusCode')->willReturn(200);
+
+        // Search or Navigation request.
+        $realResponseData = $this->getMockData();
+        $this->responseMock->expects($this->at(2))->method('getBody')->willReturn($realResponseData);
+        $this->responseMock->expects($this->at(3))->method('getStatusCode')->willReturn(200);
+
+        // Both requests should respond with the responseMock.
+        $this->httpClientMock->expects($this->at(0))->method('request')->willReturn($this->responseMock);
+        $this->httpClientMock->expects($this->at(1))->method('request')->willReturn($this->responseMock);
+
         $findologicApi = $this->getDefaultFindologicApi();
 
         $findologicApi
@@ -156,23 +183,34 @@ class FindologicApiTest extends TestCase
             ->setReferer('www.blubbergurken.io/blubbergurken-sale')
             ->setRevision('1.0.0');
 
-        if ($requestType === 'sendSuggestionRequest') {
-            try {
-                $findologicApi->{$requestType}();
-                $this->fail('A suggestion request should not require an alivetest.');
-            } catch (\Exception $exception) {
-                // Send another request that will respond with real data.
-            }
-        }
         $response = $findologicApi->{$requestType}();
+        $this->assertInstanceOf(XmlResponse::class, $response);
+    }
 
-        if ($requestType === 'sendSearchRequest' || $requestType == 'sendNavigationRequest') {
-            $this->assertInstanceOf(XmlResponse::class, $response);
-        } elseif ($requestType === 'sendSuggestionRequest') {
-            $this->assertInstanceOf(JsonResponse::class, $response);
-        } else {
-            $this->fail('Unknown request type.');
-        }
+    public function testAlivetestIsNotSentForJsonResponse()
+    {
+        $this->responseMock
+            ->expects($this->once())
+            ->method('getBody')
+            ->willReturn($this->getMockData(true));
+
+        $this->responseMock
+            ->expects($this->once())
+            ->method('getStatusCode')
+            ->willReturn(200);
+
+        $this->httpClientMock->expects($this->at(0))->method('request')->willReturn($this->responseMock);
+
+        $findologicApi = $this->getDefaultFindologicApi();
+
+        $findologicApi
+            ->setShopurl('www.blubbergurken.io')
+            ->setUserip('127.0.0.1')
+            ->setReferer('www.blubbergurken.io/blubbergurken-sale')
+            ->setRevision('1.0.0');
+
+        $response = $findologicApi->sendSuggestionRequest();
+        $this->assertInstanceOf(JsonResponse::class, $response);
     }
 
     public function failingAlivetestProvider()
@@ -369,12 +407,12 @@ class FindologicApiTest extends TestCase
     }
 
     /**
-     * @dataProvider requestProvider
+     * @dataProvider xmlRequestProvider
      * @param $requestType string
      */
     public function testFindologicResponseTimeCanBeSeen($requestType)
     {
-        $this->setDefaultExpectations($requestType);
+        $this->setDefaultExpectationsForXmlResponse();
 
         /** @var FindologicApi $findologicApi */
         $findologicApi = $this->getDefaultFindologicApi()
@@ -383,14 +421,6 @@ class FindologicApiTest extends TestCase
             ->setReferer('www.blubbergurken.io/blubbergurken-sale')
             ->setRevision('1.0.0');
 
-        if ($requestType === 'sendSuggestionRequest') {
-            try {
-                $findologicApi->{$requestType}();
-                $this->fail('A suggestion request should not require an alivetest.');
-            } catch (\Exception $exception) {
-                // Send another request that will respond with real data.
-            }
-        }
         $findologicApi->{$requestType}();
 
         // Please note that the response times in the tests are fast af, because they do load the response directly from

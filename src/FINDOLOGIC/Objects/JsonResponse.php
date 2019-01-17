@@ -45,6 +45,7 @@ class JsonResponse
     public function getFilteredSuggestions(array $blockTypes)
     {
         return array_values(array_filter($this->getSuggestions(), function ($suggestion) use ($blockTypes) {
+            /** @var Suggestion $suggestion */
             return in_array($suggestion->getBlock(), $blockTypes);
         }));
     }
