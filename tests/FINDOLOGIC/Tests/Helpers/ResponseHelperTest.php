@@ -50,7 +50,7 @@ class ResponseHelperTest extends TestCase
         }
     }
 
-    public function testGetPropertyWillThrowAnExcepitonIfSubmittingAnUnknownType()
+    public function testGetPropertyWillThrowAnExceptionIfSubmittingAnUnknownType()
     {
         $expectedPropertyValue = 'blubbergurken';
         $this->testObject->something = $expectedPropertyValue;
