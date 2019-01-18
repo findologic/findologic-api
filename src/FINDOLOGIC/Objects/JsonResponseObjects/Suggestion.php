@@ -2,6 +2,8 @@
 
 namespace FINDOLOGIC\Objects\JsonResponseObjects;
 
+use FINDOLOGIC\Helpers\ResponseHelper;
+
 class Suggestion
 {
     /** @var string $label */
@@ -36,16 +38,16 @@ class Suggestion
 
     public function __construct($response)
     {
-        $this->label = (string)$response->label;
-        $this->block = (string)$response->block;
-        $this->frequency = (string)$response->frequency;
-        $this->imageUrl = (string)$response->imageUrl;
-        $this->price = (float)$response->price; // TODO: Set to NULL if it is zero
-        $this->identifier = (string)$response->identifier;
-        $this->basePrice = (float)$response->basePrice; // TODO: Set to NULL if it is zero
-        $this->basePriceUnit = (string)$response->basePriceUnit;
-        $this->url = (string)$response->url;
-        $this->ordernumber = property_exists($response, 'ordernumber') ? (string)$response->ordernumber : null;
+        $this->label = ResponseHelper::getProperty($response, 'label', 'string');
+        $this->block = ResponseHelper::getProperty($response, 'block', 'string');
+        $this->frequency = ResponseHelper::getProperty($response, 'frequency', 'string');
+        $this->imageUrl = ResponseHelper::getProperty($response, 'imageUrl', 'string');
+        $this->price = ResponseHelper::getProperty($response, 'price', 'float');
+        $this->identifier = ResponseHelper::getProperty($response, 'identifier', 'string');
+        $this->basePrice = ResponseHelper::getProperty($response, 'basePrice', 'float');
+        $this->basePriceUnit = ResponseHelper::getProperty($response, 'basePriceUnit', 'string');
+        $this->url = ResponseHelper::getProperty($response, 'url', 'string');
+        $this->ordernumber = ResponseHelper::getProperty($response, 'ordernumber', 'string');
     }
 
     /**

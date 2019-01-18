@@ -28,8 +28,8 @@ class XmlResponseTest extends TestCase
 
         $response = $this->getRealResponseData();
 
-        $this->assertEquals($expectedFrontendServer, $response->getServers()->getFrontend());
-        $this->assertEquals($expectedBackendServer, $response->getServers()->getBackend());
+        $this->assertSame($expectedFrontendServer, $response->getServers()->getFrontend());
+        $this->assertSame($expectedBackendServer, $response->getServers()->getBackend());
     }
 
     public function testResponseWillReturnQueryAsExpected()
@@ -40,9 +40,9 @@ class XmlResponseTest extends TestCase
 
         $response = $this->getRealResponseData();
 
-        $this->assertEquals($expectedDidYouMeanQuery, $response->getQuery()->getDidYouMeanQuery());
-        $this->assertEquals($expectedSearchWordCount, $response->getQuery()->getSearchedWordsCount());
-        $this->assertEquals($expectedFoundWordsCount, $response->getQuery()->getFoundWordsCount());
+        $this->assertSame($expectedDidYouMeanQuery, $response->getQuery()->getDidYouMeanQuery());
+        $this->assertSame($expectedSearchWordCount, $response->getQuery()->getSearchedWordCount());
+        $this->assertSame($expectedFoundWordsCount, $response->getQuery()->getFoundWordsCount());
     }
 
     public function testResponseWillReturnLimitAsExpected()
@@ -52,19 +52,19 @@ class XmlResponseTest extends TestCase
 
         $response = $this->getRealResponseData();
 
-        $this->assertEquals($expectedFirst, $response->getQuery()->getLimit()->getFirst());
-        $this->assertEquals($expectedCount, $response->getQuery()->getLimit()->getCount());
+        $this->assertSame($expectedFirst, $response->getQuery()->getLimit()->getFirst());
+        $this->assertSame($expectedCount, $response->getQuery()->getLimit()->getCount());
     }
 
     public function testResponseWillReturnQueryStringAsExpected()
     {
         $expectedValue = 'ps3';
-        $expectedType = '';
+        $expectedType = null;
 
         $response = $this->getRealResponseData();
 
-        $this->assertEquals($expectedValue, $response->getQuery()->getQueryString()->getValue());
-        $this->assertEquals($expectedType, $response->getQuery()->getQueryString()->getType());
+        $this->assertSame($expectedValue, $response->getQuery()->getQueryString()->getValue());
+        $this->assertSame($expectedType, $response->getQuery()->getQueryString()->getType());
     }
 
     public function testResponseWithTypeInQueryStringWillReturnOriginalQueryAsExpected()
@@ -74,8 +74,8 @@ class XmlResponseTest extends TestCase
 
         $response = $this->getRealResponseData('demoResponseWithOriginalQueryType.xml');
 
-        $this->assertEquals($expectedValue, $response->getQuery()->getQueryString()->getValue());
-        $this->assertEquals($expectedType, $response->getQuery()->getQueryString()->getType());
+        $this->assertSame($expectedValue, $response->getQuery()->getQueryString()->getValue());
+        $this->assertSame($expectedType, $response->getQuery()->getQueryString()->getType());
     }
 
     public function testResponseWillReturnOriginalQueryAsExpected()
@@ -84,7 +84,7 @@ class XmlResponseTest extends TestCase
 
         $response = $this->getRealResponseData();
 
-        $this->assertEquals($expectedValue, $response->getQuery()->getOriginalQuery()->getValue());
+        $this->assertSame($expectedValue, $response->getQuery()->getOriginalQuery()->getValue());
         $this->assertTrue($response->getQuery()->getOriginalQuery()->getAllowOverride());
     }
 
@@ -94,7 +94,7 @@ class XmlResponseTest extends TestCase
 
         $response = $this->getRealResponseData();
 
-        $this->assertEquals($expectedLink, $response->getLandingPage()->getLink());
+        $this->assertSame($expectedLink, $response->getLandingPage()->getLink());
     }
 
     public function testResponseWillReturnPromotionAsExpected()
@@ -104,8 +104,8 @@ class XmlResponseTest extends TestCase
 
         $response = $this->getRealResponseData();
 
-        $this->assertEquals($expectedLink, $response->getPromotion()->getLink());
-        $this->assertEquals($expectedImage, $response->getPromotion()->getImage());
+        $this->assertSame($expectedLink, $response->getPromotion()->getLink());
+        $this->assertSame($expectedImage, $response->getPromotion()->getImage());
     }
 
     public function testResponseWillReturnResultsAsExpected()
@@ -114,7 +114,7 @@ class XmlResponseTest extends TestCase
 
         $response = $this->getRealResponseData();
 
-        $this->assertEquals($expectedCount, $response->getResults()->getCount());
+        $this->assertSame($expectedCount, $response->getResults()->getCount());
     }
 
     public function testResponseWillReturnProductsAsExpected()
@@ -127,9 +127,9 @@ class XmlResponseTest extends TestCase
 
         $count = 0;
         foreach ($response->getProducts() as $product) {
-            $this->assertEquals($expectedIds[$count], $product->getId());
-            $this->assertEquals($expectedDirect, $product->getDirect());
-            $this->assertEquals($expectedRelevances[$count], $product->getRelevance());
+            $this->assertSame($expectedIds[$count], $product->getId());
+            $this->assertSame($expectedDirect, $product->getDirect());
+            $this->assertSame($expectedRelevances[$count], $product->getRelevance());
             $count++;
         }
     }
@@ -143,8 +143,8 @@ class XmlResponseTest extends TestCase
 
         foreach ($response->getProducts() as $product) {
             foreach ($product->getProperties() as $propertyName => $propertyValue) {
-                $this->assertEquals($expectedName, $propertyName);
-                $this->assertEquals($expectedValue, $propertyValue);
+                $this->assertSame($expectedName, $propertyName);
+                $this->assertSame($expectedValue, $propertyValue);
             }
         }
     }
@@ -155,19 +155,19 @@ class XmlResponseTest extends TestCase
         $expectedFilterTypes = ['range-slider', 'color', 'select', 'select', 'select'];
         $expectedFilterNames = ['price', 'Farbe', 'Material', 'vendor', 'cat'];
         $expectedFilterSelects = ['single', 'multiselect', 'multiple', 'multiple', 'single'];
-        $expectedFilterSelectedItems = [0, 1, 0, 0, 0];
+        $expectedFilterSelectedItems = [null, 1, null, null, null];
         $expectedFilterAmount = 5;
 
         $response = $this->getRealResponseData();
 
         $count = 0;
         foreach ($response->getFilters() as $filter) {
-            $this->assertEquals($expectedFilterDisplays[$count], $filter->getDisplay());
-            $this->assertEquals($expectedFilterTypes[$count], $filter->getType());
-            $this->assertEquals($expectedFilterNames[$count], $filter->getName());
-            $this->assertEquals($expectedFilterSelects[$count], $filter->getSelect());
-            $this->assertEquals($expectedFilterSelectedItems[$count], $filter->getSelectedItems());
-            $this->assertEquals($expectedFilterAmount, $response->getFilterAmount());
+            $this->assertSame($expectedFilterDisplays[$count], $filter->getDisplay());
+            $this->assertSame($expectedFilterTypes[$count], $filter->getType());
+            $this->assertSame($expectedFilterNames[$count], $filter->getName());
+            $this->assertSame($expectedFilterSelects[$count], $filter->getSelect());
+            $this->assertSame($expectedFilterSelectedItems[$count], $filter->getSelectedItems());
+            $this->assertSame($expectedFilterAmount, $response->getFilterAmount());
             $count++;
         }
     }
@@ -185,13 +185,13 @@ class XmlResponseTest extends TestCase
         foreach ($response->getFilters() as $filter) {
             // Only range-slider does have attributes.
             if ($filter->getType() === 'range-slider') {
-                $this->assertEquals($expectedSelectedRange, $filter->getAttributes()->getSelectedRange());
-                $this->assertEquals($expectedTotalRange, $filter->getAttributes()->getTotalRange());
-                $this->assertEquals($expectedStepSize, $filter->getAttributes()->getStepSize());
-                $this->assertEquals($expectedUnit, $filter->getAttributes()->getUnit());
+                $this->assertSame($expectedSelectedRange, $filter->getAttributes()->getSelectedRange());
+                $this->assertSame($expectedTotalRange, $filter->getAttributes()->getTotalRange());
+                $this->assertSame($expectedStepSize, $filter->getAttributes()->getStepSize());
+                $this->assertSame($expectedUnit, $filter->getAttributes()->getUnit());
             } else {
                 // All other filter types do not have attributes.
-                $this->assertEquals(null, $filter->getAttributes());
+                $this->assertSame(null, $filter->getAttributes());
             }
         }
     }
@@ -200,11 +200,11 @@ class XmlResponseTest extends TestCase
     {
         // Usually items do not have a display or select, but documentation says differently.
         $expectedDisplays = [
-            '', '', '', // Price
-            '', '', '', // Color
-            '', 'Leder', '', // Material
-            '', '', '', // Vendor
-            '', // Category
+            null, null, null, // Price
+            null, null, null, // Color
+            null, 'Leder', null, // Material
+            null, null, null, // Vendor
+            null, // Category
         ];
 
         $response = $this->getRealResponseData();
@@ -213,7 +213,7 @@ class XmlResponseTest extends TestCase
             foreach ($response->getFilters() as $filter) {
                 if ($filter->hasItems() && $filter->getItemAmount() > 0) {
                     foreach ($filter->getItems() as $item) {
-                        $this->assertEquals($expectedDisplays[$count], $item->getDisplay());
+                        $this->assertSame($expectedDisplays[$count], $item->getDisplay());
                         $count++;
                     }
                 } else {
@@ -229,11 +229,11 @@ class XmlResponseTest extends TestCase
     {
         // Usually items do not have a display or select, but documentation says differently.
         $expectedSelect = [
-            '', '', '', // Price
-            '', '', '', // Color
-            '', '', '', // Material
-            '', '', '', // Vendor
-            '', // Category
+            null, null, null, // Price
+            null, null, null, // Color
+            null, null, null, // Material
+            null, null, null, // Vendor
+            null, // Category
         ];
 
         $response = $this->getRealResponseData();
@@ -242,7 +242,7 @@ class XmlResponseTest extends TestCase
             foreach ($response->getFilters() as $filter) {
                 if ($filter->hasItems() && $filter->getItemAmount() > 0) {
                     foreach ($filter->getItems() as $item) {
-                        $this->assertEquals($expectedSelect[$count], $item->getSelect());
+                        $this->assertSame($expectedSelect[$count], $item->getSelect());
                         $count++;
                     }
                 } else {
@@ -299,7 +299,7 @@ class XmlResponseTest extends TestCase
             foreach ($response->getFilters() as $filter) {
                 if ($filter->hasItems() && $filter->getItemAmount() > 0) {
                     foreach ($filter->getItems() as $item) {
-                        $this->assertEquals($expectedNames[$count], $item->getName());
+                        $this->assertSame($expectedNames[$count], $item->getName());
                         $count++;
                     }
                 } else {
@@ -314,12 +314,12 @@ class XmlResponseTest extends TestCase
     public function testResponseWillReturnImagesOfItemsAsExpected()
     {
         $expectedImages = [
-            '', '', '', // Price
+            null, null, null, // Price
             'https://blubbergurken.io/farbfilter/beige.gif', 'https://blubbergurken.io/farbfilter/blau.gif',
             'https://blubbergurken.io/farbfilter/braun.gif', // Color
-            '', '', '', // Material
-            '', '', '', // Vendor
-            '', // Category
+            null, null, null, // Material
+            null, null, null, // Vendor
+            null, // Category
         ];
 
         $response = $this->getRealResponseData();
@@ -328,7 +328,7 @@ class XmlResponseTest extends TestCase
             foreach ($response->getFilters() as $filter) {
                 if ($filter->hasItems() && $filter->getItemAmount() > 0) {
                     foreach ($filter->getItems() as $item) {
-                        $this->assertEquals($expectedImages[$count], $item->getImage());
+                        $this->assertSame($expectedImages[$count], $item->getImage());
                         $count++;
                     }
                 } else {
@@ -343,11 +343,11 @@ class XmlResponseTest extends TestCase
     public function testResponseWillReturnColorsOfItemsAsExpected()
     {
         $expectedColors = [
-            '', '', '', // Price
+            null, null, null, // Price
             '#F5F5DC', '#3c6380', '#94651e', // Color
-            '', '', '', // Material
-            '', '', '', // Vendor
-            '', // Category
+            null, null, null, // Material
+            null, null, null, // Vendor
+            null, // Category
         ];
 
         $response = $this->getRealResponseData();
@@ -356,7 +356,7 @@ class XmlResponseTest extends TestCase
             foreach ($response->getFilters() as $filter) {
                 if ($filter->hasItems() && $filter->getItemAmount() > 0) {
                     foreach ($filter->getItems() as $item) {
-                        $this->assertEquals($expectedColors[$count], $item->getColor());
+                        $this->assertSame($expectedColors[$count], $item->getColor());
                         $count++;
                     }
                 } else {
@@ -371,8 +371,8 @@ class XmlResponseTest extends TestCase
     public function testResponseWillReturnFrequencyOfItemsAsExpected()
     {
         $expectedFrequency = [
-            0, 0, 0, // Price
-            0, 0, 0, // Color
+            null, null, null, // Price
+            null, null, null, // Color
             35, 1238, 110, // Material
             2, 77, 122, // Vendor
             5, // Category
@@ -384,7 +384,7 @@ class XmlResponseTest extends TestCase
             foreach ($response->getFilters() as $filter) {
                 if ($filter->hasItems() && $filter->getItemAmount() > 0) {
                     foreach ($filter->getItems() as $item) {
-                        $this->assertEquals($expectedFrequency[$count], $item->getFrequency());
+                        $this->assertSame($expectedFrequency[$count], $item->getFrequency());
                         $count++;
                     }
                 } else {
@@ -399,12 +399,12 @@ class XmlResponseTest extends TestCase
     public function testResponseWillReturnSubItemsOfItemsAsExpected()
     {
         $expectedSubItemDetails = [
-            'display' => '',
-            'select' => '',
+            'display' => null,
+            'select' => null,
             'weight' => 0.1,
             'name' => 'Beste Bücher',
-            'image' => '',
-            'color' => '',
+            'image' => null,
+            'color' => null,
             'frequency' => 5,
         ];
 
@@ -416,18 +416,18 @@ class XmlResponseTest extends TestCase
                     foreach ($filter->getItems() as $item) {
                         if ($item->getItems()) {
                             foreach ($item->getItems() as $subItem) {
-                                $this->assertEquals($expectedSubItemDetails['display'], $subItem->getDisplay());
-                                $this->assertEquals($expectedSubItemDetails['select'], $subItem->getSelect());
+                                $this->assertSame($expectedSubItemDetails['display'], $subItem->getDisplay());
+                                $this->assertSame($expectedSubItemDetails['select'], $subItem->getSelect());
                                 $this->assertEquals(
                                     $expectedSubItemDetails['weight'],
                                     $subItem->getWeight(),
                                     '',
                                     1
                                 );
-                                $this->assertEquals($expectedSubItemDetails['name'], $subItem->getName());
-                                $this->assertEquals($expectedSubItemDetails['image'], $subItem->getImage());
-                                $this->assertEquals($expectedSubItemDetails['color'], $subItem->getColor());
-                                $this->assertEquals($expectedSubItemDetails['frequency'], $subItem->getFrequency());
+                                $this->assertSame($expectedSubItemDetails['name'], $subItem->getName());
+                                $this->assertSame($expectedSubItemDetails['image'], $subItem->getImage());
+                                $this->assertSame($expectedSubItemDetails['color'], $subItem->getColor());
+                                $this->assertSame($expectedSubItemDetails['frequency'], $subItem->getFrequency());
                             }
                         }
                         $count++;
@@ -447,7 +447,7 @@ class XmlResponseTest extends TestCase
         $response = $this->getRealResponseData('demoResponseWithoutLandingPage.xml');
         $landingpage = $response->getLandingPage();
 
-        $this->assertEquals($expectedLandingPage, $landingpage);
+        $this->assertSame($expectedLandingPage, $landingpage);
     }
 
     public function testResponseWithoutPromotionWillReturnNullWhenCallingIt()
@@ -456,7 +456,7 @@ class XmlResponseTest extends TestCase
         $response = $this->getRealResponseData('demoResponseWithoutPromotion.xml');
         $promotion = $response->getPromotion();
 
-        $this->assertEquals($expectedPromotion, $promotion);
+        $this->assertSame($expectedPromotion, $promotion);
     }
 
     public function testResponseWithoutAllowOverrideWillReturnNullWhenCallingIt()
@@ -465,7 +465,7 @@ class XmlResponseTest extends TestCase
         $response = $this->getRealResponseData('demoResponseWithoutAllowOverride.xml');
         $allowOverride = $response->getQuery()->getOriginalQuery()->getAllowOverride();
 
-        $this->assertEquals($expectedAllowOverride, $allowOverride);
+        $this->assertSame($expectedAllowOverride, $allowOverride);
     }
 
     public function testResponseWithoutOriginalQueryWillReturnNullWhenCallingIt()
@@ -474,6 +474,6 @@ class XmlResponseTest extends TestCase
         $response = $this->getRealResponseData('demoResponseWithoutOriginalQuery.xml');
         $originalQuery = $response->getQuery()->getOriginalQuery();
 
-        $this->assertEquals($expectedOriginalQuery, $originalQuery);
+        $this->assertSame($expectedOriginalQuery, $originalQuery);
     }
 }

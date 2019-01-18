@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Objects\XmlResponseObjects;
 
+use FINDOLOGIC\Helpers\ResponseHelper;
 use SimpleXMLElement;
 
 class Attributes
@@ -28,17 +29,17 @@ class Attributes
     public function __construct($response)
     {
         $this->selectedRange = [
-            self::MIN_RANGE => (float)$response->selectedRange->min,
-            self::MAX_RANGE => (float)$response->selectedRange->max
+            self::MIN_RANGE => ResponseHelper::getProperty($response->selectedRange, 'min', 'float'),
+            self::MAX_RANGE => ResponseHelper::getProperty($response->selectedRange, 'max', 'float'),
         ];
 
         $this->totalRange = [
-            self::MIN_RANGE => (float)$response->totalRange->min,
-            self::MAX_RANGE => (float)$response->totalRange->max
+            self::MIN_RANGE => ResponseHelper::getProperty($response->totalRange, 'min', 'float'),
+            self::MAX_RANGE => ResponseHelper::getProperty($response->totalRange, 'max', 'float'),
         ];
 
-        $this->stepSize = (float)$response->stepSize;
-        $this->unit = (string)$response->unit;
+        $this->stepSize = ResponseHelper::getProperty($response, 'stepSize', 'float');
+        $this->unit = ResponseHelper::getProperty($response, 'unit', 'string');
     }
 
     /**

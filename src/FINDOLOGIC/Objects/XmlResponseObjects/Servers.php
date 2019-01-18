@@ -2,14 +2,15 @@
 
 namespace FINDOLOGIC\Objects\XmlResponseObjects;
 
+use FINDOLOGIC\Helpers\ResponseHelper;
 use SimpleXMLElement;
 
 class Servers
 {
-    /** @var string $frontend */
+    /** @var string|null $frontend */
     private $frontend;
 
-    /** @var string $backend */
+    /** @var string|null $backend */
     private $backend;
 
     /**
@@ -18,12 +19,12 @@ class Servers
      */
     public function __construct($response)
     {
-        $this->frontend = (string)$response->frontend;
-        $this->backend = (string)$response->backend;
+        $this->frontend = ResponseHelper::getProperty($response, 'frontend', 'string');
+        $this->backend = ResponseHelper::getProperty($response, 'backend', 'string');
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getFrontend()
     {
@@ -31,7 +32,7 @@ class Servers
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getBackend()
     {

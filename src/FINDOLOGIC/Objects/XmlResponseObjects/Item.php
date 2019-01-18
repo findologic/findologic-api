@@ -3,6 +3,7 @@
 namespace FINDOLOGIC\Objects\XmlResponseObjects;
 
 use Exception;
+use FINDOLOGIC\Helpers\ResponseHelper;
 use SimpleXMLElement;
 
 class Item
@@ -37,13 +38,13 @@ class Item
      */
     public function __construct($response)
     {
-        $this->name = (string)$response->name;
-        $this->display = (string)$response->display;
-        $this->weight = (float)$response->weight;
-        $this->frequency = (int)$response->frequency;
-        $this->select = (string)$response->select;
-        $this->image = (string)$response->image;
-        $this->color = (string)$response->color;
+        $this->name = ResponseHelper::getProperty($response, 'name', 'string');
+        $this->display = ResponseHelper::getProperty($response, 'display', 'string');
+        $this->weight = ResponseHelper::getProperty($response, 'weight', 'float');
+        $this->frequency = ResponseHelper::getProperty($response, 'frequency', 'int');
+        $this->select = ResponseHelper::getProperty($response, 'select', 'string');
+        $this->image = ResponseHelper::getProperty($response, 'image', 'string');
+        $this->color = ResponseHelper::getProperty($response, 'color', 'string');
         $this->addSubItems($response);
     }
 
@@ -55,7 +56,7 @@ class Item
     {
         if (isset($response->items)) {
             foreach ($response->items->children() as $item) {
-                $itemName = (string)$item->name;
+                $itemName = ResponseHelper::getProperty($item, 'name', 'string');
                 $this->items[$itemName] = new Item($item);
             }
         } else {

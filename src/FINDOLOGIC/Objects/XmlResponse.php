@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Objects;
 
+use FINDOLOGIC\Helpers\ResponseHelper;
 use FINDOLOGIC\Objects\XmlResponseObjects\Filter;
 use FINDOLOGIC\Objects\XmlResponseObjects\Landingpage;
 use FINDOLOGIC\Objects\XmlResponseObjects\Product;
@@ -62,13 +63,13 @@ class XmlResponse
         $this->results = new Results($xmlResponse->results[0]);
 
         foreach ($xmlResponse->products->children() as $product) {
-            $productId = (string)$product->attributes()->id;
+            $productId = ResponseHelper::getProperty($product->attributes(), 'id', 'string', true);
             // Set product ids as keys for the products.
             $this->products[$productId] = new Product($product);
         }
 
         foreach ($xmlResponse->filters->children() as $filter) {
-            $filterName = (string)$filter->name;
+            $filterName =  ResponseHelper::getProperty($filter, 'name', 'string');
             // Set filter names as keys for the filters.
             $this->filters[$filterName] = new Filter($filter);
             $this->hasFilters = true;

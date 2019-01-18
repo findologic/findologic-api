@@ -3,6 +3,7 @@
 namespace FINDOLOGIC\Objects\XmlResponseObjects;
 
 use Exception;
+use FINDOLOGIC\Helpers\ResponseHelper;
 use SimpleXMLElement;
 
 class Product
@@ -26,13 +27,13 @@ class Product
     public function __construct($result)
     {
         $attributes = $result->attributes();
-        $this->id = (string)$attributes->id;
-        $this->relevance = (float)$attributes->relevance;
-        $this->direct = (int)$attributes->direct;
+        $this->id = ResponseHelper::getProperty($attributes, 'id', 'string');
+        $this->relevance =  ResponseHelper::getProperty($attributes, 'relevance', 'float');
+        $this->direct =  ResponseHelper::getProperty($attributes, 'direct', 'int', true);
 
         if (isset($result->properties)) {
             foreach ($result->properties->children() as $property) {
-                $propertyName = (string)$property->attributes()->name;
+                $propertyName =  ResponseHelper::getProperty($property->attributes(), 'name', 'string');
                 $propertyValue = (string)$property;
                 $this->properties[$propertyName] = $propertyValue;
             }

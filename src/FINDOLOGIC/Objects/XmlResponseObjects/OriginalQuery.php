@@ -3,6 +3,7 @@
 namespace FINDOLOGIC\Objects\XmlResponseObjects;
 
 use Exception;
+use FINDOLOGIC\Helpers\ResponseHelper;
 use SimpleXMLElement;
 
 class OriginalQuery
@@ -21,11 +22,7 @@ class OriginalQuery
     {
         $this->value = (string)$response;
 
-        if (isset($response->attributes()['allow-override'])) {
-            $this->allowOverride = (bool)$response->attributes()['allow-override'];
-        } else {
-            $this->allowOverride = null;
-        }
+        $this->allowOverride = ResponseHelper::getProperty($response->attributes(), 'allow-override', 'bool');
     }
 
     /**
