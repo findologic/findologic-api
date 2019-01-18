@@ -27,7 +27,7 @@ class ResponseHelper
             return $propertyValue;
         }
 
-       settype($propertyValue, $type);
+        settype($propertyValue, $type);
 
         // Check for empty after the property has been casted to submitted the type.
         if (!$emptyValueIsAllowed && self::isEmpty($propertyValue)) {
