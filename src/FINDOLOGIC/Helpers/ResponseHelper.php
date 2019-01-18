@@ -22,26 +22,25 @@ class ResponseHelper
             return null;
         }
 
+        $propertyValue = $obj->{$property};
         if ($type === null) {
-            return $obj->{$property};
+            return $propertyValue;
         }
 
-        $typedProperty = $obj->{$property};
-        if (!settype($typedProperty, $type)) {
-            throw new InvalidArgumentException('Unknown or invalid type submitted.');
-        }
+       settype($propertyValue, $type);
 
         // Check for empty after the property has been casted to submitted the type.
-        if (!$emptyValueIsAllowed && self::isEmpty($typedProperty)) {
+        if (!$emptyValueIsAllowed && self::isEmpty($propertyValue)) {
             return null;
         }
 
-        return $typedProperty;
+        return $propertyValue;
     }
 
     /**
-     * Checks if a variable is empty. Please take note that this function isn't like the PHP function, so a function
-     * will more likely not be empty when you expect it to be.
+     * Checks if a variable is empty. Please take note that this function isn't like the PHP function, so a variable
+     * will more likely not be empty when you expect it to be. Values like literal string '0' is therefore allowed and
+     * is considered as "not empty".
      *
      * @param mixed $v
      *
