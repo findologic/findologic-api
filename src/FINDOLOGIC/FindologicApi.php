@@ -38,8 +38,8 @@ class FindologicApi extends ParameterBuilder
      *      $config = [
      *          FindologicApi::SHOPKEY              => (string) Service's shopkey. Required.
      *          FindologicApi::API_URL              => (string) Findologic API URL. Optional.
-     *          FindologicApi::ALIVETEST_TIMEOUT    => (int|float) Timeout for an alivetest in seconds. Optional.
-     *          FindologicApi::REQUEST_TIMEOUT      => (int|float) Timeout for a request in seconds. Optional.
+     *          FindologicApi::ALIVETEST_TIMEOUT    => (float) Timeout for an alivetest in seconds. Optional.
+     *          FindologicApi::REQUEST_TIMEOUT      => (float) Timeout for a request in seconds. Optional.
      *          FindologicApi::HTTP_CLIENT          => (GuzzleHttp\Client) Client that is used for requests. Optional.
      *      ]
      * @throws ConfigException if the config is not valid.
