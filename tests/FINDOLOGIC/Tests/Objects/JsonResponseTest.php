@@ -42,7 +42,7 @@ class JsonResponseTest extends TestCase
             /** @var Suggestion $suggestion */
             return $suggestion->getLabel();
         }, $response->getSuggestions());
-        $this->assertEquals($expectedLabels, $actualLabels);
+        $this->assertSame($expectedLabels, $actualLabels);
     }
 
     public function testResponseWillReturnExpectedBlocks()
@@ -65,7 +65,7 @@ class JsonResponseTest extends TestCase
             /** @var Suggestion $suggestion */
             return $suggestion->getBlock();
         }, $response->getSuggestions());
-        $this->assertEquals($expectedBlocks, $actualBlocks);
+        $this->assertSame($expectedBlocks, $actualBlocks);
     }
 
     public function testResponseWillReturnExpectedFrequencies()
@@ -88,18 +88,18 @@ class JsonResponseTest extends TestCase
             /** @var Suggestion $suggestion */
             return $suggestion->getFrequency();
         }, $response->getSuggestions());
-        $this->assertEquals($expectedFrequencies, $actualFrequencies);
+        $this->assertSame($expectedFrequencies, $actualFrequencies);
     }
 
     public function testResponseWillReturnExpectedImageUrls()
     {
         $expectedImageUrls = [
-            '',
-            '',
+            null,
+            null,
             'https://www.blubbergurken.io/images/gallery/Findologic/vendor/schulthess.png',
             'https://www.blubbergurken.io/images/gallery/Findologic/vendor/siemens.png',
-            '',
-            '',
+            null,
+            null,
             'https://www.blubbergurken.io/m4dlk92njtak/item/images/10248/full/20000122510-000-00-20000122510.jpg',
             'https://www.blubbergurken.io/m4dlk92njtak/item/images/10598/full/MCSA01744491-G5678-SPV40E40EU-1182799-def-0.jpg',
             'https://www.blubbergurken.io/m4dlk92njtak/item/images/11563/full/MCSA01757436-G6327-SBA88TD16E-1194162-def-0.jpg',
@@ -111,18 +111,18 @@ class JsonResponseTest extends TestCase
             /** @var Suggestion $suggestion */
             return $suggestion->getImageUrl();
         }, $response->getSuggestions());
-        $this->assertEquals($expectedImageUrls, $actualImageUrls);
+        $this->assertSame($expectedImageUrls, $actualImageUrls);
     }
 
     public function testResponseWillReturnExpectedPrice()
     {
         $expectedPrice = [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
             2305.75,
             678.00,
             1355.65,
@@ -134,18 +134,18 @@ class JsonResponseTest extends TestCase
             /** @var Suggestion $suggestion */
             return $suggestion->getPrice();
         }, $response->getSuggestions());
-        $this->assertEquals($expectedPrice, $actualPrice);
+        $this->assertSame($expectedPrice, $actualPrice);
     }
 
     public function testResponseWillReturnExpectedIdentifier()
     {
         $expectedIdentifier = [
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
             '10248',
             '10598',
             '11563',
@@ -157,22 +157,22 @@ class JsonResponseTest extends TestCase
             /** @var Suggestion $suggestion */
             return $suggestion->getIdentifier();
         }, $response->getSuggestions());
-        $this->assertEquals($expectedIdentifier, $actualIdentifier);
+        $this->assertSame($expectedIdentifier, $actualIdentifier);
     }
 
     public function testResponseWillReturnExpectedBasePrice()
     {
         $expectedBasePrice = [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
             1355.65,
-            0,
+            null,
         ];
         $response = $this->getRealResponseData();
 
@@ -180,22 +180,22 @@ class JsonResponseTest extends TestCase
             /** @var Suggestion $suggestion */
             return $suggestion->getBasePrice();
         }, $response->getSuggestions());
-        $this->assertEquals($expectedBasePrice, $actualBasePrice);
+        $this->assertSame($expectedBasePrice, $actualBasePrice);
     }
 
     public function testResponseWillReturnExpectedBasePriceUnit()
     {
         $expectedBasePriceUnit = [
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
             '€',
-            '',
+            null,
         ];
         $response = $this->getRealResponseData();
 
@@ -203,18 +203,18 @@ class JsonResponseTest extends TestCase
             /** @var Suggestion $suggestion */
             return $suggestion->getBasePriceUnit();
         }, $response->getSuggestions());
-        $this->assertEquals($expectedBasePriceUnit, $actualBasePriceUnit);
+        $this->assertSame($expectedBasePriceUnit, $actualBasePriceUnit);
     }
 
     public function testResponseWillReturnExpectedUrl()
     {
         $expectedUrl = [
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
             'http://www.blubbergurken.io/de/kochen-und-backen/miele-dampfgarer-mit-mikrowelle-dgm-6600-edelstahl/a-10248/',
             'http://www.blubbergurken.io/de/bosch-geschirrspueler-spv40e40eu/a-10598/',
             'http://www.blubbergurken.io/de/bosch-geschirrspueler-sba88td16e/a-11563/',
@@ -226,7 +226,7 @@ class JsonResponseTest extends TestCase
             /** @var Suggestion $suggestion */
             return $suggestion->getUrl();
         }, $response->getSuggestions());
-        $this->assertEquals($expectedUrl, $actualUrl);
+        $this->assertSame($expectedUrl, $actualUrl);
     }
 
     public function testResponseWillReturnExpectedOrdernumber()
@@ -249,7 +249,7 @@ class JsonResponseTest extends TestCase
             /** @var Suggestion $suggestion */
             return $suggestion->getOrdernumber();
         }, $response->getSuggestions());
-        $this->assertEquals($expectedOrdernumber, $actualOrdernumber);
+        $this->assertSame($expectedOrdernumber, $actualOrdernumber);
     }
 
     public function testResponseWillReturnFilteredSuggestions()
@@ -269,6 +269,6 @@ class JsonResponseTest extends TestCase
             /** @var Suggestion $suggestion */
             return $suggestion->getBlock();
         }, $response->getFilteredSuggestions($blockFilter));
-        $this->assertEquals($expectedBlockType, $actualBlockType);
+        $this->assertSame($expectedBlockType, $actualBlockType);
     }
 }

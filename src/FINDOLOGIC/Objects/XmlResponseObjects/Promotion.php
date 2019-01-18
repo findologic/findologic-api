@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Objects\XmlResponseObjects;
 
+use FINDOLOGIC\Helpers\ResponseHelper;
 use SimpleXMLElement;
 
 class Promotion
@@ -18,8 +19,8 @@ class Promotion
      */
     public function __construct($response)
     {
-        $this->image = (string)$response->image;
-        $this->link = (string)$response->link;
+        $this->image = ResponseHelper::getProperty($response, 'image', 'string');
+        $this->link = ResponseHelper::getProperty($response, 'link', 'string');
     }
 
     /**

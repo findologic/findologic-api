@@ -3,6 +3,7 @@
 namespace FINDOLOGIC\Objects\XmlResponseObjects;
 
 use Exception;
+use FINDOLOGIC\Helpers\ResponseHelper;
 use SimpleXMLElement;
 
 class QueryString
@@ -20,7 +21,7 @@ class QueryString
     public function __construct($response)
     {
         $this->value = (string)$response;
-        $this->type = (string)$response->attributes()->type;
+        $this->type = ResponseHelper::getProperty($response->attributes(), 'type', 'string');
     }
 
     /**

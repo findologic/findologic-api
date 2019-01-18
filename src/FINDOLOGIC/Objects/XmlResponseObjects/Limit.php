@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Objects\XmlResponseObjects;
 
+use FINDOLOGIC\Helpers\ResponseHelper;
 use SimpleXMLElement;
 
 class Limit
@@ -18,8 +19,8 @@ class Limit
      */
     public function __construct($response)
     {
-        $this->first = (int)$response->first;
-        $this->count = (int)$response->count;
+        $this->first = ResponseHelper::getProperty($response, 'first', 'int', true);
+        $this->count = ResponseHelper::getProperty($response, 'count', 'int', true);
     }
 
     /**

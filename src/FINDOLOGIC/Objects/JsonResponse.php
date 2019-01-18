@@ -17,7 +17,7 @@ class JsonResponse
 
     /**
      * JsonResponse constructor.
-     * @param $response
+     * @param string $response
      */
     public function __construct($response)
     {

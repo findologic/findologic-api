@@ -2,24 +2,25 @@
 
 namespace FINDOLOGIC\Objects\XmlResponseObjects;
 
+use FINDOLOGIC\Helpers\ResponseHelper;
 use SimpleXMLElement;
 
 class Results
 {
-    /** @var int $count */
+    /** @var int|null $count */
     private $count;
 
     /**
      * Results constructor.
-     * @param SimpleXMLElement $result
+     * @param SimpleXMLElement $response
      */
-    public function __construct($result)
+    public function __construct($response)
     {
-        $this->count = (int)$result->count;
+        $this->count = ResponseHelper::getProperty($response, 'count', 'int', true);
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getCount()
     {
