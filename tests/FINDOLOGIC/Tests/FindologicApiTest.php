@@ -160,7 +160,7 @@ class FindologicApiTest extends TestCase
      * @dataProvider xmlRequestProvider
      * @param $requestType string
      */
-    public function testAlivetestIsSentForXmlResponse($requestType)
+    public function testAlivetestIsSentForSearchAndNavigationRequest($requestType)
     {
         // Alivetest.
         $this->responseMock->expects($this->at(0))->method('getBody')->willReturn('alive');
@@ -187,7 +187,7 @@ class FindologicApiTest extends TestCase
         $this->assertInstanceOf(XmlResponse::class, $response);
     }
 
-    public function testAlivetestIsNotSentForJsonResponse()
+    public function testAlivetestIsNotSentForSuggestionRequest()
     {
         $this->responseMock
             ->expects($this->once())
