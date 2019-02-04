@@ -122,7 +122,7 @@ class ParameterBuilder
      */
     public function setShopurl($value)
     {
-        // TODO: Validate URLs with Valitron if the bug with objects as URLs is fixed.
+        // TODO: @see https://github.com/TheKeymaster/findologic-api/issues/24
         $shopUrlRegex = '/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&\'\(\)\*\+,;=.]+$/';
         if (!is_string($value) ||!preg_match($shopUrlRegex, $value)) {
             throw new InvalidParamException(self::SHOP_URL);
@@ -161,7 +161,7 @@ class ParameterBuilder
      */
     public function setReferer($value)
     {
-        // TODO: Validate URLs with Valitron if the bug with objects as URLs is fixed.
+        // TODO: @see https://github.com/TheKeymaster/findologic-api/issues/24
         if (!is_string($value) || !preg_match('/^((^https?:\/\/)|^www\.)/', $value)) {
             throw new InvalidParamException(self::REFERER);
         }
