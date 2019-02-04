@@ -9,8 +9,11 @@ use FINDOLOGIC\Exceptions\ServiceNotAliveException;
 use FINDOLOGIC\Helpers\ParameterBuilder;
 use FINDOLOGIC\Objects\JsonResponse;
 use FINDOLOGIC\Objects\XmlResponse;
+use FINDOLOGIC\Validators\ConfigValidator;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use InvalidArgumentException;
+use Valitron\Validator;
 
 class FindologicApi extends ParameterBuilder
 {
@@ -59,50 +62,51 @@ class FindologicApi extends ParameterBuilder
      * config is not valid.
      *
      * @param array $config
+     * @return bool
      * @throws ConfigException
      */
     private function validateConfig(array $config)
     {
-        // All configuration values need to have a valid type.
-        foreach ($config as $key => $value) {
-            switch ($key) {
-                case self::SHOPKEY:
-                case self::API_URL:
-                    if (!is_string($value)) {
-                        throw new ConfigException();
-                    }
-                    break;
-                case self::ALIVETEST_TIMEOUT:
-                case self::REQUEST_TIMEOUT:
-                    if (!is_int($value) && !is_float($value)) {
-                        throw new ConfigException();
-                    }
-                    break;
-                case self::HTTP_CLIENT:
-                    if (!is_object($value)) {
-                        throw new ConfigException();
-                    }
-            }
+        $validator = new ConfigValidator($config);
+
+        $validator->rule('required', self::SHOPKEY)
+            ->rule('shopkey', self::SHOPKEY)
+            // TODO: @see https://github.com/TheKeymaster/findologic-api/issues/24
+            ->rule('lengthMin', self::API_URL, 5)
+            ->rule('numeric', [self::ALIVETEST_TIMEOUT, self::REQUEST_TIMEOUT])
+            ->rule('instanceOf', 'GuzzleHttp\Client', self::HTTP_CLIENT);
+
+        if (!$validator->validate()) {
+            throw new ConfigException();
         }
 
-        // Validate the shopkey against the shopkey format.
-        if (!preg_match('/^[A-F0-9]{32,32}$/', $config[self::SHOPKEY])) {
-            throw new ConfigException('Shopkey format is invalid.');
-        }
+        return true;
     }
 
     /**
-     * Returns the currently set config or only one setting when requesting a specific key.
+     * Returns the currently set config.
      *
-     * @param string|null $key
+     * @return array
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    /**
+     * Returns the value for a specific config key. If the config key is unknown, an exception will be thrown.
+     *
+     * @throws InvalidArgumentException If the config key is unknown or unset.
+     * @param string $key
      * @return mixed
      */
-    public function getConfig($key = null)
+    public function getConfigByKey($key)
     {
-        if ($key !== null) {
+        if (!isset($this->config[$key])) {
+            throw new InvalidArgumentException('Unknown or unset configuration value.');
+        } else {
             return $this->config[$key];
         }
-        return $this->config;
     }
 
     /**
@@ -136,7 +140,7 @@ class FindologicApi extends ParameterBuilder
     }
 
     /**
-     * Sends a suggestion request to FINDOLOGIC and returns a XmlResponse object.
+     * Sends a suggestion request to FINDOLOGIC and returns a JsonResponse object.
      *
      * @throws ServiceNotAliveException if the service is unable to respond.
      * @throws ParamNotSetException if the required params are not set.
@@ -146,7 +150,6 @@ class FindologicApi extends ParameterBuilder
     {
         $this->checkRequiredParamsAreSet();
 
-        $this->sendRequest(RequestType::ALIVETEST_REQUEST);
         return new JsonResponse($this->sendRequest(RequestType::SUGGESTION_REQUEST));
     }
 
@@ -163,7 +166,7 @@ class FindologicApi extends ParameterBuilder
     private function sendRequest($requestType)
     {
         /** @var Client $requestClient */
-        $requestClient = $this->getConfig(self::HTTP_CLIENT);
+        $requestClient = $this->getConfigByKey(self::HTTP_CLIENT);
         $requestUrl = $this->buildRequestUrl($requestType);
         $timeout = $this->getRequestTimeout($requestType);
 
@@ -193,13 +196,11 @@ class FindologicApi extends ParameterBuilder
      */
     private function checkRequiredParamsAreSet()
     {
-        $requiredParams = $this->getRequiredParams();
+        $validator = new Validator($this->params);
+        $validator->rule('required', $this->getRequiredParams());
 
-        // Check if all required params are set.
-        foreach ($requiredParams as $paramName => $paramValue) {
-            if (!array_key_exists($paramValue, $this->getParam())) {
-                throw new ParamNotSetException($paramValue);
-            }
+        if (!$validator->validate()) {
+            throw new ParamNotSetException(key($validator->errors()));
         }
 
         return true;
@@ -218,13 +219,14 @@ class FindologicApi extends ParameterBuilder
     {
         $isAlivetestRequest = $requestType === RequestType::ALIVETEST_REQUEST;
         $responseBodyIsAlive = $responseBody == self::SERVICE_ALIVE_BODY;
-        $isAlivetestAndBodyIsOk = $isAlivetestRequest && $responseBodyIsAlive;
         $httpCodeIsOk = $statusCode === self::STATUS_OK;
 
-        // If it is an alivetest, the 'alive' body needs to be set. If it is not an alivetest, then we do not
-        // care about the body. The http code always needs to be 200 OK.
-        if (!(($isAlivetestAndBodyIsOk && $httpCodeIsOk) || !$isAlivetestRequest && $httpCodeIsOk)) {
-            throw new ServiceNotAliveException($responseBody);
+        if ($isAlivetestRequest) {
+            if (!$responseBodyIsAlive) {
+                throw new ServiceNotAliveException($responseBody);
+            }
+        } elseif (!$httpCodeIsOk) {
+            throw new ServiceNotAliveException(sprintf('Unexpected status code %s.', $statusCode));
         }
 
         return true;
@@ -257,9 +259,9 @@ class FindologicApi extends ParameterBuilder
     private function getRequestTimeout($requestType)
     {
         if ($requestType == RequestType::ALIVETEST_REQUEST) {
-            return $this->getConfig(self::ALIVETEST_TIMEOUT);
+            return $this->getConfigByKey(self::ALIVETEST_TIMEOUT);
         } else {
-            return $this->getConfig(self::REQUEST_TIMEOUT);
+            return $this->getConfigByKey(self::REQUEST_TIMEOUT);
         }
     }
 

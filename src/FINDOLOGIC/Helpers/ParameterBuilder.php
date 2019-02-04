@@ -5,6 +5,7 @@ namespace FINDOLOGIC\Helpers;
 use FINDOLOGIC\Definitions\OrderType;
 use FINDOLOGIC\Definitions\RequestType;
 use FINDOLOGIC\Exceptions\InvalidParamException;
+use FINDOLOGIC\Validators\ParameterValidator;
 use InvalidArgumentException;
 
 class ParameterBuilder
@@ -21,7 +22,7 @@ class ParameterBuilder
 
     protected $config = [
         self::SHOPKEY,
-        self::API_URL => self::DEFAULT_API_URL,
+        self::API_URL => self::DEFAULT_TEMPLATE_API_URL,
         self::ALIVETEST_TIMEOUT => self::DEFAULT_ALIVETEST_TIMEOUT,
         self::REQUEST_TIMEOUT => self::DEFAULT_REQUEST_TIMEOUT,
         self::HTTP_CLIENT
@@ -59,10 +60,10 @@ class ParameterBuilder
 
     // Defaults
     /** @var string URL Convention is https://API_URL/ps/SHOP_URL/ACTION.php */
-    const DEFAULT_API_URL = 'https://service.findologic.com/ps/%s/%s';
-    /** @var int|float */
+    const DEFAULT_TEMPLATE_API_URL = 'https://service.findologic.com/ps/%s/%s';
+    /** @var float */
     const DEFAULT_ALIVETEST_TIMEOUT = 1.0;
-    /** @var int|float */
+    /** @var float */
     const DEFAULT_REQUEST_TIMEOUT = 3.0;
 
     const SERVICE_ALIVE_BODY = 'alive';
@@ -84,7 +85,6 @@ class ParameterBuilder
         self::REVISION
     ];
 
-    // TODO: Documentation does not require more params. But are userip etc. not relevant?
     protected $requiredParamsSuggest = [
         self::SHOPKEY,
         self::QUERY
@@ -93,7 +93,8 @@ class ParameterBuilder
     protected $params = [];
 
     /**
-     * Sets the shopkey param. It is used to determine the service. Required.
+     * Sets the shopkey param. It is used to determine the service. The shopkey param is set by default (from the
+     * config). Only override this param if you are 100% sure you know what you're doing. Required.
      *
      * @param $value string
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#required_parameters
@@ -101,7 +102,10 @@ class ParameterBuilder
      */
     public function setShopkey($value)
     {
-        if (!is_string($value) || !preg_match('/^[A-F0-9]{32,32}$/', $value)) {
+        $validator = new ParameterValidator([self::SHOPKEY => $value]);
+        $validator->rule('shopkey', self::SHOPKEY);
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::SHOPKEY);
         }
 
@@ -118,6 +122,7 @@ class ParameterBuilder
      */
     public function setShopurl($value)
     {
+        // TODO: @see https://github.com/TheKeymaster/findologic-api/issues/24
         $shopUrlRegex = '/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&\'\(\)\*\+,;=.]+$/';
         if (!is_string($value) ||!preg_match($shopUrlRegex, $value)) {
             throw new InvalidParamException(self::SHOP_URL);
@@ -136,11 +141,10 @@ class ParameterBuilder
      */
     public function setUserip($value)
     {
-        $ipv4Regex= '/^(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})(.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})){3}$/';
-        $ipv6Regex = '/(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/';
+        $validator = new ParameterValidator([self::USER_IP => $value]);
+        $validator->rule('ip', self::USER_IP);
 
-        // The parameter needs to be a string and an ipv4 or an ipv6 address.
-        if (!is_string($value) || (!preg_match($ipv4Regex, $value) && !preg_match($ipv6Regex, $value))) {
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::USER_IP);
         }
 
@@ -149,7 +153,7 @@ class ParameterBuilder
     }
 
     /**
-     * Sets the referer param. It is used to track the user's search history. Required.
+     * Sets the referer param. It is used to determine on which page a search was fired. Required.
      *
      * @param $value string
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#required_parameters
@@ -157,6 +161,7 @@ class ParameterBuilder
      */
     public function setReferer($value)
     {
+        // TODO: @see https://github.com/TheKeymaster/findologic-api/issues/24
         if (!is_string($value) || !preg_match('/^((^https?:\/\/)|^www\.)/', $value)) {
             throw new InvalidParamException(self::REFERER);
         }
@@ -167,7 +172,7 @@ class ParameterBuilder
 
     /**
      * Sets the revision param. It is used to identify the version of the plugin. Can be set to 1.0.0 if you are not
-     *      sure which value you should pass to the API. Required.
+     * sure which value should be passed to the API. Required.
      *
      * @param $value string
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#required_parameters
@@ -175,7 +180,10 @@ class ParameterBuilder
      */
     public function setRevision($value)
     {
-        if (!is_string($value) || !preg_match('/^(\d+\.)?(\d+\.)?(\*|\d+)$/', $value)) {
+        $validator = new ParameterValidator([self::REVISION => $value]);
+        $validator->rule('revision', self::REVISION);
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::REVISION);
         }
 
@@ -192,7 +200,10 @@ class ParameterBuilder
      */
     public function setQuery($value)
     {
-        if (!is_string($value)) {
+        $validator = new ParameterValidator([self::QUERY => $value]);
+        $validator->rule('string', self::QUERY);
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::QUERY);
         }
 
@@ -211,11 +222,17 @@ class ParameterBuilder
      */
     public function addAttribute($filterName, $value, $specifier = null)
     {
-        $filterNameIsString = (is_string($filterName));
-        $valueIsStringIntegerOrFloat = (is_string($value) || is_integer($value) || is_float($value));
-        $specifierIsStringOrNull = (is_string($specifier) || $specifier === null);
+        $validator = new ParameterValidator([
+            'filterName' => $filterName,
+            'value' => $value,
+            'specifier' => $specifier,
+        ]);
 
-        if ((!$filterNameIsString || !$valueIsStringIntegerOrFloat || !$specifierIsStringOrNull)) {
+        $validator->rule('string', 'filterName');
+        $validator->rule('stringOrNumeric', 'value');
+        $validator->rule('stringOrNull', 'specifier');
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::ATTRIB);
         }
 
@@ -233,7 +250,10 @@ class ParameterBuilder
      */
     public function setOrder($value)
     {
-        if (!is_string($value) || !array_key_exists($value, OrderType::getList())) {
+        $validator = new ParameterValidator([self::ORDER => $value]);
+        $validator->rule('isOrderParam', self::ORDER);
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::ORDER);
         }
 
@@ -250,7 +270,10 @@ class ParameterBuilder
      */
     public function addProperty($value)
     {
-        if (!is_string($value)) {
+        $validator = new ParameterValidator([self::PROPERTIES => $value]);
+        $validator->rule('string', self::PROPERTIES);
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::PROPERTIES);
         }
 
@@ -259,19 +282,26 @@ class ParameterBuilder
     }
 
     /**
-     * Adds the pushAttrib param. It is used to push products based on their attributes and on the factor. We recommend
-     * using weights between 1 and 3 for the factor.
+     * Adds the pushAttrib param. It is used to push products based on their attributes and the factor.
      *
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#search_parameter
      * @see https://docs.findologic.com/doku.php?id=personalization
      * @param $key string Name of the Filter. E.g. Color
      * @param $value string Value of the Filter. E.g. Black
-     * @param $factor int|float Indicates how much the pushed filter influences the result.
+     * @param $factor float Indicates how much the pushed filter influences the result.
      * @return ParameterBuilder
      */
     public function addPushAttrib($key, $value, $factor)
     {
-        if (!(is_string($key) && is_string($value) && (is_int($factor) || is_float($factor)))) {
+        $validator = new ParameterValidator([
+            'key' => $key,
+            'value' => $value,
+            'factor' => $factor,
+        ]);
+        $validator->rule('string', ['key', 'value']);
+        $validator->rule('numeric', 'factor');
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::PUSH_ATTRIB);
         }
 
@@ -288,7 +318,10 @@ class ParameterBuilder
      */
     public function setCount($value)
     {
-        if (!is_integer($value)) {
+        $validator = new ParameterValidator([self::COUNT => $value]);
+        $validator->rule('equalOrHigherThanZero', self::COUNT);
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::COUNT);
         }
 
@@ -306,7 +339,10 @@ class ParameterBuilder
      */
     public function setFirst($value)
     {
-        if (!is_integer($value)) {
+        $validator = new ParameterValidator([self::FIRST => $value]);
+        $validator->rule('equalOrHigherThanZero', self::FIRST);
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::FIRST);
         }
 
@@ -322,7 +358,10 @@ class ParameterBuilder
      */
     public function setIdentifier($value)
     {
-        if (!is_string($value)) {
+        $validator = new ParameterValidator([self::IDENTIFIER => $value]);
+        $validator->rule('string', self::IDENTIFIER);
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::IDENTIFIER);
         }
 
@@ -338,7 +377,10 @@ class ParameterBuilder
      */
     public function addGroup($value)
     {
-        if (!is_string($value)) {
+        $validator = new ParameterValidator([self::GROUP => $value]);
+        $validator->rule('string', self::GROUP);
+
+        if (!$validator->validate()) {
             throw new InvalidParamException(self::GROUP);
         }
 
@@ -377,16 +419,27 @@ class ParameterBuilder
     }
 
     /**
-     * Returns a specific param or all if no explicit param is given.
+     * Returns a specific param.
      *
-     * @param string|null $param
-     * @return string|array
+     * @param string $key
+     * @return mixed
      */
-    public function getParam($param = null)
+    public function getParam($key)
     {
-        if ($param !== null) {
-            return $this->params[$param];
+        if (!isset($this->params[$key])) {
+            throw new InvalidArgumentException('Unknown or unset param.');
+        } else {
+            return $this->params[$key];
         }
+    }
+
+    /**
+     * Returns all set params.
+     *
+     * @return array
+     */
+    public function getAllParams()
+    {
         return $this->params;
     }
 
@@ -394,9 +447,10 @@ class ParameterBuilder
      * Internal function that adds a certain param to all params array.
      *
      * @param $key string The key or the param name, that identifies the param.
-     * @param $value string The value for the param.
-     * @param string $method Can be either 'set' or 'add'. 'add' allows the value to be set multiple times and 'set'
-     *      will override any existing ones.
+     * @param $value mixed The value for the param.
+     * @param string $method Can be either ParameterBuilder::SET_VALUE or ParameterBuilder::ADD_VALUE.
+     * ParameterBuilder::ADD_VALUE allows the value to be set multiple times and ParameterBuilder::SET_VALUE will
+     * override any existing ones.
      */
     private function addParam($key, $value, $method = self::SET_VALUE)
     {

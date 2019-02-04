@@ -9,19 +9,19 @@ class RequestType
     const NAVIGATION_REQUEST = 'selector.php';
     const SUGGESTION_REQUEST = 'autocomplete.php';
 
-    public static $list = [
-        self::ALIVETEST_REQUEST => self::ALIVETEST_REQUEST,
-        self::SEARCH_REQUEST => self::SEARCH_REQUEST,
-        self::NAVIGATION_REQUEST => self::NAVIGATION_REQUEST,
-        self::SUGGESTION_REQUEST => self::SUGGESTION_REQUEST,
+    private static $availableRequestTypes = [
+        self::ALIVETEST_REQUEST,
+        self::SEARCH_REQUEST,
+        self::NAVIGATION_REQUEST,
+        self::SUGGESTION_REQUEST,
     ];
 
     /**
      * Returns an array of all available request types.
      * @return array
      */
-    public static function getList()
+    public static function getAvailableRequestTypes()
     {
-        return self::$list;
+        return self::$availableRequestTypes;
     }
 }

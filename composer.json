@@ -13,15 +13,27 @@
             "name": "Chris Ortner",
             "email": "chris@codexfons.com",
             "role": "Developer"
+        },
+        {
+            "name": "Markus Machatschek",
+            "email": "m.machatschek@findologic.com",
+            "role": "Developer"
         }
     ],
+    "config": {
+        "platform": {
+            "php": "5.6"
+        }
+    },
     "require": {
+        "php": ">=5.6",
         "guzzlehttp/guzzle": "^6.3",
+        "vlucas/valitron": "^1.4",
         "ext-SimpleXML": "*",
         "ext-json": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.4 || ^7.0",
+        "phpunit/phpunit": "^5 || ^6.5 || ^7.0",
         "symfony/console": "v3.2.9",
         "friendsofphp/php-cs-fixer": "^2.13"
     },
@@ -34,5 +46,18 @@
         "psr-0": {
             "FINDOLOGIC\\Request\\Tests": "tests/"
         }
+    },
+    "scripts": {
+        "check-code-style": [
+            "php-cs-fixer fix --dry-run src",
+            "php-cs-fixer fix --dry-run tests"
+        ],
+        "fix-code-style": [
+            "php-cs-fixer fix src",
+            "php-cs-fixer fix tests"
+        ],
+        "run-tests": [
+            "phpunit --configuration phpunit.xml --coverage-text --coverage-clover=coverage.xml"
+        ]
     }
 }

@@ -31,17 +31,21 @@ class Suggestion
     /** @var string|null $basePriceUnit */
     private $url;
 
+    /** @var string|null $ordernumber */
+    private $ordernumber;
+
     public function __construct($response)
     {
         $this->label = (string)$response->label;
         $this->block = (string)$response->block;
         $this->frequency = (string)$response->frequency;
         $this->imageUrl = (string)$response->imageUrl;
-        $this->price = (string)$response->price;
+        $this->price = (float)$response->price; // TODO: Set to NULL if it is zero
         $this->identifier = (string)$response->identifier;
-        $this->basePrice = (string)$response->basePrice;
+        $this->basePrice = (float)$response->basePrice; // TODO: Set to NULL if it is zero
         $this->basePriceUnit = (string)$response->basePriceUnit;
         $this->url = (string)$response->url;
+        $this->ordernumber = property_exists($response, 'ordernumber') ? (string)$response->ordernumber : null;
     }
 
     /**
@@ -69,7 +73,7 @@ class Suggestion
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getImageUrl()
     {
@@ -85,7 +89,7 @@ class Suggestion
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getIdentifier()
     {
@@ -101,7 +105,7 @@ class Suggestion
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getBasePriceUnit()
     {
@@ -109,10 +113,18 @@ class Suggestion
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOrdernumber()
+    {
+        return $this->ordernumber;
     }
 }

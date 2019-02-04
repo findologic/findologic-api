@@ -1,25 +1,28 @@
-<?php
+<?php /** @noinspection PhpParamsInspection (Not relevant for tests) */
 
 namespace FINDOLOGIC\Tests;
 
+use FINDOLOGIC\Definitions\BlockType;
 use FINDOLOGIC\Definitions\RequestType;
 use FINDOLOGIC\Exceptions\ConfigException;
 use FINDOLOGIC\Exceptions\ParamNotSetException;
 use FINDOLOGIC\Exceptions\ServiceNotAliveException;
 use FINDOLOGIC\FindologicApi;
+use FINDOLOGIC\Objects\JsonResponse;
+use FINDOLOGIC\Objects\XmlResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 
 class FindologicApiTest extends TestCase
 {
-    /** @var $httpClientMock MockObject */
+    /** @var $httpClientMock PHPUnit_Framework_MockObject_MockObject */
     public $httpClientMock;
 
-    /** @var $httpClientMock MockObject */
+    /** @var $httpClientMock PHPUnit_Framework_MockObject_MockObject */
     public $responseMock;
 
     public function setUp()
@@ -34,24 +37,31 @@ class FindologicApiTest extends TestCase
     }
 
     /**
-     * Sets default expectations that are required in basically every test that should work when requesting.
-     * @param string $requestType
+     * Gets mock data that may be returned from FINDOLOGIC.
+     *
+     * @param bool $json If true, will return a mock JSON response. If false it will return a XML response instead.
+     * @return false|string Returns the read data or false on failure.
      */
-    public function setDefaultExpectations($requestType = 'sendSearchRequest')
+    private function getMockData($json = false)
     {
-        if ($requestType !== 'sendSuggestionRequest') {
-            // Get contents from a real response locally.
-            $realResponseData = file_get_contents(__DIR__ . '/../Mockdata/demoResponse.xml');
-        } else {
-            // Get contents from a real response locally.
-            $realResponseData = file_get_contents(__DIR__ . '/../Mockdata/demoResponseSuggest.json');
+        if ($json) {
+            return file_get_contents(__DIR__ . '/../Mockdata/demoResponseSuggest.json');
         }
 
+        return file_get_contents(__DIR__ . '/../Mockdata/demoResponse.xml');
+    }
+
+    /**
+     * Sets default expectations that are required in basically every test that should work when requesting.
+     */
+    public function setDefaultExpectationsForXmlResponse()
+    {
         // Alivetest.
         $this->responseMock->expects($this->at(0))->method('getBody')->willReturn('alive');
         $this->responseMock->expects($this->at(1))->method('getStatusCode')->willReturn(200);
 
-        // Search, Navigation or Suggest request.
+        // Search or Navigation request.
+        $realResponseData = $this->getMockData();
         $this->responseMock->expects($this->at(2))->method('getBody')->willReturn($realResponseData);
         $this->responseMock->expects($this->at(3))->method('getStatusCode')->willReturn(200);
 
@@ -80,6 +90,14 @@ class FindologicApiTest extends TestCase
             ['sendSearchRequest'],
             ['sendNavigationRequest'],
             ['sendSuggestionRequest'],
+        ];
+    }
+
+    public function xmlRequestProvider()
+    {
+        return [
+            ['sendSearchRequest'],
+            ['sendNavigationRequest'],
         ];
     }
 
@@ -139,12 +157,24 @@ class FindologicApiTest extends TestCase
     }
 
     /**
-     * @dataProvider requestProvider
+     * @dataProvider xmlRequestProvider
      * @param $requestType string
      */
-    public function testAlivetestWorks($requestType)
+    public function testAlivetestIsSentForSearchAndNavigationRequest($requestType)
     {
-        $this->setDefaultExpectations($requestType);
+        // Alivetest.
+        $this->responseMock->expects($this->at(0))->method('getBody')->willReturn('alive');
+        $this->responseMock->expects($this->at(1))->method('getStatusCode')->willReturn(200);
+
+        // Search or Navigation request.
+        $realResponseData = $this->getMockData();
+        $this->responseMock->expects($this->at(2))->method('getBody')->willReturn($realResponseData);
+        $this->responseMock->expects($this->at(3))->method('getStatusCode')->willReturn(200);
+
+        // Both requests should respond with the responseMock.
+        $this->httpClientMock->expects($this->at(0))->method('request')->willReturn($this->responseMock);
+        $this->httpClientMock->expects($this->at(1))->method('request')->willReturn($this->responseMock);
+
         $findologicApi = $this->getDefaultFindologicApi();
 
         $findologicApi
@@ -153,7 +183,34 @@ class FindologicApiTest extends TestCase
             ->setReferer('www.blubbergurken.io/blubbergurken-sale')
             ->setRevision('1.0.0');
 
-        $findologicApi->{$requestType}();
+        $response = $findologicApi->{$requestType}();
+        $this->assertInstanceOf(XmlResponse::class, $response);
+    }
+
+    public function testAlivetestIsNotSentForSuggestionRequest()
+    {
+        $this->responseMock
+            ->expects($this->once())
+            ->method('getBody')
+            ->willReturn($this->getMockData(true));
+
+        $this->responseMock
+            ->expects($this->once())
+            ->method('getStatusCode')
+            ->willReturn(200);
+
+        $this->httpClientMock->expects($this->at(0))->method('request')->willReturn($this->responseMock);
+
+        $findologicApi = $this->getDefaultFindologicApi();
+
+        $findologicApi
+            ->setShopurl('www.blubbergurken.io')
+            ->setUserip('127.0.0.1')
+            ->setReferer('www.blubbergurken.io/blubbergurken-sale')
+            ->setRevision('1.0.0');
+
+        $response = $findologicApi->sendSuggestionRequest();
+        $this->assertInstanceOf(JsonResponse::class, $response);
     }
 
     public function failingAlivetestProvider()
@@ -187,12 +244,24 @@ class FindologicApiTest extends TestCase
         $requestTypes = $this->requestProvider();
 
         foreach ($requestTypes as $requestType) {
-            try {
-                $findologicApi->{$requestType[0]}();
-                $this->fail('A ServiceNotAliveException should occur if the service is not alive!');
-            } catch (ServiceNotAliveException $e) {
-                $expectedErrorMessage = 'The service is not alive. Reason: %s';
-                $this->assertEquals(sprintf($expectedErrorMessage, $responseBody), $e->getMessage());
+            if ($requestType[0] === 'sendSuggestionRequest') {
+                // A suggestion request does not need an alivetest.
+                $this->assertTrue(true);
+            } else {
+                try {
+                    $findologicApi->{$requestType[0]}();
+                    $this->fail('A ServiceNotAliveException should occur if the service is not alive!');
+                } catch (ServiceNotAliveException $e) {
+                    if ($httpCode === 200 || $responseBody !== 'alive') {
+                        $expectedErrorMessage = 'The service is not alive. Reason: %s';
+                    } else {
+                        $expectedErrorMessage = sprintf(
+                            'The service is not alive. Reason: Unexpected status code %s.',
+                            $httpCode
+                        );
+                    }
+                    $this->assertEquals(sprintf($expectedErrorMessage, $responseBody), $e->getMessage());
+                }
             }
         }
     }
@@ -305,30 +374,45 @@ class FindologicApiTest extends TestCase
 
             $this->fail('A ConfigException was expected to occur when the shopkey is invalid.');
         } catch (ConfigException $e) {
-            $this->assertEquals('Shopkey format is invalid.', $e->getMessage());
+            $this->assertEquals('Invalid FindologicApi config.', $e->getMessage());
         }
     }
 
     public function testAllRequestTypesAreAvailable()
     {
         $expectedAvailableRequestTypes = [
-            'alivetest.php' => 'alivetest.php',
-            'index.php' => 'index.php',
-            'selector.php' => 'selector.php',
-            'autocomplete.php' => 'autocomplete.php',
+            'alivetest.php',
+            'index.php',
+            'selector.php',
+            'autocomplete.php',
         ];
-        $availableRequestTypes = RequestType::getList();
+        $availableRequestTypes = RequestType::getAvailableRequestTypes();
 
         $this->assertEquals($expectedAvailableRequestTypes, $availableRequestTypes);
     }
 
+    public function testAllBlockTypesAreAvailable()
+    {
+        $expectedAvailableBlockTypes = [
+            'suggest',
+            'landingpage',
+            'cat',
+            'vendor',
+            'product',
+            'promotion'
+        ];
+        $availableBlockTypes = BlockType::getAvailableBlockTypes();
+
+        $this->assertEquals($expectedAvailableBlockTypes, $availableBlockTypes);
+    }
+
     /**
-     * @dataProvider requestProvider
+     * @dataProvider xmlRequestProvider
      * @param $requestType string
      */
     public function testFindologicResponseTimeCanBeSeen($requestType)
     {
-        $this->setDefaultExpectations($requestType);
+        $this->setDefaultExpectationsForXmlResponse();
 
         /** @var FindologicApi $findologicApi */
         $findologicApi = $this->getDefaultFindologicApi()
@@ -347,8 +431,53 @@ class FindologicApiTest extends TestCase
     public function testWhenNoExplicitClientIsSetTheDefaultClientIsSet()
     {
         $findologicApi = new FindologicApi(['shopkey' => 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA']);
-        $httpClient = $findologicApi->getConfig('httpClient');
+        $httpClient = $findologicApi->getConfigByKey('httpClient');
 
         $this->assertInstanceOf('GuzzleHttp\Client', $httpClient);
+    }
+
+    public function testConfigByKeyWillThrowAnExceptionWhenTheKeyIsUnknown()
+    {
+        $findologicApi = $this->getDefaultFindologicApi();
+        try {
+            $findologicApi->getConfigByKey('thisKeyDoesNotExist');
+            $this->fail('An InvalidArgumentException should happen if a key does not exist.');
+        } catch (\InvalidArgumentException $e) {
+            $this->assertEquals('Unknown or unset configuration value.', $e->getMessage());
+        }
+    }
+
+    public function testGetAllParamsWillReturnAllSetParams()
+    {
+        $expectedShopurl = 'www.blubbergurken.io';
+        $expectedUserIp = '127.0.0.1';
+        $expectedReferer = 'www.blubbergurken.io/blubbergurken-sale';
+        $expectedRevision = '1.0.0';
+
+        $expectedParams = [
+            'shopurl' => $expectedShopurl,
+            'userip' => $expectedUserIp,
+            'referer' => $expectedReferer,
+            'revision' => $expectedRevision,
+        ];
+
+        $findologicApi = $this->getDefaultFindologicApi()
+            ->setShopurl($expectedShopurl)
+            ->setUserip($expectedUserIp)
+            ->setReferer($expectedReferer)
+            ->setRevision($expectedRevision);
+
+        $this->assertEquals($expectedParams, $findologicApi->getAllParams());
+    }
+
+    public function testGetParamThatDoesNotExistWillThrowAnException()
+    {
+        $findologicApi = $this->getDefaultFindologicApi();
+        try {
+            $findologicApi->getParam('geilerParam');
+            $this->fail('An InvalidArgumentException should happen if a key does not exist.');
+        } catch (\InvalidArgumentException $e) {
+            $this->assertEquals('Unknown or unset param.', $e->getMessage());
+        }
     }
 }

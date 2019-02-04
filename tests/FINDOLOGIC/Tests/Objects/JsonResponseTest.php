@@ -2,7 +2,9 @@
 
 namespace FINDOLOGIC\Tests\Objects;
 
+use FINDOLOGIC\Definitions\BlockType;
 use FINDOLOGIC\Objects\JsonResponse;
+use FINDOLOGIC\Objects\JsonResponseObjects\Suggestion;
 use PHPUnit\Framework\TestCase;
 
 class JsonResponseTest extends TestCase
@@ -36,11 +38,11 @@ class JsonResponseTest extends TestCase
         ];
         $response = $this->getRealResponseData();
 
-        $count = 0;
-        foreach ($response->getSuggestions() as $suggestion) {
-            $this->assertEquals($expectedLabels[$count], $suggestion->getLabel());
-            $count++;
-        }
+        $actualLabels = array_map(function ($suggestion) {
+            /** @var Suggestion $suggestion */
+            return $suggestion->getLabel();
+        }, $response->getSuggestions());
+        $this->assertEquals($expectedLabels, $actualLabels);
     }
 
     public function testResponseWillReturnExpectedBlocks()
@@ -59,11 +61,11 @@ class JsonResponseTest extends TestCase
         ];
         $response = $this->getRealResponseData();
 
-        $count = 0;
-        foreach ($response->getSuggestions() as $suggestion) {
-            $this->assertEquals($expectedBlocks[$count], $suggestion->getBlock());
-            $count++;
-        }
+        $actualBlocks = array_map(function ($suggestion) {
+            /** @var Suggestion $suggestion */
+            return $suggestion->getBlock();
+        }, $response->getSuggestions());
+        $this->assertEquals($expectedBlocks, $actualBlocks);
     }
 
     public function testResponseWillReturnExpectedFrequencies()
@@ -82,11 +84,11 @@ class JsonResponseTest extends TestCase
         ];
         $response = $this->getRealResponseData();
 
-        $count = 0;
-        foreach ($response->getSuggestions() as $suggestion) {
-            $this->assertEquals($expectedFrequencies[$count], $suggestion->getFrequency());
-            $count++;
-        }
+        $actualFrequencies = array_map(function ($suggestion) {
+            /** @var Suggestion $suggestion */
+            return $suggestion->getFrequency();
+        }, $response->getSuggestions());
+        $this->assertEquals($expectedFrequencies, $actualFrequencies);
     }
 
     public function testResponseWillReturnExpectedImageUrls()
@@ -105,22 +107,22 @@ class JsonResponseTest extends TestCase
         ];
         $response = $this->getRealResponseData();
 
-        $count = 0;
-        foreach ($response->getSuggestions() as $suggestion) {
-            $this->assertEquals($expectedImageUrls[$count], $suggestion->getImageUrl());
-            $count++;
-        }
+        $actualImageUrls = array_map(function ($suggestion) {
+            /** @var Suggestion $suggestion */
+            return $suggestion->getImageUrl();
+        }, $response->getSuggestions());
+        $this->assertEquals($expectedImageUrls, $actualImageUrls);
     }
 
     public function testResponseWillReturnExpectedPrice()
     {
         $expectedPrice = [
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
             2305.75,
             678.00,
             1355.65,
@@ -128,11 +130,11 @@ class JsonResponseTest extends TestCase
         ];
         $response = $this->getRealResponseData();
 
-        $count = 0;
-        foreach ($response->getSuggestions() as $suggestion) {
-            $this->assertEquals($expectedPrice[$count], $suggestion->getPrice());
-            $count++;
-        }
+        $actualPrice = array_map(function ($suggestion) {
+            /** @var Suggestion $suggestion */
+            return $suggestion->getPrice();
+        }, $response->getSuggestions());
+        $this->assertEquals($expectedPrice, $actualPrice);
     }
 
     public function testResponseWillReturnExpectedIdentifier()
@@ -151,34 +153,34 @@ class JsonResponseTest extends TestCase
         ];
         $response = $this->getRealResponseData();
 
-        $count = 0;
-        foreach ($response->getSuggestions() as $suggestion) {
-            $this->assertEquals($expectedIdentifier[$count], $suggestion->getIdentifier());
-            $count++;
-        }
+        $actualIdentifier = array_map(function ($suggestion) {
+            /** @var Suggestion $suggestion */
+            return $suggestion->getIdentifier();
+        }, $response->getSuggestions());
+        $this->assertEquals($expectedIdentifier, $actualIdentifier);
     }
 
     public function testResponseWillReturnExpectedBasePrice()
     {
         $expectedBasePrice = [
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
             1355.65,
-            '',
+            0,
         ];
         $response = $this->getRealResponseData();
 
-        $count = 0;
-        foreach ($response->getSuggestions() as $suggestion) {
-            $this->assertEquals($expectedBasePrice[$count], $suggestion->getBasePrice());
-            $count++;
-        }
+        $actualBasePrice = array_map(function ($suggestion) {
+            /** @var Suggestion $suggestion */
+            return $suggestion->getBasePrice();
+        }, $response->getSuggestions());
+        $this->assertEquals($expectedBasePrice, $actualBasePrice);
     }
 
     public function testResponseWillReturnExpectedBasePriceUnit()
@@ -197,11 +199,11 @@ class JsonResponseTest extends TestCase
         ];
         $response = $this->getRealResponseData();
 
-        $count = 0;
-        foreach ($response->getSuggestions() as $suggestion) {
-            $this->assertEquals($expectedBasePriceUnit[$count], $suggestion->getBasePriceUnit());
-            $count++;
-        }
+        $actualBasePriceUnit = array_map(function ($suggestion) {
+            /** @var Suggestion $suggestion */
+            return $suggestion->getBasePriceUnit();
+        }, $response->getSuggestions());
+        $this->assertEquals($expectedBasePriceUnit, $actualBasePriceUnit);
     }
 
     public function testResponseWillReturnExpectedUrl()
@@ -220,10 +222,53 @@ class JsonResponseTest extends TestCase
         ];
         $response = $this->getRealResponseData();
 
-        $count = 0;
-        foreach ($response->getSuggestions() as $suggestion) {
-            $this->assertEquals($expectedUrl[$count], $suggestion->getUrl());
-            $count++;
-        }
+        $actualUrl = array_map(function ($suggestion) {
+            /** @var Suggestion $suggestion */
+            return $suggestion->getUrl();
+        }, $response->getSuggestions());
+        $this->assertEquals($expectedUrl, $actualUrl);
+    }
+
+    public function testResponseWillReturnExpectedOrdernumber()
+    {
+        $expectedOrdernumber = [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            'MDR-007',
+            null,
+            null,
+            null
+        ];
+        $response = $this->getRealResponseData();
+
+        $actualOrdernumber = array_map(function ($suggestion) {
+            /** @var Suggestion $suggestion */
+            return $suggestion->getOrdernumber();
+        }, $response->getSuggestions());
+        $this->assertEquals($expectedOrdernumber, $actualOrdernumber);
+    }
+
+    public function testResponseWillReturnFilteredSuggestions()
+    {
+        $expectedBlockType = [
+            'suggest',
+            'suggest',
+            'cat',
+            'cat'
+        ];
+
+        $response = $this->getRealResponseData();
+
+        $blockFilter = [BlockType::SUGGEST_BLOCK, BlockType::CAT_BLOCK];
+
+        $actualBlockType = array_map(function ($suggestion) {
+            /** @var Suggestion $suggestion */
+            return $suggestion->getBlock();
+        }, $response->getFilteredSuggestions($blockFilter));
+        $this->assertEquals($expectedBlockType, $actualBlockType);
     }
 }
