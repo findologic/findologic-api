@@ -2,8 +2,6 @@
 
 namespace FINDOLOGIC\Helpers;
 
-use InvalidArgumentException;
-
 class ResponseHelper
 {
     /**
