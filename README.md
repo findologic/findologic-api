@@ -1,4 +1,4 @@
-# FINDOLOGIC API
+# FINDOLOGIC\Api API
 
 [![Travis](https://travis-ci.org/TheKeymaster/findologic-api.svg?branch=master)](https://travis-ci.org/TheKeymaster/findologic-api)
 [![Maintainability](https://api.codeclimate.com/v1/badges/d604675c46586292c20f/maintainability)](https://codeclimate.com/github/TheKeymaster/findologic-api/maintainability)
@@ -8,13 +8,13 @@
 
 ## Synopsis
 
-This library not only helps requesting the FINDOLOGIC API but also getting data from the response and mapping them to corresponding objects.
+This library not only helps requesting the FINDOLOGIC\Api API but also getting data from the response and mapping them to corresponding objects.
 You won't have to mess around with sending requests and getting the data from the FINDOLOGICs response anymore.  
 
 You want to get filters? Just call `->getFilters()` on your response object. It really is that simple and if you dont trust us,
 try out the [Basic Usage](#basic-usage) or test the [Examples](#examples).
 
-To have a better understanding about the API, please make sure to read the general FINDOLOGIC API documentation. We already got you covered with quicklinks to it:
+To have a better understanding about the API, please make sure to read the general FINDOLOGIC\Api API documentation. We already got you covered with quicklinks to it:
 
  * [Requesting the API](https://docs.findologic.com/doku.php?id=integration_documentation:request)
  * [XML response](https://docs.findologic.com/doku.php?id=integration_documentation:response_xml)
