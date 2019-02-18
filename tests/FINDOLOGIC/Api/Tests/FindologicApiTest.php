@@ -38,7 +38,7 @@ class FindologicApiTest extends TestCase
     }
 
     /**
-     * Gets mock data that may be returned from FINDOLOGIC\Api.
+     * Gets mock data that may be returned from FINDOLOGIC.
      *
      * @param bool $json If true, will return a mock JSON response. If false it will return a XML response instead.
      * @return false|string Returns the read data or false on failure.
