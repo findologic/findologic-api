@@ -14,15 +14,15 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 
 class FindologicApiTest extends TestCase
 {
-    /** @var $httpClientMock PHPUnit_Framework_MockObject_MockObject */
+    /** @var $httpClientMock MockObject */
     public $httpClientMock;
 
-    /** @var $httpClientMock PHPUnit_Framework_MockObject_MockObject */
+    /** @var $httpClientMock MockObject */
     public $responseMock;
 
     public function setUp()

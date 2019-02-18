@@ -71,7 +71,7 @@ class FindologicApi extends ParameterBuilder
 
         $validator->rule('required', self::SHOPKEY)
             ->rule('shopkey', self::SHOPKEY)
-            // TODO: Validate URLs with Valitron if the bug with objects as URLs is fixed.
+            // TODO: @see https://github.com/TheKeymaster/findologic-api/issues/24
             ->rule('lengthMin', self::API_URL, 5)
             ->rule('numeric', [self::ALIVETEST_TIMEOUT, self::REQUEST_TIMEOUT])
             ->rule('instanceOf', 'GuzzleHttp\Client', self::HTTP_CLIENT);
