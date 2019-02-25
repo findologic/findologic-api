@@ -9,7 +9,7 @@ use FINDOLOGIC\Api\RequestBuilders\RequestBuilder;
 use FINDOLOGIC\Api\Validators\ParameterValidator;
 
 /**
- * This class holds shared configuration, methods that are commonly used for sending search and navigation requests.
+ * This class holds shared methods and configurations that are commonly used for sending search and navigation requests.
  */
 abstract class XmlResponseRequestBuilder extends RequestBuilder
 {

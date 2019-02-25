@@ -42,7 +42,8 @@ class FindologicClient
 
     /**
      * Requests an URL and checks the response for it's validity. A ServiceNotAliveException may be thrown if
-     * the service is not alive or the status code is unexpected.
+     * the service is not alive or the status code is unexpected. Response time is not set if the request is an
+     * alivetest.
      *
      * @param string $url Requested URL.
      * @param bool $isAlivetest Flag to indicate an alivetest request.
@@ -54,7 +55,9 @@ class FindologicClient
         $httpClient = $this->config->getHttpClient();
 
         try {
-            $this->startResponseTime();
+            if (!$isAlivetest) {
+                $this->startResponseTime();
+            }
             $response = $httpClient->request(
                 self::GET_METHOD,
                 $url,
@@ -63,7 +66,9 @@ class FindologicClient
         } catch (GuzzleException $e) {
             throw new ServiceNotAliveException($e->getMessage());
         }
-        $this->endResponseTime();
+        if (!$isAlivetest) {
+            $this->endResponseTime();
+        }
 
         $this->checkResponseIsValid($response, $isAlivetest);
         return $response->getBody()->getContents();

@@ -9,7 +9,7 @@ class Endpoint
     const NAVIGATION = 'selector.php';
     const SUGGESTION = 'autocomplete.php';
 
-    private static $availableRequestTypes = [
+    private static $availableEndpoints = [
         self::ALIVETEST,
         self::SEARCH,
         self::NAVIGATION,
@@ -20,8 +20,8 @@ class Endpoint
      * Returns an array of all available request types.
      * @return array
      */
-    public static function getAvailableRequestTypes()
+    public static function getAvailableEndpoints()
     {
-        return self::$availableRequestTypes;
+        return self::$availableEndpoints;
     }
 }

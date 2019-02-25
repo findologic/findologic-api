@@ -52,7 +52,7 @@ class XmlResponse
     /**
      * XmlResponse constructor.
      * @param string $response
-     * @param null $responseTime
+     * @param float|null $responseTime
      */
     public function __construct($response, $responseTime = null)
     {

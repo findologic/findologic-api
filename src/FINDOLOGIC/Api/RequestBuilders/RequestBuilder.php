@@ -143,22 +143,25 @@ abstract class RequestBuilder
      *
      * @param $key string The key or the param name, that identifies the param.
      * @param $value mixed The value for the param.
-     * @param string $method Can be either ParameterBuilder::SET_VALUE or ParameterBuilder::ADD_VALUE.
-     * ParameterBuilder::ADD_VALUE allows the value to be set multiple times and ParameterBuilder::SET_VALUE will
+     * @param string $method Can be either RequestBuilder::SET_VALUE or RequestBuilder::ADD_VALUE.
+     * RequestBuilder::ADD_VALUE allows the value to be set multiple times and RequestBuilder::SET_VALUE will
      * override any existing ones.
      */
     protected function addParam($key, $value, $method = self::SET_VALUE)
     {
-        if ($method == self::SET_VALUE) {
-            $this->params[$key] = $value;
-        } elseif ($method == self::ADD_VALUE) {
-            if (isset($this->params[$key])) {
-                $this->params[$key] = array_merge_recursive($this->params[$key], $value);
-            } else {
+        switch ($method) {
+            case self::SET_VALUE:
                 $this->params[$key] = $value;
-            }
-        } else {
-            throw new InvalidArgumentException('Unknown method type.');
+                break;
+            case self::ADD_VALUE:
+                if (isset($this->params[$key])) {
+                    $this->params[$key] = array_merge_recursive($this->params[$key], $value);
+                } else {
+                    $this->params[$key] = $value;
+                }
+                break;
+            default:
+                throw new InvalidArgumentException('Unknown method type.');
         }
     }
 
@@ -189,7 +192,7 @@ abstract class RequestBuilder
     protected function checkRequiredParamsAreSet()
     {
         $validator = new Validator($this->params);
-        $validator->rule('required', $this->requiredParams);
+        $validator->rule('required', $this->requiredParams, true);
 
         if (!$validator->validate()) {
             throw new ParamNotSetException(key($validator->errors()));
