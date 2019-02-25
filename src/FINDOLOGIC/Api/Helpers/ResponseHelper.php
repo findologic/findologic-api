@@ -82,9 +82,6 @@ class ResponseHelper
         }
 
         $propertyValue = $obj->{$property};
-        if ($type === null) {
-            return $propertyValue;
-        }
 
         settype($propertyValue, $type);
 
