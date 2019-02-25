@@ -39,12 +39,12 @@
     },
     "autoload": {
         "psr-0": {
-            "FINDOLOGIC": "src/"
+            "FINDOLOGIC\\Api": "src/"
         }
     },
     "autoload-dev": {
         "psr-0": {
-            "FINDOLOGIC\\Request\\Tests": "tests/"
+            "FINDOLOGIC\\Api\\Tests": "tests/"
         }
     },
     "scripts": {
