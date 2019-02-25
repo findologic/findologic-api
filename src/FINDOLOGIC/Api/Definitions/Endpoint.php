@@ -17,7 +17,7 @@ class Endpoint
     ];
 
     /**
-     * Returns an array of all available request types.
+     * Returns an array of all available endpoints.
      * @return array
      */
     public static function getAvailableEndpoints()
