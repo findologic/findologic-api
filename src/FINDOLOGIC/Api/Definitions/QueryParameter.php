@@ -4,21 +4,25 @@ namespace FINDOLOGIC\Api\Definitions;
 
 class QueryParameter
 {
-    const SHOPKEY = 'shopkey';
-    const SHOP_URL = 'shopurl';
-    const USER_IP = 'userip';
-    const REFERER = 'referer';
-    const REVISION = 'revision';
-    const QUERY = 'query';
-    const ATTRIB = 'attrib';
-    const ORDER = 'order';
-    const PROPERTIES = 'properties';
-    const PUSH_ATTRIB = 'pushAttrib';
-    const COUNT = 'count';
-    const FIRST = 'first';
-    const IDENTIFIER = 'identifier';
-    const GROUP = 'group';
-    const FORCE_ORIGINAL_QUERY = 'forceOriginalQuery';
+    const
+        SHOPKEY = 'shopkey',
+        SHOP_URL = 'shopurl',
+        USER_IP = 'userip',
+        REFERER = 'referer',
+        REVISION = 'revision',
+        QUERY = 'query',
+        ATTRIB = 'attrib',
+        ORDER = 'order',
+        PROPERTIES = 'properties',
+        PUSH_ATTRIB = 'pushAttrib',
+        COUNT = 'count',
+        FIRST = 'first',
+        IDENTIFIER = 'identifier',
+        GROUP = 'group',
+        FORCE_ORIGINAL_QUERY = 'forceOriginalQuery',
+        AUTOCOMPLETEBLOCKS = 'autocompleteblocks',
+        USERGROUPHASH = 'usergrouphash',
+        MULTISHOP_ID = 'multishop_id';
 
     private static $list = [
         self::SHOP_URL,
@@ -35,6 +39,8 @@ class QueryParameter
         self::IDENTIFIER,
         self::GROUP,
         self::FORCE_ORIGINAL_QUERY,
+        self::AUTOCOMPLETEBLOCKS,
+        self::USERGROUPHASH,
     ];
 
     /**

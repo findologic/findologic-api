@@ -1,16 +1,15 @@
 <?php
 
-namespace FINDOLOGIC\Api\RequestBuilders\JsonResponse;
+namespace FINDOLOGIC\Api\RequestBuilders\Xml;
 
 use FINDOLOGIC\Api\Definitions\Endpoint;
 use FINDOLOGIC\Api\Definitions\QueryParameter;
 use FINDOLOGIC\Api\FindologicConfig;
-use FINDOLOGIC\Api\Objects\JsonResponse;
-use FINDOLOGIC\Api\RequestBuilders\RequestBuilder;
+use FINDOLOGIC\Api\Objects\XmlResponse;
 
-class SuggestionRequestBuilder extends RequestBuilder
+class SearchRequestBuilder extends XmlRequestBuilder
 {
-    protected $endpoint = Endpoint::SUGGESTION;
+    protected $endpoint = Endpoint::SEARCH;
 
     public function __construct(FindologicConfig $config)
     {
@@ -20,13 +19,14 @@ class SuggestionRequestBuilder extends RequestBuilder
 
     /**
      * @inheritdoc
-     * @return JsonResponse
+     * @return XmlResponse
      */
     public function sendRequest()
     {
         $this->checkRequiredParamsAreSet();
+        $this->sendAlivetestRequest();
 
         $responseContent = $this->findologicClient->request($this->buildRequestUrl());
-        return new JsonResponse($responseContent, $this->findologicClient->getResponseTime());
+        return new XmlResponse($responseContent, $this->findologicClient->getResponseTime());
     }
 }

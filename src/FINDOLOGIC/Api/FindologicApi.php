@@ -3,9 +3,9 @@
 namespace FINDOLOGIC\Api;
 
 use FINDOLOGIC\Api\Exceptions\ConfigException;
-use FINDOLOGIC\Api\RequestBuilders\JsonResponse\SuggestionRequestBuilder;
-use FINDOLOGIC\Api\RequestBuilders\XmlResponse\NavigationRequestBuilder;
-use FINDOLOGIC\Api\RequestBuilders\XmlResponse\SearchRequestBuilder;
+use FINDOLOGIC\Api\RequestBuilders\Json\SuggestionRequestBuilder;
+use FINDOLOGIC\Api\RequestBuilders\Xml\NavigationRequestBuilder;
+use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
 
 class FindologicApi
 {

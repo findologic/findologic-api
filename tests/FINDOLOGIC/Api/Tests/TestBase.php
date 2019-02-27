@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Api\Tests;
 
+use FINDOLOGIC\Api\RequestBuilders\Xml\XmlRequestBuilder;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Stream;
@@ -84,5 +85,14 @@ class TestBase extends TestCase
     protected function getMockResponse($file)
     {
         return file_get_contents(__DIR__ . '/../Mockdata/' . $file);
+    }
+
+    protected function setRequiredParamsForXmlRequestBuilder(XmlRequestBuilder $xmlRequestBuilder)
+    {
+        $xmlRequestBuilder
+            ->setShopurl('blubbergurken.io')
+            ->setUserip('127.0.0.1')
+            ->setReferer('https://blubbergurken.io/blubbergurken-sale/')
+            ->setRevision('2.5.10');
     }
 }

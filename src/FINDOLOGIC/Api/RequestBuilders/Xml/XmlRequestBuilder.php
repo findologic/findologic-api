@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC\Api\RequestBuilders\XmlResponse;
+namespace FINDOLOGIC\Api\RequestBuilders\Xml;
 
 use FINDOLOGIC\Api\Definitions\QueryParameter;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
@@ -11,7 +11,7 @@ use FINDOLOGIC\Api\Validators\ParameterValidator;
 /**
  * This class holds shared methods and configurations that are commonly used for sending search and navigation requests.
  */
-abstract class XmlResponseRequestBuilder extends RequestBuilder
+abstract class XmlRequestBuilder extends RequestBuilder
 {
     public function __construct(FindologicConfig $config)
     {
@@ -197,26 +197,6 @@ abstract class XmlResponseRequestBuilder extends RequestBuilder
         }
 
         $this->addParam(QueryParameter::PUSH_ATTRIB, [$key => [$value => $factor]], self::ADD_VALUE);
-        return $this;
-    }
-
-    /**
-     * Sets the count param. It is used to set the number of products that should be displayed.
-     *
-     * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#limiting_paging_parameters
-     * @param $value int
-     * @return $this
-     */
-    public function setCount($value)
-    {
-        $validator = new ParameterValidator([QueryParameter::COUNT => $value]);
-        $validator->rule('equalOrHigherThanZero', QueryParameter::COUNT);
-
-        if (!$validator->validate()) {
-            throw new InvalidParamException(QueryParameter::COUNT);
-        }
-
-        $this->addParam(QueryParameter::COUNT, $value);
         return $this;
     }
 

@@ -4,9 +4,9 @@ namespace FINDOLOGIC\Api\Tests;
 
 use FINDOLOGIC\Api\FindologicApi;
 use FINDOLOGIC\Api\FindologicConfig;
-use FINDOLOGIC\Api\RequestBuilders\JsonResponse\SuggestionRequestBuilder;
-use FINDOLOGIC\Api\RequestBuilders\XmlResponse\NavigationRequestBuilder;
-use FINDOLOGIC\Api\RequestBuilders\XmlResponse\SearchRequestBuilder;
+use FINDOLOGIC\Api\RequestBuilders\Json\SuggestionRequestBuilder;
+use FINDOLOGIC\Api\RequestBuilders\Xml\NavigationRequestBuilder;
+use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
 
 class FindologicApiTest extends TestBase
 {

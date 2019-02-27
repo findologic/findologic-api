@@ -93,6 +93,7 @@ class FindologicConfig
         }
 
         $configWithDefaults = array_merge($this->defaultConfig, $config);
+        // Set all available config keys as properties.
         foreach ($this->availableConfigKeys as $key) {
             $this->{$key} = $configWithDefaults[$key];
         }

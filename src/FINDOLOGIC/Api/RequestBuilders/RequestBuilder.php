@@ -104,6 +104,26 @@ abstract class RequestBuilder
     }
 
     /**
+     * Sets the count param. It is used to set the number of products that should be displayed.
+     *
+     * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#limiting_paging_parameters
+     * @param $value int
+     * @return $this
+     */
+    public function setCount($value)
+    {
+        $validator = new ParameterValidator([QueryParameter::COUNT => $value]);
+        $validator->rule('equalOrHigherThanZero', QueryParameter::COUNT);
+
+        if (!$validator->validate()) {
+            throw new InvalidParamException(QueryParameter::COUNT);
+        }
+
+        $this->addParam(QueryParameter::COUNT, $value);
+        return $this;
+    }
+
+    /**
      * Adds an own param to the parameter list. This can be useful if you want to put some special key value pairs to
      * get a different response from FINDOLOGIC.
      * IMPORTANT: Both $key or $value are NOT validated and NOT unit tested. **Using this is neither recommended nor
@@ -172,7 +192,7 @@ abstract class RequestBuilder
      */
     protected function addRequiredParam($key)
     {
-        $this->requiredParams = array_merge($this->requiredParams, [$key]);
+        $this->requiredParams[] = $key;
     }
 
     /**

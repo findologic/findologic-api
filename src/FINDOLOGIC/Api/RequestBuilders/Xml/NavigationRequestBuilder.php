@@ -1,21 +1,14 @@
 <?php
 
-namespace FINDOLOGIC\Api\RequestBuilders\XmlResponse;
+namespace FINDOLOGIC\Api\RequestBuilders\Xml;
 
 use FINDOLOGIC\Api\Definitions\Endpoint;
-use FINDOLOGIC\Api\Definitions\QueryParameter;
-use FINDOLOGIC\Api\FindologicConfig;
 use FINDOLOGIC\Api\Objects\XmlResponse;
+use FINDOLOGIC\Api\RequestBuilders\RequestBuilder;
 
-class SearchRequestBuilder extends XmlResponseRequestBuilder
+class NavigationRequestBuilder extends XmlRequestBuilder
 {
-    protected $endpoint = Endpoint::SEARCH;
-
-    public function __construct(FindologicConfig $config)
-    {
-        parent::__construct($config);
-        $this->addRequiredParam(QueryParameter::QUERY);
-    }
+    protected $endpoint = Endpoint::NAVIGATION;
 
     /**
      * @inheritdoc

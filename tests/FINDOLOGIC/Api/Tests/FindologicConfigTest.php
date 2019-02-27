@@ -47,17 +47,24 @@ class FindologicConfigTest extends TestBase
     public function invalidConfigProvider()
     {
         return [
-            'apiUrl as object' => [[FindologicConfig::API_URL => new \stdClass()]],
-            'apiUrl as integer' => [[FindologicConfig::API_URL => 46]],
-            'alivetest timeout as object' => [[FindologicConfig::ALIVETEST_TIMEOUT => new \stdClass()]],
-            'alivetest timeout as string' => [[FindologicConfig::ALIVETEST_TIMEOUT => 'Timeout of 50 years pls!']],
-            'request timeout as object' => [[FindologicConfig::REQUEST_TIMEOUT => new \stdClass()]],
-            'request timeout as string' => [[FindologicConfig::REQUEST_TIMEOUT => 'Timeout of 9 quadrillion yrs pls!']],
-            'shopkey length not optimal' => [[FindologicConfig::SHOPKEY => 'INVALIDAF']],
-            'shopkey has invalid characters' => [[FindologicConfig::SHOPKEY => '80AB18D4BE2654R78244106AD315DC2C']],
-            'shopkey is lowercased' => [[FindologicConfig::SHOPKEY => '80ab18d4be2654r78244106ad315dc2c']],
-            'shopkey has spaces' => [[FindologicConfig::SHOPKEY => '80AB18D4BE2654A7 8244106AD315DC2C']],
-            'shopkey has special characters' => [[FindologicConfig::SHOPKEY => 'AAAAAA.AAAAAAÄAAAAAAAAAAAAAAAAA_']],
+            'apiUrl as object' => [['apiUrl' => new \stdClass()]],
+            'apiUrl as integer' => [['apiUrl' => 46]],
+            'alivetest timeout as object' => [['alivetestTimeout' => new \stdClass()]],
+            'alivetest timeout as string' => [['alivetestTimeout' => 'Timeout of 50 years pls!']],
+            'request timeout as object' => [['requestTimeout' => new \stdClass()]],
+            'request timeout as string' => [['requestTimeout' => 'Timeout of 9 quadrillion yrs pls!']],
+            'shopkey length not optimal' => [['shopkey'=> 'INVALIDAF']],
+            'shopkey has invalid characters' => [['shopkey' => '80AB18D4BE2654R78244106AD315DC2C']],
+            'shopkey is lowercased' => [['shopkey' => '80ab18d4be2654r78244106ad315dc2c']],
+            'shopkey has spaces' => [['shopkey' => '80AB18D4BE2654A7 8244106AD315DC2C']],
+            'shopkey has special characters' => [['shopkey' => 'AAAAAA.AAAAAAÄAAAAAAAAAAAAAAAAA_']],
+            'config is empty' => [[]],
+            'everything is set except for shopkey' => [[
+                'apiUrl' => 'https://service.findologic.com/ps/%s/%s',
+                'alivetestTimeout' => 12.34,
+                'requestTimeout' => 56.78,
+                'httpClient' => new Client(),
+            ]],
         ];
     }
 
