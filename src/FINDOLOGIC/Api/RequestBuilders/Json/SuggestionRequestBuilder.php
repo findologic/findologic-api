@@ -37,7 +37,7 @@ class SuggestionRequestBuilder extends RequestBuilder
      * query is one character.
      *
      * @param $value string
-     * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#search_parameter
+     * @see https://docs.findologic.com/doku.php?id=smart_suggest_new#request
      * @return $this
      */
     public function setQuery($value)
