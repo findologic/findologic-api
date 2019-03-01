@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Api\Tests\RequestBuilders\Xml;
 
+use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\Exceptions\ParamNotSetException;
 use FINDOLOGIC\Api\FindologicConfig;
 use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
@@ -14,15 +15,6 @@ class SearchRequestBuilderTest extends TestBase
 
     /** @var string */
     private $mockResponse;
-
-    /** @var string */
-    private $serviceUrl = 'https://service.findologic.com/ps/blubbergurken.io';
-
-    /** @var string */
-    private $alivetestEndpoint = 'alivetest.php';
-
-    /** @var string */
-    private $searchEndpoint = 'index.php';
 
     protected function setUp()
     {
@@ -91,57 +83,70 @@ class SearchRequestBuilderTest extends TestBase
         $searchRequestBuilder->sendRequest();
     }
 
-    public function testRequiredParamsWillBeSetAsExpected()
+    public function stringProvider()
     {
+        return [
+            'some random string can be set' => [
+                'string' => 'something',
+                'expectedResult' => 'something',
+            ],
+            'an empty string an be set' => [
+                'string' => '',
+                'expectedResult' => '',
+            ],
+            'special characters in string should be url encoded' => [
+                'string' => '/ /',
+                'expectedResult' => '%2F+%2F',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider stringProvider
+     * @param string $string
+     * @param string $expectedResult
+     */
+    public function testSetQueryCanBeSetAndIsFormattedAsQueryString($string, $expectedResult)
+    {
+        $expectedParameter = sprintf('&query=%s', $expectedResult);
+
         $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
-        $this->httpClientMock->method('request')
-            ->withConsecutive(
-                // Alivetest request.
-                [
-                    'GET',
-                    sprintf(
-                        '%s/%s?%s',
-                        $this->serviceUrl,
-                        $this->alivetestEndpoint,
-                        http_build_query([
-                            'shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD'
-                        ])
-                    ),
-                    ['connect_timeout' => 1.0]
-                ],
-                // Search request.
-                [
-                    'GET',
-                    sprintf(
-                        '%s/%s?%s',
-                        $this->serviceUrl,
-                        $this->searchEndpoint,
-                        http_build_query([
-                            'shopurl' => 'blubbergurken.io',
-                            'userip' => '127.0.0.1',
-                            'referer' => 'https://blubbergurken.io/blubbergurken-sale/',
-                            'revision' => '2.5.10',
-                            'query' => '',
-                            'shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD',
-                        ])
-                    ),
-                    ['connect_timeout' => 3.0]
-                ]
-            )
-            ->willReturn($this->responseMock);
-        $this->responseMock->method('getBody')->willReturn($this->streamMock);
-        $this->responseMock->method('getStatusCode')->willReturn(200);
-        $this->streamMock->method('getContents')
-            ->willReturnOnConsecutiveCalls(
-                'alive',
-                'alive',
-                $this->mockResponse,
-                $this->mockResponse
-            );
-
-        $searchRequestBuilder->setQuery('');
-        $searchRequestBuilder->sendRequest();
+        $searchRequestBuilder->setQuery($string);
+        $requestUrl = $searchRequestBuilder->buildRequestUrl();
+        $this->assertContains($expectedParameter, $requestUrl);
     }
+
+    public function invalidQueryProvider()
+    {
+        return [
+            'integer as query' => [
+                'query' => 21,
+            ],
+            'object as query' => [
+                'query' => new \stdClass(),
+            ],
+            'float as query' => [
+                'query' => 3.1415,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider invalidQueryProvider
+     * @param mixed $query
+     */
+    public function testSetQueryWillThrowAnExceptionWhenSubmittingInvalidQueries($query)
+    {
+        $this->expectException(InvalidParamException::class);
+        $this->expectExceptionMessage('Parameter query is not valid.');
+
+        $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
+        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+
+        $searchRequestBuilder->setQuery($query);
+    }
+
+
 }
