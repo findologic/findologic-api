@@ -53,7 +53,10 @@ abstract class RequestBuilder
     public function buildRequestUrl()
     {
         $shopUrl = $this->getParam(QueryParameter::SHOP_URL);
-        $this->params['shopkey'] = $this->config->getShopkey();
+        // If the shopkey was not manually overridden, we take the shopkey from the config.
+        if (!isset($this->getParams()[QueryParameter::SHOPKEY])) {
+            $this->params['shopkey'] = $this->config->getShopkey();
+        }
         $queryParams = http_build_query($this->params);
         // Removes indexes from query params. E.g. attrib[0] will be attrib[].
         $fullQueryString = preg_replace('/%5B\d+%5D/', '%5B%5D', $queryParams);
@@ -250,7 +253,11 @@ abstract class RequestBuilder
     public function buildAlivetestUrl()
     {
         $shopUrl = $this->getParam(QueryParameter::SHOP_URL);
-        $queryString = http_build_query([QueryParameter::SHOPKEY => $this->config->getShopkey()]);
+        // If the shopkey was not manually overridden, we take the shopkey from the config.
+        if (!isset($this->getParams()[QueryParameter::SHOPKEY])) {
+            $this->params['shopkey'] = $this->config->getShopkey();
+        }
+        $queryString = http_build_query([QueryParameter::SHOPKEY => $this->getParam(QueryParameter::SHOPKEY)]);
 
         $apiUrl = sprintf($this->config->getApiUrl(), $shopUrl, Endpoint::ALIVETEST);
         return sprintf('%s?%s', $apiUrl, $queryString);
