@@ -58,11 +58,10 @@ class FindologicConfig
     }
 
     /**
-     * Internal function to check whether the config is valid. Returns nothing and will throw an exception if the
-     * config is not valid.
+     * Internal function to check whether the config is valid.
      *
      * @param array $config
-     * @throws ConfigException
+     * @throws ConfigException If the config is not valid.
      */
     private function validateConfig(array $config)
     {

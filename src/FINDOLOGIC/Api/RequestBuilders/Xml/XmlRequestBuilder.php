@@ -244,26 +244,6 @@ abstract class XmlRequestBuilder extends RequestBuilder
     }
 
     /**
-     * Adds the group param. It is used to show only products for one or more specific groups.
-     *
-     * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#limiting_paging_parameters
-     * @param $value string
-     * @return $this
-     */
-    public function addGroup($value)
-    {
-        $validator = new ParameterValidator([QueryParameter::GROUP => $value]);
-        $validator->rule('string', QueryParameter::GROUP);
-
-        if (!$validator->validate()) {
-            throw new InvalidParamException(QueryParameter::GROUP);
-        }
-
-        $this->addParam(QueryParameter::GROUP, ['' => $value], self::ADD_VALUE);
-        return $this;
-    }
-
-    /**
      * Adds the forceOriginalQuery param. It is used for Smart Did-You-Mean. If submitted, the Smart Did-You-Mean
      * functionality is disabled and the search results are based on the user's query.
      *

@@ -4,12 +4,13 @@ namespace FINDOLOGIC\Api\Definitions;
 
 class OrderType
 {
-    const RELEVANCE = 'rank';
-    const INEXPENSIVE_PRODUCTS_FIRST = 'price ASC';
-    const EXPENSIVE_PRODUCTS_FIRST = 'price DESC';
-    const A_Z_SORTING = 'label ASC';
-    const TOP_SELLERS_FIRST = 'salesfrequency DESC';
-    const NEWEST_PRODUCTS_FIRST = 'dateadded DESC';
+    const
+        RELEVANCE = 'rank',
+        INEXPENSIVE_PRODUCTS_FIRST = 'price ASC',
+        EXPENSIVE_PRODUCTS_FIRST = 'price DESC',
+        A_Z_SORTING = 'label ASC',
+        TOP_SELLERS_FIRST = 'salesfrequency DESC',
+        NEWEST_PRODUCTS_FIRST = 'dateadded DESC';
 
     private static $list = [
         self::RELEVANCE,

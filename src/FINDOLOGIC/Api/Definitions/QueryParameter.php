@@ -41,6 +41,7 @@ class QueryParameter
         self::FORCE_ORIGINAL_QUERY,
         self::AUTOCOMPLETEBLOCKS,
         self::USERGROUPHASH,
+        self::MULTISHOP_ID,
     ];
 
     /**

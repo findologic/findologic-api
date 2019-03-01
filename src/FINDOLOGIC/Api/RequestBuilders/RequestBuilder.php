@@ -55,7 +55,7 @@ abstract class RequestBuilder
         $shopUrl = $this->getParam(QueryParameter::SHOP_URL);
         $this->params['shopkey'] = $this->config->getShopkey();
         $queryParams = http_build_query($this->params);
-        // Removes indexes from attrib[] param.
+        // Removes indexes from query params. E.g. attrib[0] will be attrib[].
         $fullQueryString = preg_replace('/%5B\d+%5D/', '%5B%5D', $queryParams);
 
         $apiUrl = sprintf($this->config->getApiUrl(), $shopUrl, $this->endpoint);
@@ -124,10 +124,33 @@ abstract class RequestBuilder
     }
 
     /**
+     * Adds the group param. It is used to show only products for one or more specific groups.
+     *
+     * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#limiting_paging_parameters
+     * @see https://docs.findologic.com/doku.php?id=smart_suggest_new#request
+     * @param $value string
+     * @return $this
+     */
+    public function addGroup($value)
+    {
+        $validator = new ParameterValidator([QueryParameter::GROUP => $value]);
+        $validator->rule('string', QueryParameter::GROUP);
+
+        if (!$validator->validate()) {
+            throw new InvalidParamException(QueryParameter::GROUP);
+        }
+
+        $this->addParam(QueryParameter::GROUP, ['' => $value], self::ADD_VALUE);
+        return $this;
+    }
+
+    /**
      * Adds an own param to the parameter list. This can be useful if you want to put some special key value pairs to
      * get a different response from FINDOLOGIC.
-     * IMPORTANT: Both $key or $value are NOT validated and NOT unit tested. **Using this is neither recommended nor
-     * supported.**
+     *
+     * Important Note: Both $key and $value are NOT validated. **Using this is neither recommended nor
+     * supported.** If you think any parameter is missing for doing FINDOLOGIC requests, please create an issue before
+     * using this method.
      *
      * @param $key string
      * @param $value mixed
@@ -224,7 +247,7 @@ abstract class RequestBuilder
      *
      * @return string
      */
-    protected function buildAlivetestUrl()
+    public function buildAlivetestUrl()
     {
         $shopUrl = $this->getParam(QueryParameter::SHOP_URL);
         $queryString = http_build_query([QueryParameter::SHOPKEY => $this->config->getShopkey()]);

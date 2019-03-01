@@ -16,7 +16,7 @@ class Results
      */
     public function __construct($result)
     {
-        $this->count = (int)$result->count;
+        $this->count = ResponseHelper::getIntProperty($result, 'count', true);
     }
 
     /**

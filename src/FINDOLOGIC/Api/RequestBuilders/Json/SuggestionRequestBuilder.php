@@ -89,27 +89,6 @@ class SuggestionRequestBuilder extends RequestBuilder
     }
 
     /**
-     * Adds the group param. It allows which groups of products are used for generating suggestions. This parameter
-     * is only relevant in case group information is exported.
-     *
-     * @param $value string
-     * @see https://docs.findologic.com/doku.php?id=smart_suggest_new#request
-     * @return $this
-     */
-    public function addGroup($value)
-    {
-        $validator = new ParameterValidator([QueryParameter::GROUP => $value]);
-        $validator->rule('string', QueryParameter::GROUP);
-
-        if (!$validator->validate()) {
-            throw new InvalidParamException(QueryParameter::GROUP);
-        }
-
-        $this->addParam(QueryParameter::GROUP, $value, self::ADD_VALUE);
-        return $this;
-    }
-
-    /**
      * Sets the usergrouphash param. It indicates which usergroup's products are used for generating suggestions. This
      * parameter is only relevant in case usergroup information is exported.
      *

@@ -4,10 +4,11 @@ namespace FINDOLOGIC\Api\Definitions;
 
 class Endpoint
 {
-    const ALIVETEST = 'alivetest.php';
-    const SEARCH = 'index.php';
-    const NAVIGATION = 'selector.php';
-    const SUGGESTION = 'autocomplete.php';
+    const
+        ALIVETEST = 'alivetest.php',
+        SEARCH = 'index.php',
+        NAVIGATION = 'selector.php',
+        SUGGESTION = 'autocomplete.php';
 
     private static $availableEndpoints = [
         self::ALIVETEST,

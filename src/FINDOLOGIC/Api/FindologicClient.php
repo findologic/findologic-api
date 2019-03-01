@@ -41,13 +41,13 @@ class FindologicClient
     }
 
     /**
-     * Requests an URL and checks the response for it's validity. A ServiceNotAliveException may be thrown if
-     * the service is not alive or the status code is unexpected. Response time is not set if the request is an
+     * Requests an URL and checks the response for it's validity. Response time is not set if the request is an
      * alivetest.
      *
      * @param string $url Requested URL.
      * @param bool $isAlivetest Flag to indicate an alivetest request.
      *
+     * @throws ServiceNotAliveException If the Service is not alive or the status code is unexpected.
      * @return string Raw response data as string.
      */
     public function request($url, $isAlivetest = false)
