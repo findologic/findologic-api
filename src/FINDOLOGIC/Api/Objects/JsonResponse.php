@@ -20,8 +20,7 @@ class JsonResponse
 
     /**
      * JsonResponse constructor.
-     * @param string $response
-     * @param float|null $responseTime
+     * @param $response
      */
     public function __construct($response, $responseTime = null)
     {

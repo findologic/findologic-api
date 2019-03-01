@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Api\Objects\XmlResponseObjects;
 
+use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use SimpleXMLElement;
 
 class Filter
@@ -15,7 +16,7 @@ class Filter
     /** @var string $select */
     private $select;
 
-    /** @var int $selectedItems */
+    /** @var int|null $selectedItems */
     private $selectedItems;
 
     /** @var string $type */
@@ -39,11 +40,11 @@ class Filter
      */
     public function __construct($response)
     {
-        $this->name = (string)$response->name;
-        $this->display = (string)$response->display;
-        $this->select = (string)$response->select;
-        $this->selectedItems = (int)$response->selectedItems;
-        $this->type = (string)$response->type;
+        $this->name =  ResponseHelper::getStringProperty($response, 'name');
+        $this->display =  ResponseHelper::getStringProperty($response, 'display');
+        $this->select =  ResponseHelper::getStringProperty($response, 'select');
+        $this->selectedItems = ResponseHelper::getIntProperty($response, 'selectedItems');
+        $this->type = ResponseHelper::getStringProperty($response, 'type');
 
         if ($response->attributes) {
             $this->attributes = new Attributes($response->attributes);
@@ -52,7 +53,7 @@ class Filter
         if ($response->items) {
             // Get the first <items> element, containing all <item> elements.
             foreach ($response->items[0] as $item) {
-                $itemName = (string)$item->name;
+                $itemName = ResponseHelper::getStringProperty($item, 'name');
                 $this->items[$itemName] = new Item($item);
                 $this->hasItems = true;
                 $this->itemAmount++;

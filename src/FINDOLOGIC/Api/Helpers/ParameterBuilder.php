@@ -3,6 +3,7 @@
 namespace FINDOLOGIC\Api\Helpers;
 
 use FINDOLOGIC\Api\Definitions\Endpoint;
+use FINDOLOGIC\Api\Definitions\RequestType;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\Validators\ParameterValidator;
 use InvalidArgumentException;

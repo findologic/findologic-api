@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Api\Objects\XmlResponseObjects;
 
+use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use SimpleXMLElement;
 
 class Query
@@ -12,14 +13,14 @@ class Query
     /** @var QueryString $queryString */
     private $queryString;
 
-    /** @var string $didYouMeanQuery */
+    /** @var string|null $didYouMeanQuery */
     private $didYouMeanQuery;
 
     /** @var OriginalQuery|null $originalQuery */
     private $originalQuery;
 
-    /** @var int $searchedWordsCount */
-    private $searchedWordsCount;
+    /** @var int $searchedWordCount */
+    private $searchedWordCount;
 
     /** @var int $foundWordsCount */
     private $foundWordsCount;
@@ -32,14 +33,14 @@ class Query
     {
         $this->limit = new Limit($response->limit->attributes());
         $this->queryString = new QueryString($response->queryString);
-        $this->didYouMeanQuery = (string)$response->didYouMeanQuery;
+        $this->didYouMeanQuery = ResponseHelper::getStringProperty($response, 'didYouMeanQuery');
         if ($response->originalQuery) {
             $this->originalQuery = new OriginalQuery($response->originalQuery);
         } else {
             $this->originalQuery = null;
         }
-        $this->searchedWordsCount = (int)$response->searchedWordCount;
-        $this->foundWordsCount = (int)$response->foundWordsCount;
+        $this->searchedWordCount = ResponseHelper::getIntProperty($response, 'searchedWordCount', true);
+        $this->foundWordsCount = ResponseHelper::getIntProperty($response, 'foundWordsCount', true);
     }
 
     /**
@@ -59,7 +60,7 @@ class Query
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getDidYouMeanQuery()
     {
@@ -77,9 +78,9 @@ class Query
     /**
      * @return int
      */
-    public function getSearchedWordsCount()
+    public function getSearchedWordCount()
     {
-        return $this->searchedWordsCount;
+        return $this->searchedWordCount;
     }
 
     /**

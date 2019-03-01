@@ -67,13 +67,13 @@ class XmlResponse
         $this->results = new Results($xmlResponse->results[0]);
 
         foreach ($xmlResponse->products->children() as $product) {
-            $productId = (string)$product->attributes()->id;
+            $productId = ResponseHelper::getStringProperty($product->attributes(), 'id', true);
             // Set product ids as keys for the products.
             $this->products[$productId] = new Product($product);
         }
 
         foreach ($xmlResponse->filters->children() as $filter) {
-            $filterName = (string)$filter->name;
+            $filterName =  ResponseHelper::getStringProperty($filter, 'name');
             // Set filter names as keys for the filters.
             $this->filters[$filterName] = new Filter($filter);
             $this->hasFilters = true;

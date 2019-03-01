@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Api\Objects\XmlResponseObjects;
 
+use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use SimpleXMLElement;
 
 class Landingpage
@@ -15,7 +16,7 @@ class Landingpage
      */
     public function __construct($response)
     {
-        $this->link = (string)$response->link;
+        $this->link = ResponseHelper::getStringProperty($response, 'link');
     }
 
     /**
