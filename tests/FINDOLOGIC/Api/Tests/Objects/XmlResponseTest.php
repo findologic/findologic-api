@@ -162,12 +162,12 @@ class XmlResponseTest extends TestCase
 
         $count = 0;
         foreach ($response->getFilters() as $filter) {
-            $this->assertEquals($expectedFilterDisplays[$count], $filter->getDisplay());
-            $this->assertEquals($expectedFilterTypes[$count], $filter->getType());
-            $this->assertEquals($expectedFilterNames[$count], $filter->getName());
-            $this->assertEquals($expectedFilterSelects[$count], $filter->getSelect());
-            $this->assertEquals($expectedFilterSelectedItems[$count], $filter->getSelectedItems());
-            $this->assertEquals($expectedFilterAmount, $response->getFilterAmount());
+            $this->assertSame($expectedFilterDisplays[$count], $filter->getDisplay());
+            $this->assertSame($expectedFilterTypes[$count], $filter->getType());
+            $this->assertSame($expectedFilterNames[$count], $filter->getName());
+            $this->assertSame($expectedFilterSelects[$count], $filter->getSelect());
+            $this->assertSame($expectedFilterSelectedItems[$count], $filter->getSelectedItems());
+            $this->assertSame($expectedFilterAmount, $response->getFilterAmount());
             $count++;
         }
     }

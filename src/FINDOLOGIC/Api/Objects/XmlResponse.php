@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Api\Objects;
 
+use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use FINDOLOGIC\Api\Objects\XmlResponseObjects\Filter;
 use FINDOLOGIC\Api\Objects\XmlResponseObjects\Landingpage;
 use FINDOLOGIC\Api\Objects\XmlResponseObjects\Product;

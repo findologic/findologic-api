@@ -3,6 +3,7 @@
 namespace FINDOLOGIC\Api\Objects\XmlResponseObjects;
 
 use Exception;
+use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use SimpleXMLElement;
 
 class OriginalQuery
