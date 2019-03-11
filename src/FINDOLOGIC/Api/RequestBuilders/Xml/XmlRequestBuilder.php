@@ -92,7 +92,7 @@ abstract class XmlRequestBuilder extends RequestBuilder
     public function setRevision($value)
     {
         $validator = new ParameterValidator([QueryParameter::REVISION => $value]);
-        $validator->rule('revision', QueryParameter::REVISION);
+        $validator->rule('version', QueryParameter::REVISION);
 
         if (!$validator->validate()) {
             throw new InvalidParamException(QueryParameter::REVISION);
@@ -119,9 +119,10 @@ abstract class XmlRequestBuilder extends RequestBuilder
             'specifier' => $specifier,
         ]);
 
-        $validator->rule('string', 'filterName');
-        $validator->rule('stringOrNumeric', 'value');
-        $validator->rule('stringOrNull', 'specifier');
+        $validator
+            ->rule('string', 'filterName')
+            ->rule('stringOrNumeric', 'value')
+            ->rule('stringOrNull', 'specifier');
 
         if (!$validator->validate()) {
             throw new InvalidParamException(QueryParameter::ATTRIB);
@@ -189,8 +190,10 @@ abstract class XmlRequestBuilder extends RequestBuilder
             'value' => $value,
             'factor' => $factor,
         ]);
-        $validator->rule('string', ['key', 'value']);
-        $validator->rule('numeric', 'factor');
+
+        $validator
+            ->rule('string', ['key', 'value'])
+            ->rule('numeric', 'factor');
 
         if (!$validator->validate()) {
             throw new InvalidParamException(QueryParameter::PUSH_ATTRIB);

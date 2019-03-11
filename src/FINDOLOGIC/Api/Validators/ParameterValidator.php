@@ -13,7 +13,7 @@ class ParameterValidator extends Validator
         $this->addInstanceRule('shopkey', function ($field, $value) {
             return (is_string($value) && preg_match('/^[A-F0-9]{32}$/', $value));
         }, self::ERROR_DEFAULT);
-        $this->addInstanceRule('revision', function ($field, $value) {
+        $this->addInstanceRule('version', function ($field, $value) {
             return (is_string($value) && preg_match('/^(\d+\.)?(\d+\.)?(\*|\d+)$/', $value));
         }, self::ERROR_DEFAULT);
         $this->addInstanceRule('string', function ($field, $value) {

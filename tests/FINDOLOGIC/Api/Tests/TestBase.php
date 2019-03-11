@@ -87,7 +87,7 @@ class TestBase extends TestCase
         return file_get_contents(__DIR__ . '/../Mockdata/' . $file);
     }
 
-    protected function setRequiredParamsForXmlRequestBuilder(XmlRequestBuilder $xmlRequestBuilder)
+    protected function setRequiredParamsForXmlRequestBuilder(XmlRequestBuilder &$xmlRequestBuilder)
     {
         $xmlRequestBuilder
             ->setShopurl('blubbergurken.io')
