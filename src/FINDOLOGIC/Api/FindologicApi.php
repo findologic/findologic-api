@@ -12,19 +12,19 @@ class FindologicApi
     /** @var FindologicConfig */
     private $config;
 
-     /**
-      * FindologicApi constructor.
-      *
-      * @param array $config containing the necessary config.
-      *      $config = [
-      *          FindologicConfig::SHOPKEY            => (string) Service's shopkey. Required.
-      *          FindologicConfig::API_URL            => (string) Findologic API URL. Optional.
-      *          FindologicConfig::ALIVETEST_TIMEOUT  => (float) Timeout for an alivetest in seconds. Optional.
-      *          FindologicConfig::REQUEST_TIMEOUT    => (float) Timeout for a request in seconds. Optional.
-      *          FindologicConfig::HTTP_CLIENT        => (GuzzleHttp\Client) Client that is used for requests. Optional.
-      *     ]
-      * @throws ConfigException if the config is not valid.
-      */
+    /**
+     * FindologicApi constructor.
+     *
+     * @param array $config containing the necessary config.
+     *      $config = [
+     *          FindologicConfig::SHOPKEY            => (string) Service's shopkey. Required.
+     *          FindologicConfig::API_URL            => (string) Findologic API URL. Optional.
+     *          FindologicConfig::ALIVETEST_TIMEOUT  => (float) Timeout for an alivetest in seconds. Optional.
+     *          FindologicConfig::REQUEST_TIMEOUT    => (float) Timeout for a request in seconds. Optional.
+     *          FindologicConfig::HTTP_CLIENT        => (GuzzleHttp\Client) Client that is used for requests. Optional.
+     *     ]
+     * @throws ConfigException if the config is not valid.
+     */
     public function __construct($config)
     {
         $this->config = new FindologicConfig($config);
