@@ -14,9 +14,6 @@ use SimpleXMLElement;
 
 /**
  * Is used for search and navigation requests with XML response only!
- *
- * Class XmlResponse
- * @package FINDOLOGIC\Api\Objects
  */
 class XmlResponse
 {
@@ -179,7 +176,7 @@ class XmlResponse
     /**
      * @return int
      */
-    public function getFilterAmount()
+    public function getFilterCount()
     {
         return $this->filterAmount;
     }

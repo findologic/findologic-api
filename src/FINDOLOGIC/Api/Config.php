@@ -6,7 +6,7 @@ use FINDOLOGIC\Api\Exceptions\ConfigException;
 use FINDOLOGIC\Api\Validators\ConfigValidator;
 use GuzzleHttp\Client;
 
-class FindologicConfig
+class Config
 {
     const
         SHOPKEY = 'shopkey',

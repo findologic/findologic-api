@@ -6,13 +6,13 @@ use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 
-class FindologicClient
+class Client
 {
     const GET_METHOD = 'GET';
     const STATUS_OK = 200;
     const SERVICE_ALIVE_BODY = 'alive';
 
-    /** @var FindologicConfig */
+    /** @var Config */
     private $config;
 
     /**
@@ -25,7 +25,7 @@ class FindologicClient
      */
     private $requestUnixTimestamp;
 
-    public function __construct(FindologicConfig $config)
+    public function __construct(Config $config)
     {
         $this->config = $config;
     }

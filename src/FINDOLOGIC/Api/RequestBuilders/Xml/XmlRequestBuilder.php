@@ -4,7 +4,7 @@ namespace FINDOLOGIC\Api\RequestBuilders\Xml;
 
 use FINDOLOGIC\Api\Definitions\QueryParameter;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
-use FINDOLOGIC\Api\FindologicConfig;
+use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\RequestBuilders\RequestBuilder;
 use FINDOLOGIC\Api\Validators\ParameterValidator;
 
@@ -13,7 +13,7 @@ use FINDOLOGIC\Api\Validators\ParameterValidator;
  */
 abstract class XmlRequestBuilder extends RequestBuilder
 {
-    public function __construct(FindologicConfig $config)
+    public function __construct(Config $config)
     {
         parent::__construct($config);
         $this->addRequiredParams([

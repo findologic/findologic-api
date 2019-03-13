@@ -3,24 +3,24 @@
 namespace FINDOLOGIC\Api\Tests;
 
 use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
-use FINDOLOGIC\Api\FindologicClient;
-use FINDOLOGIC\Api\FindologicConfig;
+use FINDOLOGIC\Api\Client;
+use FINDOLOGIC\Api\Config;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 
-class FindologicClientTest extends TestBase
+class ClientTest extends TestBase
 {
     /** @var string */
     private $validShopkey = 'ABCDABCDABCDABCDABCDABCDABCDABCD';
 
-    /** @var FindologicConfig */
+    /** @var Config */
     private $findologicConfig;
 
     protected function setUp()
     {
         parent::setUp();
 
-        $this->findologicConfig = new FindologicConfig([
+        $this->findologicConfig = new Config([
             'shopkey' => $this->validShopkey,
             'httpClient' => $this->httpClientMock,
         ]);
@@ -33,7 +33,7 @@ class FindologicClientTest extends TestBase
 
         $this->setExpectationsForRequests($expectedRequestUrl, $expectedBody);
 
-        $findologicClient = new FindologicClient($this->findologicConfig);
+        $findologicClient = new Client($this->findologicConfig);
         $result = $findologicClient->request($expectedRequestUrl);
 
         $this->assertSame($expectedBody, $result);
@@ -82,7 +82,7 @@ class FindologicClientTest extends TestBase
 
         $this->setExpectationsForRequests($expectedRequestUrl, $expectedBody, $statusCode);
 
-        $findologicClient = new FindologicClient($this->findologicConfig);
+        $findologicClient = new Client($this->findologicConfig);
 
         try {
             $findologicClient->request($expectedRequestUrl);
@@ -102,7 +102,7 @@ class FindologicClientTest extends TestBase
 
         $this->setExpectationsForAliveTestRequests($expectedRequestUrl, $expectedBody);
 
-        $findologicClient = new FindologicClient($this->findologicConfig);
+        $findologicClient = new Client($this->findologicConfig);
         $result = $findologicClient->request($expectedRequestUrl, true);
 
         $this->assertSame($expectedBody, $result);
@@ -135,7 +135,7 @@ class FindologicClientTest extends TestBase
 
         $this->setExpectationsForAliveTestRequests($expectedRequestUrl, $expectedBody);
 
-        $findologicClient = new FindologicClient($this->findologicConfig);
+        $findologicClient = new Client($this->findologicConfig);
         try {
             $findologicClient->request($expectedRequestUrl, true);
             $this->fail('An exception should be thrown if the alivetest returns something else then "alive"');
@@ -154,7 +154,7 @@ class FindologicClientTest extends TestBase
 
         $this->setExpectationsForAliveTestRequests($expectedRequestUrl, $expectedBody);
 
-        $findologicClient = new FindologicClient($this->findologicConfig);
+        $findologicClient = new Client($this->findologicConfig);
         $findologicClient->request($expectedRequestUrl, true);
 
         $this->assertSame(null, $findologicClient->getResponseTime());
@@ -167,7 +167,7 @@ class FindologicClientTest extends TestBase
 
         $this->setExpectationsForRequests($expectedRequestUrl, $expectedBody);
 
-        $findologicClient = new FindologicClient($this->findologicConfig);
+        $findologicClient = new Client($this->findologicConfig);
         $findologicClient->request($expectedRequestUrl);
 
         // Local response time should be fast since the data will not be sent to another server, but instead it
@@ -187,7 +187,7 @@ class FindologicClientTest extends TestBase
                 new Request('GET', $expectedRequestUrl)
             ));
 
-        $findologicClient = new FindologicClient($this->findologicConfig);
+        $findologicClient = new Client($this->findologicConfig);
 
         try {
             $findologicClient->request($expectedRequestUrl);

@@ -4,7 +4,7 @@ namespace FINDOLOGIC\Api\Tests\RequestBuilders\Xml;
 
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\Exceptions\ParamNotSetException;
-use FINDOLOGIC\Api\FindologicConfig;
+use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
 use FINDOLOGIC\Api\Tests\TestBase;
 
@@ -17,20 +17,20 @@ class XmlRequestBuilderTest extends TestBase
 {
     use XmlRequestDataProvider;
 
-    /** @var FindologicConfig */
+    /** @var Config */
     private $findologicConfig;
 
     /** @var string */
-    private $mockResponse;
+    private $rawMockResponse;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->findologicConfig = new FindologicConfig([
+        $this->findologicConfig = new Config([
             'shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD',
             'httpClient' => $this->httpClientMock,
         ]);
-        $this->mockResponse = $this->getMockResponse('demoResponse.xml');
+        $this->rawMockResponse = $this->getMockResponse('demoResponse.xml');
     }
 
     public function testSendingRequestsWithoutRequiredParamsWillThrowAnException()
@@ -82,8 +82,8 @@ class XmlRequestBuilderTest extends TestBase
             ->willReturnOnConsecutiveCalls(
                 'alive',
                 'alive',
-                $this->mockResponse,
-                $this->mockResponse
+                $this->rawMockResponse,
+                $this->rawMockResponse
             );
 
         $searchRequestBuilder->setQuery('');
@@ -371,18 +371,17 @@ class XmlRequestBuilderTest extends TestBase
     }
 
     /**
-     * @dataProvider orderProvider
+     * @dataProvider propertyProvider
      * @param string $expectedProperty
-     * @param string $expectedResult
      */
-    public function testSetPropertyWillSetItInAValidFormat($expectedProperty, $expectedResult)
+    public function testSetPropertyWillSetItInAValidFormat($expectedProperty)
     {
-        $expectedParameter = sprintf('&property=%s', $expectedResult);
+        $expectedParameter = sprintf('&properties%%5B%%5D=%s', $expectedProperty);
 
         $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
-        $searchRequestBuilder->setOrder($expectedProperty);
+        $searchRequestBuilder->addProperty($expectedProperty);
         $requestUrl = $searchRequestBuilder->buildRequestUrl();
         $this->assertContains($expectedParameter, $requestUrl);
     }

@@ -4,14 +4,14 @@ namespace FINDOLOGIC\Api\RequestBuilders\Xml;
 
 use FINDOLOGIC\Api\Definitions\Endpoint;
 use FINDOLOGIC\Api\Definitions\QueryParameter;
-use FINDOLOGIC\Api\FindologicConfig;
+use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Objects\XmlResponse;
 
 class SearchRequestBuilder extends XmlRequestBuilder
 {
     protected $endpoint = Endpoint::SEARCH;
 
-    public function __construct(FindologicConfig $config)
+    public function __construct(Config $config)
     {
         parent::__construct($config);
         $this->addRequiredParam(QueryParameter::QUERY);

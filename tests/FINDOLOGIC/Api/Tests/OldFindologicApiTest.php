@@ -7,7 +7,7 @@ use FINDOLOGIC\Api\Definitions\Endpoint;
 use FINDOLOGIC\Api\Exceptions\ConfigException;
 use FINDOLOGIC\Api\Exceptions\ParamNotSetException;
 use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
-use FINDOLOGIC\Api\FindologicApi;
+use FINDOLOGIC\Api\Requester;
 use FINDOLOGIC\Api\Objects\JsonResponse;
 use FINDOLOGIC\Api\Objects\XmlResponse;
 use GuzzleHttp\Client;
@@ -71,16 +71,16 @@ class OldFindologicApiTest extends TestCase
     }
 
     /**
-     * @return FindologicApi FindologicApi
+     * @return Requester FindologicApi
      */
     public function getDefaultFindologicApi()
     {
-        return new FindologicApi([
-            FindologicApi::SHOPKEY => '80AB18D4BE2654A78244106AD315DC2C',
-            FindologicApi::HTTP_CLIENT => $this->httpClientMock,
-            FindologicApi::API_URL => 'https://blubbergurken.io/%s/%s',
-            FindologicApi::REQUEST_TIMEOUT => 1,
-            FindologicApi::ALIVETEST_TIMEOUT => 1,
+        return new Requester([
+            Requester::SHOPKEY => '80AB18D4BE2654A78244106AD315DC2C',
+            Requester::HTTP_CLIENT => $this->httpClientMock,
+            Requester::API_URL => 'https://blubbergurken.io/%s/%s',
+            Requester::REQUEST_TIMEOUT => 1,
+            Requester::ALIVETEST_TIMEOUT => 1,
         ]);
     }
 
@@ -104,12 +104,12 @@ class OldFindologicApiTest extends TestCase
     public function invalidConfigProvider()
     {
         return [
-            'apiUrl as object' => [[FindologicApi::API_URL => new \stdClass()]],
-            'apiUrl as integer' => [[FindologicApi::API_URL => 46]],
-            'alivetest timeout as object' => [[FindologicApi::ALIVETEST_TIMEOUT => new \stdClass()]],
-            'alivetest timeout as string' => [[FindologicApi::ALIVETEST_TIMEOUT => 'A timeout of 50 years pls!']],
-            'request timeout as object' => [[FindologicApi::REQUEST_TIMEOUT => new \stdClass()]],
-            'request timeout as string' => [[FindologicApi::REQUEST_TIMEOUT => 'A timeout of 90 quadrillion yrs pls!']],
+            'apiUrl as object' => [[Requester::API_URL => new \stdClass()]],
+            'apiUrl as integer' => [[Requester::API_URL => 46]],
+            'alivetest timeout as object' => [[Requester::ALIVETEST_TIMEOUT => new \stdClass()]],
+            'alivetest timeout as string' => [[Requester::ALIVETEST_TIMEOUT => 'A timeout of 50 years pls!']],
+            'request timeout as object' => [[Requester::REQUEST_TIMEOUT => new \stdClass()]],
+            'request timeout as string' => [[Requester::REQUEST_TIMEOUT => 'A timeout of 90 quadrillion yrs pls!']],
         ];
     }
 
@@ -120,7 +120,7 @@ class OldFindologicApiTest extends TestCase
     public function testInvalidFindologicApiConfigThrowsAnException($config)
     {
         try {
-            new FindologicApi($config);
+            new Requester($config);
             $this->fail('An invalid FindologicApi config should throw an exception!');
         } catch (ConfigException $e) {
             $this->assertEquals('Invalid FindologicApi config.', $e->getMessage());
@@ -368,8 +368,8 @@ class OldFindologicApiTest extends TestCase
     public function testExceptionIsThrownIfShopkeyInConfigIsInvalid($shopkey)
     {
         try {
-            $findologicApi = new FindologicApi([
-                FindologicApi::SHOPKEY => $shopkey
+            $findologicApi = new Requester([
+                Requester::SHOPKEY => $shopkey
             ]);
 
             $this->fail('A ConfigException was expected to occur when the shopkey is invalid.');
@@ -414,7 +414,7 @@ class OldFindologicApiTest extends TestCase
     {
         $this->setDefaultExpectationsForXmlResponse();
 
-        /** @var FindologicApi $findologicApi */
+        /** @var Requester $findologicApi */
         $findologicApi = $this->getDefaultFindologicApi()
             ->setShopurl('www.blubbergurken.io')
             ->setUserip('127.0.0.1')
@@ -430,7 +430,7 @@ class OldFindologicApiTest extends TestCase
 
     public function testWhenNoExplicitClientIsSetTheDefaultClientIsSet()
     {
-        $findologicApi = new FindologicApi(['shopkey' => 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA']);
+        $findologicApi = new Requester(['shopkey' => 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA']);
         $httpClient = $findologicApi->getConfigByKey('httpClient');
 
         $this->assertInstanceOf('GuzzleHttp\Client', $httpClient);

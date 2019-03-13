@@ -3,17 +3,17 @@
 namespace FINDOLOGIC\Api\Tests;
 
 use FINDOLOGIC\Api\Exceptions\ConfigException;
-use FINDOLOGIC\Api\FindologicConfig;
+use FINDOLOGIC\Api\Config;
 use GuzzleHttp\Client;
 
-class FindologicConfigTest extends TestBase
+class ConfigTest extends TestBase
 {
     /** @var array */
     private $validConfig = ['shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD'];
 
     public function testValidFindologicConfigWillWorkAndDefaultsAreFilled()
     {
-        $findologicConfig = new FindologicConfig($this->validConfig);
+        $findologicConfig = new Config($this->validConfig);
         $this->assertEquals(3.0, $findologicConfig->getRequestTimeout());
         $this->assertEquals(1.0, $findologicConfig->getAlivetestTimeout());
         $this->assertInstanceOf(Client::class, $findologicConfig->getHttpClient());
@@ -29,7 +29,7 @@ class FindologicConfigTest extends TestBase
         $expectedShopkey = $this->validConfig['shopkey'];
         $expectedApiUrl = 'www.blubbergurken.io/ps/%s/%s';
 
-        $findologicConfig = new FindologicConfig([
+        $findologicConfig = new Config([
             'shopkey' => $expectedShopkey,
             'apiUrl' => $expectedApiUrl,
             'alivetestTimeout' => $expectedAlivetestTimeout,
@@ -75,7 +75,7 @@ class FindologicConfigTest extends TestBase
     public function testInvalidFindologicConfigThrowsAnException($config)
     {
         try {
-            new FindologicConfig($config);
+            new Config($config);
             $this->fail('An invalid FindologicConfig should throw an exception!');
         } catch (ConfigException $e) {
             $this->assertEquals('Invalid config supplied.', $e->getMessage());

@@ -6,8 +6,8 @@ use FINDOLOGIC\Api\Definitions\Endpoint;
 use FINDOLOGIC\Api\Definitions\QueryParameter;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\Exceptions\ParamNotSetException;
-use FINDOLOGIC\Api\FindologicClient;
-use FINDOLOGIC\Api\FindologicConfig;
+use FINDOLOGIC\Api\Client;
+use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Validators\ParameterValidator;
 use InvalidArgumentException;
 use Valitron\Validator;
@@ -27,10 +27,10 @@ abstract class RequestBuilder
     /** @var string */
     protected $endpoint;
 
-    /** @var FindologicConfig */
+    /** @var Config */
     protected $config;
 
-    /** @var FindologicClient */
+    /** @var Client */
     protected $findologicClient;
 
     /**
@@ -39,10 +39,10 @@ abstract class RequestBuilder
      */
     abstract public function sendRequest();
 
-    public function __construct(FindologicConfig $config)
+    public function __construct(Config $config)
     {
         $this->config = $config;
-        $this->findologicClient = new FindologicClient($config);
+        $this->findologicClient = new Client($config);
     }
 
     /**

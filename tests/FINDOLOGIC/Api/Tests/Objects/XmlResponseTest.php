@@ -167,7 +167,7 @@ class XmlResponseTest extends TestCase
             $this->assertSame($expectedFilterNames[$count], $filter->getName());
             $this->assertSame($expectedFilterSelects[$count], $filter->getSelect());
             $this->assertSame($expectedFilterSelectedItems[$count], $filter->getSelectedItems());
-            $this->assertSame($expectedFilterAmount, $response->getFilterAmount());
+            $this->assertSame($expectedFilterAmount, $response->getFilterCount());
             $count++;
         }
     }
@@ -209,7 +209,7 @@ class XmlResponseTest extends TestCase
 
         $actualDisplays = [];
         $response = $this->getRealResponseData();
-        if ($response->hasFilters() && $response->getFilterAmount() > 0) {
+        if ($response->hasFilters() && $response->getFilterCount() > 0) {
             foreach ($response->getFilters() as $filter) {
                 if ($filter->hasItems() && $filter->getItemAmount() > 0) {
                     foreach ($filter->getItems() as $item) {
@@ -239,7 +239,7 @@ class XmlResponseTest extends TestCase
 
         $actualSelect = [];
         $response = $this->getRealResponseData();
-        if ($response->hasFilters() && $response->getFilterAmount() > 0) {
+        if ($response->hasFilters() && $response->getFilterCount() > 0) {
             foreach ($response->getFilters() as $filter) {
                 if ($filter->hasItems() && $filter->getItemAmount() > 0) {
                     foreach ($filter->getItems() as $item) {
@@ -269,7 +269,7 @@ class XmlResponseTest extends TestCase
 
         $actualWeight = [];
         $response = $this->getRealResponseData();
-        if ($response->hasFilters() && $response->getFilterAmount() > 0) {
+        if ($response->hasFilters() && $response->getFilterCount() > 0) {
             foreach ($response->getFilters() as $filter) {
                 if ($filter->hasItems() && $filter->getItemAmount() > 0) {
                     foreach ($filter->getItems() as $item) {
@@ -298,7 +298,7 @@ class XmlResponseTest extends TestCase
 
         $actualNames = [];
         $response = $this->getRealResponseData();
-        if ($response->hasFilters() && $response->getFilterAmount() > 0) {
+        if ($response->hasFilters() && $response->getFilterCount() > 0) {
             foreach ($response->getFilters() as $filter) {
                 if ($filter->hasItems() && $filter->getItemAmount() > 0) {
                     foreach ($filter->getItems() as $item) {
@@ -328,7 +328,7 @@ class XmlResponseTest extends TestCase
 
         $actualImages = [];
         $response = $this->getRealResponseData();
-        if ($response->hasFilters() && $response->getFilterAmount() > 0) {
+        if ($response->hasFilters() && $response->getFilterCount() > 0) {
             foreach ($response->getFilters() as $filter) {
                 if ($filter->hasItems() && $filter->getItemAmount() > 0) {
                     foreach ($filter->getItems() as $item) {
@@ -357,7 +357,7 @@ class XmlResponseTest extends TestCase
 
         $actualColors = [];
         $response = $this->getRealResponseData();
-        if ($response->hasFilters() && $response->getFilterAmount() > 0) {
+        if ($response->hasFilters() && $response->getFilterCount() > 0) {
             foreach ($response->getFilters() as $filter) {
                 if ($filter->hasItems() && $filter->getItemAmount() > 0) {
                     foreach ($filter->getItems() as $item) {
@@ -386,7 +386,7 @@ class XmlResponseTest extends TestCase
 
         $actualFrequency = [];
         $response = $this->getRealResponseData();
-        if ($response->hasFilters() && $response->getFilterAmount() > 0) {
+        if ($response->hasFilters() && $response->getFilterCount() > 0) {
             foreach ($response->getFilters() as $filter) {
                 if ($filter->hasItems() && $filter->getItemAmount() > 0) {
                     foreach ($filter->getItems() as $item) {
@@ -417,7 +417,7 @@ class XmlResponseTest extends TestCase
 
         $actualSubItemDetails = [];
         $response = $this->getRealResponseData();
-        if ($response->hasFilters() && $response->getFilterAmount() > 0) {
+        if ($response->hasFilters() && $response->getFilterCount() > 0) {
             foreach ($response->getFilters() as $filter) {
                 if ($filter->hasItems() && $filter->getItemAmount() > 0) {
                     foreach ($filter->getItems() as $item) {
