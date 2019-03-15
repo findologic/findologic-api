@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Api\Validators;
 
+use FINDOLOGIC\Api\Definitions\BlockType;
 use FINDOLOGIC\Api\Definitions\OrderType;
 use Valitron\Validator;
 
@@ -27,6 +28,9 @@ class ParameterValidator extends Validator
         }, self::ERROR_DEFAULT);
         $this->addInstanceRule('isOrderParam', function ($field, $value) {
             return (is_string($value) && in_array($value, OrderType::getList()));
+        }, self::ERROR_DEFAULT);
+        $this->addInstanceRule('isAutocompleteBlockParam', function ($field, $value) {
+            return (is_string($value) && in_array($value, BlockType::getAvailableBlockTypes()));
         }, self::ERROR_DEFAULT);
         $this->addInstanceRule('equalOrHigherThanZero', function ($field, $value) {
             return (is_integer($value) && $value >= 0);

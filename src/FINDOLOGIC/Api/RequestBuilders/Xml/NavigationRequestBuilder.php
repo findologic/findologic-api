@@ -3,8 +3,7 @@
 namespace FINDOLOGIC\Api\RequestBuilders\Xml;
 
 use FINDOLOGIC\Api\Definitions\Endpoint;
-use FINDOLOGIC\Api\Objects\XmlResponse;
-use FINDOLOGIC\Api\RequestBuilders\RequestBuilder;
+use FINDOLOGIC\Api\ResponseObjects\XmlResponse;
 
 class NavigationRequestBuilder extends XmlRequestBuilder
 {
@@ -19,7 +18,7 @@ class NavigationRequestBuilder extends XmlRequestBuilder
         $this->checkRequiredParamsAreSet();
         $this->sendAlivetestRequest();
 
-        $responseContent = $this->findologicClient->request($this->buildRequestUrl());
-        return new XmlResponse($responseContent, $this->findologicClient->getResponseTime());
+        $responseContent = $this->client->request($this->buildRequestUrl());
+        return new XmlResponse($responseContent, $this->client->getResponseTime());
     }
 }

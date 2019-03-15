@@ -7,6 +7,7 @@ use FINDOLOGIC\Api\Exceptions\ParamNotSetException;
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
 use FINDOLOGIC\Api\Tests\TestBase;
+use InvalidArgumentException;
 
 /**
  * This class is testing the request builders for search and navigation requests. Most tests are using the
@@ -18,7 +19,7 @@ class XmlRequestBuilderTest extends TestBase
     use XmlRequestDataProvider;
 
     /** @var Config */
-    private $findologicConfig;
+    private $config;
 
     /** @var string */
     private $rawMockResponse;
@@ -26,7 +27,7 @@ class XmlRequestBuilderTest extends TestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->findologicConfig = new Config([
+        $this->config = new Config([
             'shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD',
             'httpClient' => $this->httpClientMock,
         ]);
@@ -35,7 +36,7 @@ class XmlRequestBuilderTest extends TestBase
 
     public function testSendingRequestsWithoutRequiredParamsWillThrowAnException()
     {
-        $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
         try {
             $searchRequestBuilder->sendRequest();
             $this->fail('An exception was expected to happen if the shopurl param is not set.');
@@ -99,7 +100,7 @@ class XmlRequestBuilderTest extends TestBase
     {
         $expectedParameter = sprintf('&query=%s', $expectedResult);
 
-        $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->setQuery($query);
@@ -116,7 +117,7 @@ class XmlRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter query is not valid.');
 
-        $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->setQuery($invalidQuery);
@@ -130,7 +131,7 @@ class XmlRequestBuilderTest extends TestBase
     {
         $expectedParameter = sprintf('&shopkey=%s', $expectedShopkey);
 
-        $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->setShopkey($expectedShopkey);
@@ -140,14 +141,14 @@ class XmlRequestBuilderTest extends TestBase
 
     /**
      * @dataProvider invalidShopkeyProvider
-     * @param string $invalidShopkey
+     * @param mixed $invalidShopkey
      */
     public function testInvalidShopkeyWillThrowAnException($invalidShopkey)
     {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter shopkey is not valid.');
 
-        $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->setShopkey($invalidShopkey);
@@ -155,9 +156,9 @@ class XmlRequestBuilderTest extends TestBase
 
     public function testShopkeyIsAutomaticallyAddedFromTheConfigIfNotOverridden()
     {
-        $expectedParameter = sprintf('&shopkey=%s', $this->findologicConfig->getShopkey());
+        $expectedParameter = sprintf('&shopkey=%s', $this->config->getShopkey());
 
-        $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
         $requestUrl = $searchRequestBuilder->buildRequestUrl();
@@ -173,7 +174,7 @@ class XmlRequestBuilderTest extends TestBase
     {
         $expectedParameter = sprintf('?shopurl=%s', $expectedResult);
 
-        $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->setShopurl($shopurl);
@@ -183,14 +184,14 @@ class XmlRequestBuilderTest extends TestBase
 
     /**
      * @dataProvider invalidShopurlProvider
-     * @param string $invalidShopurl
+     * @param mixed $invalidShopurl
      */
     public function testInvalidShopurlWillThrowAnException($invalidShopurl)
     {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter shopurl is not valid.');
 
-        $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->setShopurl($invalidShopurl);
@@ -205,7 +206,7 @@ class XmlRequestBuilderTest extends TestBase
     {
         $expectedParameter = sprintf('&userip=%s', $expectedResult);
 
-        $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->setUserip($userip);
@@ -215,14 +216,14 @@ class XmlRequestBuilderTest extends TestBase
 
     /**
      * @dataProvider invalidUseripProvider
-     * @param string $invalidUserip
+     * @param mixed $invalidUserip
      */
     public function testInvalidUseripWillThrowAnException($invalidUserip)
     {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter userip is not valid.');
 
-        $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->setUserip($invalidUserip);
@@ -237,7 +238,7 @@ class XmlRequestBuilderTest extends TestBase
     {
         $expectedParameter = sprintf('&referer=%s', $expectedResult);
 
-        $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->setReferer($referer);
@@ -247,14 +248,14 @@ class XmlRequestBuilderTest extends TestBase
 
     /**
      * @dataProvider invalidRefererProvider
-     * @param string $invalidReferer
+     * @param mixed $invalidReferer
      */
     public function testInvalidRefererWillThrowAnException($invalidReferer)
     {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter referer is not valid.');
 
-        $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->setReferer($invalidReferer);
@@ -268,7 +269,7 @@ class XmlRequestBuilderTest extends TestBase
     {
         $expectedParameter = sprintf('&revision=%s', $revision);
 
-        $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->setRevision($revision);
@@ -278,14 +279,14 @@ class XmlRequestBuilderTest extends TestBase
 
     /**
      * @dataProvider invalidRevisionProvider
-     * @param string $invalidRevision
+     * @param mixed $invalidRevision
      */
     public function testInvalidRevisionWillThrowAnException($invalidRevision)
     {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter revision is not valid.');
 
-        $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->setRevision($invalidRevision);
@@ -297,7 +298,7 @@ class XmlRequestBuilderTest extends TestBase
      * @param string $expectedAttributeValue
      * @param string $specifier
      */
-    public function testSetAttributeWillSetItInAValidFormat(
+    public function testAddAttributeWillSetItInAValidFormat(
         $expectedAttributeName,
         $expectedAttributeValue,
         $specifier
@@ -310,7 +311,7 @@ class XmlRequestBuilderTest extends TestBase
             $expectedAttributeValue
         );
 
-        $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->addAttribute($expectedAttributeName, $expectedAttributeValue, $specifier);
@@ -320,9 +321,9 @@ class XmlRequestBuilderTest extends TestBase
 
     /**
      * @dataProvider invalidAttributeProvider
-     * @param $expectedAttributeName
-     * @param $expectedAttributeValue
-     * @param $specifier
+     * @param mixed $expectedAttributeName
+     * @param mixed $expectedAttributeValue
+     * @param mixed $specifier
      */
     public function testInvalidAttributeWillThrowAnException(
         $expectedAttributeName,
@@ -332,7 +333,7 @@ class XmlRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter attrib is not valid.');
 
-        $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->addAttribute($expectedAttributeName, $expectedAttributeValue, $specifier);
@@ -347,7 +348,7 @@ class XmlRequestBuilderTest extends TestBase
     {
         $expectedParameter = sprintf('&order=%s', $expectedResult);
 
-        $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->setOrder($expectedOrder);
@@ -357,14 +358,14 @@ class XmlRequestBuilderTest extends TestBase
 
     /**
      * @dataProvider invalidOrderProvider
-     * @param string $invalidOrder
+     * @param mixed $invalidOrder
      */
     public function testInvalidOrderWillThrowAnException($invalidOrder)
     {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter order is not valid.');
 
-        $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->setOrder($invalidOrder);
@@ -374,15 +375,269 @@ class XmlRequestBuilderTest extends TestBase
      * @dataProvider propertyProvider
      * @param string $expectedProperty
      */
-    public function testSetPropertyWillSetItInAValidFormat($expectedProperty)
+    public function testAddPropertyWillSetItInAValidFormat($expectedProperty)
     {
         $expectedParameter = sprintf('&properties%%5B%%5D=%s', $expectedProperty);
 
-        $searchRequestBuilder = new SearchRequestBuilder($this->findologicConfig);
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->addProperty($expectedProperty);
         $requestUrl = $searchRequestBuilder->buildRequestUrl();
         $this->assertContains($expectedParameter, $requestUrl);
+    }
+
+    /**
+     * @dataProvider invalidPropertyProvider
+     * @param mixed $invalidProperty
+     */
+    public function testInvalidPropertyWillThrowAnException($invalidProperty)
+    {
+        $this->expectException(InvalidParamException::class);
+        $this->expectExceptionMessage('Parameter properties is not valid.');
+
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
+        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+
+        $searchRequestBuilder->addProperty($invalidProperty);
+    }
+
+    /**
+     * @dataProvider pushAttribProvider
+     * @param string $expectedFilterName
+     * @param string $expectedFilterValue
+     * @param float $expectedFactor
+     */
+    public function testAddPushAttribWillSetItInAValidFormat(
+        $expectedFilterName,
+        $expectedFilterValue,
+        $expectedFactor
+    ) {
+        $expectedParameter = sprintf(
+        // Decoded this looks like &pushAttrib[%s][%s]=%s
+            '&pushAttrib%%5B%s%%5D%%5B%s%%5D=%s',
+            $expectedFilterName,
+            $expectedFilterValue,
+            $expectedFactor
+        );
+
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
+        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+
+        $searchRequestBuilder->addPushAttrib($expectedFilterName, $expectedFilterValue, $expectedFactor);
+        $requestUrl = $searchRequestBuilder->buildRequestUrl();
+        $this->assertContains($expectedParameter, $requestUrl);
+    }
+
+    /**
+     * @dataProvider invalidPushAttribProvider
+     * @param mixed $expectedFilterName
+     * @param mixed $expectedFilterValue
+     * @param mixed $expectedFactor
+     */
+    public function testInvalidPushAttribWillThrowAnException(
+        $expectedFilterName,
+        $expectedFilterValue,
+        $expectedFactor
+    ) {
+        $this->expectException(InvalidParamException::class);
+        $this->expectExceptionMessage('Parameter pushAttrib is not valid.');
+
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
+        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+
+        $searchRequestBuilder->addPushAttrib($expectedFilterName, $expectedFilterValue, $expectedFactor);
+    }
+
+    /**
+     * @dataProvider countProvider
+     * @param int $expectedCount
+     */
+    public function testSetCountWillSetItInAValidFormat($expectedCount)
+    {
+        $expectedParameter = sprintf('&count=%s', $expectedCount);
+
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
+        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+
+        $searchRequestBuilder->setCount($expectedCount);
+        $requestUrl = $searchRequestBuilder->buildRequestUrl();
+        $this->assertContains($expectedParameter, $requestUrl);
+    }
+
+    /**
+     * @dataProvider invalidCountProvider
+     * @param mixed $invalidCount
+     */
+    public function testInvalidCountWillThrowAnException($invalidCount)
+    {
+        $this->expectException(InvalidParamException::class);
+        $this->expectExceptionMessage('Parameter count is not valid.');
+
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
+        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+
+        $searchRequestBuilder->setCount($invalidCount);
+    }
+
+    /**
+     * @dataProvider firstProvider
+     * @param int $expectedFirst
+     */
+    public function testSetFirstWillSetItInAValidFormat($expectedFirst)
+    {
+        $expectedParameter = sprintf('&first=%s', $expectedFirst);
+
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
+        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+
+        $searchRequestBuilder->setFirst($expectedFirst);
+        $requestUrl = $searchRequestBuilder->buildRequestUrl();
+        $this->assertContains($expectedParameter, $requestUrl);
+    }
+
+    /**
+     * @dataProvider invalidFirstProvider
+     * @param mixed $invalidFirst
+     */
+    public function testInvalidFirstWillThrowAnException($invalidFirst)
+    {
+        $this->expectException(InvalidParamException::class);
+        $this->expectExceptionMessage('Parameter first is not valid.');
+
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
+        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+
+        $searchRequestBuilder->setFirst($invalidFirst);
+    }
+
+    /**
+     * @dataProvider identifierProvider
+     * @param string $expectedIdentifier
+     */
+    public function testSetIdentifierWillSetItInAValidFormat($expectedIdentifier)
+    {
+        $expectedParameter = sprintf('&identifier=%s', $expectedIdentifier);
+
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
+        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+
+        $searchRequestBuilder->setIdentifier($expectedIdentifier);
+        $requestUrl = $searchRequestBuilder->buildRequestUrl();
+        $this->assertContains($expectedParameter, $requestUrl);
+    }
+
+    /**
+     * @dataProvider invalidIdentifierProvider
+     * @param mixed $invalidIdentifier
+     */
+    public function testInvalidIdentifierWillThrowAnException($invalidIdentifier)
+    {
+        $this->expectException(InvalidParamException::class);
+        $this->expectExceptionMessage('Parameter identifier is not valid.');
+
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
+        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+
+        $searchRequestBuilder->setIdentifier($invalidIdentifier);
+    }
+
+    /**
+     * @dataProvider groupProvider
+     * @param string $expectedGroup
+     */
+    public function testAddGroupWillSetItInAValidFormat($expectedGroup)
+    {
+        $expectedParameter = sprintf('&group%%5B%%5D=%s', $expectedGroup);
+
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
+        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+
+        $searchRequestBuilder->addGroup($expectedGroup);
+        $requestUrl = $searchRequestBuilder->buildRequestUrl();
+        $this->assertContains($expectedParameter, $requestUrl);
+    }
+
+    /**
+     * @dataProvider invalidGroupProvider
+     * @param mixed $invalidGroup
+     */
+    public function testInvalidGroupWillThrowAnException($invalidGroup)
+    {
+        $this->expectException(InvalidParamException::class);
+        $this->expectExceptionMessage('Parameter group is not valid.');
+
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
+        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+
+        $searchRequestBuilder->addGroup($invalidGroup);
+    }
+
+    public function testSetForceOriginalQueryWillSetItInAValidFormat()
+    {
+        $expectedParameter = '&forceOriginalQuery=1';
+
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
+        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+
+        $searchRequestBuilder->setForceOriginalQuery();
+        $requestUrl = $searchRequestBuilder->buildRequestUrl();
+        $this->assertContains($expectedParameter, $requestUrl);
+    }
+
+    /**
+     * @dataProvider individualParamProvider
+     * @param string $expectedKey
+     * @param string $expectedValue
+     * @param string $expectedMethod
+     */
+    public function testAddIndividualParamWillSetItInAValidFormat($expectedKey, $expectedValue, $expectedMethod)
+    {
+        $encodedKey = urlencode($expectedKey);
+        $encodedValue = urlencode($expectedValue);
+        $expectedParameter = sprintf('&%s=%s', $encodedKey, $encodedValue);
+
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
+        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+
+        $searchRequestBuilder->addIndividualParam($expectedKey, $expectedValue, $expectedMethod);
+        $requestUrl = $searchRequestBuilder->buildRequestUrl();
+        $this->assertContains($expectedParameter, $requestUrl);
+    }
+
+    public function testAddingParamsWithARandomValueWillThrowAnException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown method type.');
+
+        $expectedKey = 'someKey';
+        $expectedValue = 'someValue';
+        $expectedInvalidMethod = 'invalidMethod';
+
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
+        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+
+        $searchRequestBuilder->addIndividualParam($expectedKey, $expectedValue, $expectedInvalidMethod);
+    }
+
+    public function testAddParamsOverTheSameKeyWillMergeThemTogether()
+    {
+        $expectedGroups = ['groupOne', 'groupTwo', 'muchMoreGroups'];
+        $expectedParam = '';
+        foreach ($expectedGroups as $group) {
+            // We can not urlencode the entire string since the `&` and `=` would be encoded as well.
+            $expectedParam .= '&' . urlencode('group[][]') . '=' . urlencode($group);
+        }
+
+        $searchRequestBuilder = new SearchRequestBuilder($this->config);
+        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+
+        $searchRequestBuilder
+            ->addGroup($expectedGroups[0])
+            ->addGroup($expectedGroups[1])
+            ->addGroup($expectedGroups[2]);
+
+        $requestUrl = $searchRequestBuilder->buildRequestUrl();
+        $this->assertContains($expectedParam, $requestUrl);
     }
 }

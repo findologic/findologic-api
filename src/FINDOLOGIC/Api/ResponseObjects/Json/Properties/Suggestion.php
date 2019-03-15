@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC\Api\Objects\JsonResponseObjects;
+namespace FINDOLOGIC\Api\ResponseObjects\Json\Properties;
 
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 

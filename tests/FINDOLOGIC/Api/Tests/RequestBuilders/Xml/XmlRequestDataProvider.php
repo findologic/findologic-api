@@ -2,11 +2,22 @@
 
 namespace FINDOLOGIC\Api\Tests\RequestBuilders\Xml;
 
+use FINDOLOGIC\Api\RequestBuilders\Xml\XmlRequestBuilder;
+
 /**
- * This trait holds data providers for search and navigation requests.
+ * This trait holds data providers and helper functions for search and navigation requests.
  */
 trait XmlRequestDataProvider
 {
+    protected function setRequiredParamsForXmlRequestBuilder(XmlRequestBuilder $xmlRequestBuilder)
+    {
+        $xmlRequestBuilder
+            ->setShopurl('blubbergurken.io')
+            ->setUserip('127.0.0.1')
+            ->setReferer('https://blubbergurken.io/blubbergurken-sale/')
+            ->setRevision('2.5.10');
+    }
+
     public function queryProvider()
     {
         return [
@@ -239,6 +250,121 @@ trait XmlRequestDataProvider
             'normal property' => ['ordernumber'],
             'other property' => ['detailedDescription'],
             'more different property' => ['articleName']
+        ];
+    }
+
+    public function invalidPropertyProvider()
+    {
+        return [
+            'property is an integer' => [561],
+            'property is an array' => [['propertyBest']],
+            'property is an object' => [new \stdClass()],
+        ];
+    }
+
+    public function pushAttribProvider()
+    {
+        return [
+            'normal pushAttrib' => ['vendor', 'TomTailor', 0.3],
+            'other pushAttrib' => ['Material', 'Leather', 2.1],
+            'more different pushAttrib' => ['Color', 'Black', 3.0]
+        ];
+    }
+
+    public function invalidPushAttribProvider()
+    {
+        return [
+            'pushAttrib name is an array' => [['Tom Tailor'], '50', 3],
+            'pushAttrib value is an array' => ['Tom Tailor', ['50'], 3],
+            'pushAttrib specifier is an array' => ['Tom Tailor', '50', [3]],
+            'pushAttrib name is an integer' => [1337, '50', 3],
+            'pushAttrib value is an integer' => ['Tom Tailor', 50, 3],
+            'pushAttrib name is an object' => [new \stdClass(), '50', 3],
+            'pushAttrib value is an object' => ['Tom Tailor', new \stdClass(), 3],
+            'pushAttrib specifier is an object' => ['Tom Tailor', '50', new \stdClass()],
+        ];
+    }
+
+    public function countProvider()
+    {
+        return [
+            'normal count' => [20],
+            'other count' => [25],
+            'more different count' => [256]
+        ];
+    }
+
+    public function invalidCountProvider()
+    {
+        return [
+            'count is a string' => ['abc'],
+            'count is an array' => [['aaaah']],
+            'count is an object' => [new \stdClass()],
+            'count is below zero' => [-5],
+        ];
+    }
+
+    public function firstProvider()
+    {
+        return [
+            'normal first' => [20],
+            'other first' => [25],
+            'more different first' => [256],
+        ];
+    }
+
+    public function invalidFirstProvider()
+    {
+        return [
+            'first is a string' => ['abc'],
+            'first is an array' => [['aaaah']],
+            'first is an object' => [new \stdClass()],
+            'first is below zero' => [-91],
+        ];
+    }
+
+    public function identifierProvider()
+    {
+        return [
+            'normal identifier' => ['15356'],
+            'other identifier' => ['a23fv'],
+            'more different identifier' => ['019111105-37900']
+        ];
+    }
+
+    public function invalidIdentifierProvider()
+    {
+        return [
+            'identifier is an integer' => [123],
+            'identifier is an array' => [['aaaah']],
+            'identifier is an object' => [new \stdClass()],
+        ];
+    }
+
+    public function groupProvider()
+    {
+        return [
+            'normal group' => ['NDEmNgEN'],
+            'other group' => ['HaKeLfGN'],
+            'more different group' => ['ThisGroupMayBeValid']
+        ];
+    }
+
+    public function invalidGroupProvider()
+    {
+        return [
+            'group is an integer' => [123],
+            'group is an array' => [['aaaah']],
+            'group is an object' => [new \stdClass()],
+        ];
+    }
+
+    public function individualParamProvider()
+    {
+        return [
+            'normal individual param' => ['shoes', 'abc', 'set'],
+            'other individual param' => ['really good shoes', 'what?!', 'set'],
+            'more different individual param' => ['best & *_\' shoes &copy; ever!', 'very very FuNnY!!!', 'set']
         ];
     }
 }

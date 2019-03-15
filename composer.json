@@ -48,15 +48,15 @@
         }
     },
     "scripts": {
-        "check-code-style": [
+        "check-cs": [
             "php-cs-fixer fix --dry-run src",
             "php-cs-fixer fix --dry-run tests"
         ],
-        "fix-code-style": [
+        "fix": [
             "php-cs-fixer fix src",
             "php-cs-fixer fix tests"
         ],
-        "run-tests": [
+        "test": [
             "phpunit --configuration phpunit.xml --coverage-text --coverage-clover=coverage.xml"
         ]
     }

@@ -2,10 +2,10 @@
 
 namespace FINDOLOGIC\Api\RequestBuilders\Xml;
 
+use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Definitions\Endpoint;
 use FINDOLOGIC\Api\Definitions\QueryParameter;
-use FINDOLOGIC\Api\Config;
-use FINDOLOGIC\Api\Objects\XmlResponse;
+use FINDOLOGIC\Api\ResponseObjects\Xml\XmlResponse;
 
 class SearchRequestBuilder extends XmlRequestBuilder
 {
@@ -26,7 +26,7 @@ class SearchRequestBuilder extends XmlRequestBuilder
         $this->checkRequiredParamsAreSet();
         $this->sendAlivetestRequest();
 
-        $responseContent = $this->findologicClient->request($this->buildRequestUrl());
-        return new XmlResponse($responseContent, $this->findologicClient->getResponseTime());
+        $responseContent = $this->client->request($this->buildRequestUrl());
+        return new XmlResponse($responseContent, $this->client->getResponseTime());
     }
 }

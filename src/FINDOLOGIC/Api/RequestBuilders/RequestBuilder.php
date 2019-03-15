@@ -22,7 +22,9 @@ abstract class RequestBuilder
     protected $params = [];
 
     /** @var array */
-    protected $requiredParams = [];
+    protected $requiredParams = [
+        QueryParameter::SHOP_URL,
+    ];
 
     /** @var string */
     protected $endpoint;
@@ -31,7 +33,7 @@ abstract class RequestBuilder
     protected $config;
 
     /** @var Client */
-    protected $findologicClient;
+    protected $client;
 
     /**
      * Sends a request to FINDOLOGIC. This may include an alivetest if the requested resource is a search or
@@ -42,7 +44,7 @@ abstract class RequestBuilder
     public function __construct(Config $config)
     {
         $this->config = $config;
-        $this->findologicClient = new Client($config);
+        $this->client = new Client($config);
     }
 
     /**
@@ -83,6 +85,25 @@ abstract class RequestBuilder
         }
 
         $this->addParam(QueryParameter::SHOPKEY, $value);
+        return $this;
+    }
+
+    /**
+     * Sets the shopurl param. It is used to determine the service's url. Required.
+     *
+     * @param $value string
+     * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#required_parameters
+     * @return $this
+     */
+    public function setShopurl($value)
+    {
+        // TODO: @see https://github.com/TheKeymaster/findologic-api/issues/24
+        $shopUrlRegex = '/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&\'\(\)\*\+,;=.]+$/';
+        if (!is_string($value) ||!preg_match($shopUrlRegex, $value)) {
+            throw new InvalidParamException(QueryParameter::SHOP_URL);
+        }
+
+        $this->addParam(QueryParameter::SHOP_URL, $value);
         return $this;
     }
 
@@ -181,7 +202,7 @@ abstract class RequestBuilder
      */
     protected function sendAlivetestRequest()
     {
-        $this->findologicClient->request($this->buildAlivetestUrl(), true);
+        $this->client->request($this->buildAlivetestUrl(), true);
     }
 
     /**

@@ -1,21 +1,22 @@
 <?php
 
-namespace FINDOLOGIC\Api\Objects;
+namespace FINDOLOGIC\Api\ResponseObjects\Xml;
 
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
-use FINDOLOGIC\Api\Objects\XmlResponseObjects\Filter;
-use FINDOLOGIC\Api\Objects\XmlResponseObjects\Landingpage;
-use FINDOLOGIC\Api\Objects\XmlResponseObjects\Product;
-use FINDOLOGIC\Api\Objects\XmlResponseObjects\Promotion;
-use FINDOLOGIC\Api\Objects\XmlResponseObjects\Query;
-use FINDOLOGIC\Api\Objects\XmlResponseObjects\Results;
-use FINDOLOGIC\Api\Objects\XmlResponseObjects\Servers;
+use FINDOLOGIC\Api\ResponseObjects\Response;
+use FINDOLOGIC\Api\ResponseObjects\Xml\Properties\Filter;
+use FINDOLOGIC\Api\ResponseObjects\Xml\Properties\LandingPage;
+use FINDOLOGIC\Api\ResponseObjects\Xml\Properties\Product;
+use FINDOLOGIC\Api\ResponseObjects\Xml\Properties\Promotion;
+use FINDOLOGIC\Api\ResponseObjects\Xml\Properties\Query;
+use FINDOLOGIC\Api\ResponseObjects\Xml\Properties\Results;
+use FINDOLOGIC\Api\ResponseObjects\Xml\Properties\Servers;
 use SimpleXMLElement;
 
 /**
  * Is used for search and navigation requests with XML response only!
  */
-class XmlResponse
+class XmlResponse extends Response
 {
     /** @var Servers $servers */
     private $servers;
@@ -23,7 +24,7 @@ class XmlResponse
     /** @var Query $query */
     private $query;
 
-    /** @var Landingpage|null $landingPage */
+    /** @var LandingPage|null $landingPage */
     private $landingPage;
 
     /** @var Promotion|null $promotion */
@@ -44,13 +45,8 @@ class XmlResponse
     /** @var int $filterAmount */
     private $filterAmount = 0;
 
-    /** @var float|null */
-    private $responseTime;
-
     /**
-     * XmlResponse constructor.
-     * @param string $response
-     * @param float|null $responseTime
+     * @inheritdoc
      */
     public function __construct($response, $responseTime = null)
     {
@@ -80,10 +76,10 @@ class XmlResponse
     }
 
     /**
-     * If the response contains a Landingpage, it will be returned, otherwise return null.
+     * If the response contains a LandingPage, it will be returned, otherwise return null.
      *
      * @param SimpleXMLElement $xmlResponse
-     * @return null|Landingpage
+     * @return LandingPage|null
      */
     private function getLandingPageFromResponse($xmlResponse)
     {
@@ -98,7 +94,7 @@ class XmlResponse
      * If the response contains a Promotion, it will be returned, otherwise return null.
      *
      * @param SimpleXMLElement $xmlResponse
-     * @return null|Promotion
+     * @return Promotion|null
      */
     private function getPromotionFromResponse($xmlResponse)
     {
@@ -126,7 +122,7 @@ class XmlResponse
     }
 
     /**
-     * @return Landingpage
+     * @return LandingPage|null
      */
     public function getLandingPage()
     {
@@ -134,7 +130,7 @@ class XmlResponse
     }
 
     /**
-     * @return Promotion
+     * @return Promotion|null
      */
     public function getPromotion()
     {
@@ -179,13 +175,5 @@ class XmlResponse
     public function getFilterCount()
     {
         return $this->filterAmount;
-    }
-
-    /**
-     * @return float|null
-     */
-    public function getResponseTime()
-    {
-        return $this->responseTime;
     }
 }

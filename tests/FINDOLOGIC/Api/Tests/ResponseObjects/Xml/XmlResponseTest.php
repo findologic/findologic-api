@@ -1,9 +1,8 @@
 <?php
 
-namespace FINDOLOGIC\Api\Tests\Objects;
+namespace FINDOLOGIC\Api\Tests\ResponseObjects\Xml;
 
-use FINDOLOGIC\Api\Objects\XmlResponse;
-use FINDOLOGIC\Api\Objects\XmlResponseObjects\Filter;
+use FINDOLOGIC\Api\ResponseObjects\Xml\XmlResponse;
 use PHPUnit\Framework\TestCase;
 
 class XmlResponseTest extends TestCase
@@ -17,7 +16,7 @@ class XmlResponseTest extends TestCase
     public function getRealResponseData($filename = 'demoResponse.xml')
     {
         // Get contents from a real response locally.
-        $realResponseData = file_get_contents(__DIR__ . '/../../Mockdata/' . $filename);
+        $realResponseData = file_get_contents(__DIR__ . '/../../../Mockdata/' . $filename);
         return new XmlResponse($realResponseData);
     }
 

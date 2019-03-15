@@ -14,13 +14,13 @@ class ClientTest extends TestBase
     private $validShopkey = 'ABCDABCDABCDABCDABCDABCDABCDABCD';
 
     /** @var Config */
-    private $findologicConfig;
+    private $config;
 
     protected function setUp()
     {
         parent::setUp();
 
-        $this->findologicConfig = new Config([
+        $this->config = new Config([
             'shopkey' => $this->validShopkey,
             'httpClient' => $this->httpClientMock,
         ]);
@@ -33,8 +33,8 @@ class ClientTest extends TestBase
 
         $this->setExpectationsForRequests($expectedRequestUrl, $expectedBody);
 
-        $findologicClient = new Client($this->findologicConfig);
-        $result = $findologicClient->request($expectedRequestUrl);
+        $client = new Client($this->config);
+        $result = $client->request($expectedRequestUrl);
 
         $this->assertSame($expectedBody, $result);
     }
@@ -82,10 +82,10 @@ class ClientTest extends TestBase
 
         $this->setExpectationsForRequests($expectedRequestUrl, $expectedBody, $statusCode);
 
-        $findologicClient = new Client($this->findologicConfig);
+        $client = new Client($this->config);
 
         try {
-            $findologicClient->request($expectedRequestUrl);
+            $client->request($expectedRequestUrl);
             $this->fail('An ServiceNotAliveException should be thrown if the status code is not OK.');
         } catch (ServiceNotAliveException $e) {
             $this->assertEquals(sprintf(
@@ -102,8 +102,8 @@ class ClientTest extends TestBase
 
         $this->setExpectationsForAliveTestRequests($expectedRequestUrl, $expectedBody);
 
-        $findologicClient = new Client($this->findologicConfig);
-        $result = $findologicClient->request($expectedRequestUrl, true);
+        $client = new Client($this->config);
+        $result = $client->request($expectedRequestUrl, true);
 
         $this->assertSame($expectedBody, $result);
     }
@@ -135,9 +135,9 @@ class ClientTest extends TestBase
 
         $this->setExpectationsForAliveTestRequests($expectedRequestUrl, $expectedBody);
 
-        $findologicClient = new Client($this->findologicConfig);
+        $client = new Client($this->config);
         try {
-            $findologicClient->request($expectedRequestUrl, true);
+            $client->request($expectedRequestUrl, true);
             $this->fail('An exception should be thrown if the alivetest returns something else then "alive"');
         } catch (ServiceNotAliveException $e) {
             $this->assertEquals(sprintf(
@@ -154,10 +154,10 @@ class ClientTest extends TestBase
 
         $this->setExpectationsForAliveTestRequests($expectedRequestUrl, $expectedBody);
 
-        $findologicClient = new Client($this->findologicConfig);
-        $findologicClient->request($expectedRequestUrl, true);
+        $client = new Client($this->config);
+        $client->request($expectedRequestUrl, true);
 
-        $this->assertSame(null, $findologicClient->getResponseTime());
+        $this->assertSame(null, $client->getResponseTime());
     }
 
     public function testWhenDoingARequestTheResponseTimeShouldBeSet()
@@ -167,12 +167,12 @@ class ClientTest extends TestBase
 
         $this->setExpectationsForRequests($expectedRequestUrl, $expectedBody);
 
-        $findologicClient = new Client($this->findologicConfig);
-        $findologicClient->request($expectedRequestUrl);
+        $client = new Client($this->config);
+        $client->request($expectedRequestUrl);
 
         // Local response time should be fast since the data will not be sent to another server, but instead it
         // will be directly read from the ram.
-        $this->assertEquals(0, $findologicClient->getResponseTime(), '', 0.01);
+        $this->assertEquals(0, $client->getResponseTime(), '', 0.01);
     }
 
     public function testWhenGuzzleFailsWillThrowAnException()
@@ -187,10 +187,10 @@ class ClientTest extends TestBase
                 new Request('GET', $expectedRequestUrl)
             ));
 
-        $findologicClient = new Client($this->findologicConfig);
+        $client = new Client($this->config);
 
         try {
-            $findologicClient->request($expectedRequestUrl);
+            $client->request($expectedRequestUrl);
             $this->fail('If Guzzle throws an exception it should be caught by us and thrown that something is wrong.');
         } catch (ServiceNotAliveException $e) {
             $this->assertEquals(sprintf(

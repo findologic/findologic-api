@@ -1,28 +1,26 @@
 <?php
 
-namespace FINDOLOGIC\Api\Objects\XmlResponseObjects;
+namespace FINDOLOGIC\Api\ResponseObjects\Xml\Properties;
 
-use Exception;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use SimpleXMLElement;
 
-class OriginalQuery
+class QueryString
 {
     /** @var string $value */
     private $value;
 
-    /** @var bool|null $allowOverride */
-    private $allowOverride;
+    /** @var string|null $type */
+    private $type;
 
     /**
-     * OriginalQuery constructor.
+     * QueryString constructor.
      * @param SimpleXMLElement $response
      */
     public function __construct($response)
     {
         $this->value = (string)$response;
-
-        $this->allowOverride = ResponseHelper::getBoolProperty($response->attributes(), 'allow-override');
+        $this->type = ResponseHelper::getStringProperty($response->attributes(), 'type');
     }
 
     /**
@@ -34,10 +32,10 @@ class OriginalQuery
     }
 
     /**
-     * @return bool|null
+     * @return null|string
      */
-    public function getAllowOverride()
+    public function getType()
     {
-        return $this->allowOverride;
+        return $this->type;
     }
 }

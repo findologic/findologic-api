@@ -3,24 +3,14 @@
 namespace FINDOLOGIC\Api\Tests;
 
 use FINDOLOGIC\Api\Requester;
-use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\RequestBuilders\Json\SuggestionRequestBuilder;
 use FINDOLOGIC\Api\RequestBuilders\Xml\NavigationRequestBuilder;
 use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
-use http\Client\Request;
 
 class RequesterTest extends TestBase
 {
     /** @var array */
     private $validConfig = ['shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD'];
-
-    /** @var Requester */
-    private $findologicApi;
-
-    public function setUp()
-    {
-        parent::setUp();
-    }
 
     public function testCreateSearchRequestWillReturnANewSearchRequestBuilder()
     {

@@ -25,6 +25,7 @@ class QueryParameter
         MULTISHOP_ID = 'multishop_id';
 
     private static $list = [
+        self::SHOPKEY,
         self::SHOP_URL,
         self::USER_IP,
         self::REFERER,

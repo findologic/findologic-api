@@ -17,30 +17,10 @@ abstract class XmlRequestBuilder extends RequestBuilder
     {
         parent::__construct($config);
         $this->addRequiredParams([
-            QueryParameter::SHOP_URL,
             QueryParameter::USER_IP,
             QueryParameter::REFERER,
             QueryParameter::REVISION,
         ]);
-    }
-
-    /**
-     * Sets the shopurl param. It is used to determine the service's url. Required.
-     *
-     * @param $value string
-     * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#required_parameters
-     * @return $this
-     */
-    public function setShopurl($value)
-    {
-        // TODO: @see https://github.com/TheKeymaster/findologic-api/issues/24
-        $shopUrlRegex = '/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&\'\(\)\*\+,;=.]+$/';
-        if (!is_string($value) ||!preg_match($shopUrlRegex, $value)) {
-            throw new InvalidParamException(QueryParameter::SHOP_URL);
-        }
-
-        $this->addParam(QueryParameter::SHOP_URL, $value);
-        return $this;
     }
 
     /**

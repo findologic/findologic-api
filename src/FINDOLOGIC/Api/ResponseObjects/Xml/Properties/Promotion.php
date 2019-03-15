@@ -1,22 +1,34 @@
 <?php
 
-namespace FINDOLOGIC\Api\Objects\XmlResponseObjects;
+namespace FINDOLOGIC\Api\ResponseObjects\Xml\Properties;
 
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use SimpleXMLElement;
 
-class Landingpage
+class Promotion
 {
+    /** @var string $image */
+    private $image;
+
     /** @var string $link */
     private $link;
 
     /**
-     * Landingpage constructor.
+     * Promotion constructor.
      * @param SimpleXMLElement $response
      */
     public function __construct($response)
     {
+        $this->image = ResponseHelper::getStringProperty($response, 'image');
         $this->link = ResponseHelper::getStringProperty($response, 'link');
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
     }
 
     /**

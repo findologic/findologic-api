@@ -2,12 +2,12 @@
 
 namespace FINDOLOGIC\Api\RequestBuilders\Json;
 
+use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Definitions\Endpoint;
 use FINDOLOGIC\Api\Definitions\QueryParameter;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
-use FINDOLOGIC\Api\Config;
-use FINDOLOGIC\Api\Objects\JsonResponse;
 use FINDOLOGIC\Api\RequestBuilders\RequestBuilder;
+use FINDOLOGIC\Api\ResponseObjects\Json\JsonResponse;
 use FINDOLOGIC\Api\Validators\ParameterValidator;
 
 class SuggestionRequestBuilder extends RequestBuilder
@@ -28,8 +28,8 @@ class SuggestionRequestBuilder extends RequestBuilder
     {
         $this->checkRequiredParamsAreSet();
 
-        $responseContent = $this->findologicClient->request($this->buildRequestUrl());
-        return new JsonResponse($responseContent, $this->findologicClient->getResponseTime());
+        $responseContent = $this->client->request($this->buildRequestUrl());
+        return new JsonResponse($responseContent, $this->client->getResponseTime());
     }
 
     /**
@@ -43,7 +43,8 @@ class SuggestionRequestBuilder extends RequestBuilder
     public function setQuery($value)
     {
         $validator = new ParameterValidator([QueryParameter::QUERY => $value]);
-        $validator->rule('string', QueryParameter::QUERY)
+        $validator
+            ->rule('string', QueryParameter::QUERY)
             ->rule('lengthMin', QueryParameter::QUERY, 1);
 
         if (!$validator->validate()) {
@@ -58,6 +59,7 @@ class SuggestionRequestBuilder extends RequestBuilder
      * This function exists for legacy reasons. Using this function will just call setQuery instead.
      *
      * @deprecated Use setQuery instead.
+     * @codeCoverageIgnore Because it's deprecated.
      * @param $value string
      * @see https://docs.findologic.com/doku.php?id=smart_suggest_new#request
      * @return $this
@@ -78,7 +80,7 @@ class SuggestionRequestBuilder extends RequestBuilder
     public function addAutocompleteBlocks($value)
     {
         $validator = new ParameterValidator([QueryParameter::AUTOCOMPLETEBLOCKS => $value]);
-        $validator->rule('string', QueryParameter::AUTOCOMPLETEBLOCKS);
+        $validator->rule('isAutocompleteBlockParam', QueryParameter::AUTOCOMPLETEBLOCKS);
 
         if (!$validator->validate()) {
             throw new InvalidParamException(QueryParameter::AUTOCOMPLETEBLOCKS);
@@ -98,21 +100,21 @@ class SuggestionRequestBuilder extends RequestBuilder
      */
     public function setUsergrouphash($value)
     {
-        $validator = new ParameterValidator([QueryParameter::GROUP => $value]);
-        $validator->rule('string', QueryParameter::GROUP);
+        $validator = new ParameterValidator([QueryParameter::USERGROUPHASH => $value]);
+        $validator->rule('string', QueryParameter::USERGROUPHASH);
 
         if (!$validator->validate()) {
-            throw new InvalidParamException(QueryParameter::GROUP);
+            throw new InvalidParamException(QueryParameter::USERGROUPHASH);
         }
 
-        $this->addParam(QueryParameter::GROUP, $value);
+        $this->addParam(QueryParameter::USERGROUPHASH, $value);
         return $this;
     }
 
     /**
      * Sets the multishop_id param. Required for PlentyMarkets shops. Has no effect for other shop systems.
      *
-     * @param $value string
+     * @param $value int
      * @see https://docs.findologic.com/doku.php?id=smart_suggest_new#request
      * @return $this
      */

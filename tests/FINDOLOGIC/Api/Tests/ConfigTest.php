@@ -11,14 +11,14 @@ class ConfigTest extends TestBase
     /** @var array */
     private $validConfig = ['shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD'];
 
-    public function testValidFindologicConfigWillWorkAndDefaultsAreFilled()
+    public function testValidConfigWillWorkAndDefaultsAreFilled()
     {
-        $findologicConfig = new Config($this->validConfig);
-        $this->assertEquals(3.0, $findologicConfig->getRequestTimeout());
-        $this->assertEquals(1.0, $findologicConfig->getAlivetestTimeout());
-        $this->assertInstanceOf(Client::class, $findologicConfig->getHttpClient());
-        $this->assertEquals($this->validConfig['shopkey'], $findologicConfig->getShopkey());
-        $this->assertEquals('https://service.findologic.com/ps/%s/%s', $findologicConfig->getApiUrl());
+        $config = new Config($this->validConfig);
+        $this->assertEquals(3.0, $config->getRequestTimeout());
+        $this->assertEquals(1.0, $config->getAlivetestTimeout());
+        $this->assertInstanceOf(Client::class, $config->getHttpClient());
+        $this->assertEquals($this->validConfig['shopkey'], $config->getShopkey());
+        $this->assertEquals('https://service.findologic.com/ps/%s/%s', $config->getApiUrl());
     }
 
     public function testDefaultConfigCanBeOverridden()
@@ -29,7 +29,7 @@ class ConfigTest extends TestBase
         $expectedShopkey = $this->validConfig['shopkey'];
         $expectedApiUrl = 'www.blubbergurken.io/ps/%s/%s';
 
-        $findologicConfig = new Config([
+        $config = new Config([
             'shopkey' => $expectedShopkey,
             'apiUrl' => $expectedApiUrl,
             'alivetestTimeout' => $expectedAlivetestTimeout,
@@ -37,11 +37,11 @@ class ConfigTest extends TestBase
             'httpClient' => $expectedHttpClient,
         ]);
 
-        $this->assertEquals($expectedRequestTimeout, $findologicConfig->getRequestTimeout());
-        $this->assertEquals($expectedAlivetestTimeout, $findologicConfig->getAlivetestTimeout());
-        $this->assertEquals($expectedHttpClient, $findologicConfig->getHttpClient());
-        $this->assertEquals($expectedShopkey, $findologicConfig->getShopkey());
-        $this->assertEquals($expectedApiUrl, $findologicConfig->getApiUrl());
+        $this->assertEquals($expectedRequestTimeout, $config->getRequestTimeout());
+        $this->assertEquals($expectedAlivetestTimeout, $config->getAlivetestTimeout());
+        $this->assertEquals($expectedHttpClient, $config->getHttpClient());
+        $this->assertEquals($expectedShopkey, $config->getShopkey());
+        $this->assertEquals($expectedApiUrl, $config->getApiUrl());
     }
 
     public function invalidConfigProvider()
@@ -72,11 +72,11 @@ class ConfigTest extends TestBase
      * @dataProvider invalidConfigProvider
      * @param $config mixed
      */
-    public function testInvalidFindologicConfigThrowsAnException($config)
+    public function testInvalidConfigThrowsAnException($config)
     {
         try {
             new Config($config);
-            $this->fail('An invalid FindologicConfig should throw an exception!');
+            $this->fail('An invalid Config should throw an exception!');
         } catch (ConfigException $e) {
             $this->assertEquals('Invalid config supplied.', $e->getMessage());
         }

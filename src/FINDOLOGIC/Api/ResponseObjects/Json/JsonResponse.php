@@ -1,26 +1,23 @@
 <?php
 
-namespace FINDOLOGIC\Api\Objects;
+namespace FINDOLOGIC\Api\ResponseObjects\Json;
 
-use FINDOLOGIC\Api\Objects\JsonResponseObjects\Suggestion;
+use FINDOLOGIC\Api\ResponseObjects\Json\Properties\Suggestion;
+use FINDOLOGIC\Api\ResponseObjects\Response;
 
 /**
  * Is used for suggestion requests with JSON response and Smart Suggest v3 only!
  *
  * Class JsonResponse
- * @package FINDOLOGIC\Api\Objects
+ * @package FINDOLOGIC\Api\ResponseObjects
  */
-class JsonResponse
+class JsonResponse extends Response
 {
     /** @var Suggestion[] $suggestions */
     private $suggestions;
 
-    /** @var float|null */
-    private $responseTime;
-
     /**
-     * JsonResponse constructor.
-     * @param $response
+     * @inheritdoc
      */
     public function __construct($response, $responseTime = null)
     {
@@ -52,13 +49,5 @@ class JsonResponse
             /** @var Suggestion $suggestion */
             return in_array($suggestion->getBlock(), $blockTypes);
         }));
-    }
-
-    /**
-     * @return float|null
-     */
-    public function getResponseTime()
-    {
-        return $this->responseTime;
     }
 }

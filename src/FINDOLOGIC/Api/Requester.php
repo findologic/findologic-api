@@ -21,11 +21,11 @@ abstract class Requester
      * the request to choose.
      * @param array $config Containing the necessary config.
      *      $config = [
-     *          FindologicConfig::SHOPKEY            => (string) Service's shopkey. Required.
-     *          FindologicConfig::API_URL            => (string) Findologic API URL. Optional.
-     *          FindologicConfig::ALIVETEST_TIMEOUT  => (float) Timeout for an alivetest in seconds. Optional.
-     *          FindologicConfig::REQUEST_TIMEOUT    => (float) Timeout for a request in seconds. Optional.
-     *          FindologicConfig::HTTP_CLIENT        => (GuzzleHttp\Client) Client that is used for requests. Optional.
+     *          Config::SHOPKEY            => (string) Service's shopkey. Required.
+     *          Config::API_URL            => (string) Findologic API URL. Optional.
+     *          Config::ALIVETEST_TIMEOUT  => (float) Timeout for an alivetest in seconds. Optional.
+     *          Config::REQUEST_TIMEOUT    => (float) Timeout for a request in seconds. Optional.
+     *          Config::HTTP_CLIENT        => (GuzzleHttp\Client) Client that is used for requests. Optional.
      *     ]
      *
      * @return RequestBuilder The requestBuilder
@@ -34,15 +34,15 @@ abstract class Requester
      */
     public static function getRequestBuilder($type, $config)
     {
-        $findologicConfig = new Config($config);
+        $configObj = new Config($config);
 
         switch ($type) {
             case self::SEARCH_REQUEST:
-                return new SearchRequestBuilder($findologicConfig);
+                return new SearchRequestBuilder($configObj);
             case self::NAVIGATION_REQUEST:
-                return new NavigationRequestBuilder($findologicConfig);
+                return new NavigationRequestBuilder($configObj);
             case self::SUGGESTION_REQUEST:
-                return new SuggestionRequestBuilder($findologicConfig);
+                return new SuggestionRequestBuilder($configObj);
             default:
                 throw new InvalidArgumentException('Unknown request type.');
         }

@@ -1,10 +1,10 @@
 <?php
 
-namespace FINDOLOGIC\Api\Tests\Objects;
+namespace FINDOLOGIC\Api\Tests\ResponseObjects\Json;
 
 use FINDOLOGIC\Api\Definitions\BlockType;
-use FINDOLOGIC\Api\Objects\JsonResponse;
-use FINDOLOGIC\Api\Objects\JsonResponseObjects\Suggestion;
+use FINDOLOGIC\Api\ResponseObjects\Json\JsonResponse;
+use FINDOLOGIC\Api\ResponseObjects\Json\Properties\Suggestion;
 use PHPUnit\Framework\TestCase;
 
 class JsonResponseTest extends TestCase
@@ -18,7 +18,7 @@ class JsonResponseTest extends TestCase
     public function getRealResponseData($filename = 'demoResponseSuggest.json')
     {
         // Get contents from a real response locally.
-        $realResponseData = file_get_contents(__DIR__ . '/../../Mockdata/' . $filename);
+        $realResponseData = file_get_contents(__DIR__ . '/../../../Mockdata/' . $filename);
         return new JsonResponse($realResponseData);
     }
 
