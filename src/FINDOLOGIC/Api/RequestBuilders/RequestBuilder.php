@@ -285,17 +285,13 @@ abstract class RequestBuilder
     }
 
     /**
-     * Returns a specific param.
+     * Internal function that is used to get a specific parameter.
      *
      * @param string $key
      * @return mixed
      */
     private function getParam($key)
     {
-        if (!isset($this->params[$key])) {
-            throw new InvalidArgumentException('Unknown or unset param.');
-        } else {
-            return $this->params[$key];
-        }
+        return $this->params[$key];
     }
 }
