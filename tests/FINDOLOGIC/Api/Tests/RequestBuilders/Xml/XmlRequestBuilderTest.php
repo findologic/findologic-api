@@ -5,6 +5,7 @@ namespace FINDOLOGIC\Api\Tests\RequestBuilders\Xml;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\Exceptions\ParamNotSetException;
 use FINDOLOGIC\Api\Config;
+use FINDOLOGIC\Api\RequestBuilders\Xml\NavigationRequestBuilder;
 use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
 use FINDOLOGIC\Api\Tests\TestBase;
 use InvalidArgumentException;
@@ -34,8 +35,19 @@ class XmlRequestBuilderTest extends TestBase
         $this->rawMockResponse = $this->getMockResponse('demoResponse.xml');
     }
 
-    public function testSendingRequestsWithoutRequiredParamsWillThrowAnException()
+    public function testSendingSearchRequestsWithoutRequiredParamsWillThrowAnException()
     {
+        $this->httpClientMock->method('request')->willReturn($this->responseMock);
+        $this->responseMock->method('getBody')->willReturn($this->streamMock);
+        $this->responseMock->method('getStatusCode')->willReturn(200);
+        $this->streamMock->method('getContents')
+            ->willReturnOnConsecutiveCalls(
+                'alive',
+                'alive',
+                $this->rawMockResponse,
+                $this->rawMockResponse
+            );
+
         $searchRequestBuilder = new SearchRequestBuilder($this->config);
         try {
             $searchRequestBuilder->sendRequest();
@@ -76,6 +88,13 @@ class XmlRequestBuilderTest extends TestBase
             $this->assertEquals('Required param query is not set.', $e->getMessage());
         }
 
+        $searchRequestBuilder->setQuery('');
+        $response = $searchRequestBuilder->sendRequest();
+        $this->assertEquals(0, $response->getResponseTime(), '', 0.1);
+    }
+
+    public function testSendingNavigationRequestsWithoutRequiredParamsWillThrowAnException()
+    {
         $this->httpClientMock->method('request')->willReturn($this->responseMock);
         $this->responseMock->method('getBody')->willReturn($this->streamMock);
         $this->responseMock->method('getStatusCode')->willReturn(200);
@@ -87,8 +106,41 @@ class XmlRequestBuilderTest extends TestBase
                 $this->rawMockResponse
             );
 
-        $searchRequestBuilder->setQuery('');
-        $searchRequestBuilder->sendRequest();
+        $navigationRequestBuilder = new NavigationRequestBuilder($this->config);
+        try {
+            $navigationRequestBuilder->sendRequest();
+            $this->fail('An exception was expected to happen if the shopurl param is not set.');
+        } catch (ParamNotSetException $e) {
+            $this->assertEquals('Required param shopurl is not set.', $e->getMessage());
+        }
+
+        $navigationRequestBuilder->setShopurl('blubbergurken.io');
+        try {
+            $navigationRequestBuilder->sendRequest();
+            $this->fail('An exception was expected to happen if the userip param is not set.');
+        } catch (ParamNotSetException $e) {
+            $this->assertEquals('Required param userip is not set.', $e->getMessage());
+        }
+
+        $navigationRequestBuilder->setUserip('127.0.0.1');
+        try {
+            $navigationRequestBuilder->sendRequest();
+            $this->fail('An exception was expected to happen if the referer param is not set.');
+        } catch (ParamNotSetException $e) {
+            $this->assertEquals('Required param referer is not set.', $e->getMessage());
+        }
+
+        $navigationRequestBuilder->setReferer('https://blubbergurken.io/blubbergurken-sale/');
+        try {
+            $navigationRequestBuilder->sendRequest();
+            $this->fail('An exception was expected to happen if the revision param is not set.');
+        } catch (ParamNotSetException $e) {
+            $this->assertEquals('Required param revision is not set.', $e->getMessage());
+        }
+
+        $navigationRequestBuilder->setRevision('2.5.10');
+        $response = $navigationRequestBuilder->sendRequest();
+        $this->assertEquals(0, $response->getResponseTime(), '', 0.1);
     }
 
     /**
