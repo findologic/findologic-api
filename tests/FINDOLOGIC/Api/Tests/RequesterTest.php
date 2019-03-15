@@ -6,6 +6,7 @@ use FINDOLOGIC\Api\Requester;
 use FINDOLOGIC\Api\RequestBuilders\Json\SuggestionRequestBuilder;
 use FINDOLOGIC\Api\RequestBuilders\Xml\NavigationRequestBuilder;
 use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
+use InvalidArgumentException;
 
 class RequesterTest extends TestBase
 {
@@ -28,5 +29,12 @@ class RequesterTest extends TestBase
     {
         $suggestionRequestBuilder = Requester::getRequestBuilder(2, $this->validConfig);
         $this->assertInstanceOf(SuggestionRequestBuilder::class, $suggestionRequestBuilder);
+    }
+
+    public function testExceptionWillBeThrownIfRequestBuilderIsUnknown()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown request type.');
+        Requester::getRequestBuilder(3, $this->validConfig);
     }
 }
