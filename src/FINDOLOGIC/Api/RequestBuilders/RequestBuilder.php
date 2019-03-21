@@ -56,7 +56,7 @@ abstract class RequestBuilder
     {
         $shopUrl = $this->getParam(QueryParameter::SHOP_URL);
         // If the shopkey was not manually overridden, we take the shopkey from the config.
-        if (!isset($this->getParams()[QueryParameter::SHOPKEY])) {
+        if (!isset($this->getParams()[QueryParameter::SERVICE_ID])) {
             $this->params['shopkey'] = $this->config->getShopkey();
         }
         $queryParams = http_build_query($this->params);
@@ -77,14 +77,14 @@ abstract class RequestBuilder
      */
     public function setShopkey($value)
     {
-        $validator = new ParameterValidator([QueryParameter::SHOPKEY => $value]);
-        $validator->rule('shopkey', QueryParameter::SHOPKEY);
+        $validator = new ParameterValidator([QueryParameter::SERVICE_ID => $value]);
+        $validator->rule('shopkey', QueryParameter::SERVICE_ID);
 
         if (!$validator->validate()) {
-            throw new InvalidParamException(QueryParameter::SHOPKEY);
+            throw new InvalidParamException(QueryParameter::SERVICE_ID);
         }
 
-        $this->addParam(QueryParameter::SHOPKEY, $value);
+        $this->addParam(QueryParameter::SERVICE_ID, $value);
         return $this;
     }
 
@@ -97,7 +97,6 @@ abstract class RequestBuilder
      */
     public function setShopurl($value)
     {
-        // TODO: @see https://github.com/TheKeymaster/findologic-api/issues/24
         $shopUrlRegex = '/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&\'\(\)\*\+,;=.]+$/';
         if (!is_string($value) ||!preg_match($shopUrlRegex, $value)) {
             throw new InvalidParamException(QueryParameter::SHOP_URL);
@@ -275,10 +274,10 @@ abstract class RequestBuilder
     {
         $shopUrl = $this->getParam(QueryParameter::SHOP_URL);
         // If the shopkey was not manually overridden, we take the shopkey from the config.
-        if (!isset($this->getParams()[QueryParameter::SHOPKEY])) {
+        if (!isset($this->getParams()[QueryParameter::SERVICE_ID])) {
             $this->params['shopkey'] = $this->config->getShopkey();
         }
-        $queryString = http_build_query([QueryParameter::SHOPKEY => $this->getParam(QueryParameter::SHOPKEY)]);
+        $queryString = http_build_query([QueryParameter::SERVICE_ID => $this->getParam(QueryParameter::SERVICE_ID)]);
 
         $apiUrl = sprintf($this->config->getApiUrl(), $shopUrl, Endpoint::ALIVETEST);
         return sprintf('%s?%s', $apiUrl, $queryString);

@@ -3,7 +3,7 @@
 namespace FINDOLOGIC\Api;
 
 use FINDOLOGIC\Api\Exceptions\ConfigException;
-use FINDOLOGIC\Api\RequestBuilders\Json\SuggestionRequestBuilder;
+use FINDOLOGIC\Api\RequestBuilders\Json\SuggestRequestBuilder;
 use FINDOLOGIC\Api\RequestBuilders\RequestBuilder;
 use FINDOLOGIC\Api\RequestBuilders\Xml\NavigationRequestBuilder;
 use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
@@ -19,30 +19,20 @@ abstract class Requester
     /**
      * @param Requester::SEARCH_REQUEST|Requester::NAVIGATION_REQUEST|Requester::SUGGESTION_REQUEST $type The type of
      * the request to choose.
-     * @param array $config Containing the necessary config.
-     *      $config = [
-     *          Config::SHOPKEY            => (string) Service's shopkey. Required.
-     *          Config::API_URL            => (string) Findologic API URL. Optional.
-     *          Config::ALIVETEST_TIMEOUT  => (float) Timeout for an alivetest in seconds. Optional.
-     *          Config::REQUEST_TIMEOUT    => (float) Timeout for a request in seconds. Optional.
-     *          Config::HTTP_CLIENT        => (GuzzleHttp\Client) Client that is used for requests. Optional.
-     *     ]
+     * @param Config $config Containing the necessary config.
      *
      * @return RequestBuilder The requestBuilder
      * @throws InvalidArgumentException if the type is unknown.
-     * @throws ConfigException if the config is not valid.
      */
-    public static function getRequestBuilder($type, $config)
+    public static function getRequestBuilder($type, Config $config)
     {
-        $configObj = new Config($config);
-
         switch ($type) {
             case self::SEARCH_REQUEST:
-                return new SearchRequestBuilder($configObj);
+                return new SearchRequestBuilder($config);
             case self::NAVIGATION_REQUEST:
-                return new NavigationRequestBuilder($configObj);
+                return new NavigationRequestBuilder($config);
             case self::SUGGESTION_REQUEST:
-                return new SuggestionRequestBuilder($configObj);
+                return new SuggestRequestBuilder($config);
             default:
                 throw new InvalidArgumentException('Unknown request type.');
         }

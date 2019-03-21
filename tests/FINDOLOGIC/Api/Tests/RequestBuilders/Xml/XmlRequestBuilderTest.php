@@ -28,10 +28,11 @@ class XmlRequestBuilderTest extends TestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->config = new Config([
-            'shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD',
-            'httpClient' => $this->httpClientMock,
-        ]);
+        $this->config = new Config();
+        $this->config
+            ->setShopkey('ABCDABCDABCDABCDABCDABCDABCDABCD')
+            ->setHttpClient($this->httpClientMock);
+
         $this->rawMockResponse = $this->getMockResponse('demoResponse.xml');
     }
 

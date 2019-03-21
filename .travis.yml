@@ -11,7 +11,7 @@ install:
 script:
   # Run style fixer in test mode on all source files. Will exit with a non-zero
   # return code if something needs changing.
-  - composer check-cs
+  - composer lint
   - composer test
 after_success:
   - bash <(curl -s https://codecov.io/bash)

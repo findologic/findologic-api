@@ -5,7 +5,7 @@ namespace FINDOLOGIC\Api\Tests\RequestBuilders\Json;
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\Exceptions\ParamNotSetException;
-use FINDOLOGIC\Api\RequestBuilders\Json\SuggestionRequestBuilder;
+use FINDOLOGIC\Api\RequestBuilders\Json\SuggestRequestBuilder;
 use FINDOLOGIC\Api\Tests\TestBase;
 
 class SuggestionRequestBuilderTest extends TestBase
@@ -21,16 +21,17 @@ class SuggestionRequestBuilderTest extends TestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->config = new Config([
-            'shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD',
-            'httpClient' => $this->httpClientMock,
-        ]);
+        $this->config = new Config();
+        $this->config
+            ->setShopkey('ABCDABCDABCDABCDABCDABCDABCDABCD')
+            ->setHttpClient($this->httpClientMock);
+
         $this->rawMockResponse = $this->getMockResponse('demoResponseSuggest.json');
     }
 
     public function testSendingRequestsWithoutRequiredParamsWillThrowAnException()
     {
-        $suggestionRequestBuilder = new SuggestionRequestBuilder($this->config);
+        $suggestionRequestBuilder = new SuggestRequestBuilder($this->config);
         try {
             $suggestionRequestBuilder->sendRequest();
             $this->fail('An exception was expected to happen if the shopurl param is not set.');
@@ -68,7 +69,7 @@ class SuggestionRequestBuilderTest extends TestBase
     {
         $expectedParameter = sprintf('&query=%s', $expectedResult);
 
-        $searchRequestBuilder = new SuggestionRequestBuilder($this->config);
+        $searchRequestBuilder = new SuggestRequestBuilder($this->config);
         $this->setRequiredParamsForSuggestionRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->setQuery($query);
@@ -85,7 +86,7 @@ class SuggestionRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter query is not valid.');
 
-        $searchRequestBuilder = new SuggestionRequestBuilder($this->config);
+        $searchRequestBuilder = new SuggestRequestBuilder($this->config);
         $this->setRequiredParamsForSuggestionRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->setQuery($invalidQuery);
@@ -99,7 +100,7 @@ class SuggestionRequestBuilderTest extends TestBase
     {
         $expectedParameter = sprintf('&autocompleteblocks=%s', $autocompleteBlock);
 
-        $searchRequestBuilder = new SuggestionRequestBuilder($this->config);
+        $searchRequestBuilder = new SuggestRequestBuilder($this->config);
         $this->setRequiredParamsForSuggestionRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->addAutocompleteBlocks($autocompleteBlock);
@@ -116,7 +117,7 @@ class SuggestionRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter autocompleteblocks is not valid.');
 
-        $searchRequestBuilder = new SuggestionRequestBuilder($this->config);
+        $searchRequestBuilder = new SuggestRequestBuilder($this->config);
         $this->setRequiredParamsForSuggestionRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->addAutocompleteBlocks($invalidAutocompleteblock);
@@ -130,7 +131,7 @@ class SuggestionRequestBuilderTest extends TestBase
     {
         $expectedParameter = sprintf('&usergrouphash=%s', $usergroup);
 
-        $searchRequestBuilder = new SuggestionRequestBuilder($this->config);
+        $searchRequestBuilder = new SuggestRequestBuilder($this->config);
         $this->setRequiredParamsForSuggestionRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->setUsergrouphash($usergroup);
@@ -147,7 +148,7 @@ class SuggestionRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter usergrouphash is not valid.');
 
-        $searchRequestBuilder = new SuggestionRequestBuilder($this->config);
+        $searchRequestBuilder = new SuggestRequestBuilder($this->config);
         $this->setRequiredParamsForSuggestionRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->setUsergrouphash($invalidUsergroup);
@@ -161,7 +162,7 @@ class SuggestionRequestBuilderTest extends TestBase
     {
         $expectedParameter = sprintf('&multishop_id=%s', $usergroup);
 
-        $searchRequestBuilder = new SuggestionRequestBuilder($this->config);
+        $searchRequestBuilder = new SuggestRequestBuilder($this->config);
         $this->setRequiredParamsForSuggestionRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->setMultishopId($usergroup);
@@ -178,7 +179,7 @@ class SuggestionRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter multishop_id is not valid.');
 
-        $searchRequestBuilder = new SuggestionRequestBuilder($this->config);
+        $searchRequestBuilder = new SuggestRequestBuilder($this->config);
         $this->setRequiredParamsForSuggestionRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->setMultishopId($invalidMultishopId);

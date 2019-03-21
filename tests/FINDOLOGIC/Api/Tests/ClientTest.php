@@ -20,10 +20,10 @@ class ClientTest extends TestBase
     {
         parent::setUp();
 
-        $this->config = new Config([
-            'shopkey' => $this->validShopkey,
-            'httpClient' => $this->httpClientMock,
-        ]);
+        $this->config = new Config();
+        $this->config
+            ->setShopkey($this->validShopkey)
+            ->setHttpClient($this->httpClientMock);
     }
 
     public function testRequestIsBeingCalledWithExpectedParameters()

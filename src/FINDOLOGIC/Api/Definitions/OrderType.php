@@ -6,19 +6,19 @@ class OrderType
 {
     const
         RELEVANCE = 'rank',
-        INEXPENSIVE_PRODUCTS_FIRST = 'price ASC',
-        EXPENSIVE_PRODUCTS_FIRST = 'price DESC',
-        A_Z_SORTING = 'label ASC',
+        PRICE_ASCENDING = 'price ASC',
+        PRICE_DESCENDING = 'price DESC',
+        ALPHABETICAL = 'label ASC',
         TOP_SELLERS_FIRST = 'salesfrequency DESC',
-        NEWEST_PRODUCTS_FIRST = 'dateadded DESC';
+        NEWEST_FIRST = 'dateadded DESC';
 
     private static $list = [
         self::RELEVANCE,
-        self::INEXPENSIVE_PRODUCTS_FIRST,
-        self::EXPENSIVE_PRODUCTS_FIRST,
-        self::A_Z_SORTING,
+        self::PRICE_ASCENDING,
+        self::PRICE_DESCENDING,
+        self::ALPHABETICAL,
         self::TOP_SELLERS_FIRST,
-        self::NEWEST_PRODUCTS_FIRST,
+        self::NEWEST_FIRST,
     ];
 
     /**

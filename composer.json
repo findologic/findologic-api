@@ -48,7 +48,7 @@
         }
     },
     "scripts": {
-        "check-cs": [
+        "lint": [
             "php-cs-fixer fix --dry-run src",
             "php-cs-fixer fix --dry-run tests"
         ],

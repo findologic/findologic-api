@@ -13,7 +13,8 @@ class ConfigTest extends TestBase
 
     public function testValidConfigWillWorkAndDefaultsAreFilled()
     {
-        $config = new Config($this->validConfig);
+        $config = new Config();
+        $config->setShopkey($this->validConfig['shopkey']);
         $this->assertEquals(3.0, $config->getRequestTimeout());
         $this->assertEquals(1.0, $config->getAlivetestTimeout());
         $this->assertInstanceOf(Client::class, $config->getHttpClient());
@@ -29,13 +30,13 @@ class ConfigTest extends TestBase
         $expectedShopkey = $this->validConfig['shopkey'];
         $expectedApiUrl = 'www.blubbergurken.io/ps/%s/%s';
 
-        $config = new Config([
-            'shopkey' => $expectedShopkey,
-            'apiUrl' => $expectedApiUrl,
-            'alivetestTimeout' => $expectedAlivetestTimeout,
-            'requestTimeout' => $expectedRequestTimeout,
-            'httpClient' => $expectedHttpClient,
-        ]);
+        $config = new Config();
+        $config
+            ->setShopkey($expectedShopkey)
+            ->setApiUrl($expectedApiUrl)
+            ->setAlivetestTimeout($expectedAlivetestTimeout)
+            ->setRequestTimeout($expectedRequestTimeout)
+            ->setHttpClient($expectedHttpClient);
 
         $this->assertEquals($expectedRequestTimeout, $config->getRequestTimeout());
         $this->assertEquals($expectedAlivetestTimeout, $config->getAlivetestTimeout());
@@ -58,13 +59,6 @@ class ConfigTest extends TestBase
             'shopkey is lowercased' => [['shopkey' => '80ab18d4be2654r78244106ad315dc2c']],
             'shopkey has spaces' => [['shopkey' => '80AB18D4BE2654A7 8244106AD315DC2C']],
             'shopkey has special characters' => [['shopkey' => 'AAAAAA.AAAAAAÄAAAAAAAAAAAAAAAAA_']],
-            'config is empty' => [[]],
-            'everything is set except for shopkey' => [[
-                'apiUrl' => 'https://service.findologic.com/ps/%s/%s',
-                'alivetestTimeout' => 12.34,
-                'requestTimeout' => 56.78,
-                'httpClient' => new Client(),
-            ]],
         ];
     }
 
@@ -75,10 +69,23 @@ class ConfigTest extends TestBase
     public function testInvalidConfigThrowsAnException($config)
     {
         try {
-            new Config($config);
+            $configObj = new Config();
+            if (isset($config['apiUrl'])) {
+                $configObj->setApiUrl($config['apiUrl']);
+            }
+            if (isset($config['alivetestTimeout'])) {
+                $configObj->setAlivetestTimeout($config['alivetestTimeout']);
+            }
+            if (isset($config['requestTimeout'])) {
+                $configObj->setRequestTimeout($config['requestTimeout']);
+            }
+            if (isset($config['shopkey'])) {
+                $configObj->setShopkey($config['shopkey']);
+            }
+
             $this->fail('An invalid Config should throw an exception!');
         } catch (ConfigException $e) {
-            $this->assertEquals('Invalid config supplied.', $e->getMessage());
+            $this->assertStringStartsWith('Config parameter', $e->getMessage());
         }
     }
 }

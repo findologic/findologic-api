@@ -8,13 +8,15 @@ class Endpoint
         ALIVETEST = 'alivetest.php',
         SEARCH = 'index.php',
         NAVIGATION = 'selector.php',
-        SUGGESTION = 'autocomplete.php';
+        SUGGEST = 'autocomplete.php',
+        TRACKING = 'tracking.php';
 
     private static $availableEndpoints = [
         self::ALIVETEST,
         self::SEARCH,
         self::NAVIGATION,
-        self::SUGGESTION,
+        self::SUGGEST,
+        self::TRACKING,
     ];
 
     /**

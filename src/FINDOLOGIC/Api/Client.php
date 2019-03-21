@@ -8,7 +8,7 @@ use GuzzleHttp\Psr7\Response;
 
 class Client
 {
-    const GET_METHOD = 'GET';
+    const METHOD_GET = 'GET';
     const STATUS_OK = 200;
     const SERVICE_ALIVE_BODY = 'alive';
 
@@ -59,7 +59,7 @@ class Client
                 $this->startResponseTime();
             }
             $response = $httpClient->request(
-                self::GET_METHOD,
+                self::METHOD_GET,
                 $url,
                 ['connect_timeout' => $this->getRequestTimeout($isAlivetest)]
             );

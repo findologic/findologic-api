@@ -2,11 +2,11 @@
 
 namespace FINDOLOGIC\Api\Tests\RequestBuilders\Json;
 
-use FINDOLOGIC\Api\RequestBuilders\Json\SuggestionRequestBuilder;
+use FINDOLOGIC\Api\RequestBuilders\Json\SuggestRequestBuilder;
 
 trait SuggestionDataProvider
 {
-    public function setRequiredParamsForSuggestionRequestBuilder(SuggestionRequestBuilder $suggestionRequestBuilder)
+    public function setRequiredParamsForSuggestionRequestBuilder(SuggestRequestBuilder $suggestionRequestBuilder)
     {
         $suggestionRequestBuilder->setShopurl('www.blubbergurken.io');
     }

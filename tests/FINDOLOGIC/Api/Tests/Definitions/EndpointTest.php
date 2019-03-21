@@ -14,6 +14,7 @@ class EndpointTest extends TestBase
             'index.php',
             'selector.php',
             'autocomplete.php',
+            'tracking.php',
         ];
         $availableEndpoints = Endpoint::getAvailableEndpoints();
 

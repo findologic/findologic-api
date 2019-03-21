@@ -25,9 +25,6 @@ class QueryParameterTest extends TestBase
             'identifier',
             'group',
             'forceOriginalQuery',
-            'autocompleteblocks',
-            'usergrouphash',
-            'multishop_id',
         ];
         $availableQueryParameters = QueryParameter::getList();
 

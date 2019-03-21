@@ -2,16 +2,26 @@
 
 namespace FINDOLOGIC\Api\Tests;
 
+use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Requester;
-use FINDOLOGIC\Api\RequestBuilders\Json\SuggestionRequestBuilder;
+use FINDOLOGIC\Api\RequestBuilders\Json\SuggestRequestBuilder;
 use FINDOLOGIC\Api\RequestBuilders\Xml\NavigationRequestBuilder;
 use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
 use InvalidArgumentException;
 
 class RequesterTest extends TestBase
 {
-    /** @var array */
-    private $validConfig = ['shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD'];
+    /** @var Config */
+    private $validConfig;
+
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->validConfig = new Config();
+        $this->validConfig
+            ->setShopkey('ABCDABCDABCDABCDABCDABCDABCDABCD')
+            ->setHttpClient($this->httpClientMock);
+    }
 
     public function testCreateSearchRequestWillReturnANewSearchRequestBuilder()
     {
@@ -28,7 +38,7 @@ class RequesterTest extends TestBase
     public function testCreateSuggestionRequestWillReturnANewSuggestionRequestBuilder()
     {
         $suggestionRequestBuilder = Requester::getRequestBuilder(2, $this->validConfig);
-        $this->assertInstanceOf(SuggestionRequestBuilder::class, $suggestionRequestBuilder);
+        $this->assertInstanceOf(SuggestRequestBuilder::class, $suggestionRequestBuilder);
     }
 
     public function testExceptionWillBeThrownIfRequestBuilderIsUnknown()

@@ -5,7 +5,7 @@ namespace FINDOLOGIC\Api\Definitions;
 class QueryParameter
 {
     const
-        SHOPKEY = 'shopkey',
+        SERVICE_ID = 'shopkey',
         SHOP_URL = 'shopurl',
         USER_IP = 'userip',
         REFERER = 'referer',
@@ -19,13 +19,10 @@ class QueryParameter
         FIRST = 'first',
         IDENTIFIER = 'identifier',
         GROUP = 'group',
-        FORCE_ORIGINAL_QUERY = 'forceOriginalQuery',
-        AUTOCOMPLETEBLOCKS = 'autocompleteblocks',
-        USERGROUPHASH = 'usergrouphash',
-        MULTISHOP_ID = 'multishop_id';
+        FORCE_ORIGINAL_QUERY = 'forceOriginalQuery';
 
     private static $list = [
-        self::SHOPKEY,
+        self::SERVICE_ID,
         self::SHOP_URL,
         self::USER_IP,
         self::REFERER,
@@ -40,9 +37,6 @@ class QueryParameter
         self::IDENTIFIER,
         self::GROUP,
         self::FORCE_ORIGINAL_QUERY,
-        self::AUTOCOMPLETEBLOCKS,
-        self::USERGROUPHASH,
-        self::MULTISHOP_ID,
     ];
 
     /**

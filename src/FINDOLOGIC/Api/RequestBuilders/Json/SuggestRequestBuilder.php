@@ -5,14 +5,15 @@ namespace FINDOLOGIC\Api\RequestBuilders\Json;
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Definitions\Endpoint;
 use FINDOLOGIC\Api\Definitions\QueryParameter;
+use FINDOLOGIC\Api\Definitions\SuggestQueryParameter;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\RequestBuilders\RequestBuilder;
 use FINDOLOGIC\Api\ResponseObjects\Json\JsonResponse;
 use FINDOLOGIC\Api\Validators\ParameterValidator;
 
-class SuggestionRequestBuilder extends RequestBuilder
+class SuggestRequestBuilder extends RequestBuilder
 {
-    protected $endpoint = Endpoint::SUGGESTION;
+    protected $endpoint = Endpoint::SUGGEST;
 
     public function __construct(Config $config)
     {
@@ -33,7 +34,7 @@ class SuggestionRequestBuilder extends RequestBuilder
     }
 
     /**
-     * Sets the query param. It is used as the search query. When doing a suggestion request the min length for a
+     * Sets the query param. It is used as the search query. When doing a suggest request the min length for a
      * query is one character.
      *
      * @param $value string
@@ -56,20 +57,6 @@ class SuggestionRequestBuilder extends RequestBuilder
     }
 
     /**
-     * This function exists for legacy reasons. Using this function will just call setQuery instead.
-     *
-     * @deprecated Use setQuery instead.
-     * @codeCoverageIgnore Because it's deprecated.
-     * @param $value string
-     * @see https://docs.findologic.com/doku.php?id=smart_suggest_new#request
-     * @return $this
-     */
-    public function setAutoq($value)
-    {
-        return $this->setQuery($value);
-    }
-
-    /**
      * Adds the autocompleteblocks param. It allows overriding the blocks that are configured to be displayed in
      * the customer-login. As value use the BlockType class. For example BlockType::SUGGEST.
      *
@@ -79,14 +66,14 @@ class SuggestionRequestBuilder extends RequestBuilder
      */
     public function addAutocompleteBlocks($value)
     {
-        $validator = new ParameterValidator([QueryParameter::AUTOCOMPLETEBLOCKS => $value]);
-        $validator->rule('isAutocompleteBlockParam', QueryParameter::AUTOCOMPLETEBLOCKS);
+        $validator = new ParameterValidator([SuggestQueryParameter::AUTOCOMPLETEBLOCKS => $value]);
+        $validator->rule('isAutocompleteBlockParam', SuggestQueryParameter::AUTOCOMPLETEBLOCKS);
 
         if (!$validator->validate()) {
-            throw new InvalidParamException(QueryParameter::AUTOCOMPLETEBLOCKS);
+            throw new InvalidParamException(SuggestQueryParameter::AUTOCOMPLETEBLOCKS);
         }
 
-        $this->addParam(QueryParameter::AUTOCOMPLETEBLOCKS, $value, self::ADD_VALUE);
+        $this->addParam(SuggestQueryParameter::AUTOCOMPLETEBLOCKS, $value, self::ADD_VALUE);
         return $this;
     }
 
@@ -100,14 +87,14 @@ class SuggestionRequestBuilder extends RequestBuilder
      */
     public function setUsergrouphash($value)
     {
-        $validator = new ParameterValidator([QueryParameter::USERGROUPHASH => $value]);
-        $validator->rule('string', QueryParameter::USERGROUPHASH);
+        $validator = new ParameterValidator([SuggestQueryParameter::USERGROUPHASH => $value]);
+        $validator->rule('string', SuggestQueryParameter::USERGROUPHASH);
 
         if (!$validator->validate()) {
-            throw new InvalidParamException(QueryParameter::USERGROUPHASH);
+            throw new InvalidParamException(SuggestQueryParameter::USERGROUPHASH);
         }
 
-        $this->addParam(QueryParameter::USERGROUPHASH, $value);
+        $this->addParam(SuggestQueryParameter::USERGROUPHASH, $value);
         return $this;
     }
 
@@ -120,14 +107,14 @@ class SuggestionRequestBuilder extends RequestBuilder
      */
     public function setMultishopId($value)
     {
-        $validator = new ParameterValidator([QueryParameter::MULTISHOP_ID => $value]);
-        $validator->rule('integer', QueryParameter::MULTISHOP_ID);
+        $validator = new ParameterValidator([SuggestQueryParameter::MULTISHOP_ID => $value]);
+        $validator->rule('integer', SuggestQueryParameter::MULTISHOP_ID);
 
         if (!$validator->validate()) {
-            throw new InvalidParamException(QueryParameter::MULTISHOP_ID);
+            throw new InvalidParamException(SuggestQueryParameter::MULTISHOP_ID);
         }
 
-        $this->addParam(QueryParameter::MULTISHOP_ID, $value, self::ADD_VALUE);
+        $this->addParam(SuggestQueryParameter::MULTISHOP_ID, $value, self::ADD_VALUE);
         return $this;
     }
 }

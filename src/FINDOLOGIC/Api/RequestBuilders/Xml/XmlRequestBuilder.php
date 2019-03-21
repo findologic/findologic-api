@@ -52,7 +52,6 @@ abstract class XmlRequestBuilder extends RequestBuilder
      */
     public function setReferer($value)
     {
-        // TODO: Validate URLs with Valitron if the bug with objects as URLs is fixed.
         if (!is_string($value) || !preg_match('/^((^https?:\/\/)|^www\.)/', $value)) {
             throw new InvalidParamException(QueryParameter::REFERER);
         }
