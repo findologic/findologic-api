@@ -180,7 +180,7 @@ class Config
         $validator = new ConfigValidator([self::HTTP_CLIENT => $httpClient]);
         $validator
             ->rule('required', self::HTTP_CLIENT)
-            ->rule('instanceOf', 'GuzzleHttp\Client', self::HTTP_CLIENT);
+            ->rule('httpClient', self::HTTP_CLIENT);
 
         if (!$validator->validate()) {
             throw new ConfigException(self::HTTP_CLIENT);

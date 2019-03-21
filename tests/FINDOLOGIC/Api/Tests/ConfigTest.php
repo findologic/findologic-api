@@ -50,6 +50,8 @@ class ConfigTest extends TestBase
         return [
             'apiUrl as object' => [['apiUrl' => new \stdClass()]],
             'apiUrl as integer' => [['apiUrl' => 46]],
+            'httpClient as some object' => [['httpClient' => new \stdClass()]],
+            'httpClient as integer' => [['httpClient' => 46]],
             'alivetest timeout as object' => [['alivetestTimeout' => new \stdClass()]],
             'alivetest timeout as string' => [['alivetestTimeout' => 'Timeout of 50 years pls!']],
             'request timeout as object' => [['requestTimeout' => new \stdClass()]],
@@ -82,10 +84,22 @@ class ConfigTest extends TestBase
             if (isset($config['shopkey'])) {
                 $configObj->setShopkey($config['shopkey']);
             }
+            if (isset($config['httpClient'])) {
+                $configObj->setHttpClient($config['httpClient']);
+            }
 
             $this->fail('An invalid Config should throw an exception!');
         } catch (ConfigException $e) {
             $this->assertStringStartsWith('Config parameter', $e->getMessage());
         }
+    }
+
+    public function testGetShopkeyWillThrowAnExceptionIfItWasNotSetBefore()
+    {
+        $this->expectException(ConfigException::class);
+        $this->expectExceptionMessage('Required parameter "shopkey" was not set');
+
+        $config = new Config();
+        $config->getShopkey();
     }
 }
