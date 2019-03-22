@@ -23,7 +23,7 @@ class SuggestionRequestBuilderTest extends TestBase
         parent::setUp();
         $this->config = new Config();
         $this->config
-            ->setShopkey('ABCDABCDABCDABCDABCDABCDABCDABCD')
+            ->setServiceId('ABCDABCDABCDABCDABCDABCDABCDABCD')
             ->setHttpClient($this->httpClientMock);
 
         $this->rawMockResponse = $this->getMockResponse('demoResponseSuggest.json');

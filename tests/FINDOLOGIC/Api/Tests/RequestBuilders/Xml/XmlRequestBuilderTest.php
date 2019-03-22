@@ -30,7 +30,7 @@ class XmlRequestBuilderTest extends TestBase
         parent::setUp();
         $this->config = new Config();
         $this->config
-            ->setShopkey('ABCDABCDABCDABCDABCDABCDABCDABCD')
+            ->setServiceId('ABCDABCDABCDABCDABCDABCDABCDABCD')
             ->setHttpClient($this->httpClientMock);
 
         $this->rawMockResponse = $this->getMockResponse('demoResponse.xml');
@@ -209,7 +209,7 @@ class XmlRequestBuilderTest extends TestBase
 
     public function testShopkeyIsAutomaticallyAddedFromTheConfigIfNotOverridden()
     {
-        $expectedParameter = sprintf('&shopkey=%s', $this->config->getShopkey());
+        $expectedParameter = sprintf('&shopkey=%s', $this->config->getServiceId());
 
         $searchRequestBuilder = new SearchRequestBuilder($this->config);
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);

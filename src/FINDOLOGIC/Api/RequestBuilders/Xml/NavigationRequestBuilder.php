@@ -18,7 +18,7 @@ class NavigationRequestBuilder extends XmlRequestBuilder
         $this->checkRequiredParamsAreSet();
         $this->sendAlivetestRequest();
 
-        $responseContent = $this->client->request($this->buildRequestUrl());
+        $responseContent = $this->client->send($this->buildRequestUrl());
         return new XmlResponse($responseContent, $this->client->getResponseTime());
     }
 }

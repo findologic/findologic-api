@@ -29,9 +29,6 @@ abstract class RequestBuilder
     /** @var string */
     protected $endpoint;
 
-    /** @var Config */
-    protected $config;
-
     /** @var Client */
     protected $client;
 
@@ -41,30 +38,35 @@ abstract class RequestBuilder
      */
     abstract public function sendRequest();
 
-    public function __construct(Config $config)
-    {
-        $this->config = $config;
-        $this->client = new Client($config);
-    }
-
     /**
      * Builds the request URL based on the set params.
      *
+     * @param Config $config
      * @return string
      */
-    public function buildRequestUrl()
+    public function buildRequestUrl(Config $config)
     {
         $shopUrl = $this->getParam(QueryParameter::SHOP_URL);
         // If the shopkey was not manually overridden, we take the shopkey from the config.
         if (!isset($this->getParams()[QueryParameter::SERVICE_ID])) {
-            $this->params['shopkey'] = $this->config->getShopkey();
+            $this->params['shopkey'] = $config->getServiceId();
         }
         $queryParams = http_build_query($this->params);
         // Removes indexes from query params. E.g. attrib[0] will be attrib[].
         $fullQueryString = preg_replace('/%5B\d+%5D/', '%5B%5D', $queryParams);
 
-        $apiUrl = sprintf($this->config->getApiUrl(), $shopUrl, $this->endpoint);
+        $apiUrl = sprintf($config->getApiUrl(), $shopUrl, $this->endpoint);
         return sprintf('%s?%s', $apiUrl, $fullQueryString);
+    }
+
+    /**
+     * Gets all currently set params.
+     *
+     * @return array
+     */
+    public function getParams()
+    {
+        return $this->params;
     }
 
     /**
@@ -189,11 +191,11 @@ abstract class RequestBuilder
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getParams()
+    public function getEndpoint()
     {
-        return $this->params;
+        return $this->endpoint;
     }
 
     /**
@@ -201,7 +203,7 @@ abstract class RequestBuilder
      */
     protected function sendAlivetestRequest()
     {
-        $this->client->request($this->buildAlivetestUrl(), true);
+        $this->client->send($this->buildAlivetestUrl(), true);
     }
 
     /**
@@ -268,18 +270,19 @@ abstract class RequestBuilder
     /**
      * Builds the alivetest URL.
      *
+     * @param Config $config
      * @return string
      */
-    public function buildAlivetestUrl()
+    public function buildAlivetestUrl(Config $config)
     {
         $shopUrl = $this->getParam(QueryParameter::SHOP_URL);
         // If the shopkey was not manually overridden, we take the shopkey from the config.
         if (!isset($this->getParams()[QueryParameter::SERVICE_ID])) {
-            $this->params['shopkey'] = $this->config->getShopkey();
+            $this->params['shopkey'] = $config->getServiceId();
         }
         $queryString = http_build_query([QueryParameter::SERVICE_ID => $this->getParam(QueryParameter::SERVICE_ID)]);
 
-        $apiUrl = sprintf($this->config->getApiUrl(), $shopUrl, Endpoint::ALIVETEST);
+        $apiUrl = sprintf($config->getApiUrl(), $shopUrl, Endpoint::ALIVETEST);
         return sprintf('%s?%s', $apiUrl, $queryString);
     }
 

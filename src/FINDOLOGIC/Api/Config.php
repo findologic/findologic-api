@@ -9,7 +9,7 @@ use GuzzleHttp\Client;
 class Config
 {
     const
-        SHOPKEY = 'shopkey',
+        SERVICE_ID = 'shopkey',
         API_URL = 'apiUrl',
         ALIVETEST_TIMEOUT = 'alivetestTimeout',
         REQUEST_TIMEOUT = 'requestTimeout',
@@ -21,7 +21,7 @@ class Config
         DEFAULT_REQUEST_TIMEOUT = 3.0;
 
     /** @var string */
-    private $shopkey;
+    private $serviceId;
 
     /** @var string */
     private $apiUrl;
@@ -38,31 +38,31 @@ class Config
     /**
      * @return string
      */
-    public function getShopkey()
+    public function getServiceId()
     {
-        if (!$this->shopkey) {
-            throw new ConfigException(self::SHOPKEY, 'Required parameter "%s" was not set');
+        if (!$this->serviceId) {
+            throw new ConfigException(self::SERVICE_ID, 'Required parameter "%s" was not set');
         }
 
-        return $this->shopkey;
+        return $this->serviceId;
     }
 
     /**
-     * @param string $shopkey
+     * @param string $serviceId
      * @return $this
      */
-    public function setShopkey($shopkey)
+    public function setServiceId($serviceId)
     {
-        $validator = new ConfigValidator([self::SHOPKEY => $shopkey]);
+        $validator = new ConfigValidator([self::SERVICE_ID => $serviceId]);
         $validator
-            ->rule('required', self::SHOPKEY)
-            ->rule('shopkey', self::SHOPKEY);
+            ->rule('required', self::SERVICE_ID)
+            ->rule('shopkey', self::SERVICE_ID);
 
         if (!$validator->validate()) {
-            throw new ConfigException(self::SHOPKEY);
+            throw new ConfigException(self::SERVICE_ID);
         }
 
-        $this->shopkey = $shopkey;
+        $this->serviceId = $serviceId;
         return $this;
     }
 

@@ -8,7 +8,7 @@ use FINDOLOGIC\Api\Definitions\QueryParameter;
 use FINDOLOGIC\Api\Definitions\SuggestQueryParameter;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\RequestBuilders\RequestBuilder;
-use FINDOLOGIC\Api\ResponseObjects\Json\JsonResponse;
+use FINDOLOGIC\Api\ResponseObjects\Json\SuggestResponse;
 use FINDOLOGIC\Api\Validators\ParameterValidator;
 
 class SuggestRequestBuilder extends RequestBuilder
@@ -23,14 +23,14 @@ class SuggestRequestBuilder extends RequestBuilder
 
     /**
      * @inheritdoc
-     * @return JsonResponse
+     * @return SuggestResponse
      */
     public function sendRequest()
     {
         $this->checkRequiredParamsAreSet();
 
-        $responseContent = $this->client->request($this->buildRequestUrl());
-        return new JsonResponse($responseContent, $this->client->getResponseTime());
+        $responseContent = $this->client->send($this->buildRequestUrl());
+        return new SuggestResponse($responseContent, $this->client->getResponseTime());
     }
 
     /**

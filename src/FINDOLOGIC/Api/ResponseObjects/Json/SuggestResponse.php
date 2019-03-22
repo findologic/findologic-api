@@ -11,7 +11,7 @@ use FINDOLOGIC\Api\ResponseObjects\Response;
  * Class JsonResponse
  * @package FINDOLOGIC\Api\ResponseObjects
  */
-class JsonResponse extends Response
+class SuggestResponse extends Response
 {
     /** @var Suggestion[] $suggestions */
     private $suggestions;

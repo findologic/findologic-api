@@ -14,11 +14,11 @@ class ConfigTest extends TestBase
     public function testValidConfigWillWorkAndDefaultsAreFilled()
     {
         $config = new Config();
-        $config->setShopkey($this->validConfig['shopkey']);
+        $config->setServiceId($this->validConfig['shopkey']);
         $this->assertEquals(3.0, $config->getRequestTimeout());
         $this->assertEquals(1.0, $config->getAlivetestTimeout());
         $this->assertInstanceOf(Client::class, $config->getHttpClient());
-        $this->assertEquals($this->validConfig['shopkey'], $config->getShopkey());
+        $this->assertEquals($this->validConfig['shopkey'], $config->getServiceId());
         $this->assertEquals('https://service.findologic.com/ps/%s/%s', $config->getApiUrl());
     }
 
@@ -32,7 +32,7 @@ class ConfigTest extends TestBase
 
         $config = new Config();
         $config
-            ->setShopkey($expectedShopkey)
+            ->setServiceId($expectedShopkey)
             ->setApiUrl($expectedApiUrl)
             ->setAlivetestTimeout($expectedAlivetestTimeout)
             ->setRequestTimeout($expectedRequestTimeout)
@@ -41,7 +41,7 @@ class ConfigTest extends TestBase
         $this->assertEquals($expectedRequestTimeout, $config->getRequestTimeout());
         $this->assertEquals($expectedAlivetestTimeout, $config->getAlivetestTimeout());
         $this->assertEquals($expectedHttpClient, $config->getHttpClient());
-        $this->assertEquals($expectedShopkey, $config->getShopkey());
+        $this->assertEquals($expectedShopkey, $config->getServiceId());
         $this->assertEquals($expectedApiUrl, $config->getApiUrl());
     }
 
@@ -82,7 +82,7 @@ class ConfigTest extends TestBase
                 $configObj->setRequestTimeout($config['requestTimeout']);
             }
             if (isset($config['shopkey'])) {
-                $configObj->setShopkey($config['shopkey']);
+                $configObj->setServiceId($config['shopkey']);
             }
             if (isset($config['httpClient'])) {
                 $configObj->setHttpClient($config['httpClient']);
@@ -100,6 +100,6 @@ class ConfigTest extends TestBase
         $this->expectExceptionMessage('Required parameter "shopkey" was not set');
 
         $config = new Config();
-        $config->getShopkey();
+        $config->getServiceId();
     }
 }

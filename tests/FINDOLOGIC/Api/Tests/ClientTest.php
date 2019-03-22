@@ -22,7 +22,7 @@ class ClientTest extends TestBase
 
         $this->config = new Config();
         $this->config
-            ->setShopkey($this->validShopkey)
+            ->setServiceId($this->validShopkey)
             ->setHttpClient($this->httpClientMock);
     }
 
@@ -34,7 +34,7 @@ class ClientTest extends TestBase
         $this->setExpectationsForRequests($expectedRequestUrl, $expectedBody);
 
         $client = new Client($this->config);
-        $result = $client->request($expectedRequestUrl);
+        $result = $client->send($expectedRequestUrl);
 
         $this->assertSame($expectedBody, $result);
     }
@@ -85,7 +85,7 @@ class ClientTest extends TestBase
         $client = new Client($this->config);
 
         try {
-            $client->request($expectedRequestUrl);
+            $client->send($expectedRequestUrl);
             $this->fail('An ServiceNotAliveException should be thrown if the status code is not OK.');
         } catch (ServiceNotAliveException $e) {
             $this->assertEquals(sprintf(
@@ -103,7 +103,7 @@ class ClientTest extends TestBase
         $this->setExpectationsForAliveTestRequests($expectedRequestUrl, $expectedBody);
 
         $client = new Client($this->config);
-        $result = $client->request($expectedRequestUrl, true);
+        $result = $client->send($expectedRequestUrl, true);
 
         $this->assertSame($expectedBody, $result);
     }
@@ -137,7 +137,7 @@ class ClientTest extends TestBase
 
         $client = new Client($this->config);
         try {
-            $client->request($expectedRequestUrl, true);
+            $client->send($expectedRequestUrl, true);
             $this->fail('An exception should be thrown if the alivetest returns something else then "alive"');
         } catch (ServiceNotAliveException $e) {
             $this->assertEquals(sprintf(
@@ -155,7 +155,7 @@ class ClientTest extends TestBase
         $this->setExpectationsForAliveTestRequests($expectedRequestUrl, $expectedBody);
 
         $client = new Client($this->config);
-        $client->request($expectedRequestUrl, true);
+        $client->send($expectedRequestUrl, true);
 
         $this->assertSame(null, $client->getResponseTime());
     }
@@ -168,7 +168,7 @@ class ClientTest extends TestBase
         $this->setExpectationsForRequests($expectedRequestUrl, $expectedBody);
 
         $client = new Client($this->config);
-        $client->request($expectedRequestUrl);
+        $client->send($expectedRequestUrl);
 
         // Local response time should be fast since the data will not be sent to another server, but instead it
         // will be directly read from the ram.
@@ -190,7 +190,7 @@ class ClientTest extends TestBase
         $client = new Client($this->config);
 
         try {
-            $client->request($expectedRequestUrl);
+            $client->send($expectedRequestUrl);
             $this->fail('If Guzzle throws an exception it should be caught by us and thrown that something is wrong.');
         } catch (ServiceNotAliveException $e) {
             $this->assertEquals(sprintf(

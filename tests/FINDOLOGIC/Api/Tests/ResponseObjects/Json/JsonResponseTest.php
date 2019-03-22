@@ -3,7 +3,7 @@
 namespace FINDOLOGIC\Api\Tests\ResponseObjects\Json;
 
 use FINDOLOGIC\Api\Definitions\BlockType;
-use FINDOLOGIC\Api\ResponseObjects\Json\JsonResponse;
+use FINDOLOGIC\Api\ResponseObjects\Json\SuggestResponse;
 use FINDOLOGIC\Api\ResponseObjects\Json\Properties\Suggestion;
 use PHPUnit\Framework\TestCase;
 
@@ -13,13 +13,13 @@ class JsonResponseTest extends TestCase
      * Will use a real response that could come from a request. It returns the Object.
      *
      * @param string $filename
-     * @return JsonResponse
+     * @return SuggestResponse
      */
     public function getRealResponseData($filename = 'demoResponseSuggest.json')
     {
         // Get contents from a real response locally.
         $realResponseData = file_get_contents(__DIR__ . '/../../../Mockdata/' . $filename);
-        return new JsonResponse($realResponseData);
+        return new SuggestResponse($realResponseData);
     }
 
     public function testResponseWillReturnExpectedLabels()

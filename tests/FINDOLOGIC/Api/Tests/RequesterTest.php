@@ -19,7 +19,7 @@ class RequesterTest extends TestBase
         parent::setUp();
         $this->validConfig = new Config();
         $this->validConfig
-            ->setShopkey('ABCDABCDABCDABCDABCDABCDABCDABCD')
+            ->setServiceId('ABCDABCDABCDABCDABCDABCDABCDABCD')
             ->setHttpClient($this->httpClientMock);
     }
 
