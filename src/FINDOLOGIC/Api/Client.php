@@ -2,9 +2,9 @@
 
 namespace FINDOLOGIC\Api;
 
-use FINDOLOGIC\Api\Definitions\Endpoint;
 use FINDOLOGIC\Api\Definitions\QueryParameter;
 use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
+use FINDOLOGIC\Api\RequestBuilders\AlivetestRequestBuilder;
 use FINDOLOGIC\Api\RequestBuilders\Json\SuggestRequestBuilder;
 use FINDOLOGIC\Api\RequestBuilders\RequestBuilder;
 use FINDOLOGIC\Api\RequestBuilders\Xml\NavigationRequestBuilder;
@@ -14,7 +14,6 @@ use FINDOLOGIC\Api\ResponseObjects\Xml\XmlResponse;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use InvalidArgumentException;
-use Psr\Http\Message\ResponseInterface;
 
 class Client
 {
@@ -25,29 +24,9 @@ class Client
     /** @var Config */
     private $config;
 
-    /**
-     * @var float|null Can be used to get the response time from the FINDOLOGIC API in microseconds.
-     */
-    private $responseTime = null;
-
-    /**
-     * @var float Saves the unix timestamp in microseconds of the last made request.
-     */
-    private $requestUnixTimestamp;
-
     public function __construct(Config $config)
     {
         $this->config = $config;
-    }
-
-    /**
-     * Gets the response time of the last made request. May return null if no request was made yet.
-     *
-     * @return float
-     */
-    public function getResponseTime()
-    {
-        return $this->responseTime;
     }
 
     /**
@@ -60,41 +39,49 @@ class Client
     {
         $this->doAlivetest($requestBuilder);
 
-        try {
-            $response = $this->sendRequest($requestBuilder);
-        } catch (GuzzleException $e) {
-            throw new ServiceNotAliveException($e->getMessage());
-        }
+        $requestStart = microtime(true);
+        $response = $this->sendRequest($requestBuilder);
+        $responseTime = microtime(true) - $requestStart;
 
         $this->checkResponseIsValid($response);
 
         switch (get_class($requestBuilder)) {
             case SearchRequestBuilder::class:
             case NavigationRequestBuilder::class:
-                return new XmlResponse($response->getBody()->getContents());
+                return new XmlResponse($response->getBody()->getContents(), $responseTime);
             case SuggestRequestBuilder::class:
-                return new SuggestResponse($response->getBody()->getContents());
+                return new SuggestResponse($response->getBody()->getContents(), $responseTime);
             default:
-                throw new InvalidArgumentException('Unknown request');
+                throw new InvalidArgumentException('Unknown request builder');
         }
     }
 
     /**
      * @param RequestBuilder $requestBuilder
-     * @return mixed|ResponseInterface
-     * @throws GuzzleException
+     * @return Response
+     * @throws ServiceNotAliveException If the request was not successful.
      */
     private function sendRequest(RequestBuilder $requestBuilder)
     {
-        return $this->config->getHttpClient()->request(
-            self::METHOD_GET,
-            $this->buildRequestUrl($requestBuilder),
-            ['connect_timeout' => $this->config->getRequestTimeout()]
-        );
+        $requestTimeout = $this->config->getRequestTimeout();
+        if (get_class($requestBuilder) === AlivetestRequestBuilder::class) {
+            $requestTimeout = $this->config->getAlivetestTimeout();
+        }
+
+        try {
+            return $this->config->getHttpClient()->request(
+                self::METHOD_GET,
+                $this->buildRequestUrl($requestBuilder),
+                ['connect_timeout' => $requestTimeout]
+            );
+        } catch (GuzzleException $e) {
+            throw new ServiceNotAliveException($e->getMessage());
+        }
     }
 
     /**
-     * Will do an alivetest. An alivetest is only done if the request is a search or a navigation request.
+     * Will do an alivetest if the given request builder requires one. An alivetest may be done if the request is a
+     * search or a navigation request.
      *
      * @param RequestBuilder $requestBuilder
      */
@@ -103,36 +90,10 @@ class Client
         switch (get_class($requestBuilder)) {
             case NavigationRequestBuilder::class:
             case SearchRequestBuilder::class:
-                try {
-                    $this->sendAlivetestRequest($requestBuilder);
-                } catch (GuzzleException $e) {
-                    throw new ServiceNotAliveException($e->getMessage());
-                }
+                $this->sendRequest(new AlivetestRequestBuilder());
                 break;
             default:
                 break;
-        }
-    }
-
-    /**
-     * Sends an alivetest request.
-     *
-     * @param RequestBuilder $requestBuilder
-     * @throws GuzzleException
-     */
-    private function sendAlivetestRequest(RequestBuilder $requestBuilder)
-    {
-        $response =  $this->config->getHttpClient()->request(
-            self::METHOD_GET,
-            $this->buildAlivetestUrl($requestBuilder),
-            ['connect_timeout' => $this->config->getAlivetestTimeout()]
-        );
-
-        $responseContent = $response->getBody()->getContents();
-        $responseBodyIsAlive = $responseContent === self::SERVICE_ALIVE_BODY;
-
-        if (!$responseBodyIsAlive) {
-            throw new ServiceNotAliveException($responseContent);
         }
     }
 
@@ -160,29 +121,6 @@ class Client
     }
 
     /**
-     * Builds the alivetest URL.
-     *
-     * @param RequestBuilder $requestBuilder
-     * @return string
-     */
-    public function buildAlivetestUrl(RequestBuilder $requestBuilder)
-    {
-        $params = $requestBuilder->getParams();
-
-        $shopUrl = $params[QueryParameter::SHOP_URL];
-        // If the shopkey was not manually overridden, we take the shopkey from the config.
-        if (!isset($params[QueryParameter::SERVICE_ID])) {
-            $params['shopkey'] = $this->config->getServiceId();
-        }
-        $queryString = http_build_query([
-            QueryParameter::SERVICE_ID => $params[QueryParameter::SERVICE_ID]
-        ]);
-
-        $apiUrl = sprintf($this->config->getApiUrl(), $shopUrl, Endpoint::ALIVETEST);
-        return sprintf('%s?%s', $apiUrl, $queryString);
-    }
-
-    /**
      * Checks if the response is valid. If not, an exception will be thrown.
      *
      * @param Response $response
@@ -193,23 +131,5 @@ class Client
         if ($statusCode !== self::STATUS_OK) {
             throw new ServiceNotAliveException(sprintf('Unexpected status code %s.', $statusCode));
         }
-    }
-
-    /**
-     * Sets the unix timestamp in microseconds for the request.
-     */
-    private function startResponseTime()
-    {
-        $this->requestUnixTimestamp = microtime(true);
-    }
-
-    /**
-     * Calculates how much time has been passed since the request has been made to
-     * determine the full time duration for the request (in microseconds).
-     */
-    private function endResponseTime()
-    {
-        $requestEndTime = microtime(true);
-        $this->responseTime = $requestEndTime - $this->requestUnixTimestamp;
     }
 }
