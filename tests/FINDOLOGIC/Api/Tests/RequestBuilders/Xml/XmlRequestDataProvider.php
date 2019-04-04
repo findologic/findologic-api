@@ -22,16 +22,13 @@ trait XmlRequestDataProvider
     {
         return [
             'some random string can be set' => [
-                'string' => 'something',
-                'expectedResult' => urlencode('something'),
+                'expectedQuery' => 'something',
             ],
-            'an empty string an be set' => [
-                'string' => '',
-                'expectedResult' => urlencode(''),
+            'an empty string can be set' => [
+                'expectedQuery' => '',
             ],
-            'special characters in string should be url encoded' => [
-                'string' => '/ /',
-                'expectedResult' => urlencode('/ /'),
+            'special characters in string should be set' => [
+                'expectedQuery' => '/ /',
             ],
         ];
     }
@@ -85,16 +82,13 @@ trait XmlRequestDataProvider
     {
         return [
             'normal shopurl' => [
-                'shopurl' => 'www.poop.com',
-                'expectedResult' => urlencode('www.poop.com'),
+                'expectedShopurl' => 'www.poop.com',
             ],
             'other shopurl' => [
-                'shopurl' => 'www.shop.co.de',
-                'expectedResult' => urlencode('www.shop.co.de'),
+                'expectedShopurl' => 'www.shop.co.de',
             ],
             'more different shopurl' => [
-                'shopurl' => 'blubbergurken.de/shop',
-                'expectedResult' => urlencode('blubbergurken.de/shop'),
+                'expectedShopurl' => 'blubbergurken.de/shop',
             ]
         ];
     }
@@ -114,20 +108,16 @@ trait XmlRequestDataProvider
     {
         return [
             'normal userip' => [
-                'userip' => '127.0.0.1',
-                'expectedResult' => '127.0.0.1',
+                'expectedUserip' => '127.0.0.1',
             ],
             'other userip' => [
-                'userip' => '183.12.42.33',
-                'expectedResult' => '183.12.42.33',
+                'expectedUserip' => '183.12.42.33',
             ],
             'more different userip' => [
-                'userip' => '255.255.255.255',
-                'expectedResult' => '255.255.255.255',
+                'expectedUserip' => '255.255.255.255',
             ],
             'ipv6 userip' => [
-                'userip' => '2001:0db8:85a3:0000:0000:8a2e:0370:7334',
-                'expectedResult' => urlencode('2001:0db8:85a3:0000:0000:8a2e:0370:7334'),
+                'expectedUserip' => '2001:0db8:85a3:0000:0000:8a2e:0370:7334',
             ],
         ];
     }
@@ -147,16 +137,13 @@ trait XmlRequestDataProvider
     {
         return [
             'normal referer' => [
-                'referer' => 'https://www.somedomain.de/best-category',
-                'expectedResult' => urlencode('https://www.somedomain.de/best-category'),
+                'expectedReferer' => 'https://www.somedomain.de/best-category',
             ],
             'other referer' => [
-                'referer' => 'http://this-is-an-unsecure-domain.com/unsecure',
-                'expectedResult' => urlencode('http://this-is-an-unsecure-domain.com/unsecure'),
+                'expectedReferer' => 'http://this-is-an-unsecure-domain.com/unsecure',
             ],
             'more different referer' => [
-                'referer' => 'http://www.domain.ru/domains',
-                'expectedResult' => urlencode('http://www.domain.ru/domains'),
+                'expectedReferer' => 'http://www.domain.ru/domains',
             ]
         ];
     }
@@ -219,16 +206,13 @@ trait XmlRequestDataProvider
     {
         return [
             'normal order' => [
-                'order' => 'price DESC',
-                'expectedResult' => urlencode('price DESC'),
+                'expectedOrder' => 'price DESC',
             ],
             'other order' => [
-                'order' => 'rank',
-                'expectedResult' => urlencode('rank'),
+                'expectedOrder' => 'rank',
             ],
             'more different order' => [
-                'order' => 'dateadded DESC',
-                'expectedResult' => urlencode('dateadded DESC'),
+                'expectedOrder' => 'dateadded DESC',
             ],
         ];
     }

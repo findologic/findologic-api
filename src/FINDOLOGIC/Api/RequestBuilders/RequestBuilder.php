@@ -32,11 +32,9 @@ abstract class RequestBuilder
     /** @var Client */
     protected $client;
 
-    /**
-     * Sends a request to FINDOLOGIC. This may include an alivetest if the requested resource is a search or
-     * a navigation request.
-     */
-    abstract public function sendRequest();
+    public function __construct()
+    {
+    }
 
     /**
      * Builds the request URL based on the set params.
@@ -254,10 +252,10 @@ abstract class RequestBuilder
     }
 
     /**
-     * Internal function that takes care of checking the required params and whether they are set or not. An exception
-     * is thrown if they're not set.
+     * Takes care of checking the required params and whether they are set or not.
+     * @throws ParamNotSetException If required params are not set.
      */
-    protected function checkRequiredParamsAreSet()
+    public function checkRequiredParamsAreSet()
     {
         $validator = new Validator($this->params);
         $validator->rule('required', $this->requiredParams, true);

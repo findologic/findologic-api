@@ -15,22 +15,10 @@ class SuggestRequestBuilder extends RequestBuilder
 {
     protected $endpoint = Endpoint::SUGGEST;
 
-    public function __construct(Config $config)
+    public function __construct()
     {
-        parent::__construct($config);
+        parent::__construct();
         $this->addRequiredParam(QueryParameter::QUERY);
-    }
-
-    /**
-     * @inheritdoc
-     * @return SuggestResponse
-     */
-    public function sendRequest()
-    {
-        $this->checkRequiredParamsAreSet();
-
-        $responseContent = $this->client->send($this->buildRequestUrl());
-        return new SuggestResponse($responseContent, $this->client->getResponseTime());
     }
 
     /**

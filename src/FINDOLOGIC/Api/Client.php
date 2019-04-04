@@ -37,6 +37,7 @@ class Client
      */
     public function send(RequestBuilder $requestBuilder)
     {
+        $requestBuilder->checkRequiredParamsAreSet();
         $this->doAlivetest($requestBuilder);
 
         $requestStart = microtime(true);
@@ -90,7 +91,11 @@ class Client
         switch (get_class($requestBuilder)) {
             case NavigationRequestBuilder::class:
             case SearchRequestBuilder::class:
-                $this->sendRequest(new AlivetestRequestBuilder());
+                // We need to make sure that the alivetest uses the same parameters as the request itself.
+                $alivetestRequestBuilder = new AlivetestRequestBuilder();
+                $alivetestRequestBuilder->setParams($requestBuilder->getParams());
+                $response = $this->sendRequest($alivetestRequestBuilder);
+                $this->checkAlivetestBody($response);
                 break;
             default:
                 break;
@@ -130,6 +135,17 @@ class Client
         $statusCode = $response->getStatusCode();
         if ($statusCode !== self::STATUS_OK) {
             throw new ServiceNotAliveException(sprintf('Unexpected status code %s.', $statusCode));
+        }
+    }
+
+    /**
+     * @param Response $response
+     */
+    private function checkAlivetestBody($response)
+    {
+        $alivetestContents = $response->getBody()->getContents();
+        if ($alivetestContents !== self::SERVICE_ALIVE_BODY) {
+            throw new ServiceNotAliveException($alivetestContents);
         }
     }
 }

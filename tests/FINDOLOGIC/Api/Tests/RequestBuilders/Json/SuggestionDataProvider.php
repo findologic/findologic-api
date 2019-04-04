@@ -14,17 +14,14 @@ trait SuggestionDataProvider
     public function queryProvider()
     {
         return [
-            'some random string can be set' => [
-                'string' => 'something',
-                'expectedResult' => urlencode('something'),
+            'some random query can be set' => [
+                'expectedQuery' => 'something',
             ],
-            'an empty string an be set' => [
-                'string' => '',
-                'expectedResult' => urlencode(''),
+            'an empty query can be set' => [
+                'expectedQuery' => '',
             ],
-            'special characters in string should be url encoded' => [
-                'string' => '/ /',
-                'expectedResult' => urlencode('/ /'),
+            'special characters in query should be set' => [
+                'expectedQuery' => '/ /',
             ],
         ];
     }

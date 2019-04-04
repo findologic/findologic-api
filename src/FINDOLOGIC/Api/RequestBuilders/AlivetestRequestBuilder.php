@@ -13,8 +13,10 @@ class AlivetestRequestBuilder extends RequestBuilder
 
     /**
      * @internal
+     * @param array $params
      */
-    public function sendRequest()
+    public function setParams(array $params)
     {
+        $this->params = $params;
     }
 }

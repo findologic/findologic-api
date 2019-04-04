@@ -5,6 +5,10 @@ namespace FINDOLOGIC\Api\Tests;
 use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
 use FINDOLOGIC\Api\Client;
 use FINDOLOGIC\Api\Config;
+use FINDOLOGIC\Api\RequestBuilders\Json\SuggestRequestBuilder;
+use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
+use FINDOLOGIC\Api\ResponseObjects\Json\SuggestResponse;
+use FINDOLOGIC\Api\ResponseObjects\Xml\XmlResponse;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 
@@ -16,6 +20,9 @@ class ClientTest extends TestBase
     /** @var Config */
     private $config;
 
+    /** @var SearchRequestBuilder */
+    private $requestBuilder;
+
     protected function setUp()
     {
         parent::setUp();
@@ -24,19 +31,63 @@ class ClientTest extends TestBase
         $this->config
             ->setServiceId($this->validShopkey)
             ->setHttpClient($this->httpClientMock);
+        $this->requestBuilder = new SuggestRequestBuilder();
+
+        $this->requestBuilder
+            ->setShopurl('blubbergurken.de')
+            ->setQuery('blubbergurken');
+    }
+
+    /**
+     * @param string $expectedAlivetestUrl
+     * @param string $expectedRequestUrl
+     * @param string $expectedAlivetestBody
+     * @param string $expectedSearchResultBody
+     */
+    private function setExpectationsForAlivtestRequestsWithASearch(
+        $expectedAlivetestUrl,
+        $expectedRequestUrl,
+        $expectedAlivetestBody,
+        $expectedSearchResultBody
+    ) {
+        $this->httpClientMock->method('request')
+            ->withConsecutive(
+                ['GET', $expectedAlivetestUrl, ['connect_timeout' => 1.0]],
+                ['GET', $expectedRequestUrl, ['connect_timeout' => 3.0]]
+            )
+            ->willReturnOnConsecutiveCalls($this->responseMock, $this->responseMock);
+        $this->responseMock->method('getBody')
+            ->with()
+            ->willReturnOnConsecutiveCalls($this->streamMock, $this->streamMock);
+        $this->responseMock->method('getStatusCode')
+            ->with()
+            ->willReturnOnConsecutiveCalls(200);
+        $this->streamMock->method('getContents')
+            ->with()
+            ->willReturnOnConsecutiveCalls($expectedAlivetestBody, $expectedSearchResultBody);
     }
 
     public function testRequestIsBeingCalledWithExpectedParameters()
     {
-        $expectedRequestUrl = 'https://secure.blubbergurken.io/autocomplete.php?query=wut&shopkey=something';
-        $expectedBody = '[]';
+        $requestParams = http_build_query([
+            'shopurl' => 'blubbergurken.de',
+            'query' => 'blubbergurken',
+            'shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD',
+        ]);
 
-        $this->setExpectationsForRequests($expectedRequestUrl, $expectedBody);
+        $expectedRequestUrl = 'https://service.findologic.com/ps/blubbergurken.de/autocomplete.php?' . $requestParams;
+
+        $responseBody = '[]';
+        $expectedResult = [];
+
+        $this->setExpectationsForRequests($expectedRequestUrl, $responseBody);
 
         $client = new Client($this->config);
-        $result = $client->send($expectedRequestUrl);
 
-        $this->assertSame($expectedBody, $result);
+        /** @var SuggestResponse $suggestResponse */
+        $suggestResponse = $client->send($this->requestBuilder);
+
+        $this->assertSame($expectedResult, $suggestResponse->getSuggestions());
     }
 
     public function badStatusCodeProvider()
@@ -67,7 +118,14 @@ class ClientTest extends TestBase
      */
     public function testRequestWillThrowAnExceptionIfItHasAnUnexpectedStatusCode($statusCode)
     {
-        $expectedRequestUrl = 'https://secure.blubbergurken.io/autocomplete.php?query=hut&shopkey=something';
+        $requestParams = http_build_query([
+            'shopurl' => 'blubbergurken.de',
+            'query' => 'blubbergurken',
+            'shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD',
+        ]);
+
+        $expectedRequestUrl = 'https://service.findologic.com/ps/blubbergurken.de/autocomplete.php?' . $requestParams;
+
         $expectedBody = json_encode([
             'label' => 'schuljahr',
             'block' => 'suggest',
@@ -85,7 +143,7 @@ class ClientTest extends TestBase
         $client = new Client($this->config);
 
         try {
-            $client->send($expectedRequestUrl);
+            $client->send($this->requestBuilder);
             $this->fail('An ServiceNotAliveException should be thrown if the status code is not OK.');
         } catch (ServiceNotAliveException $e) {
             $this->assertEquals(sprintf(
@@ -97,15 +155,44 @@ class ClientTest extends TestBase
 
     public function testAliveTestRequestWillBeCalledWithLessTimeout()
     {
-        $expectedRequestUrl = 'https://secure.blubbergurken.io/alivetest.php';
-        $expectedBody = 'alive';
+        $requestParams = http_build_query([
+            'query' => 'blubbergurken',
+            'shopurl' => 'blubbergurken.de',
+            'userip' => '127.0.0.1',
+            'referer' => 'https://www.google.at/?query=blubbergurken',
+            'revision' => '1.0.0',
+            'shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD',
+        ]);
 
-        $this->setExpectationsForAliveTestRequests($expectedRequestUrl, $expectedBody);
+        $expectedAlivetestUrl = 'https://service.findologic.com/ps/blubbergurken.de/alivetest.php?' . $requestParams;
+        $expectedRequestUrl = 'https://service.findologic.com/ps/blubbergurken.de/index.php?' . $requestParams;
+
+        $expectedAlivetestBody = 'alive';
+        $expectedSearchResultBody = $this->getMockResponse('demoResponse.xml');
+
+        $this->setExpectationsForAlivtestRequestsWithASearch(
+            $expectedAlivetestUrl,
+            $expectedRequestUrl,
+            $expectedAlivetestBody,
+            $expectedSearchResultBody
+        );
+
+        $searchRequestBuilder = new SearchRequestBuilder();
+        $searchRequestBuilder
+            ->setQuery('blubbergurken')
+            ->setShopurl('blubbergurken.de')
+            ->setUserip('127.0.0.1')
+            ->setReferer('https://www.google.at/?query=blubbergurken')
+            ->setRevision('1.0.0');
 
         $client = new Client($this->config);
-        $result = $client->send($expectedRequestUrl, true);
 
-        $this->assertSame($expectedBody, $result);
+        /** @var XmlResponse $xmlResponse */
+        $xmlResponse = $client->send($searchRequestBuilder);
+
+        // Local response time should be fast since the data will not be sent to another server, but instead it
+        // will be directly read from the ram.
+        $this->assertEquals(0, $xmlResponse->getResponseTime(), '', 0.01);
     }
 
     public function badAliveTestBodies()
@@ -131,13 +218,30 @@ class ClientTest extends TestBase
      */
     public function testExceptionIsThrownIfAliveTestBodyIsSomethingElseThenAlive($expectedBody)
     {
-        $expectedRequestUrl = 'https://secure.blubbergurken.io/alivetest.php';
+        $requestParams = http_build_query([
+            'query' => 'blubbergurken',
+            'shopurl' => 'blubbergurken.de',
+            'userip' => '127.0.0.1',
+            'referer' => 'https://www.google.at/?query=blubbergurken',
+            'revision' => '1.0.0',
+            'shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD',
+        ]);
 
-        $this->setExpectationsForAliveTestRequests($expectedRequestUrl, $expectedBody);
+        $expectedAlivetestUrl = 'https://service.findologic.com/ps/blubbergurken.de/alivetest.php?' . $requestParams;
+
+        $this->setExpectationsForAliveTestRequests($expectedAlivetestUrl, $expectedBody);
+
+        $searchRequestBuilder = new SearchRequestBuilder();
+        $searchRequestBuilder
+            ->setQuery('blubbergurken')
+            ->setShopurl('blubbergurken.de')
+            ->setUserip('127.0.0.1')
+            ->setReferer('https://www.google.at/?query=blubbergurken')
+            ->setRevision('1.0.0');
 
         $client = new Client($this->config);
         try {
-            $client->send($expectedRequestUrl, true);
+            $client->send($searchRequestBuilder);
             $this->fail('An exception should be thrown if the alivetest returns something else then "alive"');
         } catch (ServiceNotAliveException $e) {
             $this->assertEquals(sprintf(
@@ -147,50 +251,39 @@ class ClientTest extends TestBase
         }
     }
 
-    public function testWhenDoingAnAliveTestTheResponseTimeIsNull()
-    {
-        $expectedRequestUrl = 'https://secure.blubbergurken.io/alivetest.php';
-        $expectedBody = 'alive';
-
-        $this->setExpectationsForAliveTestRequests($expectedRequestUrl, $expectedBody);
-
-        $client = new Client($this->config);
-        $client->send($expectedRequestUrl, true);
-
-        $this->assertSame(null, $client->getResponseTime());
-    }
-
-    public function testWhenDoingARequestTheResponseTimeShouldBeSet()
-    {
-        $expectedRequestUrl = 'https://secure.blubbergurken.io/autocomplete.php?query=wut&shopkey=something';
-        $expectedBody = '[]';
-
-        $this->setExpectationsForRequests($expectedRequestUrl, $expectedBody);
-
-        $client = new Client($this->config);
-        $client->send($expectedRequestUrl);
-
-        // Local response time should be fast since the data will not be sent to another server, but instead it
-        // will be directly read from the ram.
-        $this->assertEquals(0, $client->getResponseTime(), '', 0.01);
-    }
-
     public function testWhenGuzzleFailsWillThrowAnException()
     {
+        $requestParams = http_build_query([
+            'query' => 'blubbergurken',
+            'shopurl' => 'blubbergurken.de',
+            'userip' => '127.0.0.1',
+            'referer' => 'https://www.google.at/?query=blubbergurken',
+            'revision' => '1.0.0',
+            'shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD',
+        ]);
+
+        $expectedAlivetestUrl = 'https://service.findologic.com/ps/blubbergurken.de/alivetest.php?' . $requestParams;
+
         $expectedExceptionMessage = 'Guzzle is dying. Maybe it can be saved with a heart massage.';
-        $expectedRequestUrl = 'https://secure.blubbergurken.io/autocomplete.php?query=wut&shopkey=something';
 
         $this->httpClientMock->method('request')
-            ->with('GET', $expectedRequestUrl, ['connect_timeout' => 3.0])
+            ->with('GET', $expectedAlivetestUrl, ['connect_timeout' => 1.0])
             ->willThrowException(new RequestException(
                 $expectedExceptionMessage,
-                new Request('GET', $expectedRequestUrl)
+                new Request('GET', $expectedAlivetestUrl)
             ));
 
-        $client = new Client($this->config);
+        $searchRequestBuilder = new SearchRequestBuilder();
+        $searchRequestBuilder
+            ->setQuery('blubbergurken')
+            ->setShopurl('blubbergurken.de')
+            ->setUserip('127.0.0.1')
+            ->setReferer('https://www.google.at/?query=blubbergurken')
+            ->setRevision('1.0.0');
 
+        $client = new Client($this->config);
         try {
-            $client->send($expectedRequestUrl);
+            $client->send($searchRequestBuilder);
             $this->fail('If Guzzle throws an exception it should be caught by us and thrown that something is wrong.');
         } catch (ServiceNotAliveException $e) {
             $this->assertEquals(sprintf(

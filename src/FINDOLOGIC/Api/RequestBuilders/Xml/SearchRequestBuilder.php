@@ -11,22 +11,9 @@ class SearchRequestBuilder extends XmlRequestBuilder
 {
     protected $endpoint = Endpoint::SEARCH;
 
-    public function __construct(Config $config)
+    public function __construct()
     {
-        parent::__construct($config);
+        parent::__construct();
         $this->addRequiredParam(QueryParameter::QUERY);
-    }
-
-    /**
-     * @inheritdoc
-     * @return XmlResponse
-     */
-    public function sendRequest()
-    {
-        $this->checkRequiredParamsAreSet();
-        $this->sendAlivetestRequest();
-
-        $responseContent = $this->client->send($this->buildRequestUrl());
-        return new XmlResponse($responseContent, $this->client->getResponseTime());
     }
 }

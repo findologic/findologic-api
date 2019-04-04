@@ -27,6 +27,10 @@ class SuggestResponse extends Response
         foreach ($suggestions as $suggestion) {
             $this->suggestions[] = new Suggestion($suggestion);
         }
+
+        if (count($suggestions) < 1) {
+            $this->suggestions = [];
+        }
     }
 
     /**
