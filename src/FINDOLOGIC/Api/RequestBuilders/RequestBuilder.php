@@ -37,27 +37,6 @@ abstract class RequestBuilder
     }
 
     /**
-     * Builds the request URL based on the set params.
-     *
-     * @param Config $config
-     * @return string
-     */
-    public function buildRequestUrl(Config $config)
-    {
-        $shopUrl = $this->getParam(QueryParameter::SHOP_URL);
-        // If the shopkey was not manually overridden, we take the shopkey from the config.
-        if (!isset($this->getParams()[QueryParameter::SERVICE_ID])) {
-            $this->params['shopkey'] = $config->getServiceId();
-        }
-        $queryParams = http_build_query($this->params);
-        // Removes indexes from query params. E.g. attrib[0] will be attrib[].
-        $fullQueryString = preg_replace('/%5B\d+%5D/', '%5B%5D', $queryParams);
-
-        $apiUrl = sprintf($config->getApiUrl(), $shopUrl, $this->endpoint);
-        return sprintf('%s?%s', $apiUrl, $fullQueryString);
-    }
-
-    /**
      * Gets all currently set params.
      *
      * @return array
@@ -197,14 +176,6 @@ abstract class RequestBuilder
     }
 
     /**
-     * Sends an alivetest request. Returns nothing but will throw an exception if the alivetest is not successful.
-     */
-    protected function sendAlivetestRequest()
-    {
-        $this->client->send($this->buildAlivetestUrl(), true);
-    }
-
-    /**
      * Internal function that adds a certain param to all params array.
      *
      * @param $key string The key or the param name, that identifies the param.
@@ -263,35 +234,5 @@ abstract class RequestBuilder
         if (!$validator->validate()) {
             throw new ParamNotSetException(key($validator->errors()));
         }
-    }
-
-    /**
-     * Builds the alivetest URL.
-     *
-     * @param Config $config
-     * @return string
-     */
-    public function buildAlivetestUrl(Config $config)
-    {
-        $shopUrl = $this->getParam(QueryParameter::SHOP_URL);
-        // If the shopkey was not manually overridden, we take the shopkey from the config.
-        if (!isset($this->getParams()[QueryParameter::SERVICE_ID])) {
-            $this->params['shopkey'] = $config->getServiceId();
-        }
-        $queryString = http_build_query([QueryParameter::SERVICE_ID => $this->getParam(QueryParameter::SERVICE_ID)]);
-
-        $apiUrl = sprintf($config->getApiUrl(), $shopUrl, Endpoint::ALIVETEST);
-        return sprintf('%s?%s', $apiUrl, $queryString);
-    }
-
-    /**
-     * Internal function that is used to get a specific parameter.
-     *
-     * @param string $key
-     * @return mixed
-     */
-    private function getParam($key)
-    {
-        return $this->params[$key];
     }
 }

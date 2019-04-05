@@ -5,6 +5,7 @@ namespace FINDOLOGIC\Api\Tests;
 use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
 use FINDOLOGIC\Api\Client;
 use FINDOLOGIC\Api\Config;
+use FINDOLOGIC\Api\RequestBuilders\AlivetestRequestBuilder;
 use FINDOLOGIC\Api\RequestBuilders\Json\SuggestRequestBuilder;
 use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
 use FINDOLOGIC\Api\ResponseObjects\Json\SuggestResponse;
@@ -291,5 +292,41 @@ class ClientTest extends TestBase
                 $expectedExceptionMessage
             ), $e->getMessage());
         }
+    }
+
+    /**
+     * We are already covered due to our type safety, but you should not be able to make a request with for example
+     * an alivetest request, since that one also extends from the RequestBuilder object.
+     */
+    public function testInvalidParameterBuilderWillThrowAnException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown request builder');
+
+        $requestParams = http_build_query([
+            'shopurl' => 'blubbergurken.de',
+            'shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD',
+        ]);
+
+        $expectedAlivetestUrl = 'https://service.findologic.com/ps/blubbergurken.de/alivetest.php?' . $requestParams;
+
+        $this->httpClientMock->method('request')
+            ->with('GET', $expectedAlivetestUrl, ['connect_timeout' => 1.0])
+            ->willReturnOnConsecutiveCalls($this->responseMock);
+        $this->responseMock->method('getBody')
+            ->with()
+            ->willReturnOnConsecutiveCalls($this->streamMock, $this->streamMock);
+        $this->responseMock->method('getStatusCode')
+            ->with()
+            ->willReturnOnConsecutiveCalls(200);
+        $this->streamMock->method('getContents')
+            ->with()
+            ->willReturnOnConsecutiveCalls('alive');
+
+        $client = new Client($this->config);
+        $alivetestRequest = new AlivetestRequestBuilder();
+        $alivetestRequest->setShopurl('blubbergurken.de');
+
+        $client->send($alivetestRequest);
     }
 }
