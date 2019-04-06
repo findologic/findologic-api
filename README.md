@@ -1,10 +1,10 @@
 # FINDOLOGIC API
 
+> Version v1.0.0-beta.1
+
 [![Travis](https://travis-ci.org/TheKeymaster/findologic-api.svg?branch=master)](https://travis-ci.org/TheKeymaster/findologic-api)
 [![Maintainability](https://api.codeclimate.com/v1/badges/d604675c46586292c20f/maintainability)](https://codeclimate.com/github/TheKeymaster/findologic-api/maintainability)
 [![codecov](https://codecov.io/gh/TheKeymaster/findologic-api/branch/master/graph/badge.svg)](https://codecov.io/gh/TheKeymaster/findologic-api)
-
-**Please note**: This repository is still WIP and therefore either not usable or only partially usable. Use it at your own risk!
 
 ## Synopsis
 
@@ -22,35 +22,47 @@ To have a better understanding about the API, please make sure to read the gener
 ## Installation
 
 For a simple installation you can use [Composer](https://getcomposer.org/).
-Since we are _not yet_ on Packagist you might want to require this library via [Composer VCS](https://getcomposer.org/doc/05-repositories.md#vcs):
+Using this command will install the latest version.
 
-```json
-{
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/TheKeymaster/findologic-api"
-        }
-    ],
-    "require": {
-        "TheKeymaster/findologic-api": "dev-master"
-    }
-}
+```bash
+composer require thekeymaster/findologic-api
 ```
-
-Usually the `master` branch should be pretty stable, but this will change in the future as soon as we have our first real stable version.
 
 ## Basic usage
 
 The usage is pretty simple. Here is an example:
 
 ```php
-// Examples will be added in a future release.
+use FINDOLOGIC\Api\Config;
+use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
+use FINDOLOGIC\Api\Client;
+
+// Require composer autoload
+require_once __DIR__ . '/vendor/autoload.php';
+
+$config = new Config();
+$config->setServiceId('ABCDABCDABCDABCDABCDABCDABCDABCD');
+
+$searchRequest = new SearchRequestBuilder();
+$searchRequest
+    ->setQuery('shirt') // Users search query
+    ->setShopurl('blubbergurken.de') // Url of the shop
+    ->setUserip('127.0.0.1') // Users IP
+    ->setReferer('https://shop.url/AGB') // Page where search was fired
+    ->setRevision('1.0.0'); // Version of your API wrapper
+
+$client = new Client($config); // Client used for requests
+
+/** @var XmlResponse $xmlResponse */
+$xmlResponse = $client->send($searchRequest);
+
+var_dump($xmlResponse->getFilters()); // Get all filters easily
+var_dump($xmlResponse); // Entire response, full of helper methods
 ```
 
 ## Examples
 
-Soon™
+Method calls, return values and examples can be found in our [Project Wiki](https://github.com/TheKeymaster/findologic-api/wiki).
 
 ## Requirements
 
