@@ -604,6 +604,38 @@ class XmlRequestBuilderTest extends TestBase
     }
 
     /**
+     * @dataProvider outputAttribProvider
+     * @param string $expectedOutputAttrib
+     */
+    public function testSetOutputAttribWillSetItInAValidFormat($expectedOutputAttrib)
+    {
+        $expectedParameter = 'outputAttrib';
+
+        $searchRequestBuilder = new SearchRequestBuilder();
+        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+
+        $searchRequestBuilder->addOutputAttrib($expectedOutputAttrib);
+        $params = $searchRequestBuilder->getParams();
+        $this->assertArrayHasKey($expectedParameter, $params);
+        $this->assertEquals(['' => $expectedOutputAttrib], $params[$expectedParameter]);
+    }
+
+    /**
+     * @dataProvider invalidOutputAttribProvider
+     * @param mixed $outputAttrib
+     */
+    public function testInvalidOutputAttribWillThrowAnException($outputAttrib)
+    {
+        $this->expectException(InvalidParamException::class);
+        $this->expectExceptionMessage('Parameter outputAttrib is not valid.');
+
+        $searchRequestBuilder = new SearchRequestBuilder();
+        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+
+        $searchRequestBuilder->addOutputAttrib($outputAttrib);
+    }
+
+    /**
      * @dataProvider groupProvider
      * @param string $expectedGroup
      */
@@ -633,6 +665,47 @@ class XmlRequestBuilderTest extends TestBase
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
         $searchRequestBuilder->addGroup($invalidGroup);
+    }
+
+    /**
+     * @dataProvider attributeProvider
+     * @param string $expectedAttributeName
+     * @param string $expectedAttributeValue
+     */
+    public function testSetSelectedWillSetItInAValidFormat(
+        $expectedAttributeName,
+        $expectedAttributeValue
+    ) {
+        $expectedParameter = 'selected';
+
+        $searchRequestBuilder = new NavigationRequestBuilder();
+        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+
+        $searchRequestBuilder->setSelected($expectedAttributeName, $expectedAttributeValue);
+        $params = $searchRequestBuilder->getParams();
+        $this->assertArrayHasKey($expectedParameter, $params);
+        $this->assertEquals(
+            [$expectedAttributeName => ['' => $expectedAttributeValue]],
+            $params[$expectedParameter]
+        );
+    }
+
+    /**
+     * @dataProvider invalidSelectedProvider
+     * @param mixed $expectedAttributeName
+     * @param mixed $expectedAttributeValue
+     */
+    public function testInvalidSelectedWillThrowAnException(
+        $expectedAttributeName,
+        $expectedAttributeValue
+    ) {
+        $this->expectException(InvalidParamException::class);
+        $this->expectExceptionMessage('Parameter selected is not valid.');
+
+        $searchRequestBuilder = new NavigationRequestBuilder();
+        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+
+        $searchRequestBuilder->setSelected($expectedAttributeName, $expectedAttributeValue);
     }
 
     public function testSetForceOriginalQueryWillSetItInAValidFormat()

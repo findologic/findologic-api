@@ -19,7 +19,9 @@ class QueryParameter
         FIRST = 'first',
         IDENTIFIER = 'identifier',
         GROUP = 'group',
-        FORCE_ORIGINAL_QUERY = 'forceOriginalQuery';
+        FORCE_ORIGINAL_QUERY = 'forceOriginalQuery',
+        OUTPUT_ATTRIB = 'outputAttrib',
+        SELECTED = 'selected';
 
     private static $list = [
         self::SERVICE_ID,
@@ -37,6 +39,8 @@ class QueryParameter
         self::IDENTIFIER,
         self::GROUP,
         self::FORCE_ORIGINAL_QUERY,
+        self::OUTPUT_ATTRIB,
+        self::SELECTED,
     ];
 
     /**

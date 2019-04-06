@@ -208,7 +208,7 @@ abstract class XmlRequestBuilder extends RequestBuilder
      * param is being ignored by FINDOLOGIC.
      *
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#limiting_paging_parameters
-     * @param $value string ID of the item.
+     * @param string $value ID of the item.
      * @return $this
      */
     public function setIdentifier($value)
@@ -221,6 +221,25 @@ abstract class XmlRequestBuilder extends RequestBuilder
         }
 
         $this->addParam(QueryParameter::IDENTIFIER, $value);
+        return $this;
+    }
+
+    /**
+     * Adds the pushAttrib param. Name of the attributes which may be available in the template.
+     *
+     * @param string $value Parameter that should be available in the template.
+     * @return $this
+     */
+    public function addOutputAttrib($value)
+    {
+        $validator = new ParameterValidator([QueryParameter::OUTPUT_ATTRIB => $value]);
+        $validator->rule('string', QueryParameter::OUTPUT_ATTRIB);
+
+        if (!$validator->validate()) {
+            throw new InvalidParamException(QueryParameter::OUTPUT_ATTRIB);
+        }
+
+        $this->addParam(QueryParameter::OUTPUT_ATTRIB, ['' => $value], self::ADD_VALUE);
         return $this;
     }
 

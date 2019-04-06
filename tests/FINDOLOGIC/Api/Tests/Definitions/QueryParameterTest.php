@@ -25,6 +25,8 @@ class QueryParameterTest extends TestBase
             'identifier',
             'group',
             'forceOriginalQuery',
+            'outputAttrib',
+            'selected'
         ];
         $availableQueryParameters = QueryParameter::getList();
 

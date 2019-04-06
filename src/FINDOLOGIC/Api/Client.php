@@ -118,11 +118,9 @@ class Client
             $params['shopkey'] = $this->config->getServiceId();
         }
         $queryParams = http_build_query($params);
-        // Removes indexes from query params. E.g. attrib[0] will be attrib[].
-        $fullQueryString = preg_replace('/%5B\d+%5D/', '%5B%5D', $queryParams);
 
         $apiUrl = sprintf($this->config->getApiUrl(), $shopUrl, $requestBuilder->getEndpoint());
-        return sprintf('%s?%s', $apiUrl, $fullQueryString);
+        return sprintf('%s?%s', $apiUrl, $queryParams);
     }
 
     /**

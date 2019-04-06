@@ -202,6 +202,26 @@ trait XmlRequestDataProvider
         ];
     }
 
+    public function selectedProvider()
+    {
+        return [
+            'normal attribute' => ['vendor', 'TomTailor'],
+            'other attribute' => ['Material', 'Leather'],
+            'more different attribute' => ['cat', 'Damen']
+        ];
+    }
+
+    public function invalidSelectedProvider()
+    {
+        return [
+            'selected name is an array' => [['price'], '50'],
+            'selected value is an array' => ['price', ['50']],
+            'selected name is an integer' => [5, '50'],
+            'selected name is an object' => [new \stdClass(), '50'],
+            'selected value is an object' => ['price', new \stdClass()],
+        ];
+    }
+
     public function orderProvider()
     {
         return [
@@ -313,6 +333,24 @@ trait XmlRequestDataProvider
             'normal identifier' => ['15356'],
             'other identifier' => ['a23fv'],
             'more different identifier' => ['019111105-37900']
+        ];
+    }
+
+    public function outputAttribProvider()
+    {
+        return [
+            'normal outputAttrib' => ['revenue'],
+            'other outputAttrib' => ['someAdditionalData'],
+            'more different outputAttrib' => ['AndSomethingElseThatCouldBeInteresting']
+        ];
+    }
+
+    public function invalidOutputAttribProvider()
+    {
+        return [
+            'outputAttrib is an integer' => [561],
+            'outputAttrib is an array' => [['outputAttribBest']],
+            'outputAttrib is an object' => [new \stdClass()],
         ];
     }
 
