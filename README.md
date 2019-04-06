@@ -33,15 +33,19 @@ composer require thekeymaster/findologic-api
 The usage is pretty simple. Here is an example:
 
 ```php
+// Require composer autoload
+require_once __DIR__ . '/vendor/autoload.php';
+
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
 use FINDOLOGIC\Api\Client;
 
-// Require composer autoload
-require_once __DIR__ . '/vendor/autoload.php';
-
 $config = new Config();
+// ServiceId/Shopkey, you can find it in the customer account.
 $config->setServiceId('ABCDABCDABCDABCDABCDABCDABCDABCD');
+
+// Client used for requests
+$client = new Client($config);
 
 $searchRequest = new SearchRequestBuilder();
 $searchRequest
@@ -50,8 +54,6 @@ $searchRequest
     ->setUserip('127.0.0.1') // Users IP
     ->setReferer('https://shop.url/AGB') // Page where search was fired
     ->setRevision('1.0.0'); // Version of your API wrapper
-
-$client = new Client($config); // Client used for requests
 
 /** @var XmlResponse $xmlResponse */
 $xmlResponse = $client->send($searchRequest);
