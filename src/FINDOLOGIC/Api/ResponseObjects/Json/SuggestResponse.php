@@ -14,7 +14,7 @@ use FINDOLOGIC\Api\ResponseObjects\Response;
 class SuggestResponse extends Response
 {
     /** @var Suggestion[] $suggestions */
-    private $suggestions;
+    private $suggestions = [];
 
     /**
      * @inheritdoc
@@ -26,10 +26,6 @@ class SuggestResponse extends Response
 
         foreach ($suggestions as $suggestion) {
             $this->suggestions[] = new Suggestion($suggestion);
-        }
-
-        if (count($suggestions) < 1) {
-            $this->suggestions = [];
         }
     }
 

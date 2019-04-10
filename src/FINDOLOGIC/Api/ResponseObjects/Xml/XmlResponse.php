@@ -42,8 +42,8 @@ class XmlResponse extends Response
     /** @var bool $hasFilters */
     private $hasFilters = false;
 
-    /** @var int $filterAmount */
-    private $filterAmount = 0;
+    /** @var int $filterCount */
+    private $filterCount = 0;
 
     /**
      * @inheritdoc
@@ -71,7 +71,7 @@ class XmlResponse extends Response
             // Set filter names as keys for the filters.
             $this->filters[$filterName] = new Filter($filter);
             $this->hasFilters = true;
-            $this->filterAmount++;
+            $this->filterCount++;
         }
     }
 
@@ -174,6 +174,6 @@ class XmlResponse extends Response
      */
     public function getFilterCount()
     {
-        return $this->filterAmount;
+        return $this->filterCount;
     }
 }

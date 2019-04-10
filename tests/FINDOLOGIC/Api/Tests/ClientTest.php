@@ -12,6 +12,7 @@ use FINDOLOGIC\Api\ResponseObjects\Json\SuggestResponse;
 use FINDOLOGIC\Api\ResponseObjects\Xml\XmlResponse;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
+use InvalidArgumentException;
 
 class ClientTest extends TestBase
 {
@@ -219,6 +220,9 @@ class ClientTest extends TestBase
      */
     public function testExceptionIsThrownIfAliveTestBodyIsSomethingElseThenAlive($expectedBody)
     {
+        $this->expectException(ServiceNotAliveException::class);
+        $this->expectExceptionMessage(sprintf('The service is not alive. Reason: %s', $expectedBody));
+
         $requestParams = http_build_query([
             'query' => 'blubbergurken',
             'shopurl' => 'blubbergurken.de',
@@ -241,19 +245,15 @@ class ClientTest extends TestBase
             ->setRevision('1.0.0');
 
         $client = new Client($this->config);
-        try {
-            $client->send($searchRequestBuilder);
-            $this->fail('An exception should be thrown if the alivetest returns something else then "alive"');
-        } catch (ServiceNotAliveException $e) {
-            $this->assertEquals(sprintf(
-                'The service is not alive. Reason: %s',
-                $expectedBody
-            ), $e->getMessage());
-        }
+        $client->send($searchRequestBuilder);
     }
 
     public function testWhenGuzzleFailsWillThrowAnException()
     {
+        $expectedExceptionMessage = 'Guzzle is dying. Maybe it can be saved with a heart massage.';
+        $this->expectException(ServiceNotAliveException::class);
+        $this->expectExceptionMessage($expectedExceptionMessage);
+
         $requestParams = http_build_query([
             'query' => 'blubbergurken',
             'shopurl' => 'blubbergurken.de',
@@ -264,8 +264,6 @@ class ClientTest extends TestBase
         ]);
 
         $expectedAlivetestUrl = 'https://service.findologic.com/ps/blubbergurken.de/alivetest.php?' . $requestParams;
-
-        $expectedExceptionMessage = 'Guzzle is dying. Maybe it can be saved with a heart massage.';
 
         $this->httpClientMock->method('request')
             ->with('GET', $expectedAlivetestUrl, ['connect_timeout' => 1.0])
@@ -283,15 +281,7 @@ class ClientTest extends TestBase
             ->setRevision('1.0.0');
 
         $client = new Client($this->config);
-        try {
-            $client->send($searchRequestBuilder);
-            $this->fail('If Guzzle throws an exception it should be caught by us and thrown that something is wrong.');
-        } catch (ServiceNotAliveException $e) {
-            $this->assertEquals(sprintf(
-                'The service is not alive. Reason: %s',
-                $expectedExceptionMessage
-            ), $e->getMessage());
-        }
+        $client->send($searchRequestBuilder);
     }
 
     /**
@@ -300,7 +290,7 @@ class ClientTest extends TestBase
      */
     public function testInvalidParameterBuilderWillThrowAnException()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown request builder');
 
         $requestParams = http_build_query([
