@@ -34,10 +34,10 @@ class XmlResponse extends Response
     private $results;
 
     /** @var Product[] $products */
-    private $products;
+    private $products = [];
 
     /** @var Filter[] $filters */
-    private $filters;
+    private $filters = [];
 
     /** @var bool $hasFilters */
     private $hasFilters = false;

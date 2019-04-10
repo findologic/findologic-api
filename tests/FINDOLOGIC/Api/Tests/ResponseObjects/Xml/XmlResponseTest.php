@@ -33,6 +33,7 @@ class XmlResponseTest extends TestCase
 
     public function testResponseWillReturnQueryAsExpected()
     {
+        $expectedAlternativeQuery = 'ps4';
         $expectedDidYouMeanQuery = 'ps4';
         $expectedSearchWordCount = 1;
         $expectedFoundWordsCount = 1;
@@ -42,6 +43,14 @@ class XmlResponseTest extends TestCase
         $this->assertSame($expectedDidYouMeanQuery, $response->getQuery()->getDidYouMeanQuery());
         $this->assertSame($expectedSearchWordCount, $response->getQuery()->getSearchedWordCount());
         $this->assertSame($expectedFoundWordsCount, $response->getQuery()->getFoundWordsCount());
+        $this->assertSame($expectedAlternativeQuery, $response->getQuery()->getAlternativeQuery());
+    }
+
+    public function testResponseWillReturnAlternativeQueryAsExpectedIfDidYouMeanQueryIsNotSet()
+    {
+        $expectedAlternativeQuery = 'ps3';
+        $response = $this->getRealResponseData('demoResponseWithoutDidYouMean.xml');
+        $this->assertSame($expectedAlternativeQuery, $response->getQuery()->getAlternativeQuery());
     }
 
     public function testResponseWillReturnLimitAsExpected()
