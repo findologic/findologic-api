@@ -115,7 +115,7 @@ class SuggestionRequestBuilderTest extends TestBase
      * @dataProvider invalidAutocompleteBlocksProvider
      * @param mixed $invalidAutocompleteblock
      */
-    public function testInvalidShopurlWillThrowAnException($invalidAutocompleteblock)
+    public function testInvalidAutocompleteBlocksWillThrowAnException($invalidAutocompleteblock)
     {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter autocompleteblocks is not valid.');
@@ -147,7 +147,7 @@ class SuggestionRequestBuilderTest extends TestBase
      * @dataProvider invalidUsergroupProvider
      * @param mixed $invalidUsergroup
      */
-    public function testInvalidUsergroupHashlWillThrowAnException($invalidUsergroup)
+    public function testInvalidUsergroupHashWillThrowAnException($invalidUsergroup)
     {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter usergrouphash is not valid.');

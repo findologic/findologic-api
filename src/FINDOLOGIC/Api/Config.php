@@ -24,13 +24,13 @@ class Config
     private $serviceId;
 
     /** @var string */
-    private $apiUrl;
+    private $apiUrl = self::DEFAULT_TEMPLATE_API_URL;
 
     /** @var float */
-    private $alivetestTimeout;
+    private $alivetestTimeout = self::DEFAULT_ALIVETEST_TIMEOUT;
 
     /** @var float */
-    private $requestTimeout;
+    private $requestTimeout = self::DEFAULT_REQUEST_TIMEOUT;
 
     /** @var Client */
     private $httpClient;
@@ -71,10 +71,6 @@ class Config
      */
     public function getApiUrl()
     {
-        if (!$this->apiUrl) {
-            return self::DEFAULT_TEMPLATE_API_URL;
-        }
-
         return $this->apiUrl;
     }
 
@@ -102,10 +98,6 @@ class Config
      */
     public function getAlivetestTimeout()
     {
-        if (!$this->alivetestTimeout) {
-            return self::DEFAULT_ALIVETEST_TIMEOUT;
-        }
-
         return $this->alivetestTimeout;
     }
 
@@ -133,10 +125,6 @@ class Config
      */
     public function getRequestTimeout()
     {
-        if (!$this->requestTimeout) {
-            return self::DEFAULT_REQUEST_TIMEOUT;
-        }
-
         return $this->requestTimeout;
     }
 
@@ -175,12 +163,10 @@ class Config
      * @param Client $httpClient
      * @return $this
      */
-    public function setHttpClient($httpClient)
+    public function setHttpClient(Client $httpClient)
     {
         $validator = new ConfigValidator([self::HTTP_CLIENT => $httpClient]);
-        $validator
-            ->rule('required', self::HTTP_CLIENT)
-            ->rule('httpClient', self::HTTP_CLIENT);
+        $validator->rule('required', self::HTTP_CLIENT);
 
         if (!$validator->validate()) {
             throw new ConfigException(self::HTTP_CLIENT);

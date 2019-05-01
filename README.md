@@ -50,8 +50,8 @@ $client = new Client($config);
 $searchRequest = new SearchRequestBuilder();
 $searchRequest
     ->setQuery('shirt') // Users search query
-    ->setShopurl('blubbergurken.de') // Url of the shop
-    ->setUserip('127.0.0.1') // Users IP
+    ->setShopUrl('blubbergurken.de') // Url of the shop
+    ->setUserIp('127.0.0.1') // Users IP
     ->setReferer('https://shop.url/AGB') // Page where search was fired
     ->setRevision('1.0.0'); // Version of your API wrapper
 

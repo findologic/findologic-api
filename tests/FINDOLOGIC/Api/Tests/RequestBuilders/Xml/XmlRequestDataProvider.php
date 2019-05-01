@@ -12,8 +12,8 @@ trait XmlRequestDataProvider
     protected function setRequiredParamsForXmlRequestBuilder(XmlRequestBuilder $xmlRequestBuilder)
     {
         $xmlRequestBuilder
-            ->setShopurl('blubbergurken.io')
-            ->setUserip('127.0.0.1')
+            ->setShopUrl('blubbergurken.io')
+            ->setUserIp('127.0.0.1')
             ->setReferer('https://blubbergurken.io/blubbergurken-sale/')
             ->setRevision('2.5.10');
     }

@@ -36,7 +36,7 @@ class ClientTest extends TestBase
         $this->requestBuilder = new SuggestRequestBuilder();
 
         $this->requestBuilder
-            ->setShopurl('blubbergurken.de')
+            ->setShopUrl('blubbergurken.de')
             ->setQuery('blubbergurken');
     }
 
@@ -182,8 +182,8 @@ class ClientTest extends TestBase
         $searchRequestBuilder = new SearchRequestBuilder();
         $searchRequestBuilder
             ->setQuery('blubbergurken')
-            ->setShopurl('blubbergurken.de')
-            ->setUserip('127.0.0.1')
+            ->setShopUrl('blubbergurken.de')
+            ->setUserIp('127.0.0.1')
             ->setReferer('https://www.google.at/?query=blubbergurken')
             ->setRevision('1.0.0');
 
@@ -239,8 +239,8 @@ class ClientTest extends TestBase
         $searchRequestBuilder = new SearchRequestBuilder();
         $searchRequestBuilder
             ->setQuery('blubbergurken')
-            ->setShopurl('blubbergurken.de')
-            ->setUserip('127.0.0.1')
+            ->setShopUrl('blubbergurken.de')
+            ->setUserIp('127.0.0.1')
             ->setReferer('https://www.google.at/?query=blubbergurken')
             ->setRevision('1.0.0');
 
@@ -275,8 +275,8 @@ class ClientTest extends TestBase
         $searchRequestBuilder = new SearchRequestBuilder();
         $searchRequestBuilder
             ->setQuery('blubbergurken')
-            ->setShopurl('blubbergurken.de')
-            ->setUserip('127.0.0.1')
+            ->setShopUrl('blubbergurken.de')
+            ->setUserIp('127.0.0.1')
             ->setReferer('https://www.google.at/?query=blubbergurken')
             ->setRevision('1.0.0');
 
@@ -315,7 +315,7 @@ class ClientTest extends TestBase
 
         $client = new Client($this->config);
         $alivetestRequest = new AlivetestRequestBuilder();
-        $alivetestRequest->setShopurl('blubbergurken.de');
+        $alivetestRequest->setShopUrl('blubbergurken.de');
 
         $client->send($alivetestRequest);
     }

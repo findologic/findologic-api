@@ -74,7 +74,7 @@ abstract class RequestBuilder
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#required_parameters
      * @return $this
      */
-    public function setShopurl($value)
+    public function setShopUrl($value)
     {
         $shopUrlRegex = '/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&\'\(\)\*\+,;=.]+$/';
         if (!is_string($value) ||!preg_match($shopUrlRegex, $value)) {

@@ -29,7 +29,7 @@ abstract class XmlRequestBuilder extends RequestBuilder
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#required_parameters
      * @return $this
      */
-    public function setUserip($value)
+    public function setUserIp($value)
     {
         $validator = new ParameterValidator([QueryParameter::USER_IP => $value]);
         $validator->rule('ip', QueryParameter::USER_IP);

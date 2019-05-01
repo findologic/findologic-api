@@ -8,7 +8,7 @@ trait SuggestionDataProvider
 {
     public function setRequiredParamsForSuggestionRequestBuilder(SuggestRequestBuilder $suggestionRequestBuilder)
     {
-        $suggestionRequestBuilder->setShopurl('www.blubbergurken.io');
+        $suggestionRequestBuilder->setShopUrl('www.blubbergurken.io');
     }
 
     public function queryProvider()
