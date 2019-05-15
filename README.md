@@ -52,7 +52,7 @@ $searchRequest
     ->setQuery('shirt') // Users search query
     ->setShopUrl('blubbergurken.de') // Url of the shop
     ->setUserIp('127.0.0.1') // Users IP
-    ->setReferer('https://shop.url/AGB') // Page where search was fired
+    ->setReferer($_SERVER['HTTP_REFERER']) // Page where search was fired
     ->setRevision('1.0.0'); // Version of your API wrapper
 
 /** @var XmlResponse $xmlResponse */

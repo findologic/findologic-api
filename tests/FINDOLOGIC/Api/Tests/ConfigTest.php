@@ -5,6 +5,7 @@ namespace FINDOLOGIC\Api\Tests;
 use FINDOLOGIC\Api\Exceptions\ConfigException;
 use FINDOLOGIC\Api\Config;
 use GuzzleHttp\Client;
+use TypeError;
 
 class ConfigTest extends TestBase
 {
@@ -48,8 +49,6 @@ class ConfigTest extends TestBase
     public function invalidConfigProvider()
     {
         return [
-            'apiUrl as object' => [['apiUrl' => new \stdClass()]],
-            'apiUrl as integer' => [['apiUrl' => 46]],
             'httpClient as some object' => [['httpClient' => new \stdClass()]],
             'httpClient as integer' => [['httpClient' => 46]],
             'alivetest timeout as object' => [['alivetestTimeout' => new \stdClass()]],
@@ -91,13 +90,15 @@ class ConfigTest extends TestBase
             $this->fail('An invalid Config should throw an exception!');
         } catch (ConfigException $e) {
             $this->assertStringStartsWith('Config parameter', $e->getMessage());
+        } catch (TypeError $e) {
+            $this->assertStringStartsWith('Argument 1 passed to', $e->getMessage());
         }
     }
 
     public function testGetShopkeyWillThrowAnExceptionIfItWasNotSetBefore()
     {
         $this->expectException(ConfigException::class);
-        $this->expectExceptionMessage('Required parameter "shopkey" was not set');
+        $this->expectExceptionMessage('Required parameter "serviceId" was not set');
 
         $config = new Config();
         $config->getServiceId();
