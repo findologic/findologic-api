@@ -6,6 +6,7 @@ use Exception;
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Exceptions\ConfigException;
 use GuzzleHttp\Client;
+use TypeError;
 
 class ConfigTest extends TestBase
 {
@@ -79,7 +80,9 @@ class ConfigTest extends TestBase
             $this->fail('An invalid Config should throw an exception!');
         } catch (ConfigException $e) {
             $this->assertStringStartsWith('Config parameter', $e->getMessage());
-        } catch (Exception $e) { // Make sure type errors are caught as well.
+        } catch (TypeError $e) { // Make sure type errors are caught as well (PHP 7+).
+            $this->assertStringStartsWith('Argument 1 passed to', $e->getMessage());
+        } catch (Exception $e) { // Make sure type errors are caught as well (PHP 5.6).
             $this->assertStringStartsWith('Argument 1 passed to', $e->getMessage());
         }
     }
