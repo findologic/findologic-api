@@ -10,11 +10,11 @@ class SuggestQueryParameterTest extends TestBase
     public function testAllSuggestQueryParametersAreAvailable()
     {
         $expectedAvailableSuggestQueryParameters = [
-            'autocompleteblocks',
-            'usergrouphash',
-            'multishop_id',
+            'AUTOCOMPLETEBLOCKS' => 'autocompleteblocks',
+            'USERGROUPHASH' => 'usergrouphash',
+            'MULTISHOP_ID' => 'multishop_id'
         ];
-        $availableSuggestQueryParameters = SuggestQueryParameter::getList();
+        $availableSuggestQueryParameters = SuggestQueryParameter::getConstants();
 
         $this->assertEquals($expectedAvailableSuggestQueryParameters, $availableSuggestQueryParameters);
     }

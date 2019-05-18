@@ -10,14 +10,14 @@ class OrderTypeTest extends TestBase
     public function testAllOrderTypesAreAvailable()
     {
         $expectedAvailableOrderTypes = [
-            'rank',
-            'price ASC',
-            'price DESC',
-            'label ASC',
-            'salesfrequency DESC',
-            'dateadded DESC',
+            'RELEVANCE' => 'rank',
+            'PRICE_ASCENDING' => 'price ASC',
+            'PRICE_DESCENDING' => 'price DESC',
+            'ALPHABETICAL' => 'label ASC',
+            'TOP_SELLERS_FIRST' => 'salesfrequency DESC',
+            'NEWEST_FIRST' => 'dateadded DESC'
         ];
-        $availableOrderTypes = OrderType::getList();
+        $availableOrderTypes = OrderType::getConstants();
 
         $this->assertEquals($expectedAvailableOrderTypes, $availableOrderTypes);
     }

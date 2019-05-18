@@ -2,12 +2,11 @@
 
 namespace FINDOLOGIC\Api\RequestBuilders;
 
-use FINDOLOGIC\Api\Definitions\Endpoint;
+use FINDOLOGIC\Api\Client;
+use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Definitions\QueryParameter;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\Exceptions\ParamNotSetException;
-use FINDOLOGIC\Api\Client;
-use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Validators\ParameterValidator;
 use InvalidArgumentException;
 use Valitron\Validator;
@@ -234,5 +233,26 @@ abstract class RequestBuilder
         if (!$validator->validate()) {
             throw new ParamNotSetException(key($validator->errors()));
         }
+    }
+
+    /**
+     * Builds the request URL based on the set params.
+     *
+     * @param Config $config
+     * @return string
+     */
+    public function buildRequestUrl(Config $config)
+    {
+        $params = $this->getParams();
+
+        $shopUrl = $params[QueryParameter::SHOP_URL];
+        // If the shopkey was not manually overridden, we take the shopkey from the config.
+        if (!isset($params[QueryParameter::SERVICE_ID])) {
+            $params['shopkey'] = $config->getServiceId();
+        }
+        $queryParams = http_build_query($params);
+
+        $apiUrl = sprintf($config->getApiUrl(), $shopUrl, $this->getEndpoint());
+        return sprintf('%s?%s', $apiUrl, $queryParams);
     }
 }

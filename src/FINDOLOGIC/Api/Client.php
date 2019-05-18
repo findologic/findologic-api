@@ -2,24 +2,18 @@
 
 namespace FINDOLOGIC\Api;
 
-use FINDOLOGIC\Api\Definitions\QueryParameter;
 use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
 use FINDOLOGIC\Api\RequestBuilders\AlivetestRequestBuilder;
-use FINDOLOGIC\Api\RequestBuilders\Json\SuggestRequestBuilder;
 use FINDOLOGIC\Api\RequestBuilders\RequestBuilder;
-use FINDOLOGIC\Api\RequestBuilders\Xml\NavigationRequestBuilder;
-use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
-use FINDOLOGIC\Api\ResponseObjects\Json\SuggestResponse;
-use FINDOLOGIC\Api\ResponseObjects\Xml\XmlResponse;
+use FINDOLOGIC\Api\RequestBuilders\Xml20\NavigationRequestBuilder;
+use FINDOLOGIC\Api\RequestBuilders\Xml20\SearchRequestBuilder;
+use FINDOLOGIC\Api\ResponseObjects\Response;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Psr7\Response;
-use InvalidArgumentException;
+use GuzzleHttp\Psr7\Response as GuzzleResponse;
 
 class Client
 {
     const METHOD_GET = 'GET';
-    const STATUS_OK = 200;
-    const SERVICE_ALIVE_BODY = 'alive';
 
     /** @var Config */
     private $config;
@@ -33,33 +27,23 @@ class Client
      * Sends a request to FINDOLOGIC. An alivetest may be sent if the request is a search or a navigation request.
      *
      * @param RequestBuilder $requestBuilder
-     * @return SuggestResponse|XmlResponse
+     * @return Response
      */
     public function send(RequestBuilder $requestBuilder)
     {
         $requestBuilder->checkRequiredParamsAreSet();
-        $this->doAlivetest($requestBuilder);
+        $alivetestResponse = $this->doAlivetest($requestBuilder);
 
         $requestStart = microtime(true);
         $response = $this->sendRequest($requestBuilder);
         $responseTime = microtime(true) - $requestStart;
 
-        $this->checkResponseIsValid($response);
-
-        switch (get_class($requestBuilder)) {
-            case SearchRequestBuilder::class:
-            case NavigationRequestBuilder::class:
-                return new XmlResponse($response->getBody()->getContents(), $responseTime);
-            case SuggestRequestBuilder::class:
-                return new SuggestResponse($response->getBody()->getContents(), $responseTime);
-            default:
-                throw new InvalidArgumentException('Unknown request builder');
-        }
+        return Response::getInstance($requestBuilder, $response, $alivetestResponse, $responseTime);
     }
 
     /**
      * @param RequestBuilder $requestBuilder
-     * @return Response
+     * @return GuzzleResponse
      * @throws ServiceNotAliveException If the request was not successful.
      */
     private function sendRequest(RequestBuilder $requestBuilder)
@@ -72,7 +56,7 @@ class Client
         try {
             return $this->config->getHttpClient()->request(
                 self::METHOD_GET,
-                $this->buildRequestUrl($requestBuilder),
+                $requestBuilder->buildRequestUrl($this->config),
                 ['connect_timeout' => $requestTimeout]
             );
         } catch (GuzzleException $e) {
@@ -85,6 +69,7 @@ class Client
      * search or a navigation request.
      *
      * @param RequestBuilder $requestBuilder
+     * @return GuzzleResponse|null
      */
     private function doAlivetest(RequestBuilder $requestBuilder)
     {
@@ -94,56 +79,9 @@ class Client
                 // We need to make sure that the alivetest uses the same parameters as the request itself.
                 $alivetestRequestBuilder = new AlivetestRequestBuilder();
                 $alivetestRequestBuilder->setParams($requestBuilder->getParams());
-                $response = $this->sendRequest($alivetestRequestBuilder);
-                $this->checkAlivetestBody($response);
-                break;
+                return $this->sendRequest($alivetestRequestBuilder);
             default:
-                break;
-        }
-    }
-
-    /**
-     * Builds the request URL based on the set params.
-     *
-     * @param RequestBuilder $requestBuilder
-     * @return string
-     */
-    private function buildRequestUrl(RequestBuilder $requestBuilder)
-    {
-        $params = $requestBuilder->getParams();
-
-        $shopUrl = $params[QueryParameter::SHOP_URL];
-        // If the shopkey was not manually overridden, we take the shopkey from the config.
-        if (!isset($params[QueryParameter::SERVICE_ID])) {
-            $params['shopkey'] = $this->config->getServiceId();
-        }
-        $queryParams = http_build_query($params);
-
-        $apiUrl = sprintf($this->config->getApiUrl(), $shopUrl, $requestBuilder->getEndpoint());
-        return sprintf('%s?%s', $apiUrl, $queryParams);
-    }
-
-    /**
-     * Checks if the response is valid. If not, an exception will be thrown.
-     *
-     * @param Response $response
-     */
-    private function checkResponseIsValid($response)
-    {
-        $statusCode = $response->getStatusCode();
-        if ($statusCode !== self::STATUS_OK) {
-            throw new ServiceNotAliveException(sprintf('Unexpected status code %s.', $statusCode));
-        }
-    }
-
-    /**
-     * @param Response $response
-     */
-    private function checkAlivetestBody($response)
-    {
-        $alivetestContents = $response->getBody()->getContents();
-        if ($alivetestContents !== self::SERVICE_ALIVE_BODY) {
-            throw new ServiceNotAliveException($alivetestContents);
+                return null;
         }
     }
 }

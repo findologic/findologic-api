@@ -2,7 +2,7 @@
 
 namespace FINDOLOGIC\Api\Tests\RequestBuilders\Xml;
 
-use FINDOLOGIC\Api\RequestBuilders\Xml\XmlRequestBuilder;
+use FINDOLOGIC\Api\RequestBuilders\Xml20\XmlRequestBuilder;
 
 /**
  * This trait holds data providers and helper functions for search and navigation requests.

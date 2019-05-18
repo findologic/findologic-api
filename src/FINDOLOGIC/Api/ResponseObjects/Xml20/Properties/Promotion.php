@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC\Api\ResponseObjects\Xml\Properties;
+namespace FINDOLOGIC\Api\ResponseObjects\Xml20\Properties;
 
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use SimpleXMLElement;

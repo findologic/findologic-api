@@ -1,8 +1,8 @@
 <?php
 
-namespace FINDOLOGIC\Api\ResponseObjects\Json;
+namespace FINDOLOGIC\Api\ResponseObjects\Autocomplete;
 
-use FINDOLOGIC\Api\ResponseObjects\Json\Properties\Suggestion;
+use FINDOLOGIC\Api\ResponseObjects\Autocomplete\Properties\Suggestion;
 use FINDOLOGIC\Api\ResponseObjects\Response;
 
 /**

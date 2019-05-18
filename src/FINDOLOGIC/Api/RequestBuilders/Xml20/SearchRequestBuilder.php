@@ -1,11 +1,9 @@
 <?php
 
-namespace FINDOLOGIC\Api\RequestBuilders\Xml;
+namespace FINDOLOGIC\Api\RequestBuilders\Xml20;
 
-use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Definitions\Endpoint;
 use FINDOLOGIC\Api\Definitions\QueryParameter;
-use FINDOLOGIC\Api\ResponseObjects\Xml\XmlResponse;
 
 class SearchRequestBuilder extends XmlRequestBuilder
 {

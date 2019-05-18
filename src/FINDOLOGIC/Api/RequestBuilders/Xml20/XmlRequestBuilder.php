@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC\Api\RequestBuilders\Xml;
+namespace FINDOLOGIC\Api\RequestBuilders\Xml20;
 
 use FINDOLOGIC\Api\Definitions\QueryParameter;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;

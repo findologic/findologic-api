@@ -2,7 +2,7 @@
 
 namespace FINDOLOGIC\Api\Tests\RequestBuilders\Json;
 
-use FINDOLOGIC\Api\RequestBuilders\Json\SuggestRequestBuilder;
+use FINDOLOGIC\Api\RequestBuilders\Autocomplete\SuggestRequestBuilder;
 
 trait SuggestionDataProvider
 {

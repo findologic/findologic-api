@@ -1,14 +1,12 @@
 <?php
 
-namespace FINDOLOGIC\Api\RequestBuilders\Json;
+namespace FINDOLOGIC\Api\RequestBuilders\Autocomplete;
 
-use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Definitions\Endpoint;
 use FINDOLOGIC\Api\Definitions\QueryParameter;
 use FINDOLOGIC\Api\Definitions\SuggestQueryParameter;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\RequestBuilders\RequestBuilder;
-use FINDOLOGIC\Api\ResponseObjects\Json\SuggestResponse;
 use FINDOLOGIC\Api\Validators\ParameterValidator;
 
 class SuggestRequestBuilder extends RequestBuilder

@@ -10,25 +10,25 @@ class QueryParameterTest extends TestBase
     public function testAllQueryParametersAreAvailable()
     {
         $expectedAvailableQueryParameters = [
-            'shopkey',
-            'shopurl',
-            'userip',
-            'referer',
-            'revision',
-            'query',
-            'attrib',
-            'order',
-            'properties',
-            'pushAttrib',
-            'count',
-            'first',
-            'identifier',
-            'group',
-            'forceOriginalQuery',
-            'outputAttrib',
-            'selected'
+            'SERVICE_ID' => 'shopkey',
+            'SHOP_URL' => 'shopurl',
+            'USER_IP' => 'userip',
+            'REFERER' => 'referer',
+            'REVISION' => 'revision',
+            'QUERY' => 'query',
+            'ATTRIB' => 'attrib',
+            'ORDER' => 'order',
+            'PROPERTIES' => 'properties',
+            'PUSH_ATTRIB' => 'pushAttrib',
+            'COUNT' => 'count',
+            'FIRST' => 'first',
+            'IDENTIFIER' => 'identifier',
+            'GROUP' => 'group',
+            'FORCE_ORIGINAL_QUERY' => 'forceOriginalQuery',
+            'OUTPUT_ATTRIB' => 'outputAttrib',
+            'SELECTED' => 'selected'
         ];
-        $availableQueryParameters = QueryParameter::getList();
+        $availableQueryParameters = QueryParameter::getConstants();
 
         $this->assertEquals($expectedAvailableQueryParameters, $availableQueryParameters);
     }

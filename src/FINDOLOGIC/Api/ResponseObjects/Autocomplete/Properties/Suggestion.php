@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC\Api\ResponseObjects\Json\Properties;
+namespace FINDOLOGIC\Api\ResponseObjects\Autocomplete\Properties;
 
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 

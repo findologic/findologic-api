@@ -6,7 +6,7 @@ use FINDOLOGIC\Api\Client;
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\Exceptions\ParamNotSetException;
-use FINDOLOGIC\Api\RequestBuilders\Json\SuggestRequestBuilder;
+use FINDOLOGIC\Api\RequestBuilders\Autocomplete\SuggestRequestBuilder;
 use FINDOLOGIC\Api\Tests\TestBase;
 
 class SuggestionRequestBuilderTest extends TestBase
@@ -66,7 +66,7 @@ class SuggestionRequestBuilderTest extends TestBase
      * @dataProvider queryProvider
      * @param string $expectedQuery
      */
-    public function testSetQueryWillSetItInAValidFormat($expectedQuery)
+    public function testSetQueryWillBeSetItInAValidFormat($expectedQuery)
     {
         $expectedParameter = 'query';
 
@@ -98,7 +98,7 @@ class SuggestionRequestBuilderTest extends TestBase
      * @dataProvider autocompleteBlocksProvider
      * @param string $autocompleteBlock
      */
-    public function testAddAutocompleteBlocksWillSetItInAValidFormat($autocompleteBlock)
+    public function testAddAutocompleteBlocksWillBeSetItInAValidFormat($autocompleteBlock)
     {
         $expectedParameter = 'autocompleteblocks';
 
@@ -130,7 +130,7 @@ class SuggestionRequestBuilderTest extends TestBase
      * @dataProvider usergroupProvider
      * @param string $usergroup
      */
-    public function testSetUsergroupHashWillSetItInAValidFormat($usergroup)
+    public function testSetUsergroupHashWillBeSetItInAValidFormat($usergroup)
     {
         $expectedParameter = 'usergrouphash';
 
@@ -162,7 +162,7 @@ class SuggestionRequestBuilderTest extends TestBase
      * @dataProvider multishopIdProvider
      * @param string $usergroup
      */
-    public function testSetMultishopIdWillSetItInAValidFormat($usergroup)
+    public function testSetMultishopIdWillBeSetItInAValidFormat($usergroup)
     {
         $expectedParameter = 'multishop_id';
 
