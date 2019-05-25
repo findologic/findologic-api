@@ -292,7 +292,10 @@ class ClientTest extends TestBase
     public function testInvalidParameterBuilderWillThrowAnException()
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Unknown request builder');
+        $this->expectExceptionMessage(sprintf(
+            'Unknown request builder: %s',
+            AlivetestRequestBuilder::class
+        ));
 
         $requestParams = http_build_query([
             'shopurl' => 'blubbergurken.de',

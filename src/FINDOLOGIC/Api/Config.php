@@ -35,6 +35,11 @@ class Config
     /** @var Client */
     private $httpClient;
 
+    public function __construct()
+    {
+        $this->httpClient = new Client();
+    }
+
     /**
      * Sets a specified config value and validates them according to the given validation rules.
      *
@@ -134,14 +139,12 @@ class Config
     }
 
     /**
+     * If not explicitly overridden, will return a Guzzle client that's used for sending requests.
+     *
      * @return Client
      */
     public function getHttpClient()
     {
-        if (!$this->httpClient) {
-            $this->httpClient = new Client();
-        }
-
         return $this->httpClient;
     }
 

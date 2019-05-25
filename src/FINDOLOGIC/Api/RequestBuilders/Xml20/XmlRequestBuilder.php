@@ -84,7 +84,7 @@ abstract class XmlRequestBuilder extends RequestBuilder
      * Adds the attrib param. It is used to filter the search results.
      *
      * @param $filterName string
-     * @param $value string
+     * @param $value mixed
      * @param $specifier null|string is used for sliders such as price. Can be either 'min' or 'max'.
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#search_parameter
      * @return $this

@@ -155,8 +155,8 @@ abstract class RequestBuilder
      *
      * @param $key string
      * @param $value mixed
-     * @param $method string Use ParameterBuilder::ADD_VALUE to add the param and not overwrite existing ones and
-     * ParameterBuilder::SET_VALUE to overwrite existing params.
+     * @param $method string Use RequestBuilder::ADD_VALUE to add the param and not overwrite existing ones and
+     * RequestBuilder::SET_VALUE to overwrite existing params.
      *
      * @return $this
      */

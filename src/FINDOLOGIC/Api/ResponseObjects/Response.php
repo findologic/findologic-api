@@ -27,7 +27,7 @@ abstract class Response
     abstract public function __construct($response, $responseTime = null);
 
     /**
-     * Creates a new Response instance based on the given request builder.
+     * Builds a new Response instance based on the given request builder.
      *
      * @param RequestBuilder $requestBuilder
      * @param GuzzleResponse $response
@@ -35,7 +35,7 @@ abstract class Response
      * @param float|null $responseTime
      * @return Response
      */
-    public static function getInstance(
+    public static function buildInstance(
         RequestBuilder $requestBuilder,
         GuzzleResponse $response,
         $alivetestResponse = null,
@@ -53,7 +53,10 @@ abstract class Response
             case SuggestRequestBuilder::class:
                 return new SuggestResponse($response->getBody()->getContents(), $responseTime);
             default:
-                throw new InvalidArgumentException('Unknown request builder');
+                throw new InvalidArgumentException(sprintf(
+                    'Unknown request builder: %s',
+                    get_class($requestBuilder)
+                ));
         }
     }
 

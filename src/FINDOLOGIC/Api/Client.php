@@ -38,7 +38,7 @@ class Client
         $response = $this->sendRequest($requestBuilder);
         $responseTime = microtime(true) - $requestStart;
 
-        return Response::getInstance($requestBuilder, $response, $alivetestResponse, $responseTime);
+        return Response::buildInstance($requestBuilder, $response, $alivetestResponse, $responseTime);
     }
 
     /**

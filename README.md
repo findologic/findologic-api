@@ -5,6 +5,7 @@
 [![Travis](https://travis-ci.org/TheKeymaster/findologic-api.svg?branch=master)](https://travis-ci.org/TheKeymaster/findologic-api)
 [![Maintainability](https://api.codeclimate.com/v1/badges/d604675c46586292c20f/maintainability)](https://codeclimate.com/github/TheKeymaster/findologic-api/maintainability)
 [![codecov](https://codecov.io/gh/TheKeymaster/findologic-api/branch/master/graph/badge.svg)](https://codecov.io/gh/TheKeymaster/findologic-api)
+[![Packagist](https://img.shields.io/packagist/v/thekeymaster/findologic-api.svg)](https://packagist.org/packages/thekeymaster/findologic-api)
 
 ## Synopsis
 
