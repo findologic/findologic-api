@@ -62,14 +62,18 @@ class TestBase extends TestCase
      * Will set the default expectations for doing an alivetest request, which is required by all tests that are dealing
      * with sending alivetest requests.
      *
+     * @param $expectedSearchRequestUrl
      * @param string $expectedRequestUrl
      * @param string $expectedBody
      */
-    protected function setExpectationsForAliveTestRequests($expectedRequestUrl, $expectedBody)
+    protected function setExpectationsForAliveTestRequests($expectedSearchRequestUrl, $expectedRequestUrl, $expectedBody)
     {
         $this->httpClientMock->method('request')
-            ->with('GET', $expectedRequestUrl, ['connect_timeout' => 1.0])
-            ->willReturnOnConsecutiveCalls($this->responseMock);
+            ->withConsecutive(
+                ['GET', $expectedRequestUrl, ['connect_timeout' => 1.0]],
+                ['GET', $expectedSearchRequestUrl, ['connect_timeout' => 3.0]]
+            )
+            ->willReturnOnConsecutiveCalls($this->responseMock, $this->responseMock);
         $this->responseMock->method('getBody')
             ->with()
             ->willReturnOnConsecutiveCalls($this->streamMock, $this->streamMock);

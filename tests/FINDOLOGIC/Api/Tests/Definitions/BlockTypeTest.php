@@ -10,15 +10,15 @@ class BlockTypeTest extends TestBase
     public function testAllBlockTypesAreAvailable()
     {
         $expectedAvailableBlockTypes = [
-            'suggest',
-            'landingpage',
-            'cat',
-            'vendor',
-            'ordernumber',
-            'product',
-            'promotion'
+            'SUGGEST_BLOCK' => 'suggest',
+            'LANDINGPAGE_BLOCK' => 'landingpage',
+            'CAT_BLOCK' => 'cat',
+            'VENDOR_BLOCK' => 'vendor',
+            'ORDERNUMBER_BLOCK' => 'ordernumber',
+            'PRODUCT_BLOCK' => 'product',
+            'PROMOTION_BLOCK' => 'promotion'
         ];
-        $availableBlockTypes = BlockType::getAvailableBlockTypes();
+        $availableBlockTypes = BlockType::getConstants();
 
         $this->assertEquals($expectedAvailableBlockTypes, $availableBlockTypes);
     }

@@ -2,7 +2,7 @@
 
 namespace FINDOLOGIC\Api\Tests\RequestBuilders\Xml;
 
-use FINDOLOGIC\Api\RequestBuilders\Xml\XmlRequestBuilder;
+use FINDOLOGIC\Api\RequestBuilders\Xml20\XmlRequestBuilder;
 
 /**
  * This trait holds data providers and helper functions for search and navigation requests.
@@ -12,8 +12,8 @@ trait XmlRequestDataProvider
     protected function setRequiredParamsForXmlRequestBuilder(XmlRequestBuilder $xmlRequestBuilder)
     {
         $xmlRequestBuilder
-            ->setShopurl('blubbergurken.io')
-            ->setUserip('127.0.0.1')
+            ->setShopUrl('blubbergurken.io')
+            ->setUserIp('127.0.0.1')
             ->setReferer('https://blubbergurken.io/blubbergurken-sale/')
             ->setRevision('2.5.10');
     }

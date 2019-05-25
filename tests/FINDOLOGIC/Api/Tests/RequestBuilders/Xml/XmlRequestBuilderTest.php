@@ -3,12 +3,12 @@
 namespace FINDOLOGIC\Api\Tests\RequestBuilders\Xml;
 
 use FINDOLOGIC\Api\Client;
+use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\Exceptions\ParamNotSetException;
-use FINDOLOGIC\Api\Config;
-use FINDOLOGIC\Api\RequestBuilders\Xml\NavigationRequestBuilder;
-use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
-use FINDOLOGIC\Api\ResponseObjects\Xml\XmlResponse;
+use FINDOLOGIC\Api\RequestBuilders\Xml20\NavigationRequestBuilder;
+use FINDOLOGIC\Api\RequestBuilders\Xml20\SearchRequestBuilder;
+use FINDOLOGIC\Api\ResponseObjects\Xml20\Xml20Response;
 use FINDOLOGIC\Api\Tests\TestBase;
 use InvalidArgumentException;
 
@@ -38,7 +38,23 @@ class XmlRequestBuilderTest extends TestBase
         $this->rawMockResponse = $this->getMockResponse('demoResponse.xml');
     }
 
-    public function testSendingSearchRequestsWithoutRequiredParamsWillThrowAnException()
+    public function requiredParamsProvider()
+    {
+        return [
+            'config' => [[
+                'shopurl' => 'blubbergurken.io',
+                'userip' => '127.0.0.1',
+                'referer' => 'https://blubbergurken.io/blubbergurken-sale/',
+                'revision' => '1.0.0',
+            ]]
+        ];
+    }
+
+    /**
+     * @dataProvider requiredParamsProvider
+     * @param array $options
+     */
+    public function testSendingSearchRequestsWithoutRequiredParamsWillThrowAnException(array $options)
     {
         $this->httpClientMock->method('request')->willReturn($this->responseMock);
         $this->responseMock->method('getBody')->willReturn($this->streamMock);
@@ -51,48 +67,22 @@ class XmlRequestBuilderTest extends TestBase
 
         $searchRequestBuilder = new SearchRequestBuilder();
         $client = new Client($this->config);
-        try {
-            $client->send($searchRequestBuilder);
-            $this->fail('An exception was expected to happen if the shopurl param is not set.');
-        } catch (ParamNotSetException $e) {
-            $this->assertEquals('Required param shopurl is not set.', $e->getMessage());
-        }
 
-        $searchRequestBuilder->setShopurl('blubbergurken.io');
-        try {
-            $client->send($searchRequestBuilder);
-            $this->fail('An exception was expected to happen if the userip param is not set.');
-        } catch (ParamNotSetException $e) {
-            $this->assertEquals('Required param userip is not set.', $e->getMessage());
-        }
+        foreach ($options as $key => $value) {
+            try {
+                $client->send($searchRequestBuilder);
+                $this->fail("An exception was expected to happen if the $key param is not set.");
+            } catch (ParamNotSetException $e) {
+                $this->assertEquals("Required param $key is not set.", $e->getMessage());
+            }
 
-        $searchRequestBuilder->setUserip('127.0.0.1');
-        try {
-            $client->send($searchRequestBuilder);
-            $this->fail('An exception was expected to happen if the referer param is not set.');
-        } catch (ParamNotSetException $e) {
-            $this->assertEquals('Required param referer is not set.', $e->getMessage());
-        }
-
-        $searchRequestBuilder->setReferer('https://blubbergurken.io/blubbergurken-sale/');
-        try {
-            $client->send($searchRequestBuilder);
-            $this->fail('An exception was expected to happen if the revision param is not set.');
-        } catch (ParamNotSetException $e) {
-            $this->assertEquals('Required param revision is not set.', $e->getMessage());
-        }
-
-        $searchRequestBuilder->setRevision('2.5.10');
-        try {
-            $client->send($searchRequestBuilder);
-            $this->fail('An exception was expected to happen if the query param is not set.');
-        } catch (ParamNotSetException $e) {
-            $this->assertEquals('Required param query is not set.', $e->getMessage());
+            $setter = "set$key";
+            $searchRequestBuilder->$setter($value);
         }
 
         $searchRequestBuilder->setQuery('');
 
-        /** @var XmlResponse $response */
+        /** @var Xml20Response $response */
         $response = $client->send($searchRequestBuilder);
         $this->assertEquals(0, $response->getResponseTime(), '', 0.1);
     }
@@ -117,7 +107,7 @@ class XmlRequestBuilderTest extends TestBase
             $this->assertEquals('Required param shopurl is not set.', $e->getMessage());
         }
 
-        $navigationRequestBuilder->setShopurl('blubbergurken.io');
+        $navigationRequestBuilder->setShopUrl('blubbergurken.io');
         try {
             $client->send($navigationRequestBuilder);
             $this->fail('An exception was expected to happen if the userip param is not set.');
@@ -125,7 +115,7 @@ class XmlRequestBuilderTest extends TestBase
             $this->assertEquals('Required param userip is not set.', $e->getMessage());
         }
 
-        $navigationRequestBuilder->setUserip('127.0.0.1');
+        $navigationRequestBuilder->setUserIp('127.0.0.1');
         try {
             $client->send($navigationRequestBuilder);
             $this->fail('An exception was expected to happen if the referer param is not set.');
@@ -143,7 +133,7 @@ class XmlRequestBuilderTest extends TestBase
 
         $navigationRequestBuilder->setRevision('2.5.10');
 
-        /** @var XmlResponse $response */
+        /** @var Xml20Response $response */
         $response = $client->send($navigationRequestBuilder);
         $this->assertEquals(0, $response->getResponseTime(), '', 0.1);
     }
@@ -236,7 +226,7 @@ class XmlRequestBuilderTest extends TestBase
         $searchRequestBuilder = new SearchRequestBuilder();
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
-        $searchRequestBuilder->setShopurl($expectedShopurl);
+        $searchRequestBuilder->setShopUrl($expectedShopurl);
         $params = $searchRequestBuilder->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals($expectedShopurl, $params[$expectedParameter]);
@@ -254,7 +244,7 @@ class XmlRequestBuilderTest extends TestBase
         $searchRequestBuilder = new SearchRequestBuilder();
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
-        $searchRequestBuilder->setShopurl($invalidShopurl);
+        $searchRequestBuilder->setShopUrl($invalidShopurl);
     }
 
     /**
@@ -268,7 +258,7 @@ class XmlRequestBuilderTest extends TestBase
         $searchRequestBuilder = new SearchRequestBuilder();
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
-        $searchRequestBuilder->setUserip($expectedUserip);
+        $searchRequestBuilder->setUserIp($expectedUserip);
         $params = $searchRequestBuilder->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals($expectedUserip, $params[$expectedParameter]);
@@ -286,7 +276,7 @@ class XmlRequestBuilderTest extends TestBase
         $searchRequestBuilder = new SearchRequestBuilder();
         $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
 
-        $searchRequestBuilder->setUserip($invalidUserip);
+        $searchRequestBuilder->setUserIp($invalidUserip);
     }
 
     /**

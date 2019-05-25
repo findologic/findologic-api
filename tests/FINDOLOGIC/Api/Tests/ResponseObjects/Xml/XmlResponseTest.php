@@ -2,7 +2,7 @@
 
 namespace FINDOLOGIC\Api\Tests\ResponseObjects\Xml;
 
-use FINDOLOGIC\Api\ResponseObjects\Xml\XmlResponse;
+use FINDOLOGIC\Api\ResponseObjects\Xml20\Xml20Response;
 use PHPUnit\Framework\TestCase;
 
 class XmlResponseTest extends TestCase
@@ -11,13 +11,13 @@ class XmlResponseTest extends TestCase
      * Will use a real response that could come from a request. It returns the Object.
      *
      * @param string $filename
-     * @return XmlResponse
+     * @return Xml20Response
      */
     public function getRealResponseData($filename = 'demoResponse.xml')
     {
         // Get contents from a real response locally.
         $realResponseData = file_get_contents(__DIR__ . '/../../../Mockdata/' . $filename);
-        return new XmlResponse($realResponseData);
+        return new Xml20Response($realResponseData);
     }
 
     public function testResponseWillReturnServersAsExpected()

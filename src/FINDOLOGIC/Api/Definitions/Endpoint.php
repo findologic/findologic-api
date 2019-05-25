@@ -2,7 +2,7 @@
 
 namespace FINDOLOGIC\Api\Definitions;
 
-class Endpoint
+class Endpoint extends Definition
 {
     const
         ALIVETEST = 'alivetest.php',
@@ -10,21 +10,4 @@ class Endpoint
         NAVIGATION = 'selector.php',
         SUGGEST = 'autocomplete.php',
         TRACKING = 'tracking.php';
-
-    private static $availableEndpoints = [
-        self::ALIVETEST,
-        self::SEARCH,
-        self::NAVIGATION,
-        self::SUGGEST,
-        self::TRACKING,
-    ];
-
-    /**
-     * Returns an array of all available endpoints.
-     * @return array
-     */
-    public static function getAvailableEndpoints()
-    {
-        return self::$availableEndpoints;
-    }
 }

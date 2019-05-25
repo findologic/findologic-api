@@ -5,6 +5,7 @@
 [![Travis](https://travis-ci.org/TheKeymaster/findologic-api.svg?branch=master)](https://travis-ci.org/TheKeymaster/findologic-api)
 [![Maintainability](https://api.codeclimate.com/v1/badges/d604675c46586292c20f/maintainability)](https://codeclimate.com/github/TheKeymaster/findologic-api/maintainability)
 [![codecov](https://codecov.io/gh/TheKeymaster/findologic-api/branch/master/graph/badge.svg)](https://codecov.io/gh/TheKeymaster/findologic-api)
+[![Packagist](https://img.shields.io/packagist/v/thekeymaster/findologic-api.svg)](https://packagist.org/packages/thekeymaster/findologic-api)
 
 ## Synopsis
 
@@ -50,9 +51,9 @@ $client = new Client($config);
 $searchRequest = new SearchRequestBuilder();
 $searchRequest
     ->setQuery('shirt') // Users search query
-    ->setShopurl('blubbergurken.de') // Url of the shop
-    ->setUserip('127.0.0.1') // Users IP
-    ->setReferer('https://shop.url/AGB') // Page where search was fired
+    ->setShopUrl('blubbergurken.de') // Url of the shop
+    ->setUserIp('127.0.0.1') // Users IP
+    ->setReferer($_SERVER['HTTP_REFERER']) // Page where search was fired
     ->setRevision('1.0.0'); // Version of your API wrapper
 
 /** @var XmlResponse $xmlResponse */

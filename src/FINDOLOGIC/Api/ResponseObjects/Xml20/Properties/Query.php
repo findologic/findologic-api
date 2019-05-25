@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC\Api\ResponseObjects\Xml\Properties;
+namespace FINDOLOGIC\Api\ResponseObjects\Xml20\Properties;
 
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use SimpleXMLElement;
@@ -17,7 +17,7 @@ class Query
     private $didYouMeanQuery;
 
     /** @var OriginalQuery|null $originalQuery */
-    private $originalQuery = null;
+    private $originalQuery;
 
     /** @var int $searchedWordCount */
     private $searchedWordCount;
@@ -36,6 +36,8 @@ class Query
         $this->didYouMeanQuery = ResponseHelper::getStringProperty($response, 'didYouMeanQuery');
         if ($response->originalQuery) {
             $this->originalQuery = new OriginalQuery($response->originalQuery);
+        } else {
+            $this->originalQuery = null;
         }
         $this->searchedWordCount = ResponseHelper::getIntProperty($response, 'searchedWordCount', true);
         $this->foundWordsCount = ResponseHelper::getIntProperty($response, 'foundWordsCount', true);
@@ -87,21 +89,5 @@ class Query
     public function getFoundWordsCount()
     {
         return $this->foundWordsCount;
-    }
-
-    /**
-     * This is a helper method. For more details check out our wiki.
-     * @see https://github.com/TheKeymaster/findologic-api/wiki/Response-Helper-methods
-     *
-     * Will return the didYouMeanQuery if it was set, otherwise the value of the queryString is returned.
-     * @return string
-     */
-    public function getAlternativeQuery()
-    {
-        if ($this->didYouMeanQuery) {
-            return $this->didYouMeanQuery;
-        }
-
-        return $this->queryString->getValue();
     }
 }

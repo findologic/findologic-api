@@ -1,22 +1,22 @@
 <?php
 
-namespace FINDOLOGIC\Api\ResponseObjects\Xml;
+namespace FINDOLOGIC\Api\ResponseObjects\Xml20;
 
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use FINDOLOGIC\Api\ResponseObjects\Response;
-use FINDOLOGIC\Api\ResponseObjects\Xml\Properties\Filter;
-use FINDOLOGIC\Api\ResponseObjects\Xml\Properties\LandingPage;
-use FINDOLOGIC\Api\ResponseObjects\Xml\Properties\Product;
-use FINDOLOGIC\Api\ResponseObjects\Xml\Properties\Promotion;
-use FINDOLOGIC\Api\ResponseObjects\Xml\Properties\Query;
-use FINDOLOGIC\Api\ResponseObjects\Xml\Properties\Results;
-use FINDOLOGIC\Api\ResponseObjects\Xml\Properties\Servers;
+use FINDOLOGIC\Api\ResponseObjects\Xml20\Properties\Filter;
+use FINDOLOGIC\Api\ResponseObjects\Xml20\Properties\LandingPage;
+use FINDOLOGIC\Api\ResponseObjects\Xml20\Properties\Product;
+use FINDOLOGIC\Api\ResponseObjects\Xml20\Properties\Promotion;
+use FINDOLOGIC\Api\ResponseObjects\Xml20\Properties\Query;
+use FINDOLOGIC\Api\ResponseObjects\Xml20\Properties\Results;
+use FINDOLOGIC\Api\ResponseObjects\Xml20\Properties\Servers;
 use SimpleXMLElement;
 
 /**
  * Is used for search and navigation requests with XML response only!
  */
-class XmlResponse extends Response
+class Xml20Response extends Response
 {
     /** @var Servers $servers */
     private $servers;
@@ -34,10 +34,10 @@ class XmlResponse extends Response
     private $results;
 
     /** @var Product[] $products */
-    private $products = [];
+    private $products;
 
     /** @var Filter[] $filters */
-    private $filters = [];
+    private $filters;
 
     /** @var bool $hasFilters */
     private $hasFilters = false;

@@ -3,8 +3,8 @@
 namespace FINDOLOGIC\Api\Tests\ResponseObjects\Json;
 
 use FINDOLOGIC\Api\Definitions\BlockType;
-use FINDOLOGIC\Api\ResponseObjects\Json\SuggestResponse;
-use FINDOLOGIC\Api\ResponseObjects\Json\Properties\Suggestion;
+use FINDOLOGIC\Api\ResponseObjects\Autocomplete\Properties\Suggestion;
+use FINDOLOGIC\Api\ResponseObjects\Autocomplete\SuggestResponse;
 use PHPUnit\Framework\TestCase;
 
 class JsonResponseTest extends TestCase

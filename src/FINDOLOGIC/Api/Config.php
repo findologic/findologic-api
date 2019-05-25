@@ -9,7 +9,7 @@ use GuzzleHttp\Client;
 class Config
 {
     const
-        SERVICE_ID = 'shopkey',
+        SERVICE_ID = 'serviceId',
         API_URL = 'apiUrl',
         ALIVETEST_TIMEOUT = 'alivetestTimeout',
         REQUEST_TIMEOUT = 'requestTimeout',
@@ -24,16 +24,43 @@ class Config
     private $serviceId;
 
     /** @var string */
-    private $apiUrl;
+    private $apiUrl = self::DEFAULT_TEMPLATE_API_URL;
 
     /** @var float */
-    private $alivetestTimeout;
+    private $alivetestTimeout = self::DEFAULT_ALIVETEST_TIMEOUT;
 
     /** @var float */
-    private $requestTimeout;
+    private $requestTimeout = self::DEFAULT_REQUEST_TIMEOUT;
 
     /** @var Client */
     private $httpClient;
+
+    public function __construct()
+    {
+        $this->httpClient = new Client();
+    }
+
+    /**
+     * Sets a specified config value and validates them according to the given validation rules.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @param array $validationRules
+     */
+    private function setConfigValue($key, $value, array $validationRules)
+    {
+        $validator = new ConfigValidator([$key => $value]);
+
+        foreach ($validationRules as $rule) {
+            $validator->rule($rule, $key);
+        }
+
+        if (!$validator->validate()) {
+            throw new ConfigException($key);
+        }
+
+        $this->{$key} = $value;
+    }
 
     /**
      * @return string
@@ -53,16 +80,7 @@ class Config
      */
     public function setServiceId($serviceId)
     {
-        $validator = new ConfigValidator([self::SERVICE_ID => $serviceId]);
-        $validator
-            ->rule('required', self::SERVICE_ID)
-            ->rule('shopkey', self::SERVICE_ID);
-
-        if (!$validator->validate()) {
-            throw new ConfigException(self::SERVICE_ID);
-        }
-
-        $this->serviceId = $serviceId;
+        $this->setConfigValue(self::SERVICE_ID, $serviceId, ['required', 'shopkey']);
         return $this;
     }
 
@@ -71,10 +89,6 @@ class Config
      */
     public function getApiUrl()
     {
-        if (!$this->apiUrl) {
-            return self::DEFAULT_TEMPLATE_API_URL;
-        }
-
         return $this->apiUrl;
     }
 
@@ -84,16 +98,7 @@ class Config
      */
     public function setApiUrl($apiUrl)
     {
-        $validator = new ConfigValidator([self::API_URL => $apiUrl]);
-        $validator
-            ->rule('required', self::API_URL)
-            ->rule('lengthMin', self::API_URL, 5);
-
-        if (!$validator->validate()) {
-            throw new ConfigException(self::API_URL);
-        }
-
-        $this->apiUrl = $apiUrl;
+        $this->setConfigValue(self::API_URL, $apiUrl, ['required']);
         return $this;
     }
 
@@ -102,10 +107,6 @@ class Config
      */
     public function getAlivetestTimeout()
     {
-        if (!$this->alivetestTimeout) {
-            return self::DEFAULT_ALIVETEST_TIMEOUT;
-        }
-
         return $this->alivetestTimeout;
     }
 
@@ -115,16 +116,7 @@ class Config
      */
     public function setAlivetestTimeout($alivetestTimeout)
     {
-        $validator = new ConfigValidator([self::ALIVETEST_TIMEOUT => $alivetestTimeout]);
-        $validator
-            ->rule('required', self::ALIVETEST_TIMEOUT)
-            ->rule('numeric', self::ALIVETEST_TIMEOUT);
-
-        if (!$validator->validate()) {
-            throw new ConfigException(self::ALIVETEST_TIMEOUT);
-        }
-
-        $this->alivetestTimeout = $alivetestTimeout;
+        $this->setConfigValue(self::ALIVETEST_TIMEOUT, $alivetestTimeout, ['required', 'numeric']);
         return $this;
     }
 
@@ -133,10 +125,6 @@ class Config
      */
     public function getRequestTimeout()
     {
-        if (!$this->requestTimeout) {
-            return self::DEFAULT_REQUEST_TIMEOUT;
-        }
-
         return $this->requestTimeout;
     }
 
@@ -146,28 +134,17 @@ class Config
      */
     public function setRequestTimeout($requestTimeout)
     {
-        $validator = new ConfigValidator([self::REQUEST_TIMEOUT => $requestTimeout]);
-        $validator
-            ->rule('required', self::REQUEST_TIMEOUT)
-            ->rule('numeric', self::REQUEST_TIMEOUT);
-
-        if (!$validator->validate()) {
-            throw new ConfigException(self::REQUEST_TIMEOUT);
-        }
-
-        $this->requestTimeout = $requestTimeout;
+        $this->setConfigValue(self::REQUEST_TIMEOUT, $requestTimeout, ['required', 'numeric']);
         return $this;
     }
 
     /**
+     * If not explicitly overridden, will return a Guzzle client that's used for sending requests.
+     *
      * @return Client
      */
     public function getHttpClient()
     {
-        if (!$this->httpClient) {
-            return new Client();
-        }
-
         return $this->httpClient;
     }
 
@@ -175,18 +152,9 @@ class Config
      * @param Client $httpClient
      * @return $this
      */
-    public function setHttpClient($httpClient)
+    public function setHttpClient(Client $httpClient)
     {
-        $validator = new ConfigValidator([self::HTTP_CLIENT => $httpClient]);
-        $validator
-            ->rule('required', self::HTTP_CLIENT)
-            ->rule('httpClient', self::HTTP_CLIENT);
-
-        if (!$validator->validate()) {
-            throw new ConfigException(self::HTTP_CLIENT);
-        }
-
-        $this->httpClient = $httpClient;
+        $this->setConfigValue(self::HTTP_CLIENT, $httpClient, ['required']);
         return $this;
     }
 }

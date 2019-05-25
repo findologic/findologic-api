@@ -10,13 +10,13 @@ class EndpointTest extends TestBase
     public function testAllEndpointsAreAvailable()
     {
         $expectedAvailableEndpoints = [
-            'alivetest.php',
-            'index.php',
-            'selector.php',
-            'autocomplete.php',
-            'tracking.php',
+            'ALIVETEST' => 'alivetest.php',
+            'SEARCH' => 'index.php',
+            'NAVIGATION' => 'selector.php',
+            'SUGGEST' => 'autocomplete.php',
+            'TRACKING' => 'tracking.php'
         ];
-        $availableEndpoints = Endpoint::getAvailableEndpoints();
+        $availableEndpoints = Endpoint::getConstants();
 
         $this->assertEquals($expectedAvailableEndpoints, $availableEndpoints);
     }

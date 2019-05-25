@@ -27,7 +27,10 @@ class ParameterValidator extends Validator
             return (is_string($value) || is_numeric($value));
         }, self::ERROR_DEFAULT);
         $this->addInstanceRule('isOrderParam', function ($field, $value) {
-            return (is_string($value) && in_array($value, OrderType::getList()));
+            return (in_array($value, OrderType::getConstants()));
+        }, self::ERROR_DEFAULT);
+        $this->addInstanceRule('isAutocompleteBlockParam', function ($field, $value) {
+            return (in_array($value, BlockType::getConstants()));
         }, self::ERROR_DEFAULT);
         $this->addInstanceRule('isAutocompleteBlockParam', function ($field, $value) {
             return (is_string($value) && in_array($value, BlockType::getAvailableBlockTypes()));

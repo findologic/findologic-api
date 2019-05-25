@@ -2,14 +2,14 @@
 
 namespace FINDOLOGIC\Api\Tests;
 
-use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
 use FINDOLOGIC\Api\Client;
 use FINDOLOGIC\Api\Config;
+use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
 use FINDOLOGIC\Api\RequestBuilders\AlivetestRequestBuilder;
-use FINDOLOGIC\Api\RequestBuilders\Json\SuggestRequestBuilder;
-use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
-use FINDOLOGIC\Api\ResponseObjects\Json\SuggestResponse;
-use FINDOLOGIC\Api\ResponseObjects\Xml\XmlResponse;
+use FINDOLOGIC\Api\RequestBuilders\Autocomplete\SuggestRequestBuilder;
+use FINDOLOGIC\Api\RequestBuilders\Xml20\SearchRequestBuilder;
+use FINDOLOGIC\Api\ResponseObjects\Autocomplete\SuggestResponse;
+use FINDOLOGIC\Api\ResponseObjects\Xml20\Xml20Response;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use InvalidArgumentException;
@@ -36,7 +36,7 @@ class ClientTest extends TestBase
         $this->requestBuilder = new SuggestRequestBuilder();
 
         $this->requestBuilder
-            ->setShopurl('blubbergurken.de')
+            ->setShopUrl('blubbergurken.de')
             ->setQuery('blubbergurken');
     }
 
@@ -182,14 +182,14 @@ class ClientTest extends TestBase
         $searchRequestBuilder = new SearchRequestBuilder();
         $searchRequestBuilder
             ->setQuery('blubbergurken')
-            ->setShopurl('blubbergurken.de')
-            ->setUserip('127.0.0.1')
+            ->setShopUrl('blubbergurken.de')
+            ->setUserIp('127.0.0.1')
             ->setReferer('https://www.google.at/?query=blubbergurken')
             ->setRevision('1.0.0');
 
         $client = new Client($this->config);
 
-        /** @var XmlResponse $xmlResponse */
+        /** @var Xml20Response $xmlResponse */
         $xmlResponse = $client->send($searchRequestBuilder);
 
         // Local response time should be fast since the data will not be sent to another server, but instead it
@@ -232,15 +232,16 @@ class ClientTest extends TestBase
             'shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD',
         ]);
 
+        $expectedRequestUrl = 'https://service.findologic.com/ps/blubbergurken.de/index.php?' . $requestParams;
         $expectedAlivetestUrl = 'https://service.findologic.com/ps/blubbergurken.de/alivetest.php?' . $requestParams;
 
-        $this->setExpectationsForAliveTestRequests($expectedAlivetestUrl, $expectedBody);
+        $this->setExpectationsForAliveTestRequests($expectedRequestUrl, $expectedAlivetestUrl, $expectedBody);
 
         $searchRequestBuilder = new SearchRequestBuilder();
         $searchRequestBuilder
             ->setQuery('blubbergurken')
-            ->setShopurl('blubbergurken.de')
-            ->setUserip('127.0.0.1')
+            ->setShopUrl('blubbergurken.de')
+            ->setUserIp('127.0.0.1')
             ->setReferer('https://www.google.at/?query=blubbergurken')
             ->setRevision('1.0.0');
 
@@ -275,8 +276,8 @@ class ClientTest extends TestBase
         $searchRequestBuilder = new SearchRequestBuilder();
         $searchRequestBuilder
             ->setQuery('blubbergurken')
-            ->setShopurl('blubbergurken.de')
-            ->setUserip('127.0.0.1')
+            ->setShopUrl('blubbergurken.de')
+            ->setUserIp('127.0.0.1')
             ->setReferer('https://www.google.at/?query=blubbergurken')
             ->setRevision('1.0.0');
 
@@ -291,7 +292,10 @@ class ClientTest extends TestBase
     public function testInvalidParameterBuilderWillThrowAnException()
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Unknown request builder');
+        $this->expectExceptionMessage(sprintf(
+            'Unknown request builder: %s',
+            AlivetestRequestBuilder::class
+        ));
 
         $requestParams = http_build_query([
             'shopurl' => 'blubbergurken.de',
@@ -315,7 +319,7 @@ class ClientTest extends TestBase
 
         $client = new Client($this->config);
         $alivetestRequest = new AlivetestRequestBuilder();
-        $alivetestRequest->setShopurl('blubbergurken.de');
+        $alivetestRequest->setShopUrl('blubbergurken.de');
 
         $client->send($alivetestRequest);
     }
