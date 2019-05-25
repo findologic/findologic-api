@@ -33,7 +33,7 @@ class NavigationRequestBuilder extends XmlRequestBuilder
             throw new InvalidParamException(QueryParameter::SELECTED);
         }
 
-        $this->addParam(QueryParameter::SELECTED, [$filterName => ['' => $value]]);
+        $this->addParam(QueryParameter::SELECTED, [$filterName => [$value]]);
         return $this;
     }
 }

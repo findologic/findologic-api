@@ -141,7 +141,7 @@ abstract class RequestBuilder
             throw new InvalidParamException(QueryParameter::GROUP);
         }
 
-        $this->addParam(QueryParameter::GROUP, ['' => $value], self::ADD_VALUE);
+        $this->addParam(QueryParameter::GROUP, [$value], self::ADD_VALUE);
         return $this;
     }
 
