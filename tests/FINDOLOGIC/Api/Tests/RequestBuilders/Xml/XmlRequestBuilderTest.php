@@ -434,7 +434,7 @@ class XmlRequestBuilderTest extends TestBase
         $searchRequestBuilder->addProperty($expectedProperty);
         $params = $searchRequestBuilder->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
-        $this->assertEquals(['' => $expectedProperty], $params[$expectedParameter]);
+        $this->assertEquals([$expectedProperty], $params[$expectedParameter]);
     }
 
     /**
@@ -607,7 +607,7 @@ class XmlRequestBuilderTest extends TestBase
         $searchRequestBuilder->addOutputAttrib($expectedOutputAttrib);
         $params = $searchRequestBuilder->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
-        $this->assertEquals(['' => $expectedOutputAttrib], $params[$expectedParameter]);
+        $this->assertEquals([$expectedOutputAttrib], $params[$expectedParameter]);
     }
 
     /**
@@ -639,7 +639,7 @@ class XmlRequestBuilderTest extends TestBase
         $searchRequestBuilder->addGroup($expectedGroup);
         $params = $searchRequestBuilder->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
-        $this->assertEquals(['' => $expectedGroup], $params[$expectedParameter]);
+        $this->assertEquals([$expectedGroup], $params[$expectedParameter]);
     }
 
     /**
@@ -675,7 +675,7 @@ class XmlRequestBuilderTest extends TestBase
         $params = $searchRequestBuilder->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals(
-            [$expectedAttributeName => ['' => $expectedAttributeValue]],
+            [$expectedAttributeName => [$expectedAttributeValue]],
             $params[$expectedParameter]
         );
     }
@@ -759,6 +759,6 @@ class XmlRequestBuilderTest extends TestBase
 
         $params = $searchRequestBuilder->getParams();
         $this->assertArrayHasKey($expectedParam, $params);
-        $this->assertContains($expectedGroups, $params[$expectedParam]);
+        $this->assertEquals($expectedGroups, $params[$expectedParam]);
     }
 }

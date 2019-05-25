@@ -147,7 +147,7 @@ abstract class XmlRequestBuilder extends RequestBuilder
             throw new InvalidParamException(QueryParameter::PROPERTIES);
         }
 
-        $this->addParam(QueryParameter::PROPERTIES, ['' => $value], self::ADD_VALUE);
+        $this->addParam(QueryParameter::PROPERTIES, [$value], self::ADD_VALUE);
         return $this;
     }
 
@@ -239,7 +239,7 @@ abstract class XmlRequestBuilder extends RequestBuilder
             throw new InvalidParamException(QueryParameter::OUTPUT_ATTRIB);
         }
 
-        $this->addParam(QueryParameter::OUTPUT_ATTRIB, ['' => $value], self::ADD_VALUE);
+        $this->addParam(QueryParameter::OUTPUT_ATTRIB, [$value], self::ADD_VALUE);
         return $this;
     }
 
