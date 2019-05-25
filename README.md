@@ -1,6 +1,6 @@
 # FINDOLOGIC API
 
-> Version v1.0.0-beta.1
+> Version v1.0.0-beta.2
 
 [![Travis](https://travis-ci.org/TheKeymaster/findologic-api.svg?branch=master)](https://travis-ci.org/TheKeymaster/findologic-api)
 [![Maintainability](https://api.codeclimate.com/v1/badges/d604675c46586292c20f/maintainability)](https://codeclimate.com/github/TheKeymaster/findologic-api/maintainability)
