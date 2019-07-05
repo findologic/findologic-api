@@ -91,7 +91,7 @@ class Query
 
     /**
      * This is a helper method. For more details check out our wiki.
-     * @see https://github.com/TheKeymaster/findologic-api/wiki/Response-Helper-methods
+     * @see https://github.com/findologic/findologic-api/wiki/Response-Helper-methods
      *
      * Will return the didYouMeanQuery if it was set, otherwise the value of the queryString is returned.
      * @return string
