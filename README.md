@@ -2,10 +2,10 @@
 
 > Version v1.0.0-beta.2
 
-[![Travis](https://travis-ci.org/TheKeymaster/findologic-api.svg?branch=master)](https://travis-ci.org/TheKeymaster/findologic-api)
-[![Maintainability](https://api.codeclimate.com/v1/badges/d604675c46586292c20f/maintainability)](https://codeclimate.com/github/TheKeymaster/findologic-api/maintainability)
-[![codecov](https://codecov.io/gh/TheKeymaster/findologic-api/branch/master/graph/badge.svg)](https://codecov.io/gh/TheKeymaster/findologic-api)
-[![Packagist](https://img.shields.io/packagist/v/thekeymaster/findologic-api.svg)](https://packagist.org/packages/thekeymaster/findologic-api)
+[![Travis](https://travis-ci.org/findologic/findologic-api.svg?branch=master)](https://travis-ci.org/findologic/findologic-api.svg?branch=master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/codeclimate/codeclimate/maintainability)
+[![codecov](https://codecov.io/gh/findologic/findologic-api/branch/master/graph/badge.svg)](https://codecov.io/gh/findologic/findologic-api)
+[![Packagist](https://img.shields.io/packagist/v/findologic/findologic-api.svg)](https://packagist.org/packages/findologic/findologic-api)
 
 ## Synopsis
 
@@ -26,7 +26,7 @@ For a simple installation you can use [Composer](https://getcomposer.org/).
 Using this command will install the latest version.
 
 ```bash
-composer require thekeymaster/findologic-api
+composer require findologic/findologic-api
 ```
 
 ## Basic usage
@@ -65,7 +65,7 @@ var_dump($xmlResponse); // Entire response, full of helper methods
 
 ## Examples
 
-Method calls, return values and examples can be found in our [Project Wiki](https://github.com/TheKeymaster/findologic-api/wiki).
+Method calls, return values and examples can be found in our [Project Wiki](https://github.com/findologic/findologic-api/wiki).
 
 ## Requirements
 

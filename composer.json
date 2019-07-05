@@ -1,5 +1,5 @@
 {
-    "name": "thekeymaster/findologic-api",
+    "name": "findologic/findologic-api",
     "description": "Library for FINDOLOGIC API requests",
     "type": "library",
     "license": "MIT",
