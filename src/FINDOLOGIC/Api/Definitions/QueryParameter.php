@@ -21,5 +21,6 @@ class QueryParameter extends Definition
         GROUP = 'group',
         FORCE_ORIGINAL_QUERY = 'forceOriginalQuery',
         OUTPUT_ATTRIB = 'outputAttrib',
-        SELECTED = 'selected';
+        SELECTED = 'selected',
+        OUTPUT_ADAPTER = 'outputAdapter';
 }

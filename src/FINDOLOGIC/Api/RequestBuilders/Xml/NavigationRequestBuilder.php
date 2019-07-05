@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC\Api\RequestBuilders\Xml20;
+namespace FINDOLOGIC\Api\RequestBuilders\Xml;
 
 use FINDOLOGIC\Api\Definitions\Endpoint;
 use FINDOLOGIC\Api\Definitions\QueryParameter;

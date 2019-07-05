@@ -1,11 +1,11 @@
 <?php
 
-namespace FINDOLOGIC\Api\Tests\ResponseObjects\Xml;
+namespace FINDOLOGIC\Api\Tests\ResponseObjects\Xml20;
 
 use FINDOLOGIC\Api\ResponseObjects\Xml20\Xml20Response;
 use PHPUnit\Framework\TestCase;
 
-class XmlResponseTest extends TestCase
+class Xml20ResponseTest extends TestCase
 {
     /**
      * Will use a real response that could come from a request. It returns the Object.

@@ -45,12 +45,8 @@ class Xml20Response extends Response
     /** @var int $filterCount */
     private $filterCount = 0;
 
-    /**
-     * @inheritdoc
-     */
-    public function __construct($response, $responseTime = null)
+    protected function buildResponseElementInstances($response)
     {
-        $this->responseTime = $responseTime;
         $xmlResponse = new SimpleXMLElement($response);
 
         $this->servers = new Servers($xmlResponse->servers[0]);

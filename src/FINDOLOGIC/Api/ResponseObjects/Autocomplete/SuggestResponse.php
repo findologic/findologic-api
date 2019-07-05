@@ -7,21 +7,14 @@ use FINDOLOGIC\Api\ResponseObjects\Response;
 
 /**
  * Is used for suggestion requests with JSON response and Smart Suggest v3 only!
- *
- * Class JsonResponse
- * @package FINDOLOGIC\Api\ResponseObjects
  */
 class SuggestResponse extends Response
 {
-    /** @var Suggestion[] $suggestions */
+    /** @var Suggestion[] */
     private $suggestions = [];
 
-    /**
-     * @inheritdoc
-     */
-    public function __construct($response, $responseTime = null)
+    protected function buildResponseElementInstances($response)
     {
-        $this->responseTime = $responseTime;
         $suggestions = json_decode($response);
 
         foreach ($suggestions as $suggestion) {

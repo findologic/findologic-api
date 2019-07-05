@@ -7,8 +7,9 @@ use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
 use FINDOLOGIC\Api\RequestBuilders\AlivetestRequestBuilder;
 use FINDOLOGIC\Api\RequestBuilders\Autocomplete\SuggestRequestBuilder;
-use FINDOLOGIC\Api\RequestBuilders\Xml20\SearchRequestBuilder;
+use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
 use FINDOLOGIC\Api\ResponseObjects\Autocomplete\SuggestResponse;
+use FINDOLOGIC\Api\ResponseObjects\Html\GenericHtmlResponse;
 use FINDOLOGIC\Api\ResponseObjects\Xml20\Xml20Response;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
@@ -46,7 +47,7 @@ class ClientTest extends TestBase
      * @param string $expectedAlivetestBody
      * @param string $expectedSearchResultBody
      */
-    private function setExpectationsForAlivtestRequestsWithASearch(
+    private function setExpectationsForAlivetestRequestsWithASearch(
         $expectedAlivetestUrl,
         $expectedRequestUrl,
         $expectedAlivetestBody,
@@ -172,7 +173,7 @@ class ClientTest extends TestBase
         $expectedAlivetestBody = 'alive';
         $expectedSearchResultBody = $this->getMockResponse('demoResponse.xml');
 
-        $this->setExpectationsForAlivtestRequestsWithASearch(
+        $this->setExpectationsForAlivetestRequestsWithASearch(
             $expectedAlivetestUrl,
             $expectedRequestUrl,
             $expectedAlivetestBody,
@@ -322,5 +323,41 @@ class ClientTest extends TestBase
         $alivetestRequest->setShopUrl('blubbergurken.de');
 
         $client->send($alivetestRequest);
+    }
+
+    public function testHtmlOutputAdapterWillReturnHtmlResponse()
+    {
+        $requestParams = http_build_query([
+            'query' => 'blubbergurken',
+            'shopurl' => 'blubbergurken.de',
+            'userip' => '127.0.0.1',
+            'referer' => 'https://www.google.at/?query=blubbergurken',
+            'revision' => '1.0.0',
+            'outputAdapter' => 'HTML_3.1',
+            'shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD',
+        ]);
+
+        $expectedRequestUrl = 'https://service.findologic.com/ps/blubbergurken.de/index.php?' . $requestParams;
+        $expectedAlivetestUrl = 'https://service.findologic.com/ps/blubbergurken.de/alivetest.php?' . $requestParams;
+
+        $this->setExpectationsForAliveTestRequests(
+            $expectedRequestUrl,
+            $expectedAlivetestUrl,
+            $this->getMockResponse('demoResponse.html')
+        );
+
+        $searchRequestBuilder = new SearchRequestBuilder();
+        $searchRequestBuilder
+            ->setQuery('blubbergurken')
+            ->setShopUrl('blubbergurken.de')
+            ->setUserIp('127.0.0.1')
+            ->setReferer('https://www.google.at/?query=blubbergurken')
+            ->setRevision('1.0.0')
+            ->setOutputAdapter('HTML_3.1');
+
+        $client = new Client($this->config);
+        $response = $client->send($searchRequestBuilder);
+
+        $this->assertInstanceOf(GenericHtmlResponse::class, $response);
     }
 }
