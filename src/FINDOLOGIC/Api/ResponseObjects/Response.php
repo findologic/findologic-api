@@ -2,13 +2,16 @@
 
 namespace FINDOLOGIC\Api\ResponseObjects;
 
+use FINDOLOGIC\Api\Definitions\OutputAdapter;
 use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
 use FINDOLOGIC\Api\RequestBuilders\Autocomplete\SuggestRequestBuilder;
 use FINDOLOGIC\Api\RequestBuilders\RequestBuilder;
-use FINDOLOGIC\Api\RequestBuilders\Xml20\NavigationRequestBuilder;
-use FINDOLOGIC\Api\RequestBuilders\Xml20\SearchRequestBuilder;
+use FINDOLOGIC\Api\RequestBuilders\Xml\NavigationRequestBuilder;
+use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
 use FINDOLOGIC\Api\ResponseObjects\Autocomplete\SuggestResponse;
+use FINDOLOGIC\Api\ResponseObjects\Html\GenericHtmlResponse;
 use FINDOLOGIC\Api\ResponseObjects\Xml20\Xml20Response;
+use FINDOLOGIC\Api\ResponseObjects\Xml21\Xml21Response;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use InvalidArgumentException;
 
@@ -20,11 +23,27 @@ abstract class Response
     /** @var float|null */
     protected $responseTime;
 
+    /** @var string */
+    protected $rawResponse;
+
     /**
      * @param string $response Raw response as string.
-     * @param null $responseTime Response time in microseconds.
+     * @param float|null $responseTime Response time in microseconds.
      */
-    abstract public function __construct($response, $responseTime = null);
+    public function __construct($response, $responseTime = null)
+    {
+        $this->rawResponse = $response;
+        $this->responseTime = $responseTime;
+
+        $this->buildResponseElementInstances($response);
+    }
+
+    /**
+     * Builds the response instances for all classes for the current response.
+     *
+     * @param $response
+     */
+    abstract protected function buildResponseElementInstances($response);
 
     /**
      * Builds a new Response instance based on the given request builder.
@@ -49,7 +68,11 @@ abstract class Response
         switch (get_class($requestBuilder)) {
             case SearchRequestBuilder::class:
             case NavigationRequestBuilder::class:
-                return new Xml20Response($response->getBody()->getContents(), $responseTime);
+                return self::buildSearchOrNavigationResponse(
+                    $requestBuilder,
+                    $response->getBody()->getContents(),
+                    $responseTime
+                );
             case SuggestRequestBuilder::class:
                 return new SuggestResponse($response->getBody()->getContents(), $responseTime);
             default:
@@ -69,6 +92,34 @@ abstract class Response
     public function getResponseTime()
     {
         return $this->responseTime;
+    }
+
+    /**
+     * @param RequestBuilder $requestBuilder
+     * @param string $responseContents
+     * @param float|null $responseTime
+     * @return Response
+     */
+    private static function buildSearchOrNavigationResponse(
+        RequestBuilder $requestBuilder,
+        $responseContents,
+        $responseTime
+    ) {
+        switch ($requestBuilder->getOutputAdapter()) {
+            case OutputAdapter::XML_20:
+                return new Xml20Response($responseContents, $responseTime);
+            case OutputAdapter::XML_21:
+                return new Xml21Response($responseContents, $responseTime);
+            case OutputAdapter::HTML_20:
+            case OutputAdapter::HTML_30:
+            case OutputAdapter::HTML_31:
+                return new GenericHtmlResponse($responseContents, $responseTime);
+            default:
+                throw new InvalidArgumentException(sprintf(
+                    'Unknown or invalid outputAdapter "%s".',
+                    $requestBuilder->getOutputAdapter()
+                ));
+        }
     }
 
     /**

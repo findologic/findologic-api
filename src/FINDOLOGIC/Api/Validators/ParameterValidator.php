@@ -4,6 +4,7 @@ namespace FINDOLOGIC\Api\Validators;
 
 use FINDOLOGIC\Api\Definitions\BlockType;
 use FINDOLOGIC\Api\Definitions\OrderType;
+use FINDOLOGIC\Api\Definitions\OutputAdapter;
 use Valitron\Validator;
 
 class ParameterValidator extends Validator
@@ -31,6 +32,9 @@ class ParameterValidator extends Validator
         }, self::ERROR_DEFAULT);
         $this->addInstanceRule('isAutocompleteBlockParam', function ($field, $value) {
             return (in_array($value, BlockType::getConstants()));
+        }, self::ERROR_DEFAULT);
+        $this->addInstanceRule('isOutputAdapterParam', function ($field, $value) {
+            return (in_array($value, OutputAdapter::getConstants()));
         }, self::ERROR_DEFAULT);
         $this->addInstanceRule('equalOrHigherThanZero', function ($field, $value) {
             return (is_integer($value) && $value >= 0);

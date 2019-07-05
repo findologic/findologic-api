@@ -1,13 +1,13 @@
 <?php
 
-namespace FINDOLOGIC\Api\Tests\ResponseObjects\Json;
+namespace FINDOLOGIC\Api\Tests\ResponseObjects\Autocomplete;
 
 use FINDOLOGIC\Api\Definitions\BlockType;
 use FINDOLOGIC\Api\ResponseObjects\Autocomplete\Properties\Suggestion;
 use FINDOLOGIC\Api\ResponseObjects\Autocomplete\SuggestResponse;
 use PHPUnit\Framework\TestCase;
 
-class JsonResponseTest extends TestCase
+class SuggestResponseTest extends TestCase
 {
     /**
      * Will use a real response that could come from a request. It returns the Object.

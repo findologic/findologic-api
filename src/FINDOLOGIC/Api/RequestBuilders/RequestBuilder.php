@@ -31,6 +31,9 @@ abstract class RequestBuilder
     /** @var Client */
     protected $client;
 
+    /** @var string */
+    protected $outputAdapter = 'XML_2.0';
+
     public function __construct()
     {
     }
@@ -146,6 +149,28 @@ abstract class RequestBuilder
     }
 
     /**
+     * Adds the outputAdapter param. It is used to override the output format.
+     *
+     * @param string $value One of available OutputAdapter. E.g. OutputAdapter::XML_21.
+     * @return $this
+     */
+    public function setOutputAdapter($value)
+    {
+        $validator = new ParameterValidator([QueryParameter::OUTPUT_ADAPTER => $value]);
+        $validator
+            ->rule('isOutputAdapterParam', QueryParameter::OUTPUT_ADAPTER);
+
+        if (!$validator->validate()) {
+            throw new InvalidParamException(QueryParameter::GROUP);
+        }
+
+        $this->addParam(QueryParameter::OUTPUT_ADAPTER, $value);
+        $this->outputAdapter = $value;
+
+        return $this;
+    }
+
+    /**
      * Adds an own param to the parameter list. This can be useful if you want to put some special key value pairs to
      * get a different response from FINDOLOGIC.
      *
@@ -172,6 +197,11 @@ abstract class RequestBuilder
     public function getEndpoint()
     {
         return $this->endpoint;
+    }
+
+    public function getOutputAdapter()
+    {
+        return $this->outputAdapter;
     }
 
     /**
