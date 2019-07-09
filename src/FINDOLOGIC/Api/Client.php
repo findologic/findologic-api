@@ -3,11 +3,11 @@
 namespace FINDOLOGIC\Api;
 
 use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
-use FINDOLOGIC\Api\RequestBuilders\AlivetestRequestBuilder;
-use FINDOLOGIC\Api\RequestBuilders\RequestBuilder;
-use FINDOLOGIC\Api\RequestBuilders\Xml\NavigationRequestBuilder;
-use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
-use FINDOLOGIC\Api\ResponseObjects\Response;
+use FINDOLOGIC\Api\Requests\AlivetestRequest;
+use FINDOLOGIC\Api\Requests\Request;
+use FINDOLOGIC\Api\Requests\SearchNavigation\NavigationRequest;
+use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
+use FINDOLOGIC\Api\Responses\Response;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
 
@@ -26,10 +26,10 @@ class Client
     /**
      * Sends a request to FINDOLOGIC. An alivetest may be sent if the request is a search or a navigation request.
      *
-     * @param RequestBuilder $requestBuilder
+     * @param Request $requestBuilder
      * @return Response
      */
-    public function send(RequestBuilder $requestBuilder)
+    public function send(Request $requestBuilder)
     {
         $requestBuilder->checkRequiredParamsAreSet();
         $alivetestResponse = $this->doAlivetest($requestBuilder);
@@ -42,14 +42,14 @@ class Client
     }
 
     /**
-     * @param RequestBuilder $requestBuilder
+     * @param Request $requestBuilder
      * @return GuzzleResponse
      * @throws ServiceNotAliveException If the request was not successful.
      */
-    private function sendRequest(RequestBuilder $requestBuilder)
+    private function sendRequest(Request $requestBuilder)
     {
         $requestTimeout = $this->config->getRequestTimeout();
-        if (get_class($requestBuilder) === AlivetestRequestBuilder::class) {
+        if (get_class($requestBuilder) === AlivetestRequest::class) {
             $requestTimeout = $this->config->getAlivetestTimeout();
         }
 
@@ -68,16 +68,16 @@ class Client
      * Will do an alivetest if the given request builder requires one. An alivetest may be done if the request is a
      * search or a navigation request.
      *
-     * @param RequestBuilder $requestBuilder
+     * @param Request $requestBuilder
      * @return GuzzleResponse|null
      */
-    private function doAlivetest(RequestBuilder $requestBuilder)
+    private function doAlivetest(Request $requestBuilder)
     {
         switch (get_class($requestBuilder)) {
-            case NavigationRequestBuilder::class:
-            case SearchRequestBuilder::class:
+            case NavigationRequest::class:
+            case SearchRequest::class:
                 // We need to make sure that the alivetest uses the same parameters as the request itself.
-                $alivetestRequestBuilder = new AlivetestRequestBuilder();
+                $alivetestRequestBuilder = new AlivetestRequest();
                 $alivetestRequestBuilder->setParams($requestBuilder->getParams());
                 return $this->sendRequest($alivetestRequestBuilder);
             default:

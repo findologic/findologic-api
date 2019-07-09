@@ -5,12 +5,12 @@ namespace FINDOLOGIC\Api\Tests;
 use FINDOLOGIC\Api\Client;
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
-use FINDOLOGIC\Api\RequestBuilders\AlivetestRequestBuilder;
-use FINDOLOGIC\Api\RequestBuilders\Autocomplete\SuggestRequestBuilder;
-use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
-use FINDOLOGIC\Api\ResponseObjects\Autocomplete\SuggestResponse;
-use FINDOLOGIC\Api\ResponseObjects\Html\GenericHtmlResponse;
-use FINDOLOGIC\Api\ResponseObjects\Xml20\Xml20Response;
+use FINDOLOGIC\Api\Requests\AlivetestRequest;
+use FINDOLOGIC\Api\Requests\Autocomplete\SuggestRequest;
+use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
+use FINDOLOGIC\Api\Responses\Autocomplete\SuggestResponse;
+use FINDOLOGIC\Api\Responses\Html\GenericHtmlResponse;
+use FINDOLOGIC\Api\Responses\Xml20\Xml20Response;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use InvalidArgumentException;
@@ -23,7 +23,7 @@ class ClientTest extends TestBase
     /** @var Config */
     private $config;
 
-    /** @var SearchRequestBuilder */
+    /** @var SearchRequest */
     private $requestBuilder;
 
     protected function setUp()
@@ -34,7 +34,7 @@ class ClientTest extends TestBase
         $this->config
             ->setServiceId($this->validShopkey)
             ->setHttpClient($this->httpClientMock);
-        $this->requestBuilder = new SuggestRequestBuilder();
+        $this->requestBuilder = new SuggestRequest();
 
         $this->requestBuilder
             ->setShopUrl('blubbergurken.de')
@@ -180,7 +180,7 @@ class ClientTest extends TestBase
             $expectedSearchResultBody
         );
 
-        $searchRequestBuilder = new SearchRequestBuilder();
+        $searchRequestBuilder = new SearchRequest();
         $searchRequestBuilder
             ->setQuery('blubbergurken')
             ->setShopUrl('blubbergurken.de')
@@ -238,7 +238,7 @@ class ClientTest extends TestBase
 
         $this->setExpectationsForAliveTestRequests($expectedRequestUrl, $expectedAlivetestUrl, $expectedBody);
 
-        $searchRequestBuilder = new SearchRequestBuilder();
+        $searchRequestBuilder = new SearchRequest();
         $searchRequestBuilder
             ->setQuery('blubbergurken')
             ->setShopUrl('blubbergurken.de')
@@ -274,7 +274,7 @@ class ClientTest extends TestBase
                 new Request('GET', $expectedAlivetestUrl)
             ));
 
-        $searchRequestBuilder = new SearchRequestBuilder();
+        $searchRequestBuilder = new SearchRequest();
         $searchRequestBuilder
             ->setQuery('blubbergurken')
             ->setShopUrl('blubbergurken.de')
@@ -295,7 +295,7 @@ class ClientTest extends TestBase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf(
             'Unknown request builder: %s',
-            AlivetestRequestBuilder::class
+            AlivetestRequest::class
         ));
 
         $requestParams = http_build_query([
@@ -319,7 +319,7 @@ class ClientTest extends TestBase
             ->willReturnOnConsecutiveCalls('alive');
 
         $client = new Client($this->config);
-        $alivetestRequest = new AlivetestRequestBuilder();
+        $alivetestRequest = new AlivetestRequest();
         $alivetestRequest->setShopUrl('blubbergurken.de');
 
         $client->send($alivetestRequest);
@@ -346,7 +346,7 @@ class ClientTest extends TestBase
             $this->getMockResponse('demoResponse.html')
         );
 
-        $searchRequestBuilder = new SearchRequestBuilder();
+        $searchRequestBuilder = new SearchRequest();
         $searchRequestBuilder
             ->setQuery('blubbergurken')
             ->setShopUrl('blubbergurken.de')

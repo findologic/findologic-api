@@ -1,6 +1,6 @@
 # FINDOLOGIC API
 
-> Version v1.0.0-beta.4
+> Version v1.0.0-beta.5
 
 [![Build Status](https://travis-ci.org/findologic/findologic-api.svg?branch=master)](https://travis-ci.org/findologic/findologic-api)
 [![Maintainability](https://api.codeclimate.com/v1/badges/b7efba0a8475fc2095cc/maintainability)](https://codeclimate.com/github/findologic/findologic-api/maintainability)
@@ -38,8 +38,9 @@ The usage is pretty simple. Here is an example:
 require_once __DIR__ . '/vendor/autoload.php';
 
 use FINDOLOGIC\Api\Config;
-use FINDOLOGIC\Api\RequestBuilders\Xml\SearchRequestBuilder;
 use FINDOLOGIC\Api\Client;
+use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
+use FINDOLOGIC\Api\Responses\Xml20\Xml20Response
 
 $config = new Config();
 // ServiceId/Shopkey, you can find it in the customer account.
@@ -48,7 +49,7 @@ $config->setServiceId('ABCDABCDABCDABCDABCDABCDABCDABCD');
 // Client used for requests
 $client = new Client($config);
 
-$searchRequest = new SearchRequestBuilder();
+$searchRequest = new SearchRequest();
 $searchRequest
     ->setQuery('shirt') // Users search query
     ->setShopUrl('blubbergurken.de') // Url of the shop
@@ -56,7 +57,7 @@ $searchRequest
     ->setReferer($_SERVER['HTTP_REFERER']) // Page where search was fired
     ->setRevision('1.0.0'); // Version of your API wrapper
 
-/** @var XmlResponse $xmlResponse */
+/** @var Xml20Response $xmlResponse */
 $xmlResponse = $client->send($searchRequest);
 
 var_dump($xmlResponse->getFilters()); // Get all filters easily
@@ -69,7 +70,8 @@ Method calls, return values and examples can be found in our [Project Wiki](http
 
 ## Requirements
 
- * [PHP 5.6 or higher](https://php.net/) older versions are not supported.
+ * [PHP 5.6+](https://php.net/)
+ * [PHP cURL extension](https://www.php.net/manual/en/curl.installation.php)
  * [Composer](https://getcomposer.org/)
 
 ## Found a bug?
@@ -77,3 +79,7 @@ Method calls, return values and examples can be found in our [Project Wiki](http
 We need your help! If you find any bug, please submit an issue and use our template! Be as precise as possible
 so we can reproduce your case easier. For further information, please refer to our issue template at
 `.github/ISSUE_TEMPLATE/bug_report.md`.
+
+## Contributing
+
+Please check our contribution guide on how to contribute.
