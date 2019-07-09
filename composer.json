@@ -1,6 +1,7 @@
 {
-    "name": "thekeymaster/findologic-api",
+    "name": "findologic/findologic-api",
     "description": "Library for FINDOLOGIC API requests",
+    "version": "v1.0.0-beta.4",
     "type": "library",
     "license": "MIT",
     "authors": [
