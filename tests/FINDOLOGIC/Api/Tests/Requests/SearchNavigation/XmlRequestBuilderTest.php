@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC\Api\Tests\RequestBuilders\Xml;
+namespace FINDOLOGIC\Api\Tests\Requests\SearchNavigation;
 
 use FINDOLOGIC\Api\Client;
 use FINDOLOGIC\Api\Config;

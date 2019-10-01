@@ -236,7 +236,7 @@ class ClientTest extends TestBase
         $expectedRequestUrl = 'https://service.findologic.com/ps/blubbergurken.de/index.php?' . $requestParams;
         $expectedAlivetestUrl = 'https://service.findologic.com/ps/blubbergurken.de/alivetest.php?' . $requestParams;
 
-        $this->setExpectationsForAliveTestRequests($expectedRequestUrl, $expectedAlivetestUrl, $expectedBody);
+        $this->setExpectationsForAliveTestRequests($expectedRequestUrl, $expectedAlivetestUrl, '', $expectedBody);
 
         $searchRequestBuilder = new SearchRequest();
         $searchRequestBuilder
@@ -355,6 +355,7 @@ class ClientTest extends TestBase
             ->setRevision('1.0.0')
             ->setOutputAdapter('HTML_3.1');
 
+        $this->config->setHttpClient($this->httpClientMock);
         $client = new Client($this->config);
         $response = $client->send($searchRequestBuilder);
 

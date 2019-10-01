@@ -78,8 +78,8 @@ Method calls, return values and examples can be found in our [Project Wiki](http
 
 We need your help! If you find any bug, please submit an issue and use our template! Be as precise as possible
 so we can reproduce your case easier. For further information, please refer to our issue template at
-`.github/ISSUE_TEMPLATE/bug_report.md`.
+[.github/ISSUE_TEMPLATE/bug_report.md](.github/ISSUE_TEMPLATE/bug_report.md).
 
 ## Contributing
 
-Please check our contribution guide on how to contribute.
+Please check [our contribution guide](contributing.md) on how to contribute.

@@ -12,7 +12,7 @@ start contributing!
 1. Update the README.md and/or the Wiki with details of changes to the interface, this includes
    new features, changed namespaces, deprecated features and general version support. The Wiki
    should only be updated once this change has been merged to the `master`  branch.
-1. Increase the version numbers in the Wiki and the README.md to the new version that this
+1. Increase the version numbers in the README.md, composer.json and the Wiki to the new version that this
    Pull Request would represent. The versioning scheme we use is [SemVer](http://semver.org/).
 1. You may merge the Pull Request in once you have the sign-off of one other developer, or if you 
    do not have permission to do that, you may request a developer to merge it for you.

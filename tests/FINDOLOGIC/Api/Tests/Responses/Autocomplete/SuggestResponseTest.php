@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC\Api\Tests\ResponseObjects\Autocomplete;
+namespace FINDOLOGIC\Api\Tests\Responses\Autocomplete;
 
 use FINDOLOGIC\Api\Definitions\BlockType;
 use FINDOLOGIC\Api\Responses\Autocomplete\Properties\Suggestion;

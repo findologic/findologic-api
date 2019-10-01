@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC\Api\Tests\RequestBuilders\Autocomplete;
+namespace FINDOLOGIC\Api\Tests\Requests\Autocomplete;
 
 use FINDOLOGIC\Api\Requests\Autocomplete\SuggestRequest;
 
