@@ -48,14 +48,14 @@ abstract class Response
     /**
      * Builds a new Response instance based on the given request builder.
      *
-     * @param Request $requestBuilder
+     * @param Request $request
      * @param GuzzleResponse $response
      * @param GuzzleResponse|null $alivetestResponse The alivetest response, or null if no alivetest was made.
      * @param float|null $responseTime
      * @return Response
      */
     public static function buildInstance(
-        Request $requestBuilder,
+        Request $request,
         GuzzleResponse $response,
         $alivetestResponse = null,
         $responseTime = null
@@ -65,11 +65,11 @@ abstract class Response
         }
         self::checkResponseIsValid($response);
 
-        switch (get_class($requestBuilder)) {
+        switch (get_class($request)) {
             case SearchRequest::class:
             case NavigationRequest::class:
                 return self::buildSearchOrNavigationResponse(
-                    $requestBuilder,
+                    $request,
                     $response->getBody()->getContents(),
                     $responseTime
                 );
@@ -78,7 +78,7 @@ abstract class Response
             default:
                 throw new InvalidArgumentException(sprintf(
                     'Unknown request builder: %s',
-                    get_class($requestBuilder)
+                    get_class($request)
                 ));
         }
     }
