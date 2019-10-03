@@ -13,13 +13,13 @@ use FINDOLOGIC\Api\Tests\TestBase;
 use InvalidArgumentException;
 
 /**
- * This class is testing the request builders for search and navigation requests. Most tests are using the
- * SearchRequestBuilder since navigation is basically the same except that query is not a required param for
+ * This class is testing the request for search and navigation. Most tests are using the
+ * SearchRequest since navigation is basically the same except that query is not a required param for
  * navigation requests.
  */
-class XmlRequestBuilderTest extends TestBase
+class SearchNavigationRequestTest extends TestBase
 {
-    use XmlRequestDataProvider;
+    use SearchNavigationRequestDataProvider;
 
     /** @var Config */
     private $config;
@@ -65,25 +65,25 @@ class XmlRequestBuilderTest extends TestBase
                 $this->rawMockResponse
             );
 
-        $searchRequestBuilder = new SearchRequest();
+        $searchRequest = new SearchRequest();
         $client = new Client($this->config);
 
         foreach ($options as $key => $value) {
             try {
-                $client->send($searchRequestBuilder);
+                $client->send($searchRequest);
                 $this->fail("An exception was expected to happen if the $key param is not set.");
             } catch (ParamNotSetException $e) {
                 $this->assertEquals("Required param $key is not set.", $e->getMessage());
             }
 
             $setter = "set$key";
-            $searchRequestBuilder->$setter($value);
+            $searchRequest->$setter($value);
         }
 
-        $searchRequestBuilder->setQuery('');
+        $searchRequest->setQuery('');
 
         /** @var Xml20Response $response */
-        $response = $client->send($searchRequestBuilder);
+        $response = $client->send($searchRequest);
         $this->assertEquals(0, $response->getResponseTime(), '', 0.1);
     }
 
@@ -98,43 +98,43 @@ class XmlRequestBuilderTest extends TestBase
                 $this->rawMockResponse
             );
 
-        $navigationRequestBuilder = new NavigationRequest();
+        $navigationRequest = new NavigationRequest();
         $client = new Client($this->config);
         try {
-            $client->send($navigationRequestBuilder);
+            $client->send($navigationRequest);
             $this->fail('An exception was expected to happen if the shopurl param is not set.');
         } catch (ParamNotSetException $e) {
             $this->assertEquals('Required param shopurl is not set.', $e->getMessage());
         }
 
-        $navigationRequestBuilder->setShopUrl('blubbergurken.io');
+        $navigationRequest->setShopUrl('blubbergurken.io');
         try {
-            $client->send($navigationRequestBuilder);
+            $client->send($navigationRequest);
             $this->fail('An exception was expected to happen if the userip param is not set.');
         } catch (ParamNotSetException $e) {
             $this->assertEquals('Required param userip is not set.', $e->getMessage());
         }
 
-        $navigationRequestBuilder->setUserIp('127.0.0.1');
+        $navigationRequest->setUserIp('127.0.0.1');
         try {
-            $client->send($navigationRequestBuilder);
+            $client->send($navigationRequest);
             $this->fail('An exception was expected to happen if the referer param is not set.');
         } catch (ParamNotSetException $e) {
             $this->assertEquals('Required param referer is not set.', $e->getMessage());
         }
 
-        $navigationRequestBuilder->setReferer('https://blubbergurken.io/blubbergurken-sale/');
+        $navigationRequest->setReferer('https://blubbergurken.io/blubbergurken-sale/');
         try {
-            $client->send($navigationRequestBuilder);
+            $client->send($navigationRequest);
             $this->fail('An exception was expected to happen if the revision param is not set.');
         } catch (ParamNotSetException $e) {
             $this->assertEquals('Required param revision is not set.', $e->getMessage());
         }
 
-        $navigationRequestBuilder->setRevision('2.5.10');
+        $navigationRequest->setRevision('2.5.10');
 
         /** @var Xml20Response $response */
-        $response = $client->send($navigationRequestBuilder);
+        $response = $client->send($navigationRequest);
         $this->assertEquals(0, $response->getResponseTime(), '', 0.1);
     }
 
@@ -146,11 +146,11 @@ class XmlRequestBuilderTest extends TestBase
     {
         $expectedParameter = 'query';
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setQuery($expectedQuery);
-        $params = $searchRequestBuilder->getParams();
+        $searchRequest->setQuery($expectedQuery);
+        $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals($expectedQuery, $params[$expectedParameter]);
     }
@@ -164,10 +164,10 @@ class XmlRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter query is not valid.');
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setQuery($invalidQuery);
+        $searchRequest->setQuery($invalidQuery);
     }
 
     /**
@@ -178,11 +178,11 @@ class XmlRequestBuilderTest extends TestBase
     {
         $expectedParameter = 'shopkey';
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setShopkey($expectedShopkey);
-        $params = $searchRequestBuilder->getParams();
+        $searchRequest->setShopkey($expectedShopkey);
+        $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals($expectedShopkey, $params[$expectedParameter]);
     }
@@ -196,21 +196,21 @@ class XmlRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter shopkey is not valid.');
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setShopkey($invalidShopkey);
+        $searchRequest->setShopkey($invalidShopkey);
     }
 
     public function testShopkeyIsAutomaticallyAddedFromTheConfigIfNotOverridden()
     {
         $expectedParameter = 'shopkey';
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setShopkey($this->config->getServiceId());
-        $params = $searchRequestBuilder->getParams();
+        $searchRequest->setShopkey($this->config->getServiceId());
+        $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals($this->config->getServiceId(), $params[$expectedParameter]);
     }
@@ -223,11 +223,11 @@ class XmlRequestBuilderTest extends TestBase
     {
         $expectedParameter = 'shopurl';
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setShopUrl($expectedShopurl);
-        $params = $searchRequestBuilder->getParams();
+        $searchRequest->setShopUrl($expectedShopurl);
+        $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals($expectedShopurl, $params[$expectedParameter]);
     }
@@ -241,10 +241,10 @@ class XmlRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter shopurl is not valid.');
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setShopUrl($invalidShopurl);
+        $searchRequest->setShopUrl($invalidShopurl);
     }
 
     /**
@@ -255,11 +255,11 @@ class XmlRequestBuilderTest extends TestBase
     {
         $expectedParameter = 'userip';
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setUserIp($expectedUserip);
-        $params = $searchRequestBuilder->getParams();
+        $searchRequest->setUserIp($expectedUserip);
+        $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals($expectedUserip, $params[$expectedParameter]);
     }
@@ -273,10 +273,10 @@ class XmlRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter userip is not valid.');
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setUserIp($invalidUserip);
+        $searchRequest->setUserIp($invalidUserip);
     }
 
     /**
@@ -287,11 +287,11 @@ class XmlRequestBuilderTest extends TestBase
     {
         $expectedParameter = 'referer';
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setReferer($expectedReferer);
-        $params = $searchRequestBuilder->getParams();
+        $searchRequest->setReferer($expectedReferer);
+        $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals($expectedReferer, $params[$expectedParameter]);
     }
@@ -305,10 +305,10 @@ class XmlRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter referer is not valid.');
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setReferer($invalidReferer);
+        $searchRequest->setReferer($invalidReferer);
     }
 
     /**
@@ -319,11 +319,11 @@ class XmlRequestBuilderTest extends TestBase
     {
         $expectedParameter = 'revision';
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setRevision($expectedRevision);
-        $params = $searchRequestBuilder->getParams();
+        $searchRequest->setRevision($expectedRevision);
+        $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals($expectedRevision, $params[$expectedParameter]);
     }
@@ -337,10 +337,10 @@ class XmlRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter revision is not valid.');
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setRevision($invalidRevision);
+        $searchRequest->setRevision($invalidRevision);
     }
 
     /**
@@ -356,11 +356,11 @@ class XmlRequestBuilderTest extends TestBase
     ) {
         $expectedParameter = 'attrib';
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->addAttribute($expectedAttributeName, $expectedAttributeValue, $specifier);
-        $params = $searchRequestBuilder->getParams();
+        $searchRequest->addAttribute($expectedAttributeName, $expectedAttributeValue, $specifier);
+        $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals(
             [$expectedAttributeName => [$specifier => $expectedAttributeValue]],
@@ -382,10 +382,10 @@ class XmlRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter attrib is not valid.');
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->addAttribute($expectedAttributeName, $expectedAttributeValue, $specifier);
+        $searchRequest->addAttribute($expectedAttributeName, $expectedAttributeValue, $specifier);
     }
 
     /**
@@ -396,11 +396,11 @@ class XmlRequestBuilderTest extends TestBase
     {
         $expectedParameter = 'order';
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setOrder($expectedOrder);
-        $params = $searchRequestBuilder->getParams();
+        $searchRequest->setOrder($expectedOrder);
+        $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals($expectedOrder, $params[$expectedParameter]);
     }
@@ -414,10 +414,10 @@ class XmlRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter order is not valid.');
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setOrder($invalidOrder);
+        $searchRequest->setOrder($invalidOrder);
     }
 
     /**
@@ -428,11 +428,11 @@ class XmlRequestBuilderTest extends TestBase
     {
         $expectedParameter = 'properties';
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->addProperty($expectedProperty);
-        $params = $searchRequestBuilder->getParams();
+        $searchRequest->addProperty($expectedProperty);
+        $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals([$expectedProperty], $params[$expectedParameter]);
     }
@@ -446,10 +446,10 @@ class XmlRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter properties is not valid.');
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->addProperty($invalidProperty);
+        $searchRequest->addProperty($invalidProperty);
     }
 
     /**
@@ -465,11 +465,11 @@ class XmlRequestBuilderTest extends TestBase
     ) {
         $expectedParameter = 'pushAttrib';
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->addPushAttrib($expectedFilterName, $expectedFilterValue, $expectedFactor);
-        $params = $searchRequestBuilder->getParams();
+        $searchRequest->addPushAttrib($expectedFilterName, $expectedFilterValue, $expectedFactor);
+        $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals(
             [$expectedFilterName => [$expectedFilterValue => $expectedFactor]],
@@ -491,10 +491,10 @@ class XmlRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter pushAttrib is not valid.');
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->addPushAttrib($expectedFilterName, $expectedFilterValue, $expectedFactor);
+        $searchRequest->addPushAttrib($expectedFilterName, $expectedFilterValue, $expectedFactor);
     }
 
     /**
@@ -505,11 +505,11 @@ class XmlRequestBuilderTest extends TestBase
     {
         $expectedParameter = 'count';
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setCount($expectedCount);
-        $params = $searchRequestBuilder->getParams();
+        $searchRequest->setCount($expectedCount);
+        $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals($expectedCount, $params[$expectedParameter]);
     }
@@ -523,10 +523,10 @@ class XmlRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter count is not valid.');
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setCount($invalidCount);
+        $searchRequest->setCount($invalidCount);
     }
 
     /**
@@ -537,11 +537,11 @@ class XmlRequestBuilderTest extends TestBase
     {
         $expectedParameter = 'first';
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setFirst($expectedFirst);
-        $params = $searchRequestBuilder->getParams();
+        $searchRequest->setFirst($expectedFirst);
+        $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals($expectedFirst, $params[$expectedParameter]);
     }
@@ -555,10 +555,10 @@ class XmlRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter first is not valid.');
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setFirst($invalidFirst);
+        $searchRequest->setFirst($invalidFirst);
     }
 
     /**
@@ -569,11 +569,11 @@ class XmlRequestBuilderTest extends TestBase
     {
         $expectedParameter = 'identifier';
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setIdentifier($expectedIdentifier);
-        $params = $searchRequestBuilder->getParams();
+        $searchRequest->setIdentifier($expectedIdentifier);
+        $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals($expectedIdentifier, $params[$expectedParameter]);
     }
@@ -587,10 +587,10 @@ class XmlRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter identifier is not valid.');
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setIdentifier($invalidIdentifier);
+        $searchRequest->setIdentifier($invalidIdentifier);
     }
 
     /**
@@ -601,11 +601,11 @@ class XmlRequestBuilderTest extends TestBase
     {
         $expectedParameter = 'outputAttrib';
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->addOutputAttrib($expectedOutputAttrib);
-        $params = $searchRequestBuilder->getParams();
+        $searchRequest->addOutputAttrib($expectedOutputAttrib);
+        $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals([$expectedOutputAttrib], $params[$expectedParameter]);
     }
@@ -619,10 +619,10 @@ class XmlRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter outputAttrib is not valid.');
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->addOutputAttrib($outputAttrib);
+        $searchRequest->addOutputAttrib($outputAttrib);
     }
 
     /**
@@ -633,11 +633,11 @@ class XmlRequestBuilderTest extends TestBase
     {
         $expectedParameter = 'group';
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->addGroup($expectedGroup);
-        $params = $searchRequestBuilder->getParams();
+        $searchRequest->addGroup($expectedGroup);
+        $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals([$expectedGroup], $params[$expectedParameter]);
     }
@@ -651,10 +651,10 @@ class XmlRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter group is not valid.');
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->addGroup($invalidGroup);
+        $searchRequest->addGroup($invalidGroup);
     }
 
     /**
@@ -668,11 +668,11 @@ class XmlRequestBuilderTest extends TestBase
     ) {
         $expectedParameter = 'selected';
 
-        $searchRequestBuilder = new NavigationRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $navigationRequest = new NavigationRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($navigationRequest);
 
-        $searchRequestBuilder->setSelected($expectedAttributeName, $expectedAttributeValue);
-        $params = $searchRequestBuilder->getParams();
+        $navigationRequest->setSelected($expectedAttributeName, $expectedAttributeValue);
+        $params = $navigationRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals(
             [$expectedAttributeName => [$expectedAttributeValue]],
@@ -692,10 +692,10 @@ class XmlRequestBuilderTest extends TestBase
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter selected is not valid.');
 
-        $searchRequestBuilder = new NavigationRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $navigationRequest = new NavigationRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($navigationRequest);
 
-        $searchRequestBuilder->setSelected($expectedAttributeName, $expectedAttributeValue);
+        $navigationRequest->setSelected($expectedAttributeName, $expectedAttributeValue);
     }
 
     public function testSetForceOriginalQueryWillSetItInAValidFormat()
@@ -703,11 +703,11 @@ class XmlRequestBuilderTest extends TestBase
         $expectedForceOriginalQuery = 1;
         $expectedParameter = 'forceOriginalQuery';
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->setForceOriginalQuery();
-        $params = $searchRequestBuilder->getParams();
+        $searchRequest->setForceOriginalQuery();
+        $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals($expectedForceOriginalQuery, $params[$expectedParameter]);
     }
@@ -720,11 +720,11 @@ class XmlRequestBuilderTest extends TestBase
      */
     public function testAddIndividualParamWillSetItInAValidFormat($expectedKey, $expectedValue, $expectedMethod)
     {
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->addIndividualParam($expectedKey, $expectedValue, $expectedMethod);
-        $params = $searchRequestBuilder->getParams();
+        $searchRequest->addIndividualParam($expectedKey, $expectedValue, $expectedMethod);
+        $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedKey, $params);
         $this->assertEquals($expectedValue, $params[$expectedKey]);
     }
@@ -738,10 +738,10 @@ class XmlRequestBuilderTest extends TestBase
         $expectedValue = 'someValue';
         $expectedInvalidMethod = 'invalidMethod';
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder->addIndividualParam($expectedKey, $expectedValue, $expectedInvalidMethod);
+        $searchRequest->addIndividualParam($expectedKey, $expectedValue, $expectedInvalidMethod);
     }
 
     public function testAddParamsOverTheSameKeyWillMergeThemTogether()
@@ -749,15 +749,15 @@ class XmlRequestBuilderTest extends TestBase
         $expectedGroups = ['groupOne', 'groupTwo', 'muchMoreGroups'];
         $expectedParam = 'group';
 
-        $searchRequestBuilder = new SearchRequest();
-        $this->setRequiredParamsForXmlRequestBuilder($searchRequestBuilder);
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
-        $searchRequestBuilder
+        $searchRequest
             ->addGroup($expectedGroups[0])
             ->addGroup($expectedGroups[1])
             ->addGroup($expectedGroups[2]);
 
-        $params = $searchRequestBuilder->getParams();
+        $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParam, $params);
         $this->assertEquals($expectedGroups, $params[$expectedParam]);
     }

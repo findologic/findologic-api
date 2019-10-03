@@ -24,7 +24,7 @@ class ClientTest extends TestBase
     private $config;
 
     /** @var SearchRequest */
-    private $requestBuilder;
+    private $searchRequest;
 
     protected function setUp()
     {
@@ -34,9 +34,9 @@ class ClientTest extends TestBase
         $this->config
             ->setServiceId($this->validShopkey)
             ->setHttpClient($this->httpClientMock);
-        $this->requestBuilder = new SuggestRequest();
+        $this->searchRequest = new SuggestRequest();
 
-        $this->requestBuilder
+        $this->searchRequest
             ->setShopUrl('blubbergurken.de')
             ->setQuery('blubbergurken');
     }
@@ -88,7 +88,7 @@ class ClientTest extends TestBase
         $client = new Client($this->config);
 
         /** @var SuggestResponse $suggestResponse */
-        $suggestResponse = $client->send($this->requestBuilder);
+        $suggestResponse = $client->send($this->searchRequest);
 
         $this->assertSame($expectedResult, $suggestResponse->getSuggestions());
     }
@@ -146,7 +146,7 @@ class ClientTest extends TestBase
         $client = new Client($this->config);
 
         try {
-            $client->send($this->requestBuilder);
+            $client->send($this->searchRequest);
             $this->fail('An ServiceNotAliveException should be thrown if the status code is not OK.');
         } catch (ServiceNotAliveException $e) {
             $this->assertEquals(sprintf(
@@ -180,8 +180,8 @@ class ClientTest extends TestBase
             $expectedSearchResultBody
         );
 
-        $searchRequestBuilder = new SearchRequest();
-        $searchRequestBuilder
+        $searchRequest = new SearchRequest();
+        $searchRequest
             ->setQuery('blubbergurken')
             ->setShopUrl('blubbergurken.de')
             ->setUserIp('127.0.0.1')
@@ -191,7 +191,7 @@ class ClientTest extends TestBase
         $client = new Client($this->config);
 
         /** @var Xml20Response $xmlResponse */
-        $xmlResponse = $client->send($searchRequestBuilder);
+        $xmlResponse = $client->send($searchRequest);
 
         // Local response time should be fast since the data will not be sent to another server, but instead it
         // will be directly read from the ram.
@@ -238,8 +238,8 @@ class ClientTest extends TestBase
 
         $this->setExpectationsForAliveTestRequests($expectedRequestUrl, $expectedAlivetestUrl, '', $expectedBody);
 
-        $searchRequestBuilder = new SearchRequest();
-        $searchRequestBuilder
+        $searchRequest = new SearchRequest();
+        $searchRequest
             ->setQuery('blubbergurken')
             ->setShopUrl('blubbergurken.de')
             ->setUserIp('127.0.0.1')
@@ -247,7 +247,7 @@ class ClientTest extends TestBase
             ->setRevision('1.0.0');
 
         $client = new Client($this->config);
-        $client->send($searchRequestBuilder);
+        $client->send($searchRequest);
     }
 
     public function testWhenGuzzleFailsWillThrowAnException()
@@ -274,8 +274,8 @@ class ClientTest extends TestBase
                 new Request('GET', $expectedAlivetestUrl)
             ));
 
-        $searchRequestBuilder = new SearchRequest();
-        $searchRequestBuilder
+        $searchRequest = new SearchRequest();
+        $searchRequest
             ->setQuery('blubbergurken')
             ->setShopUrl('blubbergurken.de')
             ->setUserIp('127.0.0.1')
@@ -283,18 +283,18 @@ class ClientTest extends TestBase
             ->setRevision('1.0.0');
 
         $client = new Client($this->config);
-        $client->send($searchRequestBuilder);
+        $client->send($searchRequest);
     }
 
     /**
      * We are already covered due to our type safety, but you should not be able to make a request with for example
-     * an alivetest request, since that one also extends from the RequestBuilder object.
+     * an alivetest request, since that one also extends from the Request object.
      */
-    public function testInvalidParameterBuilderWillThrowAnException()
+    public function testInvalidRequestWillThrowAnException()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf(
-            'Unknown request builder: %s',
+            'Unknown Request: %s',
             AlivetestRequest::class
         ));
 
@@ -346,8 +346,8 @@ class ClientTest extends TestBase
             $this->getMockResponse('demoResponse.html')
         );
 
-        $searchRequestBuilder = new SearchRequest();
-        $searchRequestBuilder
+        $searchRequest = new SearchRequest();
+        $searchRequest
             ->setQuery('blubbergurken')
             ->setShopUrl('blubbergurken.de')
             ->setUserIp('127.0.0.1')
@@ -357,7 +357,7 @@ class ClientTest extends TestBase
 
         $this->config->setHttpClient($this->httpClientMock);
         $client = new Client($this->config);
-        $response = $client->send($searchRequestBuilder);
+        $response = $client->send($searchRequest);
 
         $this->assertInstanceOf(GenericHtmlResponse::class, $response);
     }

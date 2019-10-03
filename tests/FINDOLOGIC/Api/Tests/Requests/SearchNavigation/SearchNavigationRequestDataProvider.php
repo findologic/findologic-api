@@ -7,11 +7,11 @@ use FINDOLOGIC\Api\Requests\SearchNavigation\SearchNavigationRequest;
 /**
  * This trait holds data providers and helper functions for search and navigation requests.
  */
-trait XmlRequestDataProvider
+trait SearchNavigationRequestDataProvider
 {
-    protected function setRequiredParamsForXmlRequestBuilder(SearchNavigationRequest $xmlRequestBuilder)
+    protected function setRequiredParamsForSearchNavigationRequest(SearchNavigationRequest $searchNavigationRequest)
     {
-        $xmlRequestBuilder
+        $searchNavigationRequest
             ->setShopUrl('blubbergurken.io')
             ->setUserIp('127.0.0.1')
             ->setReferer('https://blubbergurken.io/blubbergurken-sale/')

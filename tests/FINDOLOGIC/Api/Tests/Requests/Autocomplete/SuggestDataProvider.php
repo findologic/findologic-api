@@ -4,11 +4,11 @@ namespace FINDOLOGIC\Api\Tests\Requests\Autocomplete;
 
 use FINDOLOGIC\Api\Requests\Autocomplete\SuggestRequest;
 
-trait SuggestionDataProvider
+trait SuggestDataProvider
 {
-    public function setRequiredParamsForSuggestionRequestBuilder(SuggestRequest $suggestionRequestBuilder)
+    public function setRequiredParamsForSuggestRequest(SuggestRequest $suggestRequest)
     {
-        $suggestionRequestBuilder->setShopUrl('www.blubbergurken.io');
+        $suggestRequest->setShopUrl('www.blubbergurken.io');
     }
 
     public function queryProvider()

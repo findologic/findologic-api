@@ -180,8 +180,8 @@ abstract class Request
      *
      * @param $key string
      * @param $value mixed
-     * @param $method string Use RequestBuilder::ADD_VALUE to add the param and not overwrite existing ones and
-     * RequestBuilder::SET_VALUE to overwrite existing params.
+     * @param $method string Use Request::ADD_VALUE to add the param and not overwrite existing ones and
+     * Request::SET_VALUE to overwrite existing params.
      *
      * @return $this
      */
@@ -209,8 +209,8 @@ abstract class Request
      *
      * @param $key string The key or the param name, that identifies the param.
      * @param $value mixed The value for the param.
-     * @param string $method Can be either RequestBuilder::SET_VALUE or RequestBuilder::ADD_VALUE.
-     * RequestBuilder::ADD_VALUE allows the value to be set multiple times and RequestBuilder::SET_VALUE will
+     * @param string $method Can be either Request::SET_VALUE or Request::ADD_VALUE.
+     * Request::ADD_VALUE allows the value to be set multiple times and Request::SET_VALUE will
      * override any existing ones.
      */
     protected function addParam($key, $value, $method = self::SET_VALUE)

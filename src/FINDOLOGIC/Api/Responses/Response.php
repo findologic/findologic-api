@@ -46,7 +46,7 @@ abstract class Response
     abstract protected function buildResponseElementInstances($response);
 
     /**
-     * Builds a new Response instance based on the given request builder.
+     * Builds a new Response instance based on the given Request.
      *
      * @param Request $request
      * @param GuzzleResponse $response
@@ -77,7 +77,7 @@ abstract class Response
                 return new SuggestResponse($response->getBody()->getContents(), $responseTime);
             default:
                 throw new InvalidArgumentException(sprintf(
-                    'Unknown request builder: %s',
+                    'Unknown Request: %s',
                     get_class($request)
                 ));
         }
@@ -95,17 +95,17 @@ abstract class Response
     }
 
     /**
-     * @param Request $requestBuilder
+     * @param Request $request
      * @param string $responseContents
      * @param float|null $responseTime
      * @return Response
      */
     private static function buildSearchOrNavigationResponse(
-        Request $requestBuilder,
+        Request $request,
         $responseContents,
         $responseTime
     ) {
-        switch ($requestBuilder->getOutputAdapter()) {
+        switch ($request->getOutputAdapter()) {
             case OutputAdapter::XML_20:
                 return new Xml20Response($responseContents, $responseTime);
             case OutputAdapter::XML_21:
@@ -117,7 +117,7 @@ abstract class Response
             default:
                 throw new InvalidArgumentException(sprintf(
                     'Unknown or invalid outputAdapter "%s".',
-                    $requestBuilder->getOutputAdapter()
+                    $request->getOutputAdapter()
                 ));
         }
     }
