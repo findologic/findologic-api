@@ -712,6 +712,31 @@ class SearchNavigationRequestTest extends TestBase
         $this->assertEquals($expectedForceOriginalQuery, $params[$expectedParameter]);
     }
 
+    public function testSetOutputAdapterWillSetItInAValidFormat()
+    {
+        $expectedOutputAdapter = 'XML_2.1';
+        $expectedParameter = 'outputAdapter';
+
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
+
+        $searchRequest->setOutputAdapter($expectedOutputAdapter);
+        $params = $searchRequest->getParams();
+        $this->assertArrayHasKey($expectedParameter, $params);
+        $this->assertEquals($expectedOutputAdapter, $params[$expectedParameter]);
+    }
+
+    public function testInvalidOutputAdapterWillThrowAnException()
+    {
+        $this->expectException(InvalidParamException::class);
+        $this->expectExceptionMessage('Parameter outputAdapter is not valid.');
+
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
+
+        $searchRequest->setOutputAdapter('HTML_51');
+    }
+
     /**
      * @dataProvider individualParamProvider
      * @param string $expectedKey

@@ -2,8 +2,12 @@
 
 namespace FINDOLOGIC\Api\Tests\ResponseObjects\Xml20;
 
+use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
+use FINDOLOGIC\Api\Responses\Response;
 use FINDOLOGIC\Api\Responses\Xml20\Xml20Response;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 
 class Xml20ResponseTest extends TestCase
 {
@@ -486,5 +490,21 @@ class Xml20ResponseTest extends TestCase
         $actualOriginalQuery = $response->getQuery()->getOriginalQuery();
 
         $this->assertSame($expectedOriginalQuery, $actualOriginalQuery);
+    }
+
+    public function testUnknownResponseWillThrowAnException()
+    {
+        $expectedOutputAdapter = 'HTML_4.20';
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf('Unknown or invalid outputAdapter "%s"', $expectedOutputAdapter));
+
+        /** @var SearchRequest|PHPUnit_Framework_MockObject_MockObject $request */
+        $request = $this->getMockBuilder(SearchRequest::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getOutputAdapter'])
+            ->getMock();
+        $request->expects($this->any())->method('getOutputAdapter')->willReturn($expectedOutputAdapter);
+
+        Response::buildInstance($request, new \GuzzleHttp\Psr7\Response(), null, null);
     }
 }

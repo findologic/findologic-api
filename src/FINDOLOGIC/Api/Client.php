@@ -6,6 +6,7 @@ use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
 use FINDOLOGIC\Api\Requests\AlivetestRequest;
 use FINDOLOGIC\Api\Requests\Request;
 use FINDOLOGIC\Api\Requests\SearchNavigation\NavigationRequest;
+use FINDOLOGIC\Api\Requests\SearchNavigation\SearchNavigationRequest;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
 use FINDOLOGIC\Api\Responses\Response;
 use GuzzleHttp\Exception\GuzzleException;
@@ -49,7 +50,7 @@ class Client
     private function sendRequest(Request $request)
     {
         $requestTimeout = $this->config->getRequestTimeout();
-        if (get_class($request) === AlivetestRequest::class) {
+        if ($request instanceof AlivetestRequest) {
             $requestTimeout = $this->config->getAlivetestTimeout();
         }
 
@@ -69,19 +70,15 @@ class Client
      * SearchRequest/NavigationRequest.
      *
      * @param Request $request
-     * @return GuzzleResponse|null
+     * @return GuzzleResponse|null|void
      */
     private function doAlivetest(Request $request)
     {
-        switch (get_class($request)) {
-            case NavigationRequest::class:
-            case SearchRequest::class:
-                // We need to make sure that the alivetest uses the same parameters as the request itself.
-                $alivetestRequest = new AlivetestRequest();
-                $alivetestRequest->setParams($request->getParams());
-                return $this->sendRequest($alivetestRequest);
-            default:
-                return null;
+        if ($request instanceof SearchNavigationRequest) {
+            // We need to make sure that the alivetest uses the same parameters as the request itself.
+            $alivetestRequest = new AlivetestRequest();
+            $alivetestRequest->setParams($request->getParams());
+            return $this->sendRequest($alivetestRequest);
         }
     }
 }

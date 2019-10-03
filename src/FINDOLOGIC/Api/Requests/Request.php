@@ -161,7 +161,7 @@ abstract class Request
             ->rule('isOutputAdapterParam', QueryParameter::OUTPUT_ADAPTER);
 
         if (!$validator->validate()) {
-            throw new InvalidParamException(QueryParameter::GROUP);
+            throw new InvalidParamException(QueryParameter::OUTPUT_ADAPTER);
         }
 
         $this->addParam(QueryParameter::OUTPUT_ADAPTER, $value);
