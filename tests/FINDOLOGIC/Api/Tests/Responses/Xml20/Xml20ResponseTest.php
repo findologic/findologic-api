@@ -1,6 +1,6 @@
 <?php
 
-namespace FINDOLOGIC\Api\Tests\ResponseObjects\Xml20;
+namespace FINDOLOGIC\Api\Tests\Responses\Xml20;
 
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
 use FINDOLOGIC\Api\Responses\Response;

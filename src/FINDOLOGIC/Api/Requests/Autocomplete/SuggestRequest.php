@@ -15,7 +15,6 @@ class SuggestRequest extends Request
 
     public function __construct()
     {
-        parent::__construct();
         $this->addRequiredParam(QueryParameter::QUERY);
     }
 

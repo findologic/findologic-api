@@ -14,7 +14,6 @@ abstract class SearchNavigationRequest extends Request
 {
     public function __construct()
     {
-        parent::__construct();
         $this->addRequiredParams([
             QueryParameter::USER_IP,
             QueryParameter::REFERER,

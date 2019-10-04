@@ -34,10 +34,6 @@ abstract class Request
     /** @var string */
     protected $outputAdapter = 'XML_2.0';
 
-    public function __construct()
-    {
-    }
-
     /**
      * Gets all currently set params.
      *
