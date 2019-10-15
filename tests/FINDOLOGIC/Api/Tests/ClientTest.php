@@ -171,7 +171,7 @@ class ClientTest extends TestBase
         $expectedRequestUrl = 'https://service.findologic.com/ps/blubbergurken.de/index.php?' . $requestParams;
 
         $expectedAlivetestBody = 'alive';
-        $expectedSearchResultBody = $this->getMockResponse('Xml20/demoResponse.xml');
+        $expectedSearchResultBody = $this->getMockResponse('demoResponse.xml');
 
         $this->setExpectationsForAlivetestRequestsWithASearch(
             $expectedAlivetestUrl,
@@ -343,7 +343,7 @@ class ClientTest extends TestBase
         $this->setExpectationsForAliveTestRequests(
             $expectedRequestUrl,
             $expectedAlivetestUrl,
-            $this->getMockResponse('Html/demoResponse.html')
+            $this->getMockResponse('demoResponse.html')
         );
 
         $searchRequest = new SearchRequest();
