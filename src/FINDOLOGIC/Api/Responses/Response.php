@@ -131,11 +131,11 @@ abstract class Response
      */
     protected static function checkResponseIsValid(Request $request, GuzzleResponse $response)
     {
-        if($request->getOutputAdapter() === OutputAdapter::XML_21) {
+        if ($request->getOutputAdapter() === OutputAdapter::XML_21) {
             $xml= new DOMDocument();
             $xml->loadXML($response->getBody()->getContents());
 
-            if(!$xml->schemaValidate('../../../../vendor/findologic/xml-response-schema/schema.xsd')) {
+            if (!$xml->schemaValidate('../../../../vendor/findologic/xml-response-schema/schema.xsd')) {
                 throw new ServiceNotAliveException(sprintf('The given response does not comply to the XML_2.1 schema.'));
             }
         }
