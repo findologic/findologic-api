@@ -1,13 +1,10 @@
 <?php
 
-namespace FINDOLOGIC\Api\Responses\Xml20\Properties;
+namespace FINDOLOGIC\Api\Responses\Xml21\Properties;
 
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use SimpleXMLElement;
 
-/**
- * @deprecated Use XML 2.1 instead. This class will be removed with version v1.0.0-rc.1.
- */
 class LandingPage
 {
     /** @var string $link */
