@@ -18,7 +18,7 @@ class SuggestResponseTest extends TestCase
     public function getRealResponseData($filename = 'demoResponseSuggest.json')
     {
         // Get contents from a real response locally.
-        $realResponseData = file_get_contents(__DIR__ . '/../../../Mockdata/Autocomplete/' . $filename);
+        $realResponseData = file_get_contents(__DIR__ . '/../../../Mockdata/' . $filename);
         return new SuggestResponse($realResponseData);
     }
 
