@@ -5,12 +5,10 @@ namespace FINDOLOGIC\Api\Responses\Xml21;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use FINDOLOGIC\Api\Responses\Response;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Servers;
-use FINDOLOGIC\Api\Responses\Xml20\Properties\Query;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\LandingPage;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Promotion;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Results;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Product;
-use FINDOLOGIC\Api\Responses\Xml20\Properties\Filter;
 use SimpleXMLElement;
 
 class Xml21Response extends Response

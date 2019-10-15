@@ -33,6 +33,7 @@
         "ext-SimpleXML": "*",
         "ext-json": "*",
         "ext-dom": "*",
+        "ext-libxml": "*",
         "findologic/xml-response-schema": "^2.1"
     },
     "require-dev": {

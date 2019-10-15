@@ -7,9 +7,7 @@ use FINDOLOGIC\Api\Definitions\OutputAdapter;
 use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
 use FINDOLOGIC\Api\Requests\Autocomplete\SuggestRequest;
 use FINDOLOGIC\Api\Requests\Request;
-use FINDOLOGIC\Api\Requests\SearchNavigation\NavigationRequest;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchNavigationRequest;
-use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
 use FINDOLOGIC\Api\Responses\Autocomplete\SuggestResponse;
 use FINDOLOGIC\Api\Responses\Html\GenericHtmlResponse;
 use FINDOLOGIC\Api\Responses\Xml20\Xml20Response;
@@ -135,9 +133,13 @@ abstract class Response
             $xml= new DOMDocument();
             $xml->loadXML($response->getBody()->getContents());
 
+            libxml_use_internal_errors(true);
+
             if (!$xml->schemaValidate(__DIR__ . '../../../../../vendor/findologic/xml-response-schema/schema.xsd')) {
                 throw new ServiceNotAliveException(sprintf('The given response does not comply to the XML_2.1 schema.'));
             }
+
+            libxml_use_internal_errors(false);
         }
 
         $statusCode = $response->getStatusCode();

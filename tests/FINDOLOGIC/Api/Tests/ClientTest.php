@@ -399,4 +399,44 @@ class ClientTest extends TestBase
 
         $this->assertInstanceOf(Xml21Response::class, $response);
     }
+
+    public function testInvalidXml21SchemaWillThrowAnException()
+    {
+        $this->expectException(ServiceNotAliveException::class);
+        $this->expectExceptionMessage(sprintf(
+            'The given response does not comply to the XML_2.1 schema.'
+        ));
+
+        $requestParams = http_build_query([
+            'query' => 'blubbergurken',
+            'shopurl' => 'blubbergurken.de',
+            'userip' => '127.0.0.1',
+            'referer' => 'https://www.google.at/?query=blubbergurken',
+            'revision' => '1.0.0',
+            'outputAdapter' => 'XML_2.1',
+            'shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD',
+        ]);
+
+        $expectedRequestUrl = 'https://service.findologic.com/ps/blubbergurken.de/index.php?' . $requestParams;
+        $expectedAlivetestUrl = 'https://service.findologic.com/ps/blubbergurken.de/alivetest.php?' . $requestParams;
+
+        $this->setExpectationsForAliveTestRequests(
+            $expectedRequestUrl,
+            $expectedAlivetestUrl,
+            $this->getMockResponse('Xml20/demoResponse.xml')
+        );
+
+        $searchRequest = new SearchRequest();
+        $searchRequest
+            ->setQuery('blubbergurken')
+            ->setShopUrl('blubbergurken.de')
+            ->setUserIp('127.0.0.1')
+            ->setReferer('https://www.google.at/?query=blubbergurken')
+            ->setRevision('1.0.0')
+            ->setOutputAdapter('XML_2.1');
+
+        $this->config->setHttpClient($this->httpClientMock);
+        $client = new Client($this->config);
+        $client->send($searchRequest);
+    }
 }
