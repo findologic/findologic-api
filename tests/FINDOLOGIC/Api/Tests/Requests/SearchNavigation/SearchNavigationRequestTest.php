@@ -35,7 +35,7 @@ class SearchNavigationRequestTest extends TestBase
             ->setServiceId('ABCDABCDABCDABCDABCDABCDABCDABCD')
             ->setHttpClient($this->httpClientMock);
 
-        $this->rawMockResponse = $this->getMockResponse('demoResponse.xml');
+        $this->rawMockResponse = $this->getMockResponse('Xml20/demoResponse.xml');
     }
 
     public function requiredParamsProvider()
