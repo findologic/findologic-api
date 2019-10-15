@@ -81,13 +81,13 @@ class TestBase extends TestCase
             ->willReturnOnConsecutiveCalls($this->responseMock, $this->responseMock);
         $this->responseMock->method('getBody')
             ->with()
-            ->willReturnOnConsecutiveCalls($this->streamMock, $this->streamMock);
+            ->willReturnOnConsecutiveCalls($this->streamMock, $this->streamMock, $this->streamMock);
         $this->responseMock->method('getStatusCode')
             ->with()
             ->willReturnOnConsecutiveCalls(200);
         $this->streamMock->method('getContents')
             ->with()
-            ->willReturnOnConsecutiveCalls($expectedAlivetestBody, $expectedBody);
+            ->willReturnOnConsecutiveCalls($expectedAlivetestBody, $expectedBody, $expectedBody);
     }
 
     protected function getMockResponse($file)
