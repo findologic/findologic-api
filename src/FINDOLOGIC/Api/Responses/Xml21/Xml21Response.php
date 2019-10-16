@@ -9,6 +9,7 @@ use FINDOLOGIC\Api\Responses\Xml21\Properties\LandingPage;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Promotion;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Results;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Product;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter;
 use SimpleXMLElement;
 
 class Xml21Response extends Response
@@ -27,6 +28,24 @@ class Xml21Response extends Response
 
     /** @var Product[] $products */
     private $products = [];
+
+    /** @var Filter[] $mainFilters */
+    private $mainFilters = [];
+
+    /** @var Filter[] $otherFilters */
+    private $otherFilters = [];
+
+    /** @var bool $hasMainFilters */
+    private $hasMainFilters = false;
+
+    /** @var bool $hasMainFilters */
+    private $hasOtherFilters = false;
+
+    /** @var int $mainFilterCount */
+    private $mainFilterCount = 0;
+
+    /** @var int $otherFilterCount */
+    private $otherFilterCount = 0;
 
     /** @inheritDoc */
     public function __construct($response, $responseTime = null)
@@ -119,5 +138,53 @@ class Xml21Response extends Response
     public function getProducts()
     {
         return $this->products;
+    }
+
+    /**
+     * @return Filter[]
+     */
+    public function getMainFilters()
+    {
+        return $this->mainFilters;
+    }
+
+    /**
+     * @return Filter[]
+     */
+    public function getOtherFilters()
+    {
+        return $this->otherFilters;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasMainFilters()
+    {
+        return $this->hasMainFilters;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasOtherFilters()
+    {
+        return $this->hasOtherFilters;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMainFilterCount()
+    {
+        return $this->mainFilterCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOtherFilterCount()
+    {
+        return $this->otherFilterCount;
     }
 }
