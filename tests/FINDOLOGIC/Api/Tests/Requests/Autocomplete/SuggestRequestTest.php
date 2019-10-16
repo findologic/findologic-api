@@ -27,7 +27,7 @@ class SuggestRequestTest extends TestBase
             ->setServiceId('ABCDABCDABCDABCDABCDABCDABCDABCD')
             ->setHttpClient($this->httpClientMock);
 
-        $this->rawMockResponse = $this->getMockResponse('demoResponseSuggest.json');
+        $this->rawMockResponse = $this->getMockResponse('Autocomplete/demoResponseSuggest.json');
     }
 
     public function testSendingRequestsWithoutRequiredParamsWillThrowAnException()

@@ -11,6 +11,7 @@ use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
 use FINDOLOGIC\Api\Responses\Autocomplete\SuggestResponse;
 use FINDOLOGIC\Api\Responses\Html\GenericHtmlResponse;
 use FINDOLOGIC\Api\Responses\Xml20\Xml20Response;
+use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use InvalidArgumentException;
@@ -171,7 +172,7 @@ class ClientTest extends TestBase
         $expectedRequestUrl = 'https://service.findologic.com/ps/blubbergurken.de/index.php?' . $requestParams;
 
         $expectedAlivetestBody = 'alive';
-        $expectedSearchResultBody = $this->getMockResponse('demoResponse.xml');
+        $expectedSearchResultBody = $this->getMockResponse('Xml20/demoResponse.xml');
 
         $this->setExpectationsForAlivetestRequestsWithASearch(
             $expectedAlivetestUrl,
@@ -343,7 +344,7 @@ class ClientTest extends TestBase
         $this->setExpectationsForAliveTestRequests(
             $expectedRequestUrl,
             $expectedAlivetestUrl,
-            $this->getMockResponse('demoResponse.html')
+            $this->getMockResponse('Html/demoResponse.html')
         );
 
         $searchRequest = new SearchRequest();
@@ -360,5 +361,82 @@ class ClientTest extends TestBase
         $response = $client->send($searchRequest);
 
         $this->assertInstanceOf(GenericHtmlResponse::class, $response);
+    }
+
+    public function testXML21OutputAdapterWillReturnXML21Response()
+    {
+        $requestParams = http_build_query([
+            'query' => 'blubbergurken',
+            'shopurl' => 'blubbergurken.de',
+            'userip' => '127.0.0.1',
+            'referer' => 'https://www.google.at/?query=blubbergurken',
+            'revision' => '1.0.0',
+            'outputAdapter' => 'XML_2.1',
+            'shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD',
+        ]);
+
+        $expectedRequestUrl = 'https://service.findologic.com/ps/blubbergurken.de/index.php?' . $requestParams;
+        $expectedAlivetestUrl = 'https://service.findologic.com/ps/blubbergurken.de/alivetest.php?' . $requestParams;
+
+        $this->setExpectationsForAliveTestRequests(
+            $expectedRequestUrl,
+            $expectedAlivetestUrl,
+            $this->getMockResponse('Xml21/demoResponse.xml')
+        );
+
+        $searchRequest = new SearchRequest();
+        $searchRequest
+            ->setQuery('blubbergurken')
+            ->setShopUrl('blubbergurken.de')
+            ->setUserIp('127.0.0.1')
+            ->setReferer('https://www.google.at/?query=blubbergurken')
+            ->setRevision('1.0.0')
+            ->setOutputAdapter('XML_2.1');
+
+        $this->config->setHttpClient($this->httpClientMock);
+        $client = new Client($this->config);
+        $response = $client->send($searchRequest);
+
+        $this->assertInstanceOf(Xml21Response::class, $response);
+    }
+
+    public function testInvalidXml21SchemaWillThrowAnException()
+    {
+        $this->expectException(ServiceNotAliveException::class);
+        $this->expectExceptionMessage(sprintf(
+            'The given response does not comply to the XML_2.1 schema.'
+        ));
+
+        $requestParams = http_build_query([
+            'query' => 'blubbergurken',
+            'shopurl' => 'blubbergurken.de',
+            'userip' => '127.0.0.1',
+            'referer' => 'https://www.google.at/?query=blubbergurken',
+            'revision' => '1.0.0',
+            'outputAdapter' => 'XML_2.1',
+            'shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD',
+        ]);
+
+        $expectedRequestUrl = 'https://service.findologic.com/ps/blubbergurken.de/index.php?' . $requestParams;
+        $expectedAlivetestUrl = 'https://service.findologic.com/ps/blubbergurken.de/alivetest.php?' . $requestParams;
+
+        $this->setExpectationsForAliveTestRequests(
+            $expectedRequestUrl,
+            $expectedAlivetestUrl,
+            $this->getMockResponse('Xml20/demoResponse.xml')
+        );
+
+        $searchRequest = new SearchRequest();
+        $searchRequest
+            ->setQuery('blubbergurken')
+            ->setShopUrl('blubbergurken.de')
+            ->setUserIp('127.0.0.1')
+            ->setReferer('https://www.google.at/?query=blubbergurken')
+            ->setRevision('1.0.0')
+            ->setOutputAdapter('XML_2.1');
+
+        $this->config->setHttpClient($this->httpClientMock);
+        $client = new Client($this->config);
+        $client->send($searchRequest);
     }
 }
