@@ -131,14 +131,12 @@ abstract class Response
     {
         if ($request->getOutputAdapter() === OutputAdapter::XML_21) {
             $xml= new DOMDocument();
-            $xml->loadXML($response->getBody()->getContents());
 
             libxml_use_internal_errors(true);
-
-            if (!$xml->schemaValidate(__DIR__ . '../../../../../vendor/findologic/xml-response-schema/schema.xsd')) {
+            $xml->loadXML($response->getBody()->getContents());
+            if (!$xml->schemaValidate(__DIR__ . '/../../../../vendor/findologic/xml-response-schema/schema.xsd')) {
                 throw new ServiceNotAliveException(sprintf('The given response does not comply to the XML_2.1 schema.'));
             }
-
             libxml_use_internal_errors(false);
         }
 

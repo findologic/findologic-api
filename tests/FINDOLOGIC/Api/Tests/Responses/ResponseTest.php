@@ -7,6 +7,7 @@ use FINDOLOGIC\Api\Responses\Response;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
+use GuzzleHttp\Psr7\Response as GuzzleResponse;
 
 class ResponseTest extends TestCase
 {
@@ -23,6 +24,6 @@ class ResponseTest extends TestCase
             ->getMock();
         $request->expects($this->any())->method('getOutputAdapter')->willReturn($expectedOutputAdapter);
 
-        Response::buildInstance($request, new \GuzzleHttp\Psr7\Response(), null, null);
+        Response::buildInstance($request, new GuzzleResponse, null, null);
     }
 }

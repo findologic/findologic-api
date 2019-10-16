@@ -13,11 +13,7 @@ class Servers
     /** @var string $backend */
     private $backend;
 
-    /**
-     * Servers constructor.
-     * @param SimpleXMLElement $response
-     */
-    public function __construct($response)
+    public function __construct(SimpleXMLElement $response)
     {
         $this->frontend = ResponseHelper::getStringProperty($response, 'frontend');
         $this->backend = ResponseHelper::getStringProperty($response, 'backend');

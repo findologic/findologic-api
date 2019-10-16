@@ -10,13 +10,9 @@ class Results
     /** @var int $count */
     private $count;
 
-    /**
-     * Results constructor.
-     * @param SimpleXMLElement $result
-     */
-    public function __construct($result)
+    public function __construct(SimpleXMLElement $response)
     {
-        $this->count = ResponseHelper::getIntProperty($result, 'count', true);
+        $this->count = ResponseHelper::getIntProperty($response, 'count', true);
     }
 
     /**

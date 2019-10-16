@@ -28,6 +28,7 @@ class Xml21Response extends Response
     /** @var Product[] $products */
     private $products = [];
 
+    /** @inheritDoc */
     public function __construct($response, $responseTime = null)
     {
         parent::__construct($response, $responseTime);
@@ -56,7 +57,7 @@ class Xml21Response extends Response
      * @param SimpleXMLElement $xmlResponse
      * @return LandingPage|null
      */
-    private function getLandingPageFromResponse($xmlResponse)
+    private function getLandingPageFromResponse(SimpleXMLElement $xmlResponse)
     {
         if ($xmlResponse->landingPage) {
             return new LandingPage($xmlResponse->landingPage[0]->attributes());
@@ -71,7 +72,7 @@ class Xml21Response extends Response
      * @param SimpleXMLElement $xmlResponse
      * @return Promotion|null
      */
-    private function getPromotionFromResponse($xmlResponse)
+    private function getPromotionFromResponse(SimpleXMLElement $xmlResponse)
     {
         if ($xmlResponse->promotion) {
             return new Promotion($xmlResponse->promotion[0]->attributes());

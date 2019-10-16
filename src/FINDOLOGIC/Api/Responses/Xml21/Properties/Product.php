@@ -16,18 +16,14 @@ class Product
     /** @var array $properties */
     private $properties = [];
 
-    /**
-     * Product constructor.
-     * @param SimpleXMLElement $result
-     */
-    public function __construct($result)
+    public function __construct(SimpleXMLElement $response)
     {
-        $attributes = $result->attributes();
+        $attributes = $response->attributes();
         $this->id = ResponseHelper::getStringProperty($attributes, 'id');
         $this->relevance =  ResponseHelper::getFloatProperty($attributes, 'relevance');
 
-        if (isset($result->properties)) {
-            foreach ($result->properties->children() as $property) {
+        if (isset($response->properties)) {
+            foreach ($response->properties->children() as $property) {
                 $propertyName =  ResponseHelper::getStringProperty($property->attributes(), 'name');
                 $propertyValue = (string)$property;
                 $this->properties[$propertyName] = $propertyValue;

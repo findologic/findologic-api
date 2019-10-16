@@ -10,11 +10,7 @@ class LandingPage
     /** @var string $link */
     private $link;
 
-    /**
-     * LandingPage constructor.
-     * @param SimpleXMLElement $response
-     */
-    public function __construct($response)
+    public function __construct(SimpleXMLElement $response)
     {
         $this->link = ResponseHelper::getStringProperty($response, 'link');
     }
