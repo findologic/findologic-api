@@ -63,12 +63,11 @@ class Xml21ResponseTest extends TestCase
     public function testResponseWillReturnQueryStringAsExpected()
     {
         $expectedValue = 'ps3';
-        $expectedType = null;
 
         $response = $this->getRealResponseData('demoResponseWithoutDidYouMean.xml');
 
         $this->assertSame($expectedValue, $response->getQuery()->getQueryString()->getValue());
-        $this->assertSame($expectedType, $response->getQuery()->getQueryString()->getType());
+        $this->assertNull($response->getQuery()->getQueryString()->getType());
     }
 
     public function testResponseWithTypeInQueryStringWillReturnOriginalQueryAsExpected()
@@ -94,20 +93,18 @@ class Xml21ResponseTest extends TestCase
 
     public function testResponseWithoutAllowOverrideWillReturnNullWhenCallingIt()
     {
-        $expectedAllowOverride = null;
         $response = $this->getRealResponseData('demoResponseWithoutAllowOverride.xml');
         $actualAllowOverride = $response->getQuery()->getOriginalQuery()->getAllowOverride();
 
-        $this->assertSame($expectedAllowOverride, $actualAllowOverride);
+        $this->assertFalse($actualAllowOverride);
     }
 
     public function testResponseWithoutOriginalQueryWillReturnNullWhenCallingIt()
     {
-        $expectedOriginalQuery = null;
         $response = $this->getRealResponseData('demoResponseWithoutOriginalQuery.xml');
         $actualOriginalQuery = $response->getQuery()->getOriginalQuery();
 
-        $this->assertSame($expectedOriginalQuery, $actualOriginalQuery);
+        $this->assertNull($actualOriginalQuery);
     }
 
     public function testResponseWillReturnLandingpageAsExpected()
@@ -121,11 +118,10 @@ class Xml21ResponseTest extends TestCase
 
     public function testResponseWithoutLandingPageWillReturnNullWhenCallingIt()
     {
-        $expectedLandingPage = null;
         $response = $this->getRealResponseData('demoResponseWithoutLandingPage.xml');
         $actualLandingPage = $response->getLandingPage();
 
-        $this->assertSame($expectedLandingPage, $actualLandingPage);
+        $this->assertNull($actualLandingPage);
     }
 
     public function testResponseWillReturnPromotionAsExpected()
@@ -141,11 +137,10 @@ class Xml21ResponseTest extends TestCase
 
     public function testResponseWithoutPromotionWillReturnNullWhenCallingIt()
     {
-        $expectedPromotion = null;
         $response = $this->getRealResponseData('demoResponseWithoutPromotion.xml');
         $actualPromotion = $response->getPromotion();
 
-        $this->assertSame($expectedPromotion, $actualPromotion);
+        $this->assertNull($actualPromotion);
     }
 
     public function testResponseWillReturnResultsAsExpected()
@@ -504,7 +499,7 @@ class Xml21ResponseTest extends TestCase
             'image' => null,
             'color' => null,
             'parameters' => null,
-            'selected' => null,
+            'selected' => false,
         ];
 
         $actualSubItemDetails = [];
