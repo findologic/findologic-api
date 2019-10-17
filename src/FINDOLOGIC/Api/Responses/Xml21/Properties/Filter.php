@@ -35,7 +35,7 @@ class Filter
     private $attributes;
 
     /** @var Item[] $items */
-    private $items;
+    private $items = [];
 
     public function __construct(SimpleXMLElement $response)
     {

@@ -38,7 +38,7 @@ class Item
         $this->frequency = ResponseHelper::getIntProperty($response, 'frequency');
         $this->image = ResponseHelper::getStringProperty($response, 'image');
         $this->color = ResponseHelper::getStringProperty($response, 'color');
-        $this->selected = ResponseHelper::getBoolProperty($response, 'selected');
+        $this->selected = ResponseHelper::getBoolProperty($response->attributes(), 'selected');
         $this->addSubItems($response);
 
         if ($response->parameters) {
