@@ -5,6 +5,7 @@ namespace FINDOLOGIC\Api\Responses\Xml21;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use FINDOLOGIC\Api\Responses\Response;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Servers;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Query;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\LandingPage;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Promotion;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Results;
@@ -16,6 +17,9 @@ class Xml21Response extends Response
 {
     /** @var Servers $servers */
     private $servers;
+
+    /** @var Query $query */
+    private $query;
 
     /** @var LandingPage|null $landingPage */
     private $landingPage;
@@ -58,6 +62,7 @@ class Xml21Response extends Response
         $xmlResponse = new SimpleXMLElement($response);
 
         $this->servers = new Servers($xmlResponse->servers[0]);
+        $this->query = new Query($xmlResponse->query[0]);
 
         $this->landingPage = $this->getLandingPageFromResponse($xmlResponse);
         $this->promotion = $this->getPromotionFromResponse($xmlResponse);
@@ -67,6 +72,22 @@ class Xml21Response extends Response
             $productId = ResponseHelper::getStringProperty($product->attributes(), 'id', true);
             // Set product ids as keys for the products.
             $this->products[$productId] = new Product($product);
+        }
+
+        foreach ($xmlResponse->filters->main->children() as $filter) {
+            $filterName =  ResponseHelper::getStringProperty($filter, 'name');
+            // Set filter names as keys for the filters.
+            $this->mainFilters[$filterName] = new Filter($filter);
+            $this->hasMainFilters = true;
+            $this->mainFilterCount++;
+        }
+
+        foreach ($xmlResponse->filters->other->children() as $filter) {
+            $filterName =  ResponseHelper::getStringProperty($filter, 'name');
+            // Set filter names as keys for the filters.
+            $this->otherFilters[$filterName] = new Filter($filter);
+            $this->hasOtherFilters = true;
+            $this->otherFilterCount++;
         }
     }
 
@@ -106,6 +127,14 @@ class Xml21Response extends Response
     public function getServers()
     {
         return $this->servers;
+    }
+
+    /**
+     * @return Query
+     */
+    public function getQuery()
+    {
+        return $this->query;
     }
 
     /**
