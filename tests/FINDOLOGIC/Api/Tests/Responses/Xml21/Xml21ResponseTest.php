@@ -197,7 +197,7 @@ class Xml21ResponseTest extends TestCase
         $expectedFilterSelects = ['single'];
         $expectedSelectedItems = [null];
         $expectedFilterTypes = ['range-slider'];
-        $expectedFilterAmount = 1;
+        $expectedFilterCount = 1;
 
         $response = $this->getRealResponseData();
 
@@ -211,7 +211,7 @@ class Xml21ResponseTest extends TestCase
             $this->assertSame($expectedFilterTypes[$count], $filter->getType());
             $this->assertSame($expectedFilterSelects[$count], $filter->getSelect());
             $this->assertSame($expectedSelectedItems[$count], $filter->getSelectedItems());
-            $this->assertSame($expectedFilterAmount, $response->getMainFilterCount());
+            $this->assertSame($expectedFilterCount, $response->getMainFilterCount());
             $count++;
         }
     }
@@ -226,7 +226,7 @@ class Xml21ResponseTest extends TestCase
         $expectedFilterSelects = ['multiselect', 'multiple', 'multiple', 'single'];
         $expectedSelectedItems = [1, null, null, null];
         $expectedFilterTypes = ['color', 'select', 'select', 'select'];
-        $expectedFilterAmount = 4;
+        $expectedFilterCount = 4;
 
         $response = $this->getRealResponseData();
 
@@ -240,7 +240,7 @@ class Xml21ResponseTest extends TestCase
             $this->assertSame($expectedFilterTypes[$count], $filter->getType());
             $this->assertSame($expectedFilterSelects[$count], $filter->getSelect());
             $this->assertSame($expectedSelectedItems[$count], $filter->getSelectedItems());
-            $this->assertSame($expectedFilterAmount, $response->getOtherFilterCount());
+            $this->assertSame($expectedFilterCount, $response->getOtherFilterCount());
             $count++;
         }
     }
@@ -448,7 +448,7 @@ class Xml21ResponseTest extends TestCase
             foreach ($response->getOtherFilters() as $filter) {
                 if (count($filter->getItems()) > 0) {
                     foreach ($filter->getItems() as $item) {
-                        $actualSelected[] = $item->getSelected();
+                        $actualSelected[] = $item->isSelected();
                     }
                 } else {
                     $this->fail('The demo response should have items.');
@@ -500,7 +500,7 @@ class Xml21ResponseTest extends TestCase
             'name' => 'Beste Bücher',
             'weight' => 0.33799207210541,
             'frequency' => 5,
-            'items' => null,
+            'items' => [],
             'image' => null,
             'color' => null,
             'parameters' => null,
@@ -522,7 +522,7 @@ class Xml21ResponseTest extends TestCase
                                 $actualSubItemDetails['image'] = $subItem->getImage();
                                 $actualSubItemDetails['color'] = $subItem->getColor();
                                 $actualSubItemDetails['parameters'] = $subItem->getParameters();
-                                $actualSubItemDetails['selected'] = $subItem->getSelected();
+                                $actualSubItemDetails['selected'] = $subItem->isSelected();
                             }
                         }
                     }

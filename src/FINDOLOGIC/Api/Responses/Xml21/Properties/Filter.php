@@ -39,7 +39,7 @@ class Filter
 
     public function __construct(SimpleXMLElement $response)
     {
-        $this->itemCount = ResponseHelper::getIntProperty($response, 'itemCount');
+        $this->itemCount = ResponseHelper::getIntProperty($response, 'itemCount', true);
         $this->cssClass = ResponseHelper::getStringProperty($response, 'cssClass');
         $this->noAvailableFiltersText = ResponseHelper::getStringProperty($response, 'noAvailableFiltersText');
         $this->name = ResponseHelper::getStringProperty($response, 'name');

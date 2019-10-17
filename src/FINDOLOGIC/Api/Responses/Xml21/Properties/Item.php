@@ -16,8 +16,8 @@ class Item
     /** @var int|null $frequency */
     private $frequency;
 
-    /** @var Item[]|null $items */
-    private $items;
+    /** @var Item[] $items */
+    private $items = [];
 
     /** @var string|null $image */
     private $image;
@@ -28,7 +28,7 @@ class Item
     /** @var Range|null $parameters */
     private $parameters;
 
-    /** @var bool|null $selected */
+    /** @var bool $selected */
     private $selected;
 
     public function __construct(SimpleXMLElement $response)
@@ -38,7 +38,7 @@ class Item
         $this->frequency = ResponseHelper::getIntProperty($response, 'frequency');
         $this->image = ResponseHelper::getStringProperty($response, 'image');
         $this->color = ResponseHelper::getStringProperty($response, 'color');
-        $this->selected = ResponseHelper::getBoolProperty($response->attributes(), 'selected');
+        $this->selected = ResponseHelper::getBoolProperty($response->attributes(), 'selected') ? true : false;
         $this->addSubItems($response);
 
         if ($response->parameters) {
@@ -57,8 +57,6 @@ class Item
                 $itemName = ResponseHelper::getStringProperty($item, 'name');
                 $this->items[$itemName] = new Item($item);
             }
-        } else {
-            $this->items = null;
         }
     }
 
@@ -119,9 +117,9 @@ class Item
     }
 
     /**
-     * @return bool|null
+     * @return bool
      */
-    public function getSelected()
+    public function isSelected()
     {
         return $this->selected;
     }

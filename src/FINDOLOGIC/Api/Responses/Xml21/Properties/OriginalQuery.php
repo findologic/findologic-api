@@ -10,13 +10,16 @@ class OriginalQuery
     /** @var string $value */
     private $value;
 
-    /** @var bool|null $allowOverride */
+    /** @var bool $allowOverride */
     private $allowOverride;
 
     public function __construct(SimpleXMLElement $response)
     {
         $this->value = (string)$response;
-        $this->allowOverride = ResponseHelper::getBoolProperty($response->attributes(), 'allow-override');
+        $this->allowOverride = ResponseHelper::getBoolProperty(
+            $response->attributes(),
+            'allow-override'
+        ) ? true : false;
     }
 
     /**
@@ -28,7 +31,7 @@ class OriginalQuery
     }
 
     /**
-     * @return bool|null
+     * @return bool
      */
     public function getAllowOverride()
     {
