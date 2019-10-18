@@ -4,10 +4,10 @@ namespace FINDOLOGIC\Api\Tests\Responses;
 
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
 use FINDOLOGIC\Api\Responses\Response;
+use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
-use GuzzleHttp\Psr7\Response as GuzzleResponse;
 
 class ResponseTest extends TestCase
 {
