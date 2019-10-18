@@ -65,9 +65,14 @@ class TestBase extends TestCase
      * @param $expectedSearchRequestUrl
      * @param string $expectedRequestUrl
      * @param string $expectedBody
+     * @param string $expectedAlivetestBody
      */
-    protected function setExpectationsForAliveTestRequests($expectedSearchRequestUrl, $expectedRequestUrl, $expectedBody)
-    {
+    protected function setExpectationsForAliveTestRequests(
+        $expectedSearchRequestUrl,
+        $expectedRequestUrl,
+        $expectedBody,
+        $expectedAlivetestBody = 'alive'
+    ) {
         $this->httpClientMock->method('request')
             ->withConsecutive(
                 ['GET', $expectedRequestUrl, ['connect_timeout' => 1.0]],
@@ -76,13 +81,13 @@ class TestBase extends TestCase
             ->willReturnOnConsecutiveCalls($this->responseMock, $this->responseMock);
         $this->responseMock->method('getBody')
             ->with()
-            ->willReturnOnConsecutiveCalls($this->streamMock, $this->streamMock);
+            ->willReturnOnConsecutiveCalls($this->streamMock, $this->streamMock, $this->streamMock);
         $this->responseMock->method('getStatusCode')
             ->with()
             ->willReturnOnConsecutiveCalls(200);
         $this->streamMock->method('getContents')
             ->with()
-            ->willReturnOnConsecutiveCalls($expectedBody, $expectedBody);
+            ->willReturnOnConsecutiveCalls($expectedAlivetestBody, $expectedBody, $expectedBody);
     }
 
     protected function getMockResponse($file)

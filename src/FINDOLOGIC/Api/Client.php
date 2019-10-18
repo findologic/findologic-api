@@ -3,11 +3,12 @@
 namespace FINDOLOGIC\Api;
 
 use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
-use FINDOLOGIC\Api\RequestBuilders\AlivetestRequestBuilder;
-use FINDOLOGIC\Api\RequestBuilders\RequestBuilder;
-use FINDOLOGIC\Api\RequestBuilders\Xml20\NavigationRequestBuilder;
-use FINDOLOGIC\Api\RequestBuilders\Xml20\SearchRequestBuilder;
-use FINDOLOGIC\Api\ResponseObjects\Response;
+use FINDOLOGIC\Api\Requests\AlivetestRequest;
+use FINDOLOGIC\Api\Requests\Request;
+use FINDOLOGIC\Api\Requests\SearchNavigation\NavigationRequest;
+use FINDOLOGIC\Api\Requests\SearchNavigation\SearchNavigationRequest;
+use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
+use FINDOLOGIC\Api\Responses\Response;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
 
@@ -26,37 +27,37 @@ class Client
     /**
      * Sends a request to FINDOLOGIC. An alivetest may be sent if the request is a search or a navigation request.
      *
-     * @param RequestBuilder $requestBuilder
+     * @param Request $request
      * @return Response
      */
-    public function send(RequestBuilder $requestBuilder)
+    public function send(Request $request)
     {
-        $requestBuilder->checkRequiredParamsAreSet();
-        $alivetestResponse = $this->doAlivetest($requestBuilder);
+        $request->checkRequiredParamsAreSet();
+        $alivetestResponse = $this->doAlivetest($request);
 
         $requestStart = microtime(true);
-        $response = $this->sendRequest($requestBuilder);
+        $response = $this->sendRequest($request);
         $responseTime = microtime(true) - $requestStart;
 
-        return Response::buildInstance($requestBuilder, $response, $alivetestResponse, $responseTime);
+        return Response::buildInstance($request, $response, $alivetestResponse, $responseTime);
     }
 
     /**
-     * @param RequestBuilder $requestBuilder
+     * @param Request $request
      * @return GuzzleResponse
      * @throws ServiceNotAliveException If the request was not successful.
      */
-    private function sendRequest(RequestBuilder $requestBuilder)
+    private function sendRequest(Request $request)
     {
         $requestTimeout = $this->config->getRequestTimeout();
-        if (get_class($requestBuilder) === AlivetestRequestBuilder::class) {
+        if ($request instanceof AlivetestRequest) {
             $requestTimeout = $this->config->getAlivetestTimeout();
         }
 
         try {
             return $this->config->getHttpClient()->request(
                 self::METHOD_GET,
-                $requestBuilder->buildRequestUrl($this->config),
+                $request->buildRequestUrl($this->config),
                 ['connect_timeout' => $requestTimeout]
             );
         } catch (GuzzleException $e) {
@@ -65,23 +66,19 @@ class Client
     }
 
     /**
-     * Will do an alivetest if the given request builder requires one. An alivetest may be done if the request is a
-     * search or a navigation request.
+     * Will do an alivetest if the given Request requires one. An alivetest may be done if the Request is a
+     * SearchRequest/NavigationRequest.
      *
-     * @param RequestBuilder $requestBuilder
-     * @return GuzzleResponse|null
+     * @param Request $request
+     * @return GuzzleResponse|null|void
      */
-    private function doAlivetest(RequestBuilder $requestBuilder)
+    private function doAlivetest(Request $request)
     {
-        switch (get_class($requestBuilder)) {
-            case NavigationRequestBuilder::class:
-            case SearchRequestBuilder::class:
-                // We need to make sure that the alivetest uses the same parameters as the request itself.
-                $alivetestRequestBuilder = new AlivetestRequestBuilder();
-                $alivetestRequestBuilder->setParams($requestBuilder->getParams());
-                return $this->sendRequest($alivetestRequestBuilder);
-            default:
-                return null;
+        if ($request instanceof SearchNavigationRequest) {
+            // We need to make sure that the alivetest uses the same parameters as the request itself.
+            $alivetestRequest = new AlivetestRequest();
+            $alivetestRequest->setParams($request->getParams());
+            return $this->sendRequest($alivetestRequest);
         }
     }
 }
