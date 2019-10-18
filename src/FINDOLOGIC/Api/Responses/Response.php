@@ -2,7 +2,6 @@
 
 namespace FINDOLOGIC\Api\Responses;
 
-use DOMDocument;
 use FINDOLOGIC\Api\Definitions\OutputAdapter;
 use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
 use FINDOLOGIC\Api\Requests\Autocomplete\SuggestRequest;
@@ -63,7 +62,7 @@ abstract class Response
         if ($alivetestResponse !== null) {
             self::checkAlivetestBody($alivetestResponse);
         }
-        self::checkResponseIsValid($request, $response);
+        self::checkResponseIsValid($response);
 
         switch (true) {
             case $request instanceof SearchNavigationRequest:
@@ -124,22 +123,10 @@ abstract class Response
     /**
      * Checks if the response is valid. If not, an exception will be thrown.
      *
-     * @param Request $request
      * @param GuzzleResponse $response
      */
-    protected static function checkResponseIsValid(Request $request, GuzzleResponse $response)
+    protected static function checkResponseIsValid(GuzzleResponse $response)
     {
-        if ($request->getOutputAdapter() === OutputAdapter::XML_21) {
-            $xml= new DOMDocument();
-
-            libxml_use_internal_errors(true);
-            $xml->loadXML($response->getBody()->getContents());
-            if (!$xml->schemaValidate(__DIR__ . '/../../../../vendor/findologic/xml-response-schema/schema.xsd')) {
-                throw new ServiceNotAliveException(sprintf('The given response does not comply to the XML_2.1 schema.'));
-            }
-            libxml_use_internal_errors(false);
-        }
-
         $statusCode = $response->getStatusCode();
         if ($statusCode !== self::STATUS_OK) {
             throw new ServiceNotAliveException(sprintf('Unexpected status code %s.', $statusCode));

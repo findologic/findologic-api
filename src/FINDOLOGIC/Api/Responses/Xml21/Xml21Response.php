@@ -5,16 +5,21 @@ namespace FINDOLOGIC\Api\Responses\Xml21;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use FINDOLOGIC\Api\Responses\Response;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Servers;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Query;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\LandingPage;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Promotion;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Results;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Product;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter;
 use SimpleXMLElement;
 
 class Xml21Response extends Response
 {
     /** @var Servers $servers */
     private $servers;
+
+    /** @var Query $query */
+    private $query;
 
     /** @var LandingPage|null $landingPage */
     private $landingPage;
@@ -28,6 +33,24 @@ class Xml21Response extends Response
     /** @var Product[] $products */
     private $products = [];
 
+    /** @var Filter[] $mainFilters */
+    private $mainFilters = [];
+
+    /** @var Filter[] $otherFilters */
+    private $otherFilters = [];
+
+    /** @var bool $hasMainFilters */
+    private $hasMainFilters = false;
+
+    /** @var bool $hasMainFilters */
+    private $hasOtherFilters = false;
+
+    /** @var int $mainFilterCount */
+    private $mainFilterCount = 0;
+
+    /** @var int $otherFilterCount */
+    private $otherFilterCount = 0;
+
     /** @inheritDoc */
     public function __construct($response, $responseTime = null)
     {
@@ -39,6 +62,7 @@ class Xml21Response extends Response
         $xmlResponse = new SimpleXMLElement($response);
 
         $this->servers = new Servers($xmlResponse->servers[0]);
+        $this->query = new Query($xmlResponse->query[0]);
 
         $this->landingPage = $this->getLandingPageFromResponse($xmlResponse);
         $this->promotion = $this->getPromotionFromResponse($xmlResponse);
@@ -48,6 +72,22 @@ class Xml21Response extends Response
             $productId = ResponseHelper::getStringProperty($product->attributes(), 'id', true);
             // Set product ids as keys for the products.
             $this->products[$productId] = new Product($product);
+        }
+
+        foreach ($xmlResponse->filters->main->children() as $filter) {
+            $filterName =  ResponseHelper::getStringProperty($filter, 'name');
+            // Set filter names as keys for the filters.
+            $this->mainFilters[$filterName] = new Filter($filter);
+            $this->hasMainFilters = true;
+            $this->mainFilterCount++;
+        }
+
+        foreach ($xmlResponse->filters->other->children() as $filter) {
+            $filterName =  ResponseHelper::getStringProperty($filter, 'name');
+            // Set filter names as keys for the filters.
+            $this->otherFilters[$filterName] = new Filter($filter);
+            $this->hasOtherFilters = true;
+            $this->otherFilterCount++;
         }
     }
 
@@ -90,6 +130,14 @@ class Xml21Response extends Response
     }
 
     /**
+     * @return Query
+     */
+    public function getQuery()
+    {
+        return $this->query;
+    }
+
+    /**
      * @return LandingPage|null
      */
     public function getLandingPage()
@@ -119,5 +167,53 @@ class Xml21Response extends Response
     public function getProducts()
     {
         return $this->products;
+    }
+
+    /**
+     * @return Filter[]
+     */
+    public function getMainFilters()
+    {
+        return $this->mainFilters;
+    }
+
+    /**
+     * @return Filter[]
+     */
+    public function getOtherFilters()
+    {
+        return $this->otherFilters;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasMainFilters()
+    {
+        return $this->hasMainFilters;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasOtherFilters()
+    {
+        return $this->hasOtherFilters;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMainFilterCount()
+    {
+        return $this->mainFilterCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOtherFilterCount()
+    {
+        return $this->otherFilterCount;
     }
 }
