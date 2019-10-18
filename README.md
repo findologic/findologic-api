@@ -40,7 +40,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Client;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
-use FINDOLOGIC\Api\Responses\Xml20\Xml20Response
+use FINDOLOGIC\Api\Responses\Xml21\Xml21Response
 
 $config = new Config();
 // ServiceId/Shopkey, you can find it in the customer account.
@@ -57,7 +57,7 @@ $searchRequest
     ->setReferer($_SERVER['HTTP_REFERER']) // Page where search was fired
     ->setRevision('1.0.0'); // Version of your API wrapper
 
-/** @var Xml20Response $xmlResponse */
+/** @var Xml21Response $xmlResponse */
 $xmlResponse = $client->send($searchRequest);
 
 var_dump($xmlResponse->getFilters()); // Get all filters easily
@@ -71,8 +71,15 @@ Method calls, return values and examples can be found in our [Project Wiki](http
 ## Requirements
 
  * [PHP 5.6+](https://php.net/)
- * [PHP cURL extension](https://www.php.net/manual/en/curl.installation.php)
  * [Composer](https://getcomposer.org/)
+ 
+#### PHP packages
+ * [PHP cURL extension](https://www.php.net/manual/en/curl.installation.php)
+ * [PHP SimpleXML](https://www.php.net/manual/en/simplexml.installation.php)
+ * [PHP JSON](https://www.php.net/manual/en/json.installation.php)
+ * [PHP DOM](https://www.php.net/manual/en/dom.installation.php)
+ * [PHP libxml](https://www.php.net/manual/en/libxml.installation.php)
+
 
 ## Found a bug?
 

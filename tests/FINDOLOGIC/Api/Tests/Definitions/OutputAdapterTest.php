@@ -10,7 +10,6 @@ class OutputAdapterTest extends TestBase
     public function testAllQueryParametersAreAvailable()
     {
         $expectedAvailableOutputAdapter = [
-            'XML_20' => 'XML_2.0',
             'XML_21' => 'XML_2.1',
             'HTML_20' => 'HTML_2.0',
             'HTML_30' => 'HTML_3.0',

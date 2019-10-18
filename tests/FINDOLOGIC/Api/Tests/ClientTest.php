@@ -10,7 +10,6 @@ use FINDOLOGIC\Api\Requests\Autocomplete\SuggestRequest;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
 use FINDOLOGIC\Api\Responses\Autocomplete\SuggestResponse;
 use FINDOLOGIC\Api\Responses\Html\GenericHtmlResponse;
-use FINDOLOGIC\Api\Responses\Xml20\Xml20Response;
 use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
@@ -172,7 +171,7 @@ class ClientTest extends TestBase
         $expectedRequestUrl = 'https://service.findologic.com/ps/blubbergurken.de/index.php?' . $requestParams;
 
         $expectedAlivetestBody = 'alive';
-        $expectedSearchResultBody = $this->getMockResponse('Xml20/demoResponse.xml');
+        $expectedSearchResultBody = $this->getMockResponse('Xml21/demoResponse.xml');
 
         $this->setExpectationsForAlivetestRequestsWithASearch(
             $expectedAlivetestUrl,
@@ -191,7 +190,7 @@ class ClientTest extends TestBase
 
         $client = new Client($this->config);
 
-        /** @var Xml20Response $xmlResponse */
+        /** @var Xml21Response $xmlResponse */
         $xmlResponse = $client->send($searchRequest);
 
         // Local response time should be fast since the data will not be sent to another server, but instead it

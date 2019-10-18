@@ -4,6 +4,7 @@ namespace FINDOLOGIC\Api\Requests;
 
 use FINDOLOGIC\Api\Client;
 use FINDOLOGIC\Api\Config;
+use FINDOLOGIC\Api\Definitions\OutputAdapter;
 use FINDOLOGIC\Api\Definitions\QueryParameter;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\Exceptions\ParamNotSetException;
@@ -32,7 +33,7 @@ abstract class Request
     protected $client;
 
     /** @var string */
-    protected $outputAdapter = 'XML_2.0';
+    protected $outputAdapter = OutputAdapter::XML_21;
 
     /**
      * Gets all currently set params.

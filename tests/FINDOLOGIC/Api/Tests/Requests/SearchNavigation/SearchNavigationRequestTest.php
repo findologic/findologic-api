@@ -8,7 +8,7 @@ use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\Exceptions\ParamNotSetException;
 use FINDOLOGIC\Api\Requests\SearchNavigation\NavigationRequest;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
-use FINDOLOGIC\Api\Responses\Xml20\Xml20Response;
+use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
 use FINDOLOGIC\Api\Tests\TestBase;
 use InvalidArgumentException;
 
@@ -35,7 +35,7 @@ class SearchNavigationRequestTest extends TestBase
             ->setServiceId('ABCDABCDABCDABCDABCDABCDABCDABCD')
             ->setHttpClient($this->httpClientMock);
 
-        $this->rawMockResponse = $this->getMockResponse('Xml20/demoResponse.xml');
+        $this->rawMockResponse = $this->getMockResponse('Xml21/demoResponse.xml');
     }
 
     public function requiredParamsProvider()
@@ -82,7 +82,7 @@ class SearchNavigationRequestTest extends TestBase
 
         $searchRequest->setQuery('');
 
-        /** @var Xml20Response $response */
+        /** @var Xml21Response $response */
         $response = $client->send($searchRequest);
         $this->assertEquals(0, $response->getResponseTime(), '', 0.1);
     }
@@ -133,7 +133,7 @@ class SearchNavigationRequestTest extends TestBase
 
         $navigationRequest->setRevision('2.5.10');
 
-        /** @var Xml20Response $response */
+        /** @var Xml21Response $response */
         $response = $client->send($navigationRequest);
         $this->assertEquals(0, $response->getResponseTime(), '', 0.1);
     }
