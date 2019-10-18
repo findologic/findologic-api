@@ -85,7 +85,7 @@ class Item
     }
 
     /**
-     * @return Item[]|null
+     * @return Item[]
      */
     public function getItems()
     {

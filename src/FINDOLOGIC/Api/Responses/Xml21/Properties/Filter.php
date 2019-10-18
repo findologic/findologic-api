@@ -46,12 +46,7 @@ class Filter
         $this->display = ResponseHelper::getStringProperty($response, 'display');
         $this->select = ResponseHelper::getStringProperty($response, 'select');
         $this->type = ResponseHelper::getStringProperty($response, 'type');
-
-        if ($value = ResponseHelper::getIntProperty($response, 'selectedItems')) {
-            $this->selectedItems = $value;
-        } else {
-            $this->selectedItems = 0;
-        }
+        $this->selectedItems = ResponseHelper::getIntProperty($response, 'selectedItems') ?: 0;
 
         if ($response->attributes) {
             $this->attributes = new Attributes($response->attributes);
