@@ -12,7 +12,7 @@
 This library not only helps requesting the FINDOLOGIC API but also getting data from the response and mapping them to corresponding objects.
 You won't have to mess around with sending requests and getting the data from the FINDOLOGICs response anymore.  
 
-You want to get filters? Just call `->getFilters()` on your response object. It really is that simple and if you dont trust us,
+You want to get filters? Just call `->getMainFilters()` on your response object. It really is that simple and if you dont trust us,
 try out the [Basic Usage](#basic-usage) or test the [Examples](#examples).
 
 To have a better understanding about the API, please make sure to read the general FINDOLOGIC API documentation. We already got you covered with quicklinks to it:
