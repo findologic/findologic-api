@@ -35,7 +35,7 @@ class Item
     {
         $this->name = ResponseHelper::getStringProperty($response, 'name');
         $this->weight = ResponseHelper::getFloatProperty($response, 'weight');
-        $this->frequency = ResponseHelper::getIntProperty($response, 'frequency');
+        $this->frequency = ResponseHelper::getIntProperty($response, 'frequency', true);
         $this->image = ResponseHelper::getStringProperty($response, 'image');
         $this->color = ResponseHelper::getStringProperty($response, 'color');
         $this->selected = ResponseHelper::getBoolProperty($response->attributes(), 'selected') ? true : false;

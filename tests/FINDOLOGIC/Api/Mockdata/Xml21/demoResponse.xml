@@ -124,6 +124,7 @@
                 </items>
             </filter>
             <filter>
+                <itemCount>0</itemCount>
                 <noAvailableFiltersText>Keine Hersteller</noAvailableFiltersText>
                 <name>vendor</name>
                 <display>Hersteller</display>
@@ -148,6 +149,7 @@
                 </items>
             </filter>
             <filter>
+                <itemCount>-2</itemCount>
                 <name>cat</name>
                 <display>Kategorie</display>
                 <select>single</select>
@@ -161,7 +163,7 @@
                             <item>
                                 <name>Beste Bücher</name>
                                 <weight>0.33799207210541</weight>
-                                <frequency>5</frequency>
+                                <frequency>0</frequency>
                             </item>
                         </items>
                     </item>

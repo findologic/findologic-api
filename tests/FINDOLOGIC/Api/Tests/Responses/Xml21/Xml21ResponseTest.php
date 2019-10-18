@@ -190,7 +190,7 @@ class Xml21ResponseTest extends TestCase
         $expectedFilterNames = ['price'];
         $expectedFilterDisplays = ['Preis'];
         $expectedFilterSelects = ['single'];
-        $expectedSelectedItems = [null];
+        $expectedSelectedItems = [0];
         $expectedFilterTypes = ['range-slider'];
         $expectedFilterCount = 1;
 
@@ -213,13 +213,13 @@ class Xml21ResponseTest extends TestCase
 
     public function testResponseWillReturnOtherFiltersAsExpected()
     {
-        $expectedFilterItemCounts = [null, 2, null, null];
+        $expectedFilterItemCounts = [null, 2, 0, -2];
         $expectedFilterCssClasses = [null, 'fl-material', null, null];
         $expectedNoAvailableFiltersTexts = [null, null, 'Keine Hersteller', null];
         $expectedFilterNames = ['Farbe', 'Material', 'vendor', 'cat'];
         $expectedFilterDisplays = ['Farbe', 'Material', 'Hersteller', 'Kategorie'];
         $expectedFilterSelects = ['multiselect', 'multiple', 'multiple', 'single'];
-        $expectedSelectedItems = [1, null, null, null];
+        $expectedSelectedItems = [1, 0, 0, 0];
         $expectedFilterTypes = ['color', 'select', 'select', 'select'];
         $expectedFilterCount = 4;
 
@@ -494,7 +494,7 @@ class Xml21ResponseTest extends TestCase
         $expectedSubItemDetails = [
             'name' => 'Beste Bücher',
             'weight' => 0.33799207210541,
-            'frequency' => 5,
+            'frequency' => 0,
             'items' => [],
             'image' => null,
             'color' => null,

@@ -25,8 +25,8 @@ class Filter
     /** @var string $select */
     private $select;
 
-    /** @var int|null $selectedItems */
-    private $selectedItems;
+    /** @var int $selectedItems */
+    private $selectedItems = 0;
 
     /** @var string $type */
     private $type;
@@ -45,8 +45,13 @@ class Filter
         $this->name = ResponseHelper::getStringProperty($response, 'name');
         $this->display = ResponseHelper::getStringProperty($response, 'display');
         $this->select = ResponseHelper::getStringProperty($response, 'select');
-        $this->selectedItems = ResponseHelper::getIntProperty($response, 'selectedItems');
         $this->type = ResponseHelper::getStringProperty($response, 'type');
+
+        if ($value = ResponseHelper::getIntProperty($response, 'selectedItems')) {
+            $this->selectedItems = $value;
+        } else {
+            $this->selectedItems = 0;
+        }
 
         if ($response->attributes) {
             $this->attributes = new Attributes($response->attributes);
@@ -110,7 +115,7 @@ class Filter
     }
 
     /**
-     * @return int|null
+     * @return int
      */
     public function getSelectedItems()
     {
