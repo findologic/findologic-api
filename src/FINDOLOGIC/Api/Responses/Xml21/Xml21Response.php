@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Api\Responses\Xml21;
 
+use Exception;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use FINDOLOGIC\Api\Responses\Response;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter;
@@ -51,12 +52,6 @@ class Xml21Response extends Response
     /** @var int $otherFilterCount */
     private $otherFilterCount = 0;
 
-    /** @inheritDoc */
-    public function __construct($response, $responseTime = null)
-    {
-        parent::__construct($response, $responseTime);
-    }
-
     protected function buildResponseElementInstances($response)
     {
         $xmlResponse = new SimpleXMLElement($response);
@@ -68,26 +63,28 @@ class Xml21Response extends Response
         $this->promotion = $this->getPromotionFromResponse($xmlResponse);
         $this->results = new Results($xmlResponse->results[0]);
 
-        foreach ($xmlResponse->products->children() as $product) {
-            $productId = ResponseHelper::getStringProperty($product->attributes(), 'id', true);
-            // Set product ids as keys for the products.
-            $this->products[$productId] = new Product($product);
-        }
-
-        foreach ($xmlResponse->filters->main->children() as $filter) {
-            $filterName =  ResponseHelper::getStringProperty($filter, 'name');
-            // Set filter names as keys for the filters.
-            $this->mainFilters[$filterName] = new Filter($filter);
-            $this->hasMainFilters = true;
-            $this->mainFilterCount++;
-        }
-
-        foreach ($xmlResponse->filters->other->children() as $filter) {
-            $filterName =  ResponseHelper::getStringProperty($filter, 'name');
-            // Set filter names as keys for the filters.
-            $this->otherFilters[$filterName] = new Filter($filter);
-            $this->hasOtherFilters = true;
-            $this->otherFilterCount++;
+        try {
+            foreach ($xmlResponse->products->children() as $product) {
+                $productId = ResponseHelper::getStringProperty($product->attributes(), 'id', true);
+                // Set product ids as keys for the products.
+                $this->products[$productId] = new Product($product);
+            }
+            foreach ($xmlResponse->filters->main->children() as $filter) {
+                $filterName = ResponseHelper::getStringProperty($filter, 'name');
+                // Set filter names as keys for the filters.
+                $this->mainFilters[$filterName] = new Filter($filter);
+                $this->hasMainFilters = true;
+                $this->mainFilterCount++;
+            }
+            foreach ($xmlResponse->filters->other->children() as $filter) {
+                $filterName = ResponseHelper::getStringProperty($filter, 'name');
+                // Set filter names as keys for the filters.
+                $this->otherFilters[$filterName] = new Filter($filter);
+                $this->hasOtherFilters = true;
+                $this->otherFilterCount++;
+            }
+        } catch (Exception $ignored) {
+            // Do nothing if an exception is thrown as it does not need to be executed on error
         }
     }
 
@@ -101,9 +98,9 @@ class Xml21Response extends Response
     {
         if ($xmlResponse->landingPage) {
             return new LandingPage($xmlResponse->landingPage[0]->attributes());
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -116,9 +113,9 @@ class Xml21Response extends Response
     {
         if ($xmlResponse->promotion) {
             return new Promotion($xmlResponse->promotion[0]->attributes());
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
