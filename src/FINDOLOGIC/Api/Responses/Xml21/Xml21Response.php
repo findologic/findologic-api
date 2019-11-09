@@ -69,6 +69,11 @@ class Xml21Response extends Response
                 // Set product ids as keys for the products.
                 $this->products[$productId] = new Product($product);
             }
+        } catch (Exception $ignored) {
+            // Do nothing if an exception is thrown as it does not need to be executed on error
+        }
+
+        try {
             foreach ($xmlResponse->filters->main->children() as $filter) {
                 $filterName = ResponseHelper::getStringProperty($filter, 'name');
                 // Set filter names as keys for the filters.
@@ -76,6 +81,11 @@ class Xml21Response extends Response
                 $this->hasMainFilters = true;
                 $this->mainFilterCount++;
             }
+        } catch (Exception $ignored) {
+            // Do nothing if an exception is thrown as it does not need to be executed on error
+        }
+
+        try {
             foreach ($xmlResponse->filters->other->children() as $filter) {
                 $filterName = ResponseHelper::getStringProperty($filter, 'name');
                 // Set filter names as keys for the filters.
@@ -86,6 +96,7 @@ class Xml21Response extends Response
         } catch (Exception $ignored) {
             // Do nothing if an exception is thrown as it does not need to be executed on error
         }
+
     }
 
     /**
