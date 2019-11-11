@@ -96,7 +96,6 @@ class Xml21Response extends Response
         } catch (Exception $ignored) {
             // Do nothing if an exception is thrown as it does not need to be executed on error
         }
-
     }
 
     /**
