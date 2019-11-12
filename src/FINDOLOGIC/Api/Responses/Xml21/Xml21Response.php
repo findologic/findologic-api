@@ -2,7 +2,6 @@
 
 namespace FINDOLOGIC\Api\Responses\Xml21;
 
-use Exception;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use FINDOLOGIC\Api\Responses\Response;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter;
@@ -63,17 +62,15 @@ class Xml21Response extends Response
         $this->promotion = $this->getPromotionFromResponse($xmlResponse);
         $this->results = new Results($xmlResponse->results[0]);
 
-        try {
+        if (!empty($xmlResponse->products) && !empty($xmlResponse->products->children())) {
             foreach ($xmlResponse->products->children() as $product) {
                 $productId = ResponseHelper::getStringProperty($product->attributes(), 'id', true);
                 // Set product ids as keys for the products.
                 $this->products[$productId] = new Product($product);
             }
-        } catch (Exception $ignored) {
-            // Do nothing if an exception is thrown as it does not need to be executed on error
         }
 
-        try {
+        if (!empty($xmlResponse->filters->main) && !empty($xmlResponse->filters->main->children())) {
             foreach ($xmlResponse->filters->main->children() as $filter) {
                 $filterName = ResponseHelper::getStringProperty($filter, 'name');
                 // Set filter names as keys for the filters.
@@ -81,11 +78,9 @@ class Xml21Response extends Response
                 $this->hasMainFilters = true;
                 $this->mainFilterCount++;
             }
-        } catch (Exception $ignored) {
-            // Do nothing if an exception is thrown as it does not need to be executed on error
         }
 
-        try {
+        if (!empty($xmlResponse->filters->other) && !empty($xmlResponse->filters->other->children())) {
             foreach ($xmlResponse->filters->other->children() as $filter) {
                 $filterName = ResponseHelper::getStringProperty($filter, 'name');
                 // Set filter names as keys for the filters.
@@ -93,8 +88,6 @@ class Xml21Response extends Response
                 $this->hasOtherFilters = true;
                 $this->otherFilterCount++;
             }
-        } catch (Exception $ignored) {
-            // Do nothing if an exception is thrown as it does not need to be executed on error
         }
     }
 

@@ -531,4 +531,25 @@ class Xml21ResponseTest extends TestCase
 
         $this->assertSame($expectedSubItemDetails, $actualSubItemDetails);
     }
+
+    public function testResponseWillNotBreakIfNoProductsAreFound()
+    {
+        $response = $this->getRealResponseData('demoResponseWithoutProducts.xml');
+
+        $this->assertCount(0, $response->getProducts());
+    }
+
+    public function testResponseWillNotBreakIfNoMainFiltersAreFound()
+    {
+        $response = $this->getRealResponseData('demoResponseWithoutMainFilters.xml');
+
+        $this->assertSame(0, $response->getMainFilterCount());
+    }
+
+    public function testResponseWillNotBreakIfNoOtherFiltersAreFound()
+    {
+        $response = $this->getRealResponseData('demoResponseWithoutOtherFilters.xml');
+
+        $this->assertSame(0, $response->getOtherFilterCount());
+    }
 }
