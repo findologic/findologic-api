@@ -60,7 +60,8 @@ $searchRequest
 /** @var Xml21Response $xmlResponse */
 $xmlResponse = $client->send($searchRequest);
 
-var_dump($xmlResponse->getFilters()); // Get all filters easily
+var_dump($xmlResponse->getMainFilters()); // Get all main filters easily
+var_dump($xmlResponse->getOtherFilters()); // Get all other filters easily
 var_dump($xmlResponse); // Entire response, full of helper methods
 ```
 

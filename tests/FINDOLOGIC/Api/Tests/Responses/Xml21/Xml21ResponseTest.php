@@ -532,42 +532,6 @@ class Xml21ResponseTest extends TestCase
         $this->assertSame($expectedSubItemDetails, $actualSubItemDetails);
     }
 
-    public function testResponseWithoutLandingPageWillReturnNullWhenCallingIt()
-    {
-        $expectedLandingPage = null;
-        $response = $this->getRealResponseData('demoResponseWithoutLandingPage.xml');
-        $actualLandingPage = $response->getLandingPage();
-
-        $this->assertSame($expectedLandingPage, $actualLandingPage);
-    }
-
-    public function testResponseWithoutPromotionWillReturnNullWhenCallingIt()
-    {
-        $expectedPromotion = null;
-        $response = $this->getRealResponseData('demoResponseWithoutPromotion.xml');
-        $actualPromotion = $response->getPromotion();
-
-        $this->assertSame($expectedPromotion, $actualPromotion);
-    }
-
-    public function testResponseWithoutAllowOverrideWillReturnNullWhenCallingIt()
-    {
-        $expectedAllowOverride = null;
-        $response = $this->getRealResponseData('demoResponseWithoutAllowOverride.xml');
-        $actualAllowOverride = $response->getQuery()->getOriginalQuery()->getAllowOverride();
-
-        $this->assertSame($expectedAllowOverride, $actualAllowOverride);
-    }
-
-    public function testResponseWithoutOriginalQueryWillReturnNullWhenCallingIt()
-    {
-        $expectedOriginalQuery = null;
-        $response = $this->getRealResponseData('demoResponseWithoutOriginalQuery.xml');
-        $actualOriginalQuery = $response->getQuery()->getOriginalQuery();
-
-        $this->assertSame($expectedOriginalQuery, $actualOriginalQuery);
-    }
-
     public function testResponseWillNotBreakIfNoProductsAreFound()
     {
         $response = $this->getRealResponseData('demoResponseWithoutProducts.xml');
