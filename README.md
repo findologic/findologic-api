@@ -1,6 +1,6 @@
 # FINDOLOGIC API
 
-> Version v1.0.0
+> Version v1.0.x
 
 [![Build Status](https://travis-ci.org/findologic/findologic-api.svg?branch=master)](https://travis-ci.org/findologic/findologic-api)
 [![Maintainability](https://api.codeclimate.com/v1/badges/b7efba0a8475fc2095cc/maintainability)](https://codeclimate.com/github/findologic/findologic-api/maintainability)
@@ -60,7 +60,8 @@ $searchRequest
 /** @var Xml21Response $xmlResponse */
 $xmlResponse = $client->send($searchRequest);
 
-var_dump($xmlResponse->getFilters()); // Get all filters easily
+var_dump($xmlResponse->getMainFilters()); // Get all main filters easily
+var_dump($xmlResponse->getOtherFilters()); // Get all other filters easily
 var_dump($xmlResponse); // Entire response, full of helper methods
 ```
 
