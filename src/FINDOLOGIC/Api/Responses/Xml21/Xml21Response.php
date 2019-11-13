@@ -51,12 +51,6 @@ class Xml21Response extends Response
     /** @var int $otherFilterCount */
     private $otherFilterCount = 0;
 
-    /** @inheritDoc */
-    public function __construct($response, $responseTime = null)
-    {
-        parent::__construct($response, $responseTime);
-    }
-
     protected function buildResponseElementInstances($response)
     {
         $xmlResponse = new SimpleXMLElement($response);
@@ -68,26 +62,32 @@ class Xml21Response extends Response
         $this->promotion = $this->getPromotionFromResponse($xmlResponse);
         $this->results = new Results($xmlResponse->results[0]);
 
-        foreach ($xmlResponse->products->children() as $product) {
-            $productId = ResponseHelper::getStringProperty($product->attributes(), 'id', true);
-            // Set product ids as keys for the products.
-            $this->products[$productId] = new Product($product);
+        if (!empty($xmlResponse->products) && !empty($xmlResponse->products->children())) {
+            foreach ($xmlResponse->products->children() as $product) {
+                $productId = ResponseHelper::getStringProperty($product->attributes(), 'id', true);
+                // Set product ids as keys for the products.
+                $this->products[$productId] = new Product($product);
+            }
         }
 
-        foreach ($xmlResponse->filters->main->children() as $filter) {
-            $filterName =  ResponseHelper::getStringProperty($filter, 'name');
-            // Set filter names as keys for the filters.
-            $this->mainFilters[$filterName] = new Filter($filter);
-            $this->hasMainFilters = true;
-            $this->mainFilterCount++;
+        if (!empty($xmlResponse->filters->main) && !empty($xmlResponse->filters->main->children())) {
+            foreach ($xmlResponse->filters->main->children() as $filter) {
+                $filterName = ResponseHelper::getStringProperty($filter, 'name');
+                // Set filter names as keys for the filters.
+                $this->mainFilters[$filterName] = new Filter($filter);
+                $this->hasMainFilters = true;
+                $this->mainFilterCount++;
+            }
         }
 
-        foreach ($xmlResponse->filters->other->children() as $filter) {
-            $filterName =  ResponseHelper::getStringProperty($filter, 'name');
-            // Set filter names as keys for the filters.
-            $this->otherFilters[$filterName] = new Filter($filter);
-            $this->hasOtherFilters = true;
-            $this->otherFilterCount++;
+        if (!empty($xmlResponse->filters->other) && !empty($xmlResponse->filters->other->children())) {
+            foreach ($xmlResponse->filters->other->children() as $filter) {
+                $filterName = ResponseHelper::getStringProperty($filter, 'name');
+                // Set filter names as keys for the filters.
+                $this->otherFilters[$filterName] = new Filter($filter);
+                $this->hasOtherFilters = true;
+                $this->otherFilterCount++;
+            }
         }
     }
 
@@ -101,9 +101,9 @@ class Xml21Response extends Response
     {
         if ($xmlResponse->landingPage) {
             return new LandingPage($xmlResponse->landingPage[0]->attributes());
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -116,9 +116,9 @@ class Xml21Response extends Response
     {
         if ($xmlResponse->promotion) {
             return new Promotion($xmlResponse->promotion[0]->attributes());
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
