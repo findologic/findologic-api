@@ -544,6 +544,8 @@ class Xml21ResponseTest extends TestCase
         $response = $this->getRealResponseData('demoResponseWithoutMainFilters.xml');
 
         $this->assertSame(0, $response->getMainFilterCount());
+        $this->assertEmpty($response->getMainFilters());
+        $this->assertFalse($response->hasMainFilters());
     }
 
     public function testResponseWillNotBreakIfNoOtherFiltersAreFound()
@@ -551,5 +553,7 @@ class Xml21ResponseTest extends TestCase
         $response = $this->getRealResponseData('demoResponseWithoutOtherFilters.xml');
 
         $this->assertSame(0, $response->getOtherFilterCount());
+        $this->assertEmpty($response->getOtherFilters());
+        $this->assertFalse($response->hasOtherFilters());
     }
 }
