@@ -16,7 +16,6 @@ abstract class SearchNavigationRequest extends Request
     {
         $this->addRequiredParams([
             QueryParameter::USER_IP,
-            QueryParameter::REFERER,
             QueryParameter::REVISION,
         ]);
     }
@@ -42,7 +41,7 @@ abstract class SearchNavigationRequest extends Request
     }
 
     /**
-     * Sets the referer param. It is used to determine on which page a search was fired. Required.
+     * Sets the referer param. It is used to determine on which page a search was fired.
      *
      * @param $value string
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#required_parameters
