@@ -44,7 +44,6 @@ class SearchNavigationRequestTest extends TestBase
             'config' => [[
                 'shopurl' => 'blubbergurken.io',
                 'userip' => '127.0.0.1',
-                'referer' => 'https://blubbergurken.io/blubbergurken-sale/',
                 'revision' => '1.0.0',
             ]]
         ];
@@ -116,14 +115,6 @@ class SearchNavigationRequestTest extends TestBase
         }
 
         $navigationRequest->setUserIp('127.0.0.1');
-        try {
-            $client->send($navigationRequest);
-            $this->fail('An exception was expected to happen if the referer param is not set.');
-        } catch (ParamNotSetException $e) {
-            $this->assertEquals('Required param referer is not set.', $e->getMessage());
-        }
-
-        $navigationRequest->setReferer('https://blubbergurken.io/blubbergurken-sale/');
         try {
             $client->send($navigationRequest);
             $this->fail('An exception was expected to happen if the revision param is not set.');
