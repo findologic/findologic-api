@@ -28,7 +28,7 @@
     },
     "require": {
         "php": ">=5.6",
-        "guzzlehttp/guzzle": "^6.3",
+        "guzzlehttp/guzzle": "~6.5",
         "vlucas/valitron": "^1.4",
         "ext-SimpleXML": "*",
         "ext-json": "*",
