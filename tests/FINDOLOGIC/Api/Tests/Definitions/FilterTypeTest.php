@@ -7,7 +7,7 @@ use FINDOLOGIC\Api\Tests\TestBase;
 
 class FilterTypeTest extends TestBase
 {
-    public function testAllBlockTypesAreAvailable()
+    public function testAllFilterTypesAreAvailable()
     {
         $expectedAvailableFilterTypes = [
             'SELECT' => 'select',
