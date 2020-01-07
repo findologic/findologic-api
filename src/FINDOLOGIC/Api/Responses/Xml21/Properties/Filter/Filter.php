@@ -135,11 +135,12 @@ abstract class Filter
     public static function getInstance(SimpleXMLElement $filter)
     {
         $filterName = ResponseHelper::getStringProperty($filter, 'name');
-        $filterType = ResponseHelper::getStringProperty($filter, 'type');
 
         if ($filterName === 'cat') {
             return new CategoryFilter($filter);
         }
+
+        $filterType = ResponseHelper::getStringProperty($filter, 'type');
 
         switch ($filterType) {
             case FilterType::SELECT:

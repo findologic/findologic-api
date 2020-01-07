@@ -304,15 +304,9 @@ class Xml21ResponseTest extends TestCase
     {
         // Weights do have a float value, but checking the value to its 1:1 value is unnecessary.
         $expectedWeight = [
-            0.10730088502169,
-            0.3296460211277,
-            0.90265488624573, // Farbe
-            0.038716815412045,
-            0.63053095340729,
-            0.12168141454458, // Material
-            0.0022123893722892,
-            0.08517698943615,
-            0.13495574891567, // Hersteller
+            0.10730088502169, 0.3296460211277, 0.90265488624573, // Farbe
+            0.038716815412045, 0.63053095340729, 0.12168141454458, // Material
+            0.0022123893722892, 0.08517698943615, 0.13495574891567, // Hersteller
             0.25156819820404, // Kategorie
         ];
 
@@ -338,15 +332,9 @@ class Xml21ResponseTest extends TestCase
     public function testResponseWillReturnNamesOfItemsAsExpected()
     {
         $expectedNames = [
-            'beige',
-            'blau',
-            'braun', // Farbe
-            'Hartgepäck',
-            'Leder',
-            'Nylon', // Material
-            'Bodenschatz',
-            'Braun Büffel',
-            'Camel Active', // Hersteller
+            'beige', 'blau', 'braun', // Farbe
+            'Hartgepäck', 'Leder', 'Nylon', // Material
+            'Bodenschatz', 'Braun Büffel', 'Camel Active', // Hersteller
             'Buch', // Kategorie
         ];
 
@@ -375,12 +363,8 @@ class Xml21ResponseTest extends TestCase
             'https://blubbergurken.io/farbfilter/beige.gif',
             'https://blubbergurken.io/farbfilter/blau.gif',
             'https://blubbergurken.io/farbfilter/braun.gif', // Farbe
-            null,
-            null,
-            null, // Material
-            null,
-            null,
-            null, // Hersteller
+            null, null, null, // Material
+            null, null, null, // Hersteller
             null, // Kategorie
         ];
 
@@ -406,15 +390,9 @@ class Xml21ResponseTest extends TestCase
     public function testResponseWillReturnColorsOfItemsAsExpected()
     {
         $expectedColors = [
-            '#F5F5DC',
-            '#3c6380',
-            '#94651e', // Farbe
-            null,
-            null,
-            null, // Material
-            null,
-            null,
-            null, // Hersteller
+            '#F5F5DC', '#3c6380', '#94651e', // Farbe
+            null, null, null, // Material
+            null, null, null, // Hersteller
             null, // Kategorie
         ];
 
@@ -440,15 +418,9 @@ class Xml21ResponseTest extends TestCase
     public function testResponseWillReturnFrequencyOfItemsAsExpected()
     {
         $expectedFrequencies = [
-            null,
-            null,
-            null, // Farbe
-            35,
-            1238,
-            110, // Material
-            2,
-            77,
-            122, // Hersteller
+            null, null, null, // Farbe
+            35, 1238, 110, // Material
+            2, 77, 122, // Hersteller
             5, // Kategorie
         ];
 
@@ -474,15 +446,9 @@ class Xml21ResponseTest extends TestCase
     public function testResponseWillReturnSelectedOfItemsAsExpected()
     {
         $expectedSelected = [
-            null,
-            true,
-            null, // Farbe
-            null,
-            null,
-            null, // Material
-            null,
-            null,
-            null, // Hersteller
+            null, true, null, // Farbe
+            null, null, null, // Material
+            null, null, null, // Hersteller
             null, // Kategorie
         ];
 
