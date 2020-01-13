@@ -41,13 +41,13 @@
         "friendsofphp/php-cs-fixer": "^2.14"
     },
     "autoload": {
-        "psr-0": {
-            "FINDOLOGIC\\Api": "src/"
+        "psr-4": {
+            "FINDOLOGIC\\Api\\": "src/"
         }
     },
     "autoload-dev": {
-        "psr-0": {
-            "FINDOLOGIC\\Api\\Tests": "tests/"
+        "psr-4": {
+            "FINDOLOGIC\\Api\\Tests\\": "tests/FINDOLOGIC/Api/Tests/"
         }
     },
     "scripts": {
