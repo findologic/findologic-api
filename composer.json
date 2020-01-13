@@ -47,7 +47,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "FINDOLOGIC\\Api\\Tests\\": "tests/FINDOLOGIC/Api/Tests/"
+            "FINDOLOGIC\\Api\\Tests\\": "tests/Tests/"
         }
     },
     "scripts": {
