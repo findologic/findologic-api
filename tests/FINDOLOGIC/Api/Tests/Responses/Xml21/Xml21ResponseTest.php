@@ -2,6 +2,12 @@
 
 namespace FINDOLOGIC\Api\Tests\Responses\Xml21;
 
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\CategoryFilter;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\ColorPickerFilter;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\LabelTextFilter;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\RangeSliderFilter;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\SelectDropdownFilter;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\VendorImageFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
 use PHPUnit\Framework\TestCase;
 
@@ -11,12 +17,14 @@ class Xml21ResponseTest extends TestCase
      * Will use a real response that could come from a request. It returns the Object.
      *
      * @param string $filename
+     *
      * @return Xml21Response
      */
     public function getRealResponseData($filename = 'demoResponse.xml')
     {
         // Get contents from a real response locally.
         $realResponseData = file_get_contents(__DIR__ . '/../../../Mockdata/Xml21/' . $filename);
+
         return new Xml21Response($realResponseData);
     }
 
@@ -191,7 +199,7 @@ class Xml21ResponseTest extends TestCase
         $expectedFilterDisplays = ['Preis'];
         $expectedFilterSelects = ['single'];
         $expectedSelectedItems = [0];
-        $expectedFilterTypes = ['range-slider'];
+        $expectedFilterTypes = [RangeSliderFilter::class];
         $expectedFilterCount = 1;
 
         $response = $this->getRealResponseData();
@@ -203,7 +211,7 @@ class Xml21ResponseTest extends TestCase
             $this->assertSame($expectedNoAvailableFiltersTexts[$count], $filter->getNoAvailableFiltersText());
             $this->assertSame($expectedFilterDisplays[$count], $filter->getDisplay());
             $this->assertSame($expectedFilterNames[$count], $filter->getName());
-            $this->assertSame($expectedFilterTypes[$count], $filter->getType());
+            $this->assertInstanceOf($expectedFilterTypes[$count], $filter);
             $this->assertSame($expectedFilterSelects[$count], $filter->getSelect());
             $this->assertSame($expectedSelectedItems[$count], $filter->getSelectedItems());
             $this->assertSame($expectedFilterCount, $response->getMainFilterCount());
@@ -213,17 +221,24 @@ class Xml21ResponseTest extends TestCase
 
     public function testResponseWillReturnOtherFiltersAsExpected()
     {
-        $expectedFilterItemCounts = [null, 2, 0, -2];
-        $expectedFilterCssClasses = [null, 'fl-material', null, null];
-        $expectedNoAvailableFiltersTexts = [null, null, 'Keine Hersteller', null];
-        $expectedFilterNames = ['Farbe', 'Material', 'vendor', 'cat'];
-        $expectedFilterDisplays = ['Farbe', 'Material', 'Hersteller', 'Kategorie'];
-        $expectedFilterSelects = ['multiselect', 'multiple', 'multiple', 'single'];
-        $expectedSelectedItems = [1, 0, 0, 0];
-        $expectedFilterTypes = ['color', 'select', 'select', 'select'];
-        $expectedFilterCount = 4;
+        $expectedFilterItemCounts = [null, 2, 0, -2, -2, -2];
+        $expectedFilterCssClasses = [null, 'fl-material', null, null, null, null];
+        $expectedNoAvailableFiltersTexts = [null, null, 'Keine Hersteller', null, null, null];
+        $expectedFilterNames = ['Farbe', 'Material', 'vendor', 'cat', 'image', 'label'];
+        $expectedFilterDisplays = ['Farbe', 'Material', 'Hersteller', 'Kategorie', 'Vendor Image', 'Label'];
+        $expectedFilterSelects = ['multiselect', 'multiple', 'multiple', 'single', 'single', 'single'];
+        $expectedSelectedItems = [1, 0, 0, 0, 0, 0];
+        $expectedFilterTypes = [
+            ColorPickerFilter::class,
+            SelectDropdownFilter::class,
+            SelectDropdownFilter::class,
+            CategoryFilter::class,
+            VendorImageFilter::class,
+            LabelTextFilter::class
+        ];
+        $expectedFilterCount = 6;
 
-        $response = $this->getRealResponseData();
+        $response = $this->getRealResponseData('demoResponseWithAllFilters.xml');
 
         $count = 0;
         foreach ($response->getOtherFilters() as $filter) {
@@ -232,7 +247,7 @@ class Xml21ResponseTest extends TestCase
             $this->assertSame($expectedNoAvailableFiltersTexts[$count], $filter->getNoAvailableFiltersText());
             $this->assertSame($expectedFilterDisplays[$count], $filter->getDisplay());
             $this->assertSame($expectedFilterNames[$count], $filter->getName());
-            $this->assertSame($expectedFilterTypes[$count], $filter->getType());
+            $this->assertInstanceOf($expectedFilterTypes[$count], $filter);
             $this->assertSame($expectedFilterSelects[$count], $filter->getSelect());
             $this->assertSame($expectedSelectedItems[$count], $filter->getSelectedItems());
             $this->assertSame($expectedFilterCount, $response->getOtherFilterCount());
@@ -459,10 +474,14 @@ class Xml21ResponseTest extends TestCase
     public function testResponseWillReturnParametersOfItemsAsExpected()
     {
         $expectedMin = [
-            0.39, 13.45, 26
+            0.39,
+            13.45,
+            26
         ];
         $expectedMax = [
-            13.4, 25.99, 40.3
+            13.4,
+            25.99,
+            40.3
         ];
 
         $actualMin = [];

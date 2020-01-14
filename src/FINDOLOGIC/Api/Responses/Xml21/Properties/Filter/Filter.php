@@ -1,11 +1,14 @@
 <?php
 
-namespace FINDOLOGIC\Api\Responses\Xml21\Properties;
+namespace FINDOLOGIC\Api\Responses\Xml21\Properties\Filter;
 
+use FINDOLOGIC\Api\Definitions\FilterType;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Attributes;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Item;
 use SimpleXMLElement;
 
-class Filter
+abstract class Filter
 {
     /** @var int|null $itemCount */
     private $itemCount;
@@ -28,9 +31,6 @@ class Filter
     /** @var int $selectedItems */
     private $selectedItems = 0;
 
-    /** @var string $type */
-    private $type;
-
     /** @var Attributes|null $attributes */
     private $attributes;
 
@@ -45,7 +45,6 @@ class Filter
         $this->name = ResponseHelper::getStringProperty($response, 'name');
         $this->display = ResponseHelper::getStringProperty($response, 'display');
         $this->select = ResponseHelper::getStringProperty($response, 'select');
-        $this->type = ResponseHelper::getStringProperty($response, 'type');
         $this->selectedItems = ResponseHelper::getIntProperty($response, 'selectedItems') ?: 0;
 
         if ($response->attributes) {
@@ -118,14 +117,6 @@ class Filter
     }
 
     /**
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
      * @return Attributes|null
      */
     public function getAttributes()
@@ -139,5 +130,32 @@ class Filter
     public function getItems()
     {
         return $this->items;
+    }
+
+    public static function getInstance(SimpleXMLElement $filter)
+    {
+        $filterName = ResponseHelper::getStringProperty($filter, 'name');
+
+        if ($filterName === 'cat') {
+            return new CategoryFilter($filter);
+        }
+
+        $filterType = ResponseHelper::getStringProperty($filter, 'type');
+
+        switch ($filterType) {
+            case FilterType::SELECT:
+                return new SelectDropdownFilter($filter);
+            case FilterType::RANGE_SLIDER:
+                return new RangeSliderFilter($filter);
+            case FilterType::VENDOR_IMAGE:
+            case FilterType::VENDOR_IMAGE_ALTERNATIVE:
+                return new VendorImageFilter($filter);
+            case FilterType::COLOR:
+            case FilterType::COLOR_ALTERNATIVE:
+                return new ColorPickerFilter($filter);
+            case FilterType::LABEL:
+            default:
+                return new LabelTextFilter($filter);
+        }
     }
 }
