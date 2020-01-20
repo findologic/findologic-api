@@ -8,6 +8,9 @@ use SimpleXMLElement;
 
 class CategoryItem extends Item
 {
+    /** @var Item[] $items */
+    protected $items = [];
+
     public function __construct(SimpleXMLElement $item, CategoryFilter $filter)
     {
         parent::__construct($item);
@@ -20,15 +23,21 @@ class CategoryItem extends Item
      * @param SimpleXMLElement $response
      * @param CategoryFilter $filter
      */
-    private function addSubItems(
-        SimpleXMLElement $response,
-        CategoryFilter $filter
-    ) {
+    private function addSubItems(SimpleXMLElement $response, CategoryFilter $filter)
+    {
         if (isset($response->items)) {
             foreach ($response->items->children() as $item) {
                 $itemName = ResponseHelper::getStringProperty($item, 'name');
                 $this->items[$itemName] = Item::getInstance($filter, $item);
             }
         }
+    }
+
+    /**
+     * @return Item[]
+     */
+    public function getItems()
+    {
+        return $this->items;
     }
 }

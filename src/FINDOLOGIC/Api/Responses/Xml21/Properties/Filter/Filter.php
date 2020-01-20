@@ -55,21 +55,7 @@ abstract class Filter
         }
 
         if ($response->items) {
-            $this->fetchItems($response->items->children());
-        }
-    }
-
-    private function fetchItems(SimpleXMLElement $items)
-    {
-        foreach ($items as $item) {
-            $name = ResponseHelper::getStringProperty($item, 'name');
-            $filterItem = Item::getInstance($this, $item);
-
-            if ($filterItem->isSelected()) {
-                $this->selectedItems[$name] = $filterItem;
-            }
-
-            $this->items[$name] = $filterItem;
+            $this->fetchItems($response->items);
         }
     }
 
@@ -90,13 +76,27 @@ abstract class Filter
                 return new RangeSliderFilter($filter);
             case FilterType::VENDOR_IMAGE:
             case FilterType::VENDOR_IMAGE_ALTERNATIVE:
-                return new VendorImageFilter($filter);
+                return new ImageFilter($filter);
             case FilterType::COLOR:
             case FilterType::COLOR_ALTERNATIVE:
                 return new ColorPickerFilter($filter);
             case FilterType::LABEL:
             default:
                 return new LabelTextFilter($filter);
+        }
+    }
+
+    private function fetchItems(SimpleXMLElement $items)
+    {
+        foreach ($items->children() as $item) {
+            $name = ResponseHelper::getStringProperty($item, 'name');
+            $filterItem = Item::getInstance($this, $item);
+
+            if ($filterItem->isSelected()) {
+                $this->selectedItems[$name] = $filterItem;
+            }
+
+            $this->items[$name] = $filterItem;
         }
     }
 

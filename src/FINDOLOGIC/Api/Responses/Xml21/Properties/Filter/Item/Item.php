@@ -13,8 +13,7 @@ use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\RangeSliderFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\SelectDropdownFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\SelectFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\TextFilter;
-use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\VendorImageFilter;
-use FINDOLOGIC\Api\Responses\Xml21\Properties\Range;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\ImageFilter;
 use SimpleXMLElement;
 
 abstract class Item
@@ -27,18 +26,6 @@ abstract class Item
 
     /** @var int|null $frequency */
     protected $frequency;
-
-    /** @var Item[] $items */
-    protected $items = [];
-
-    /** @var string|null $image */
-    protected $image;
-
-    /** @var string|null $color */
-    protected $color;
-
-    /** @var Range|null $parameters */
-    protected $parameters;
 
     /** @var bool $selected */
     protected $selected;
@@ -60,8 +47,8 @@ abstract class Item
                 return new ColorItem($item);
             case $filter instanceof RangeSliderFilter:
                 return new RangeSliderItem($item);
-            case $filter instanceof VendorImageFilter:
-                return new VendorImageItem($item);
+            case $filter instanceof ImageFilter:
+                return new ImageItem($item);
             case $filter instanceof TextFilter:
             case $filter instanceof SelectFilter:
             case $filter instanceof SelectDropdownFilter:
@@ -103,37 +90,5 @@ abstract class Item
     public function isSelected()
     {
         return $this->selected;
-    }
-
-    /**
-     * @return Item[]
-     */
-    public function getItems()
-    {
-        return $this->items;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getColor()
-    {
-        return $this->color;
-    }
-
-    /**
-     * @return Range|null
-     */
-    public function getParameters()
-    {
-        return $this->parameters;
     }
 }
