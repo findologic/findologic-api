@@ -55,15 +55,15 @@ abstract class Filter
         }
 
         if ($response->items) {
-            $this->fetchItems($response->items->children(), $response->items->attributes());
+            $this->fetchItems($response->items->children());
         }
     }
 
-    private function fetchItems(SimpleXMLElement $items, SimpleXMLElement $attributes = null)
+    private function fetchItems(SimpleXMLElement $items)
     {
         foreach ($items as $item) {
             $name = ResponseHelper::getStringProperty($item, 'name');
-            $filterItem = Item::getInstance($this, $item, $attributes);
+            $filterItem = Item::getInstance($this, $item);
 
             if ($filterItem->isSelected()) {
                 $this->selectedItems[$name] = $filterItem;
