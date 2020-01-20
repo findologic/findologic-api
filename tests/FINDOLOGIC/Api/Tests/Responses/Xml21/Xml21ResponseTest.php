@@ -213,7 +213,7 @@ class Xml21ResponseTest extends TestCase
             $this->assertSame($expectedFilterNames[$count], $filter->getName());
             $this->assertInstanceOf($expectedFilterTypes[$count], $filter);
             $this->assertSame($expectedFilterSelects[$count], $filter->getSelect());
-            $this->assertSame($expectedSelectedItems[$count], $filter->getSelectedItems());
+            $this->assertSame($expectedSelectedItems[$count], $filter->getSelectedItemCount());
             $this->assertSame($expectedFilterCount, $response->getMainFilterCount());
             $count++;
         }
@@ -249,7 +249,7 @@ class Xml21ResponseTest extends TestCase
             $this->assertSame($expectedFilterNames[$count], $filter->getName());
             $this->assertInstanceOf($expectedFilterTypes[$count], $filter);
             $this->assertSame($expectedFilterSelects[$count], $filter->getSelect());
-            $this->assertSame($expectedSelectedItems[$count], $filter->getSelectedItems());
+            $this->assertSame($expectedSelectedItems[$count], $filter->getSelectedItemCount());
             $this->assertSame($expectedFilterCount, $response->getOtherFilterCount());
             $count++;
         }
@@ -446,10 +446,10 @@ class Xml21ResponseTest extends TestCase
     public function testResponseWillReturnSelectedOfItemsAsExpected()
     {
         $expectedSelected = [
-            null, true, null, // Farbe
-            null, null, null, // Material
-            null, null, null, // Hersteller
-            null, // Kategorie
+            false, true, false, // Farbe
+            false, false, false, // Material
+            false, false, false, // Hersteller
+            false, // Kategorie
         ];
 
         $actualSelected = [];
