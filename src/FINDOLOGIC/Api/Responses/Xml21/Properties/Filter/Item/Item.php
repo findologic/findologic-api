@@ -49,12 +49,8 @@ abstract class Item
                 return new RangeSliderItem($item);
             case $filter instanceof ImageFilter:
                 return new ImageItem($item);
-            case $filter instanceof TextFilter:
-            case $filter instanceof SelectFilter:
             case $filter instanceof SelectDropdownFilter:
             case $filter instanceof LabelTextFilter:
-            case $filter instanceof LabelFilter:
-            case $filter instanceof DropdownFilter:
             default:
                 return new DefaultItem($item);
         }

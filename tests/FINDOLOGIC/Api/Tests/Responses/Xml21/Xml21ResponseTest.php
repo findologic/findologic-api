@@ -202,7 +202,7 @@ class Xml21ResponseTest extends TestCase
         $expectedFilterNames = ['price'];
         $expectedFilterDisplays = ['Preis'];
         $expectedFilterSelects = ['single'];
-        $expectedSelectedItems = [0];
+        $expectedSelectedItemsCount = [0];
         $expectedFilterTypes = [RangeSliderFilter::class];
         $expectedFilterCount = 1;
 
@@ -217,7 +217,7 @@ class Xml21ResponseTest extends TestCase
             $this->assertSame($expectedFilterNames[$count], $filter->getName());
             $this->assertInstanceOf($expectedFilterTypes[$count], $filter);
             $this->assertSame($expectedFilterSelects[$count], $filter->getSelect());
-            $this->assertSame($expectedSelectedItems[$count], $filter->getSelectedItemCount());
+            $this->assertSame($expectedSelectedItemsCount[$count], $filter->getSelectedItemCount());
             $this->assertSame($expectedFilterCount, $response->getMainFilterCount());
             $count++;
         }
@@ -231,7 +231,8 @@ class Xml21ResponseTest extends TestCase
         $expectedFilterNames = ['Farbe', 'Material', 'vendor', 'cat', 'image', 'label'];
         $expectedFilterDisplays = ['Farbe', 'Material', 'Hersteller', 'Kategorie', 'Vendor Image', 'Label'];
         $expectedFilterSelects = ['multiselect', 'multiple', 'multiple', 'single', 'single', 'single'];
-        $expectedSelectedItems = [1, 0, 0, 0, 0, 0];
+        $expectedSelectedItemsCount = [1, 0, 0, 0, 0, 0];
+        $expectedSelectedItems = [ColorItem::class, null, null, null, null, null];
         $expectedFilterTypes = [
             ColorPickerFilter::class,
             SelectDropdownFilter::class,
@@ -253,8 +254,11 @@ class Xml21ResponseTest extends TestCase
             $this->assertSame($expectedFilterNames[$count], $filter->getName());
             $this->assertInstanceOf($expectedFilterTypes[$count], $filter);
             $this->assertSame($expectedFilterSelects[$count], $filter->getSelect());
-            $this->assertSame($expectedSelectedItems[$count], $filter->getSelectedItemCount());
+            $this->assertSame($expectedSelectedItemsCount[$count], $filter->getSelectedItemCount());
             $this->assertSame($expectedFilterCount, $response->getOtherFilterCount());
+            foreach ($filter->getSelectedItems() as $selectedItem) {
+                $this->assertInstanceOf($expectedSelectedItems[$count], $selectedItem);
+            }
             $count++;
         }
     }
@@ -377,7 +381,7 @@ class Xml21ResponseTest extends TestCase
             foreach ($response->getOtherFilters() as $filter) {
                 if (count($filter->getItems()) > 0) {
                     foreach ($filter->getItems() as $item) {
-                        if($item instanceof ColorItem) {
+                        if ($item instanceof ColorItem) {
                             $actualImages[] = $item->getImage();
                         }
                     }
@@ -404,7 +408,7 @@ class Xml21ResponseTest extends TestCase
             foreach ($response->getOtherFilters() as $filter) {
                 if (count($filter->getItems()) > 0) {
                     foreach ($filter->getItems() as $item) {
-                        if($item instanceof ImageItem) {
+                        if ($item instanceof ImageItem) {
                             $actualImages[] = $item->getImage();
                         }
                     }
@@ -431,7 +435,7 @@ class Xml21ResponseTest extends TestCase
             foreach ($response->getOtherFilters() as $filter) {
                 if (count($filter->getItems()) > 0) {
                     foreach ($filter->getItems() as $item) {
-                        if($item instanceof ColorItem) {
+                        if ($item instanceof ColorItem) {
                             $actualColors[] = $item->getColor();
                         }
                     }
@@ -558,7 +562,7 @@ class Xml21ResponseTest extends TestCase
             foreach ($response->getOtherFilters() as $filter) {
                 if (count($filter->getItems()) > 0) {
                     foreach ($filter->getItems() as $item) {
-                        if($item instanceof CategoryItem && $item->getItems()) {
+                        if ($item instanceof CategoryItem && $item->getItems()) {
                             foreach ($item->getItems() as $subItem) {
                                 $actualSubItemDetails['name'] = $subItem->getName();
                                 $actualSubItemDetails['weight'] = $subItem->getWeight();
