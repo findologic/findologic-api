@@ -8,7 +8,7 @@ use SimpleXMLElement;
 
 class CategoryItem extends Item
 {
-    /** @var Item[] $items */
+    /** @var CategoryItem[] $items */
     protected $items = [];
 
     public function __construct(SimpleXMLElement $item, CategoryFilter $filter)

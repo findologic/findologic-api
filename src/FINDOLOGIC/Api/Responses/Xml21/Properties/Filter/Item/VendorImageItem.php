@@ -5,7 +5,7 @@ namespace FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Item;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use SimpleXMLElement;
 
-class ImageItem extends Item
+class VendorImageItem extends Item
 {
     /** @var string|null $image */
     protected $image;

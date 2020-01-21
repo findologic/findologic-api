@@ -2,6 +2,6 @@
 
 namespace FINDOLOGIC\Api\Responses\Xml21\Properties\Filter;
 
-class ImageFilter extends Filter
+class VendorImageFilter extends Filter
 {
 }

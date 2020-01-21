@@ -76,7 +76,7 @@ abstract class Filter
                 return new RangeSliderFilter($filter);
             case FilterType::VENDOR_IMAGE:
             case FilterType::VENDOR_IMAGE_ALTERNATIVE:
-                return new ImageFilter($filter);
+                return new VendorImageFilter($filter);
             case FilterType::COLOR:
             case FilterType::COLOR_ALTERNATIVE:
                 return new ColorPickerFilter($filter);

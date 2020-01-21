@@ -13,7 +13,7 @@ use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\RangeSliderFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\SelectDropdownFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\SelectFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\TextFilter;
-use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\ImageFilter;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\VendorImageFilter;
 use SimpleXMLElement;
 
 abstract class Item
@@ -47,8 +47,8 @@ abstract class Item
                 return new ColorItem($item);
             case $filter instanceof RangeSliderFilter:
                 return new RangeSliderItem($item);
-            case $filter instanceof ImageFilter:
-                return new ImageItem($item);
+            case $filter instanceof VendorImageFilter:
+                return new VendorImageItem($item);
             case $filter instanceof SelectDropdownFilter:
             case $filter instanceof LabelTextFilter:
             default:

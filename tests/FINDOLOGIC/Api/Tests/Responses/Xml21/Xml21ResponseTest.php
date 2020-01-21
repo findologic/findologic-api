@@ -7,11 +7,11 @@ use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\ColorPickerFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Item\CategoryItem;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Item\ColorItem;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Item\RangeSliderItem;
-use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Item\ImageItem;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Item\VendorImageItem;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\LabelTextFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\RangeSliderFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\SelectDropdownFilter;
-use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\ImageFilter;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\VendorImageFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
 use PHPUnit\Framework\TestCase;
 
@@ -202,7 +202,7 @@ class Xml21ResponseTest extends TestCase
         $expectedFilterNames = ['price'];
         $expectedFilterDisplays = ['Preis'];
         $expectedFilterSelects = ['single'];
-        $expectedSelectedItemsCount = [0];
+        $expectedSelectedItemCount = [0];
         $expectedFilterTypes = [RangeSliderFilter::class];
         $expectedFilterCount = 1;
 
@@ -217,7 +217,7 @@ class Xml21ResponseTest extends TestCase
             $this->assertSame($expectedFilterNames[$count], $filter->getName());
             $this->assertInstanceOf($expectedFilterTypes[$count], $filter);
             $this->assertSame($expectedFilterSelects[$count], $filter->getSelect());
-            $this->assertSame($expectedSelectedItemsCount[$count], $filter->getSelectedItemCount());
+            $this->assertSame($expectedSelectedItemCount[$count], $filter->getSelectedItemCount());
             $this->assertSame($expectedFilterCount, $response->getMainFilterCount());
             $count++;
         }
@@ -231,14 +231,14 @@ class Xml21ResponseTest extends TestCase
         $expectedFilterNames = ['Farbe', 'Material', 'vendor', 'cat', 'image', 'label'];
         $expectedFilterDisplays = ['Farbe', 'Material', 'Hersteller', 'Kategorie', 'Vendor Image', 'Label'];
         $expectedFilterSelects = ['multiselect', 'multiple', 'multiple', 'single', 'single', 'single'];
-        $expectedSelectedItemsCount = [1, 0, 0, 0, 0, 0];
+        $expectedSelectedItemCount = [1, 0, 0, 0, 0, 0];
         $expectedSelectedItems = [ColorItem::class, null, null, null, null, null];
         $expectedFilterTypes = [
             ColorPickerFilter::class,
             SelectDropdownFilter::class,
             SelectDropdownFilter::class,
             CategoryFilter::class,
-            ImageFilter::class,
+            VendorImageFilter::class,
             LabelTextFilter::class
         ];
         $expectedFilterCount = 6;
@@ -254,7 +254,7 @@ class Xml21ResponseTest extends TestCase
             $this->assertSame($expectedFilterNames[$count], $filter->getName());
             $this->assertInstanceOf($expectedFilterTypes[$count], $filter);
             $this->assertSame($expectedFilterSelects[$count], $filter->getSelect());
-            $this->assertSame($expectedSelectedItemsCount[$count], $filter->getSelectedItemCount());
+            $this->assertSame($expectedSelectedItemCount[$count], $filter->getSelectedItemCount());
             $this->assertSame($expectedFilterCount, $response->getOtherFilterCount());
             foreach ($filter->getSelectedItems() as $selectedItem) {
                 $this->assertInstanceOf($expectedSelectedItems[$count], $selectedItem);
@@ -408,7 +408,7 @@ class Xml21ResponseTest extends TestCase
             foreach ($response->getOtherFilters() as $filter) {
                 if (count($filter->getItems()) > 0) {
                     foreach ($filter->getItems() as $item) {
-                        if ($item instanceof ImageItem) {
+                        if ($item instanceof VendorImageItem) {
                             $actualImages[] = $item->getImage();
                         }
                     }
