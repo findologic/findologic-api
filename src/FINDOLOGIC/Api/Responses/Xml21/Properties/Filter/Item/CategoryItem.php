@@ -34,7 +34,7 @@ class CategoryItem extends Item
     }
 
     /**
-     * @return Item[]
+     * @return CategoryItem[]
      */
     public function getItems()
     {
