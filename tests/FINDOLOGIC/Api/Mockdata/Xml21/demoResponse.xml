@@ -99,6 +99,20 @@
                 </items>
             </filter>
             <filter>
+                <name>Image</name>
+                <display>Image</display>
+                <select>single</select>
+                <selectedItems>1</selectedItems>
+                <type>image</type>
+                <items>
+                    <item>
+                        <name>image1</name>
+                        <weight>0.10730088502179</weight>
+                        <image>https://blubbergurken.io/farbfilter/image1.gif</image>
+                    </item>
+                </items>
+            </filter>
+            <filter>
                 <itemCount>2</itemCount>
                 <cssClass>fl-material</cssClass>
                 <name>Material</name>

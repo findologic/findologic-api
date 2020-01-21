@@ -4,6 +4,10 @@ namespace FINDOLOGIC\Api\Tests\Responses\Xml21;
 
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\CategoryFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\ColorPickerFilter;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Item\CategoryItem;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Item\ColorItem;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Item\RangeSliderItem;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Item\VendorImageItem;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\LabelTextFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\RangeSliderFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\SelectDropdownFilter;
@@ -198,7 +202,7 @@ class Xml21ResponseTest extends TestCase
         $expectedFilterNames = ['price'];
         $expectedFilterDisplays = ['Preis'];
         $expectedFilterSelects = ['single'];
-        $expectedSelectedItems = [0];
+        $expectedSelectedItemCount = [0];
         $expectedFilterTypes = [RangeSliderFilter::class];
         $expectedFilterCount = 1;
 
@@ -213,7 +217,7 @@ class Xml21ResponseTest extends TestCase
             $this->assertSame($expectedFilterNames[$count], $filter->getName());
             $this->assertInstanceOf($expectedFilterTypes[$count], $filter);
             $this->assertSame($expectedFilterSelects[$count], $filter->getSelect());
-            $this->assertSame($expectedSelectedItems[$count], $filter->getSelectedItems());
+            $this->assertSame($expectedSelectedItemCount[$count], $filter->getSelectedItemCount());
             $this->assertSame($expectedFilterCount, $response->getMainFilterCount());
             $count++;
         }
@@ -227,7 +231,8 @@ class Xml21ResponseTest extends TestCase
         $expectedFilterNames = ['Farbe', 'Material', 'vendor', 'cat', 'image', 'label'];
         $expectedFilterDisplays = ['Farbe', 'Material', 'Hersteller', 'Kategorie', 'Vendor Image', 'Label'];
         $expectedFilterSelects = ['multiselect', 'multiple', 'multiple', 'single', 'single', 'single'];
-        $expectedSelectedItems = [1, 0, 0, 0, 0, 0];
+        $expectedSelectedItemCount = [1, 0, 0, 0, 0, 0];
+        $expectedSelectedItems = [ColorItem::class, null, null, null, null, null];
         $expectedFilterTypes = [
             ColorPickerFilter::class,
             SelectDropdownFilter::class,
@@ -249,8 +254,11 @@ class Xml21ResponseTest extends TestCase
             $this->assertSame($expectedFilterNames[$count], $filter->getName());
             $this->assertInstanceOf($expectedFilterTypes[$count], $filter);
             $this->assertSame($expectedFilterSelects[$count], $filter->getSelect());
-            $this->assertSame($expectedSelectedItems[$count], $filter->getSelectedItems());
+            $this->assertSame($expectedSelectedItemCount[$count], $filter->getSelectedItemCount());
             $this->assertSame($expectedFilterCount, $response->getOtherFilterCount());
+            foreach ($filter->getSelectedItems() as $selectedItem) {
+                $this->assertInstanceOf($expectedSelectedItems[$count], $selectedItem);
+            }
             $count++;
         }
     }
@@ -305,6 +313,7 @@ class Xml21ResponseTest extends TestCase
         // Weights do have a float value, but checking the value to its 1:1 value is unnecessary.
         $expectedWeight = [
             0.10730088502169, 0.3296460211277, 0.90265488624573, // Farbe
+            0.10730088502179, // Image
             0.038716815412045, 0.63053095340729, 0.12168141454458, // Material
             0.0022123893722892, 0.08517698943615, 0.13495574891567, // Hersteller
             0.25156819820404, // Kategorie
@@ -333,6 +342,7 @@ class Xml21ResponseTest extends TestCase
     {
         $expectedNames = [
             'beige', 'blau', 'braun', // Farbe
+            'image1', // Image
             'Hartgepäck', 'Leder', 'Nylon', // Material
             'Bodenschatz', 'Braun Büffel', 'Camel Active', // Hersteller
             'Buch', // Kategorie
@@ -357,15 +367,12 @@ class Xml21ResponseTest extends TestCase
         $this->assertEquals($expectedNames, $actualNames);
     }
 
-    public function testResponseWillReturnImagesOfItemsAsExpected()
+    public function testResponseWillReturnColorImagesOfItemsAsExpected()
     {
         $expectedImages = [
             'https://blubbergurken.io/farbfilter/beige.gif',
             'https://blubbergurken.io/farbfilter/blau.gif',
-            'https://blubbergurken.io/farbfilter/braun.gif', // Farbe
-            null, null, null, // Material
-            null, null, null, // Hersteller
-            null, // Kategorie
+            'https://blubbergurken.io/farbfilter/braun.gif'
         ];
 
         $actualImages = [];
@@ -374,7 +381,36 @@ class Xml21ResponseTest extends TestCase
             foreach ($response->getOtherFilters() as $filter) {
                 if (count($filter->getItems()) > 0) {
                     foreach ($filter->getItems() as $item) {
-                        $actualImages[] = $item->getImage();
+                        if ($item instanceof ColorItem) {
+                            $actualImages[] = $item->getImage();
+                        }
+                    }
+                } else {
+                    $this->fail('The demo response should have items.');
+                }
+            }
+        } else {
+            $this->fail('The demo response should have filters.');
+        }
+
+        $this->assertEquals($expectedImages, $actualImages);
+    }
+
+    public function testResponseWillReturnImagesOfItemsAsExpected()
+    {
+        $expectedImages = [
+            'https://blubbergurken.io/farbfilter/image1.gif'
+        ];
+
+        $actualImages = [];
+        $response = $this->getRealResponseData();
+        if ($response->hasOtherFilters() && $response->getOtherFilterCount() > 0) {
+            foreach ($response->getOtherFilters() as $filter) {
+                if (count($filter->getItems()) > 0) {
+                    foreach ($filter->getItems() as $item) {
+                        if ($item instanceof VendorImageItem) {
+                            $actualImages[] = $item->getImage();
+                        }
                     }
                 } else {
                     $this->fail('The demo response should have items.');
@@ -390,10 +426,7 @@ class Xml21ResponseTest extends TestCase
     public function testResponseWillReturnColorsOfItemsAsExpected()
     {
         $expectedColors = [
-            '#F5F5DC', '#3c6380', '#94651e', // Farbe
-            null, null, null, // Material
-            null, null, null, // Hersteller
-            null, // Kategorie
+            '#F5F5DC', '#3c6380', '#94651e'
         ];
 
         $actualColors = [];
@@ -402,7 +435,9 @@ class Xml21ResponseTest extends TestCase
             foreach ($response->getOtherFilters() as $filter) {
                 if (count($filter->getItems()) > 0) {
                     foreach ($filter->getItems() as $item) {
-                        $actualColors[] = $item->getColor();
+                        if ($item instanceof ColorItem) {
+                            $actualColors[] = $item->getColor();
+                        }
                     }
                 } else {
                     $this->fail('The demo response should have items.');
@@ -419,6 +454,7 @@ class Xml21ResponseTest extends TestCase
     {
         $expectedFrequencies = [
             null, null, null, // Farbe
+            null, // Image
             35, 1238, 110, // Material
             2, 77, 122, // Hersteller
             5, // Kategorie
@@ -446,10 +482,11 @@ class Xml21ResponseTest extends TestCase
     public function testResponseWillReturnSelectedOfItemsAsExpected()
     {
         $expectedSelected = [
-            null, true, null, // Farbe
-            null, null, null, // Material
-            null, null, null, // Hersteller
-            null, // Kategorie
+            false, true, false, // Farbe
+            false, // Image
+            false, false, false, // Material
+            false, false, false, // Hersteller
+            false, // Kategorie
         ];
 
         $actualSelected = [];
@@ -490,6 +527,7 @@ class Xml21ResponseTest extends TestCase
         if ($response->hasMainFilters() && $response->getMainFilterCount() > 0) {
             foreach ($response->getMainFilters() as $filter) {
                 if (count($filter->getItems()) > 0) {
+                    /** @var RangeSliderItem $item */
                     foreach ($filter->getItems() as $item) {
                         if ($item->getParameters()) {
                             $actualMin[] = $item->getParameters()->getMin();
@@ -515,9 +553,6 @@ class Xml21ResponseTest extends TestCase
             'weight' => 0.33799207210541,
             'frequency' => 0,
             'items' => [],
-            'image' => null,
-            'color' => null,
-            'parameters' => null,
             'selected' => false,
         ];
 
@@ -527,15 +562,12 @@ class Xml21ResponseTest extends TestCase
             foreach ($response->getOtherFilters() as $filter) {
                 if (count($filter->getItems()) > 0) {
                     foreach ($filter->getItems() as $item) {
-                        if ($item->getItems()) {
+                        if ($item instanceof CategoryItem && $item->getItems()) {
                             foreach ($item->getItems() as $subItem) {
                                 $actualSubItemDetails['name'] = $subItem->getName();
                                 $actualSubItemDetails['weight'] = $subItem->getWeight();
                                 $actualSubItemDetails['frequency'] = $subItem->getFrequency();
                                 $actualSubItemDetails['items'] = $subItem->getItems();
-                                $actualSubItemDetails['image'] = $subItem->getImage();
-                                $actualSubItemDetails['color'] = $subItem->getColor();
-                                $actualSubItemDetails['parameters'] = $subItem->getParameters();
                                 $actualSubItemDetails['selected'] = $subItem->isSelected();
                             }
                         }

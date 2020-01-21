@@ -5,37 +5,40 @@ namespace FINDOLOGIC\Api\Responses\Xml21\Properties\Filter;
 use FINDOLOGIC\Api\Definitions\FilterType;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Attributes;
-use FINDOLOGIC\Api\Responses\Xml21\Properties\Item;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Item\Item;
 use SimpleXMLElement;
 
 abstract class Filter
 {
     /** @var int|null $itemCount */
-    private $itemCount;
+    protected $itemCount;
 
     /** @var string|null $cssClass */
-    private $cssClass;
+    protected $cssClass;
 
     /** @var string|null $noAvailableFiltersText */
-    private $noAvailableFiltersText;
+    protected $noAvailableFiltersText;
 
     /** @var string $name */
-    private $name;
+    protected $name;
 
     /** @var string $display */
-    private $display;
+    protected $display;
 
     /** @var string $select */
-    private $select;
+    protected $select;
 
-    /** @var int $selectedItems */
-    private $selectedItems = 0;
+    /** @var int $selectedItemCount */
+    protected $selectedItemCount = 0;
+
+    /** @var Item[] */
+    protected $selectedItems = [];
 
     /** @var Attributes|null $attributes */
-    private $attributes;
+    protected $attributes;
 
     /** @var Item[] $items */
-    private $items = [];
+    protected $items = [];
 
     public function __construct(SimpleXMLElement $response)
     {
@@ -45,18 +48,55 @@ abstract class Filter
         $this->name = ResponseHelper::getStringProperty($response, 'name');
         $this->display = ResponseHelper::getStringProperty($response, 'display');
         $this->select = ResponseHelper::getStringProperty($response, 'select');
-        $this->selectedItems = ResponseHelper::getIntProperty($response, 'selectedItems') ?: 0;
+        $this->selectedItemCount = ResponseHelper::getIntProperty($response, 'selectedItems') ?: 0;
 
         if ($response->attributes) {
             $this->attributes = new Attributes($response->attributes);
         }
 
         if ($response->items) {
-            // Get the first <items> element, containing all <item> elements.
-            foreach ($response->items[0] as $item) {
-                $itemName = ResponseHelper::getStringProperty($item, 'name');
-                $this->items[$itemName] = new Item($item);
+            $this->fetchItems($response->items);
+        }
+    }
+
+    public static function getInstance(SimpleXMLElement $filter)
+    {
+        $filterName = ResponseHelper::getStringProperty($filter, 'name');
+
+        if ($filterName === 'cat') {
+            return new CategoryFilter($filter);
+        }
+
+        $filterType = ResponseHelper::getStringProperty($filter, 'type');
+
+        switch ($filterType) {
+            case FilterType::SELECT:
+                return new SelectDropdownFilter($filter);
+            case FilterType::RANGE_SLIDER:
+                return new RangeSliderFilter($filter);
+            case FilterType::VENDOR_IMAGE:
+            case FilterType::VENDOR_IMAGE_ALTERNATIVE:
+                return new VendorImageFilter($filter);
+            case FilterType::COLOR:
+            case FilterType::COLOR_ALTERNATIVE:
+                return new ColorPickerFilter($filter);
+            case FilterType::LABEL:
+            default:
+                return new LabelTextFilter($filter);
+        }
+    }
+
+    private function fetchItems(SimpleXMLElement $items)
+    {
+        foreach ($items->children() as $item) {
+            $name = ResponseHelper::getStringProperty($item, 'name');
+            $filterItem = Item::getInstance($this, $item);
+
+            if ($filterItem->isSelected()) {
+                $this->selectedItems[$name] = $filterItem;
             }
+
+            $this->items[$name] = $filterItem;
         }
     }
 
@@ -111,9 +151,9 @@ abstract class Filter
     /**
      * @return int
      */
-    public function getSelectedItems()
+    public function getSelectedItemCount()
     {
-        return $this->selectedItems;
+        return $this->selectedItemCount;
     }
 
     /**
@@ -132,30 +172,11 @@ abstract class Filter
         return $this->items;
     }
 
-    public static function getInstance(SimpleXMLElement $filter)
+    /**
+     * @return Item[]
+     */
+    public function getSelectedItems()
     {
-        $filterName = ResponseHelper::getStringProperty($filter, 'name');
-
-        if ($filterName === 'cat') {
-            return new CategoryFilter($filter);
-        }
-
-        $filterType = ResponseHelper::getStringProperty($filter, 'type');
-
-        switch ($filterType) {
-            case FilterType::SELECT:
-                return new SelectDropdownFilter($filter);
-            case FilterType::RANGE_SLIDER:
-                return new RangeSliderFilter($filter);
-            case FilterType::VENDOR_IMAGE:
-            case FilterType::VENDOR_IMAGE_ALTERNATIVE:
-                return new VendorImageFilter($filter);
-            case FilterType::COLOR:
-            case FilterType::COLOR_ALTERNATIVE:
-                return new ColorPickerFilter($filter);
-            case FilterType::LABEL:
-            default:
-                return new LabelTextFilter($filter);
-        }
+        return $this->selectedItems;
     }
 }
