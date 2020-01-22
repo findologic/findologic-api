@@ -4,7 +4,7 @@ namespace FINDOLOGIC\Api\Responses\Xml21;
 
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use FINDOLOGIC\Api\Responses\Response;
-use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Filter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\LandingPage;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Product;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Promotion;
@@ -51,12 +51,6 @@ class Xml21Response extends Response
     /** @var int $otherFilterCount */
     private $otherFilterCount = 0;
 
-    /** @inheritDoc */
-    public function __construct($response, $responseTime = null)
-    {
-        parent::__construct($response, $responseTime);
-    }
-
     protected function buildResponseElementInstances($response)
     {
         $xmlResponse = new SimpleXMLElement($response);
@@ -75,17 +69,17 @@ class Xml21Response extends Response
         }
 
         foreach ($xmlResponse->filters->main->children() as $filter) {
-            $filterName =  ResponseHelper::getStringProperty($filter, 'name');
+            $filterName = ResponseHelper::getStringProperty($filter, 'name');
             // Set filter names as keys for the filters.
-            $this->mainFilters[$filterName] = new Filter($filter);
+            $this->mainFilters[$filterName] = Filter::getInstance($filter);
             $this->hasMainFilters = true;
             $this->mainFilterCount++;
         }
 
         foreach ($xmlResponse->filters->other->children() as $filter) {
-            $filterName =  ResponseHelper::getStringProperty($filter, 'name');
+            $filterName = ResponseHelper::getStringProperty($filter, 'name');
             // Set filter names as keys for the filters.
-            $this->otherFilters[$filterName] = new Filter($filter);
+            $this->otherFilters[$filterName] = Filter::getInstance($filter);
             $this->hasOtherFilters = true;
             $this->otherFilterCount++;
         }
@@ -95,30 +89,32 @@ class Xml21Response extends Response
      * If the response contains a LandingPage, it will be returned, otherwise return null.
      *
      * @param SimpleXMLElement $xmlResponse
+     *
      * @return LandingPage|null
      */
     private function getLandingPageFromResponse(SimpleXMLElement $xmlResponse)
     {
         if ($xmlResponse->landingPage) {
             return new LandingPage($xmlResponse->landingPage[0]->attributes());
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
      * If the response contains a Promotion, it will be returned, otherwise return null.
      *
      * @param SimpleXMLElement $xmlResponse
+     *
      * @return Promotion|null
      */
     private function getPromotionFromResponse(SimpleXMLElement $xmlResponse)
     {
         if ($xmlResponse->promotion) {
             return new Promotion($xmlResponse->promotion[0]->attributes());
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**

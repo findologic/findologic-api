@@ -99,20 +99,6 @@
                 </items>
             </filter>
             <filter>
-                <name>Image</name>
-                <display>Image</display>
-                <select>single</select>
-                <selectedItems>1</selectedItems>
-                <type>image</type>
-                <items>
-                    <item>
-                        <name>image1</name>
-                        <weight>0.10730088502179</weight>
-                        <image>https://blubbergurken.io/farbfilter/image1.gif</image>
-                    </item>
-                </items>
-            </filter>
-            <filter>
                 <itemCount>2</itemCount>
                 <cssClass>fl-material</cssClass>
                 <name>Material</name>
@@ -168,6 +154,48 @@
                 <display>Kategorie</display>
                 <select>single</select>
                 <type>select</type>
+                <items>
+                    <item>
+                        <name>Buch</name>
+                        <weight>0.25156819820404</weight>
+                        <frequency>5</frequency>
+                        <items>
+                            <item>
+                                <name>Beste Bücher</name>
+                                <weight>0.33799207210541</weight>
+                                <frequency>0</frequency>
+                            </item>
+                        </items>
+                    </item>
+                </items>
+            </filter>
+            <filter>
+                <itemCount>-2</itemCount>
+                <name>image</name>
+                <display>Vendor Image</display>
+                <select>single</select>
+                <type>image</type>
+                <items>
+                    <item>
+                        <name>Buch</name>
+                        <weight>0.25156819820404</weight>
+                        <frequency>5</frequency>
+                        <items>
+                            <item>
+                                <name>Beste Bücher</name>
+                                <weight>0.33799207210541</weight>
+                                <frequency>0</frequency>
+                            </item>
+                        </items>
+                    </item>
+                </items>
+            </filter>
+            <filter>
+                <itemCount>-2</itemCount>
+                <name>label</name>
+                <display>Label</display>
+                <select>single</select>
+                <type>label</type>
                 <items>
                     <item>
                         <name>Buch</name>
