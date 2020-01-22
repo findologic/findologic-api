@@ -1,7 +1,7 @@
 {
     "name": "findologic/findologic-api",
     "description": "Library for FINDOLOGIC API requests",
-    "version": "v1.0.2",
+    "version": "v1.1.0",
     "type": "library",
     "license": "MIT",
     "authors": [
