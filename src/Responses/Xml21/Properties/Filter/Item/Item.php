@@ -5,14 +5,10 @@ namespace FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Item;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\CategoryFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\ColorPickerFilter;
-use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\DropdownFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Filter;
-use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\LabelFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\LabelTextFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\RangeSliderFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\SelectDropdownFilter;
-use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\SelectFilter;
-use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\TextFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\VendorImageFilter;
 use SimpleXMLElement;
 
