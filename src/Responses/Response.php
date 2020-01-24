@@ -10,8 +10,8 @@ use FINDOLOGIC\Api\Requests\SearchNavigation\SearchNavigationRequest;
 use FINDOLOGIC\Api\Responses\Autocomplete\SuggestResponse;
 use FINDOLOGIC\Api\Responses\Html\GenericHtmlResponse;
 use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
-use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use InvalidArgumentException;
+use Psr\Http\Message\ResponseInterface;
 
 abstract class Response
 {
@@ -47,14 +47,14 @@ abstract class Response
      * Builds a new Response instance based on the given Request.
      *
      * @param Request $request
-     * @param GuzzleResponse $response
-     * @param GuzzleResponse|null $alivetestResponse The alivetest response, or null if no alivetest was made.
+     * @param ResponseInterface $response
+     * @param ResponseInterface|null $alivetestResponse The alivetest response, or null if no alivetest was made.
      * @param float|null $responseTime
      * @return Response
      */
     public static function buildInstance(
         Request $request,
-        GuzzleResponse $response,
+        ResponseInterface $response,
         $alivetestResponse = null,
         $responseTime = null
     ) {
@@ -120,9 +120,9 @@ abstract class Response
     /**
      * Checks if the response is valid. If not, an exception will be thrown.
      *
-     * @param GuzzleResponse $response
+     * @param ResponseInterface $response
      */
-    protected static function checkResponseIsValid(GuzzleResponse $response)
+    protected static function checkResponseIsValid(ResponseInterface $response)
     {
         $statusCode = $response->getStatusCode();
         if ($statusCode !== self::STATUS_OK) {
@@ -131,9 +131,9 @@ abstract class Response
     }
 
     /**
-     * @param GuzzleResponse $response
+     * @param ResponseInterface $response
      */
-    protected static function checkAlivetestBody($response)
+    protected static function checkAlivetestBody(ResponseInterface $response)
     {
         $alivetestContents = $response->getBody()->getContents();
         if ($alivetestContents !== self::SERVICE_ALIVE_BODY) {

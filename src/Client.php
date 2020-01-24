@@ -3,12 +3,13 @@
 namespace FINDOLOGIC\Api;
 
 use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
+use FINDOLOGIC\Api\Helpers\UserAgent;
 use FINDOLOGIC\Api\Requests\AlivetestRequest;
 use FINDOLOGIC\Api\Requests\Request;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchNavigationRequest;
 use FINDOLOGIC\Api\Responses\Response;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Psr7\Response as GuzzleResponse;
+use Psr\Http\Message\ResponseInterface;
 
 class Client
 {
@@ -42,7 +43,7 @@ class Client
 
     /**
      * @param Request $request
-     * @return GuzzleResponse
+     * @return ResponseInterface
      * @throws ServiceNotAliveException If the request was not successful.
      */
     private function sendRequest(Request $request)
@@ -56,7 +57,12 @@ class Client
             return $this->config->getHttpClient()->request(
                 self::METHOD_GET,
                 $request->buildRequestUrl($this->config),
-                ['connect_timeout' => $requestTimeout]
+                [
+                    'connect_timeout' => $requestTimeout,
+                    'headers' => [
+                        'User-Agent' => UserAgent::getUserAgent()
+                    ]
+                ]
             );
         } catch (GuzzleException $e) {
             throw new ServiceNotAliveException($e->getMessage());
@@ -68,7 +74,7 @@ class Client
      * SearchRequest/NavigationRequest.
      *
      * @param Request $request
-     * @return GuzzleResponse|null|void
+     * @return ResponseInterface|null|void
      */
     private function doAlivetest(Request $request)
     {

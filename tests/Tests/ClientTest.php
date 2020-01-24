@@ -5,6 +5,7 @@ namespace FINDOLOGIC\Api\Tests;
 use FINDOLOGIC\Api\Client;
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
+use FINDOLOGIC\Api\Helpers\UserAgent;
 use FINDOLOGIC\Api\Requests\AlivetestRequest;
 use FINDOLOGIC\Api\Requests\Autocomplete\SuggestRequest;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
@@ -55,8 +56,18 @@ class ClientTest extends TestBase
     ) {
         $this->httpClientMock->method('request')
             ->withConsecutive(
-                ['GET', $expectedAlivetestUrl, ['connect_timeout' => 1.0]],
-                ['GET', $expectedRequestUrl, ['connect_timeout' => 3.0]]
+                ['GET', $expectedAlivetestUrl, [
+                    'connect_timeout' => 1.0,
+                    'headers' => [
+                        'User-Agent' => UserAgent::getUserAgent()
+                    ]
+                ]],
+                ['GET', $expectedRequestUrl, [
+                    'connect_timeout' => 3.0,
+                    'headers' => [
+                        'User-Agent' => UserAgent::getUserAgent()
+                    ]
+                ]]
             )
             ->willReturnOnConsecutiveCalls($this->responseMock, $this->responseMock);
         $this->responseMock->method('getBody')
@@ -268,7 +279,12 @@ class ClientTest extends TestBase
         $expectedAlivetestUrl = 'https://service.findologic.com/ps/blubbergurken.de/alivetest.php?' . $requestParams;
 
         $this->httpClientMock->method('request')
-            ->with('GET', $expectedAlivetestUrl, ['connect_timeout' => 1.0])
+            ->with('GET', $expectedAlivetestUrl, [
+                'connect_timeout' => 1.0,
+                'headers' => [
+                    'User-Agent' => UserAgent::getUserAgent()
+                ]
+            ])
             ->willThrowException(new RequestException(
                 $expectedExceptionMessage,
                 new Request('GET', $expectedAlivetestUrl)
@@ -306,7 +322,12 @@ class ClientTest extends TestBase
         $expectedAlivetestUrl = 'https://service.findologic.com/ps/blubbergurken.de/alivetest.php?' . $requestParams;
 
         $this->httpClientMock->method('request')
-            ->with('GET', $expectedAlivetestUrl, ['connect_timeout' => 1.0])
+            ->with('GET', $expectedAlivetestUrl, [
+                'connect_timeout' => 1.0,
+                'headers' => [
+                    'User-Agent' => UserAgent::getUserAgent()
+                ]
+            ])
             ->willReturnOnConsecutiveCalls($this->responseMock);
         $this->responseMock->method('getBody')
             ->with()

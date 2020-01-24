@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Api\Tests;
 
+use FINDOLOGIC\Api\Helpers\UserAgent;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Stream;
@@ -45,7 +46,12 @@ class TestBase extends TestCase
     protected function setExpectationsForRequests($expectedRequestUrl, $expectedBody, $statusCode = 200)
     {
         $this->httpClientMock->method('request')
-            ->with('GET', $expectedRequestUrl, ['connect_timeout' => 3.0])
+            ->with('GET', $expectedRequestUrl, [
+                'connect_timeout' => 3.0,
+                'headers' => [
+                    'User-Agent' => UserAgent::getUserAgent()
+                ]
+            ])
             ->willReturnOnConsecutiveCalls($this->responseMock);
         $this->responseMock->method('getBody')
             ->with()
@@ -75,8 +81,18 @@ class TestBase extends TestCase
     ) {
         $this->httpClientMock->method('request')
             ->withConsecutive(
-                ['GET', $expectedRequestUrl, ['connect_timeout' => 1.0]],
-                ['GET', $expectedSearchRequestUrl, ['connect_timeout' => 3.0]]
+                ['GET', $expectedRequestUrl, [
+                    'connect_timeout' => 1.0,
+                    'headers' => [
+                        'User-Agent' => UserAgent::getUserAgent()
+                    ]
+                ]],
+                ['GET', $expectedSearchRequestUrl, [
+                    'connect_timeout' => 3.0,
+                    'headers' => [
+                        'User-Agent' => UserAgent::getUserAgent()
+                    ]
+                ]]
             )
             ->willReturnOnConsecutiveCalls($this->responseMock, $this->responseMock);
         $this->responseMock->method('getBody')
