@@ -19,4 +19,20 @@ class Attribute
             $this->values = $attribute['values'];
         }
     }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getValues()
+    {
+        return $this->values;
+    }
 }
