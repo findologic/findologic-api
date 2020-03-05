@@ -794,4 +794,21 @@ class SearchNavigationRequestTest extends TestBase
         $uri = $searchRequest->buildRequestUrl($this->config);
         $this->assertEquals($expectedUri, $uri);
     }
+
+    public function testAttributesAreNotMergedWhenNotNeeded()
+    {
+        $searchRequest = new SearchRequest();
+
+        $searchRequest
+            ->setShopUrl('blubbergurken.io')
+            ->addAttribute('someFilter1', 'someValue')
+            ->addAttribute('someFilter2', 'someOtherValue');
+
+        $expectedUri = 'https://service.findologic.com/ps/blubbergurken.io/index.php?shopurl=blubbergurken.io&';
+        $expectedUri .= 'attrib%5BsomeFilter1%5D%5B%5D=someValue&attrib%5BsomeFilter2%5D%5B%5D=someOtherValue';
+        $expectedUri .= '&shopkey=ABCDABCDABCDABCDABCDABCDABCDABCD';
+
+        $uri = $searchRequest->buildRequestUrl($this->config);
+        $this->assertEquals($expectedUri, $uri);
+    }
 }
