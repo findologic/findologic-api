@@ -277,6 +277,20 @@ abstract class Request
         if (!isset($params[QueryParameter::SERVICE_ID])) {
             $params['shopkey'] = $config->getServiceId();
         }
+
+        if (isset($params[QueryParameter::ATTRIB])) {
+            foreach ($params[QueryParameter::ATTRIB] as $key => $values) {
+                if (is_string(array_values($values)[0])) {
+                    continue; // Nothing to do for single select filters.
+                }
+
+                // Multiselect filters are merged with array_merge_recursive, which causes them to be in an array
+                // without a key associated to them. This makes the values appear to be one level too low. We fix
+                // this by manually moving them to the correct level.
+                $params[QueryParameter::ATTRIB][$key] = array_values($values)[0];
+            }
+        }
+
         $queryParams = http_build_query($params);
 
         $apiUrl = sprintf($config->getApiUrl(), $shopUrl, $this->getEndpoint());
