@@ -81,6 +81,16 @@ abstract class Response
     }
 
     /**
+     * Returns the raw response as string.
+     *
+     * @return string
+     */
+    public function getRawResponse()
+    {
+        return $this->rawResponse;
+    }
+
+    /**
      * Gets the response time that FINDOLOGIC took to respond to the request in microseconds. Please note that this
      * time also includes latency, etc.
      *
