@@ -17,7 +17,7 @@ class ColorItem extends Item
     {
         parent::__construct($item);
         $this->color = ResponseHelper::getStringProperty($item, 'color');
-        $this->image = ResponseHelper::getStringProperty($item, 'image');
+        $this->image = trim(ResponseHelper::getStringProperty($item, 'image'));
     }
 
     /**

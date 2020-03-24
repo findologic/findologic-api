@@ -3,13 +3,17 @@
 namespace FINDOLOGIC\Api\Tests\Responses;
 
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
+use FINDOLOGIC\Api\Responses\Autocomplete\SuggestResponse;
+use FINDOLOGIC\Api\Responses\Html\GenericHtmlResponse;
 use FINDOLOGIC\Api\Responses\Response;
+use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
+use FINDOLOGIC\Api\Tests\TestBase;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
-class ResponseTest extends TestCase
+class ResponseTest extends TestBase
 {
     public function testUnknownResponseWillThrowAnException()
     {
@@ -25,5 +29,37 @@ class ResponseTest extends TestCase
         $request->expects($this->any())->method('getOutputAdapter')->willReturn($expectedOutputAdapter);
 
         Response::buildInstance($request, new GuzzleResponse, null, null);
+    }
+
+    public function availableResponseProvider()
+    {
+        $expectedSuggestResponse = $this->getMockResponse('Autocomplete/demoResponseSuggest.json');
+        $expectedHtmlResponse = $this->getMockResponse('Html/demoResponse.html');
+        $expectedXml21Response = $this->getMockResponse('Xml21/demoResponse.xml');
+
+        return [
+            'suggest response' => [
+                'response' => new SuggestResponse($expectedSuggestResponse),
+                'expectedRawResponse' => $expectedSuggestResponse
+            ],
+            'HTML response' => [
+                'response' => new GenericHtmlResponse($expectedHtmlResponse),
+                'expectedRawResponse' => $expectedHtmlResponse
+            ],
+            'XML 2.1 response' => [
+                'response' => new Xml21Response($expectedXml21Response),
+                'expectedRawResponse' => $expectedXml21Response
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider availableResponseProvider
+     * @param Response $response
+     * @param string $expectedRawResponse
+     */
+    public function testGettingRawResponseAsStringReturnsItAsExpected(Response $response, $expectedRawResponse)
+    {
+        $this->assertEquals($expectedRawResponse, $response->getRawResponse());
     }
 }
