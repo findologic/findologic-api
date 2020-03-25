@@ -53,8 +53,7 @@ class Client
         }
 
         try {
-            return $this->config->getHttpClient()->request(
-                self::METHOD_GET,
+            return $this->config->getHttpClient()->get(
                 $request->buildRequestUrl($this->config),
                 ['connect_timeout' => $requestTimeout]
             );
