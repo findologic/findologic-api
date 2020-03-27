@@ -146,6 +146,25 @@ abstract class Request
     }
 
     /**
+     * Adds the hashed usergroup param.
+     *
+     * @param $value string
+     * @return $this
+     */
+    public function addUserGroup($value)
+    {
+        $validator = new ParameterValidator([QueryParameter::USERGROUP => $value]);
+        $validator->rule('string', QueryParameter::USERGROUP);
+
+        if (!$validator->validate()) {
+            throw new InvalidParamException(QueryParameter::USERGROUP);
+        }
+
+        $this->addParam(QueryParameter::USERGROUP, [$value], self::ADD_VALUE);
+        return $this;
+    }
+
+    /**
      * Adds the outputAdapter param. It is used to override the output format.
      *
      * @param string $value One of available OutputAdapter. E.g. OutputAdapter::XML_21.

@@ -55,7 +55,7 @@ class SearchNavigationRequestTest extends TestBase
      */
     public function testSendingSearchRequestsWithoutRequiredParamsWillThrowAnException(array $options)
     {
-        $this->httpClientMock->method('request')->willReturn($this->responseMock);
+        $this->httpClientMock->method('get')->willReturn($this->responseMock);
         $this->responseMock->method('getBody')->willReturn($this->streamMock);
         $this->responseMock->method('getStatusCode')->willReturn(200);
         $this->streamMock->method('getContents')
@@ -88,7 +88,7 @@ class SearchNavigationRequestTest extends TestBase
 
     public function testSendingNavigationRequestsWithoutRequiredParamsWillThrowAnException()
     {
-        $this->httpClientMock->method('request')->willReturn($this->responseMock);
+        $this->httpClientMock->method('get')->willReturn($this->responseMock);
         $this->responseMock->method('getBody')->willReturn($this->streamMock);
         $this->responseMock->method('getStatusCode')->willReturn(200);
         $this->streamMock->method('getContents')
@@ -646,6 +646,39 @@ class SearchNavigationRequestTest extends TestBase
         $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
         $searchRequest->addGroup($invalidGroup);
+    }
+
+    /**
+     * @dataProvider userGroupProvider
+     *
+     * @param string $expectedUserGroupHash
+     */
+    public function testAddUserGroupWillSetItInAValidFormat($expectedUserGroupHash)
+    {
+        $expectedParameter = 'usergrouphash';
+
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
+
+        $searchRequest->addUserGroup($expectedUserGroupHash);
+        $params = $searchRequest->getParams();
+        $this->assertArrayHasKey($expectedParameter, $params);
+        $this->assertEquals([$expectedUserGroupHash], $params[$expectedParameter]);
+    }
+
+    /**
+     * @dataProvider invalidUserGroupProvider
+     * @param mixed $invalidUserGroup
+     */
+    public function testInvalidUserGroupWillThrowAnException($invalidUserGroup)
+    {
+        $this->expectException(InvalidParamException::class);
+        $this->expectExceptionMessage('Parameter usergrouphash is not valid.');
+
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
+
+        $searchRequest->addUserGroup($invalidUserGroup);
     }
 
     /**
