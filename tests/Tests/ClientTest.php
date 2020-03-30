@@ -12,7 +12,7 @@ use FINDOLOGIC\Api\Responses\Autocomplete\SuggestResponse;
 use FINDOLOGIC\Api\Responses\Html\GenericHtmlResponse;
 use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Message\Request;
 use InvalidArgumentException;
 
 class ClientTest extends TestBase

@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Api;
 
+use Exception;
 use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
 use FINDOLOGIC\Api\Requests\AlivetestRequest;
 use FINDOLOGIC\Api\Requests\Request;
@@ -57,7 +58,7 @@ class Client
                 $request->buildRequestUrl($this->config),
                 ['connect_timeout' => $requestTimeout]
             );
-        } catch (GuzzleException $e) {
+        } catch (Exception $e) {
             throw new ServiceNotAliveException($e->getMessage());
         }
     }
