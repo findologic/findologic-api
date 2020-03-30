@@ -8,7 +8,6 @@ use FINDOLOGIC\Api\Requests\AlivetestRequest;
 use FINDOLOGIC\Api\Requests\Request;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchNavigationRequest;
 use FINDOLOGIC\Api\Responses\Response;
-use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
 
 class Client
