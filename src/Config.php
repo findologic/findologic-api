@@ -4,7 +4,7 @@ namespace FINDOLOGIC\Api;
 
 use FINDOLOGIC\Api\Exceptions\ConfigException;
 use FINDOLOGIC\Api\Validators\ConfigValidator;
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as GuzzleClient;
 
 class Config
 {
@@ -37,7 +37,7 @@ class Config
 
     public function __construct()
     {
-        $this->httpClient = new Client();
+        $this->httpClient = new GuzzleClient();
     }
 
     /**
@@ -141,7 +141,7 @@ class Config
     /**
      * If not explicitly overridden, will return a Guzzle client that's used for sending requests.
      *
-     * @return Client
+     * @return GuzzleClient
      */
     public function getHttpClient()
     {
@@ -149,10 +149,10 @@ class Config
     }
 
     /**
-     * @param Client $httpClient
+     * @param GuzzleClient $httpClient
      * @return $this
      */
-    public function setHttpClient(Client $httpClient)
+    public function setHttpClient(GuzzleClient $httpClient)
     {
         $this->setConfigValue(self::HTTP_CLIENT, $httpClient, ['required']);
         return $this;
