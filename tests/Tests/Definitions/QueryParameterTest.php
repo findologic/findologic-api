@@ -24,6 +24,7 @@ class QueryParameterTest extends TestBase
             'FIRST' => 'first',
             'IDENTIFIER' => 'identifier',
             'GROUP' => 'group',
+            'USERGROUP' => 'usergrouphash',
             'FORCE_ORIGINAL_QUERY' => 'forceOriginalQuery',
             'OUTPUT_ATTRIB' => 'outputAttrib',
             'SELECTED' => 'selected',

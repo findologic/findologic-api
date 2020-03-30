@@ -389,4 +389,22 @@ trait SearchNavigationRequestDataProvider
             'more different individual param' => ['best & *_\' shoes &copy; ever!', 'very very FuNnY!!!', 'set']
         ];
     }
+
+    public function userGroupProvider()
+    {
+        return [
+            'normal usergroup' => ['NDEmNgEN'],
+            'other usergrouphash' => ['HaKeLfGN'],
+            'more different usergrouphash' => ['ThisGroupMayBeValid']
+        ];
+    }
+
+    public function invalidUserGroupProvider()
+    {
+        return [
+            'usergrouphash is an integer' => [123],
+            'usergrouphash is an array' => [['aaaah']],
+            'usergrouphash is an object' => [new \stdClass()],
+        ];
+    }
 }
