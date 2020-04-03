@@ -13,8 +13,6 @@ class OrderTypeTest extends TestBase
             'RELEVANCE' => 'rank',
             'PRICE_ASCENDING' => 'price ASC',
             'PRICE_DESCENDING' => 'price DESC',
-            'ALPHABETICAL' => 'label ASC',
-            'REVERSE_ALPHABETICAL' => 'label DESC',
             'TOP_SELLERS_FIRST' => 'salesfrequency DESC',
             'NEWEST_FIRST' => 'dateadded DESC',
             'FIELD_PRICE' => 'price',
@@ -24,7 +22,10 @@ class OrderTypeTest extends TestBase
             'DIRECTION_ASCENDING' => 'ASC',
             'DIRECTION_DESCENDING' => 'DESC',
             'DEFAULT_SORT' => 'rank',
+            'ALPHABETICAL_ASCENDING' => 'label ASC',
+            'ALPHABETICAL_DESCENDING' => 'label DESC'
         ];
+
         $availableOrderTypes = OrderType::getConstants();
 
         $this->assertEquals($expectedAvailableOrderTypes, $availableOrderTypes);
