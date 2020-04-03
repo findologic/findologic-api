@@ -1,0 +1,678 @@
+{
+  "request": {
+    "first": 0,
+    "count": 24,
+    "serviceId": "ABCD1234ABCD1234ABCD1234ABCD1234",
+    "usergroup": null,
+    "order": {
+      "field": "salesfrequency",
+      "relevanceBased": true,
+      "direction": "DESC"
+    }
+  },
+  "result": {
+    "metadata": {
+      "landingpage": null,
+      "promotion": null,
+      "searchConcept": null,
+      "totalResults": 168,
+      "currencySymbol": "\u20ac"
+    },
+    "items": [
+      {
+        "id": "631de16d8e74471dbaa0b69a16a8bc4c",
+        "score": 2.19722,
+        "url": "http:\/\/blubbergurken.de\/detail\/631de16d8e74471dbaa0b69a16a8bc4c",
+        "name": "Click Frame 21 cm Wood",
+        "highlightedName": "Click Frame 21 cm Wood",
+        "ordernumbers": [
+          "16490.6.1"
+        ],
+        "price": 5.95,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/7b\/ea\/45\/1585143022\/Click-Frame-21-cm-Wood-16490_6_1_001.jpg"
+      },
+      {
+        "id": "06785147ef8048abb1244bc939fd75b0",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/06785147ef8048abb1244bc939fd75b0",
+        "name": "Wandbild 60x90cm Weltkarte - antik optik",
+        "highlightedName": "Wandbild 60x90cm Weltkarte - antik optik",
+        "ordernumbers": [
+          "16490.2.33"
+        ],
+        "price": 29.95,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/fb\/4a\/34\/1585143023\/Wandbild-60x90cm-Weltkarte---antik-optik-16490_2_33_001.jpg"
+      },
+      {
+        "id": "0a56883a75494e4b90f433d71cb332e7",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/0a56883a75494e4b90f433d71cb332e7",
+        "name": "Wandbild 70x118cm Modern Blue Abstract",
+        "highlightedName": "Wandbild 70x118cm Modern Blue Abstract",
+        "ordernumbers": [
+          "16490.0.3"
+        ],
+        "price": 89.95,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/99\/e6\/e9\/1585317592\/Wandbild-70x118cm-Modern-Blue-Abstract-16490_0_3_001.jpg"
+      },
+      {
+        "id": "0bf8cb707aaa4b0f9de9a38172d4fdad",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/0bf8cb707aaa4b0f9de9a38172d4fdad",
+        "name": "Wandbild 30x40cm Carpe Diem",
+        "highlightedName": "Wandbild 30x40cm Carpe Diem",
+        "ordernumbers": [
+          "16490.0.19"
+        ],
+        "price": 11.95,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/63\/40\/36\/1585655663\/Wandbild-30x40cm-Carpe-Diem-16490_0_19_001.jpg"
+      },
+      {
+        "id": "0e7dad6bcff0425b974427dac2dea732",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/0e7dad6bcff0425b974427dac2dea732",
+        "name": "Wandbild 80x114cm Trees Up",
+        "highlightedName": "Wandbild 80x114cm Trees Up",
+        "ordernumbers": [
+          "16490.2.62"
+        ],
+        "price": 79.95,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/5f\/3a\/5f\/1585667167\/Wandbild-80x114cm-Trees-Up-16490_2_62_001.jpg"
+      },
+      {
+        "id": "0ef7eb60b3e743a59c7ac750ed72bdda",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/0ef7eb60b3e743a59c7ac750ed72bdda",
+        "name": "Wandbild 100x140 Assaf Frank - stairs",
+        "highlightedName": "Wandbild 100x140 Assaf Frank - stairs",
+        "ordernumbers": [
+          "16493..1"
+        ],
+        "price": 359.9,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/39\/68\/d7\/1585655681\/Wandbild-100x140-Assaf-Frank---stairs-16493__1_001.jpg"
+      },
+      {
+        "id": "10e70efdc3ff4358b03b5277dc3f1db6",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/10e70efdc3ff4358b03b5277dc3f1db6",
+        "name": "Wandbild 100x140 Eric Baak - living room",
+        "highlightedName": "Wandbild 100x140 Eric Baak - living room",
+        "ordernumbers": [
+          "16493..7"
+        ],
+        "price": 359.9,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/14\/d5\/45\/1585667050\/Wandbild-100x140-Eric-Baak---living-room-16493__7_001.jpg"
+      },
+      {
+        "id": "16ac2f5df38b4036851a238fe0facc66",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/16ac2f5df38b4036851a238fe0facc66",
+        "name": "Wandbild 30x40cm Lady Balloons",
+        "highlightedName": "Wandbild 30x40cm Lady Balloons",
+        "ordernumbers": [
+          "16490.1.17"
+        ],
+        "price": 11.95,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/79\/be\/df\/1585655662\/Wandbild-30x40cm-Lady-Balloons-16490_1_17_001.jpg"
+      },
+      {
+        "id": "17d9459062b14b99ad5fd5ae5da5d72f",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/17d9459062b14b99ad5fd5ae5da5d72f",
+        "name": "Wandbild 52x156cm Pack of Deer",
+        "highlightedName": "Wandbild 52x156cm Pack of Deer",
+        "ordernumbers": [
+          "16490.2.69"
+        ],
+        "price": 49.95,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/45\/7b\/47\/1585143022\/Wandbild-52x156cm-Pack-of-Deer-16490_2_69_001.jpg"
+      },
+      {
+        "id": "1838f42862cb4584a28b92ab34dc331c",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/1838f42862cb4584a28b92ab34dc331c",
+        "name": "Wandbild 60x90cm Tiger is watching you",
+        "highlightedName": "Wandbild 60x90cm Tiger is watching you",
+        "ordernumbers": [
+          "16490.2.71"
+        ],
+        "price": 29.95,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/77\/d5\/17\/1585655682\/Wandbild-60x90cm-Tiger-is-watching-you-16490_2_71_001.jpg"
+      },
+      {
+        "id": "183c5fa9507143148b7f601010f160e7",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/183c5fa9507143148b7f601010f160e7",
+        "name": "Wandbild 100x140cm Joachim G. Pinkawa - gorilla",
+        "highlightedName": "Wandbild 100x140cm Joachim G. Pinkawa - gorilla",
+        "ordernumbers": [
+          "16493..4"
+        ],
+        "price": 359.9,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/bundles\/storefront\/assets\/icon\/default\/placeholder.svg"
+      },
+      {
+        "id": "19149563b9d24a2fb67f20874a286523",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/19149563b9d24a2fb67f20874a286523",
+        "name": "Wandbild 50x70cm Glitter Glasses",
+        "highlightedName": "Wandbild 50x70cm Glitter Glasses",
+        "ordernumbers": [
+          "16490.1.28"
+        ],
+        "price": 24.95,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/45\/e6\/55\/1585655828\/Wandbild-50x70cm-Glitter-Glasses-16490_1_28_001.jpg"
+      },
+      {
+        "id": "194ee00d29984310bfae571bb636cff8",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/194ee00d29984310bfae571bb636cff8",
+        "name": "Wandbild 30x40cm Beach Bottle",
+        "highlightedName": "Wandbild 30x40cm Beach Bottle",
+        "ordernumbers": [
+          "16490.2.51"
+        ],
+        "price": 11.95,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/61\/78\/64\/1585143023\/Wandbild-30x40cm-Beach-Bottle-16490_2_51_001.jpg"
+      },
+      {
+        "id": "1a8924262815440d8e1ab42609e8610c",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/1a8924262815440d8e1ab42609e8610c",
+        "name": "Wandbild 30x40cm Ampersand Blue",
+        "highlightedName": "Wandbild 30x40cm Ampersand Blue",
+        "ordernumbers": [
+          "16490.0.17"
+        ],
+        "price": 11.95,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/42\/cf\/a8\/1585317591\/Wandbild-30x40cm-Ampersand-Blue-16490_0_17_001.jpg"
+      },
+      {
+        "id": "1be9f01cba2c4ccf92935720440bc384",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/1be9f01cba2c4ccf92935720440bc384",
+        "name": "Wandbild 80x114cm Dunes",
+        "highlightedName": "Wandbild 80x114cm Dunes",
+        "ordernumbers": [
+          "16490.2.61"
+        ],
+        "price": 79.95,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/5c\/c4\/12\/1585143023\/Wandbild-80x114cm-Dunes-16490_2_61_001.jpg"
+      },
+      {
+        "id": "1c53a31e37e5407394e4b0f6befe2b6e",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/1c53a31e37e5407394e4b0f6befe2b6e",
+        "name": "Wandbild 20x30cm Mr and Mrs 4er-Set",
+        "highlightedName": "Wandbild 20x30cm Mr and Mrs 4er-Set",
+        "ordernumbers": [
+          "16490.1.2"
+        ],
+        "price": 7.95,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/96\/fe\/16\/1585655682\/Wandbild-20x30cm-Mr-and-Mrs-4er-Set-16490_1_2_001.jpg"
+      },
+      {
+        "id": "1d8913aa832e4d6fa8deb610016f139b",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/1d8913aa832e4d6fa8deb610016f139b",
+        "name": "Wandbild 60x90cm Beach Window",
+        "highlightedName": "Wandbild 60x90cm Beach Window",
+        "ordernumbers": [
+          "16490.2.10"
+        ],
+        "price": 29.95,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/0b\/bf\/ef\/1585655663\/Wandbild-60x90cm-Beach-Window-16490_2_10_001.jpg"
+      },
+      {
+        "id": "1fcb0833cef94c06a7ec889d12906473",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/1fcb0833cef94c06a7ec889d12906473",
+        "name": "Wandbild 30x40cm Limited Edition",
+        "highlightedName": "Wandbild 30x40cm Limited Edition",
+        "ordernumbers": [
+          "16490.1.20"
+        ],
+        "price": 11.95,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/4e\/b0\/f7\/1585655662\/Wandbild-30x40cm-Limited-Edition-16490_1_20_001.jpg"
+      },
+      {
+        "id": "213f2687388a4706b7c154478aa18d02",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/213f2687388a4706b7c154478aa18d02",
+        "name": "Wandbild 20x30cm Awesome 4er-Set",
+        "highlightedName": "Wandbild 20x30cm Awesome 4er-Set",
+        "ordernumbers": [
+          "16490.1.1"
+        ],
+        "price": 7.95,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/d2\/05\/60\/1585655828\/Wandbild-20x30cm-Awesome-4er-Set-16490_1_1_001.jpg"
+      },
+      {
+        "id": "23881bd2f6a64c88a7bea6e4ffd29fbf",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/23881bd2f6a64c88a7bea6e4ffd29fbf",
+        "name": "Wandbild 50x70cm Highlander",
+        "highlightedName": "Wandbild 50x70cm Highlander",
+        "ordernumbers": [
+          "16490..29"
+        ],
+        "price": 24.95,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/48\/1e\/9d\/1585317592\/Wandbild-50x70cm-Highlander-16490__29_001.jpg"
+      },
+      {
+        "id": "2869a20bd23d436c85574f68e2a52d91",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/2869a20bd23d436c85574f68e2a52d91",
+        "name": "Wandbild 50x70 Cow Portrait",
+        "highlightedName": "Wandbild 50x70 Cow Portrait",
+        "ordernumbers": [
+          "16493..10"
+        ],
+        "price": 119.9,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/bf\/12\/19\/1585143023\/Wandbild-50x70-Cow-Portrait-16493__10_001.jpg"
+      },
+      {
+        "id": "28b3e4e70a254ba6bfe4034384a6800d",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/28b3e4e70a254ba6bfe4034384a6800d",
+        "name": "Wandbild 40x50cm Familie, Leben, Liebe",
+        "highlightedName": "Wandbild 40x50cm Familie, Leben, Liebe",
+        "ordernumbers": [
+          "16490.2.23"
+        ],
+        "price": 14.95,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/c3\/08\/af\/1585655828\/Wandbild-40x50cm-Familie,-Leben,-Liebe-16490_2_23_001.jpg"
+      },
+      {
+        "id": "29eec950241c4a37844e516acd098a38",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/29eec950241c4a37844e516acd098a38",
+        "name": "Wandbild 30x40cm Fashionata",
+        "highlightedName": "Wandbild 30x40cm Fashionata",
+        "ordernumbers": [
+          "16490.1.18"
+        ],
+        "price": 11.95,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/75\/77\/b5\/1585655662\/Wandbild-30x40cm-Fashionata-16490_1_18_001.jpg"
+      },
+      {
+        "id": "29ef9a2aab9d437297950bd38e097f01",
+        "score": 1.38629,
+        "url": "http:\/\/blubbergurken.de\/detail\/29ef9a2aab9d437297950bd38e097f01",
+        "name": "Wandbild 80x114cm Dandelion",
+        "highlightedName": "Wandbild 80x114cm Dandelion",
+        "ordernumbers": [
+          "16490.2.73"
+        ],
+        "price": 79.95,
+        "attributes": [],
+        "properties": [],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/e4\/62\/04\/1585667167\/Wandbild-80x114cm-Dandelion-16490_2_73_001.jpg"
+      }
+    ],
+    "variant": {
+      "name": "sdym"
+    },
+    "filters": {
+      "main": [
+        {
+          "type": "select",
+          "pinnedFilterValueCount": 6,
+          "name": "cat",
+          "displayName": "Kategorie",
+          "selectMode": "single",
+          "values": [
+            {
+              "displayName": "Alle Kategorien",
+              "value": "Alle Kategorien",
+              "weight": 0,
+              "frequency": 168,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_Deko",
+              "value": "Alle Kategorien_Deko",
+              "weight": 0.0833,
+              "frequency": 161,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_Deko_Bilder & Kunst",
+              "value": "Alle Kategorien_Deko_Bilder & Kunst",
+              "weight": 0.0952,
+              "frequency": 160,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_Deko_Bilder & Kunst_Bilder",
+              "value": "Alle Kategorien_Deko_Bilder & Kunst_Bilder",
+              "weight": 0.1548,
+              "frequency": 155,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_Deko_Bilder & Kunst_Bilder_Deko-Paneele",
+              "value": "Alle Kategorien_Deko_Bilder & Kunst_Bilder_Deko-Paneele",
+              "weight": 0.4167,
+              "frequency": 35,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_M\u00f6bel",
+              "value": "Alle Kategorien_M\u00f6bel",
+              "weight": 0.0714,
+              "frequency": 6,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_M\u00f6bel_Schlafzimmer",
+              "value": "Alle Kategorien_M\u00f6bel_Schlafzimmer",
+              "weight": 0.0595,
+              "frequency": 5,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_Deko_Bilder & Kunst_Bilderrahmen",
+              "value": "Alle Kategorien_Deko_Bilder & Kunst_Bilderrahmen",
+              "weight": 0.0476,
+              "frequency": 4,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_Deko_Bilder & Kunst_Bilderrahmen_Bilderrahmen",
+              "value": "Alle Kategorien_Deko_Bilder & Kunst_Bilderrahmen_Bilderrahmen",
+              "weight": 0.0476,
+              "frequency": 4,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_Deko_Bilder & Kunst_Bilder_Glasbilder",
+              "value": "Alle Kategorien_Deko_Bilder & Kunst_Bilder_Glasbilder",
+              "weight": 0.0357,
+              "frequency": 3,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_M\u00f6bel_Schlafzimmer_Betten",
+              "value": "Alle Kategorien_M\u00f6bel_Schlafzimmer_Betten",
+              "weight": 0.0357,
+              "frequency": 3,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_M\u00f6bel_Schlafzimmer_Betten_Betten",
+              "value": "Alle Kategorien_M\u00f6bel_Schlafzimmer_Betten_Betten",
+              "weight": 0.0238,
+              "frequency": 2,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_M\u00f6bel_Schlafzimmer_Betten_Massivholzbetten",
+              "value": "Alle Kategorien_M\u00f6bel_Schlafzimmer_Betten_Massivholzbetten",
+              "weight": 0.0238,
+              "frequency": 2,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_Deko_Bilder & Kunst_Bilder_Acrylglasbilder",
+              "value": "Alle Kategorien_Deko_Bilder & Kunst_Bilder_Acrylglasbilder",
+              "weight": 0.0119,
+              "frequency": 1,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_Deko_Bilder & Kunst_Bilder_Leinwandbilder",
+              "value": "Alle Kategorien_Deko_Bilder & Kunst_Bilder_Leinwandbilder",
+              "weight": 0.0119,
+              "frequency": 1,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_Deko_Bilder & Kunst_Figuren & Skulpturen",
+              "value": "Alle Kategorien_Deko_Bilder & Kunst_Figuren & Skulpturen",
+              "weight": 0.0119,
+              "frequency": 1,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_Deko_Geschenke & Wohnaccessoires",
+              "value": "Alle Kategorien_Deko_Geschenke & Wohnaccessoires",
+              "weight": 0.0119,
+              "frequency": 1,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_Deko_Geschenke & Wohnaccessoires_Vasen",
+              "value": "Alle Kategorien_Deko_Geschenke & Wohnaccessoires_Vasen",
+              "weight": 0.0119,
+              "frequency": 1,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_M\u00f6bel_Esszimmer",
+              "value": "Alle Kategorien_M\u00f6bel_Esszimmer",
+              "weight": 0.0119,
+              "frequency": 1,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_M\u00f6bel_Esszimmer_Tische",
+              "value": "Alle Kategorien_M\u00f6bel_Esszimmer_Tische",
+              "weight": 0.0119,
+              "frequency": 1,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_M\u00f6bel_Esszimmer_Tische_Esstische",
+              "value": "Alle Kategorien_M\u00f6bel_Esszimmer_Tische_Esstische",
+              "weight": 0.0119,
+              "frequency": 1,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_M\u00f6bel_Schlafzimmer_Betten_Boxspringbetten",
+              "value": "Alle Kategorien_M\u00f6bel_Schlafzimmer_Betten_Boxspringbetten",
+              "weight": 0.0119,
+              "frequency": 1,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_M\u00f6bel_Schlafzimmer_Nachttische & -kommoden",
+              "value": "Alle Kategorien_M\u00f6bel_Schlafzimmer_Nachttische & -kommoden",
+              "weight": 0.0119,
+              "frequency": 1,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_M\u00f6bel_Schlafzimmer_Schr\u00e4nke",
+              "value": "Alle Kategorien_M\u00f6bel_Schlafzimmer_Schr\u00e4nke",
+              "weight": 0.0119,
+              "frequency": 1,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_M\u00f6bel_Schlafzimmer_Schr\u00e4nke_Dreht\u00fcrenschr\u00e4nke",
+              "value": "Alle Kategorien_M\u00f6bel_Schlafzimmer_Schr\u00e4nke_Dreht\u00fcrenschr\u00e4nke",
+              "weight": 0.0119,
+              "frequency": 1,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_Teppiche",
+              "value": "Alle Kategorien_Teppiche",
+              "weight": 0.0119,
+              "frequency": 1,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_Teppiche_Moderne Teppiche",
+              "value": "Alle Kategorien_Teppiche_Moderne Teppiche",
+              "weight": 0.0119,
+              "frequency": 1,
+              "selected": false
+            },
+            {
+              "displayName": "Alle Kategorien_Teppiche_Moderne Teppiche_Sonstige Teppiche",
+              "value": "Alle Kategorien_Teppiche_Moderne Teppiche_Sonstige Teppiche",
+              "weight": 0.0119,
+              "frequency": 1,
+              "selected": false
+            }
+          ]
+        },
+        {
+          "type": "label",
+          "name": "vendor",
+          "displayName": "Hersteller",
+          "selectMode": "multiple",
+          "combinationOperation": "and",
+          "values": [
+            {
+              "value": "Casablanca",
+              "weight": 0.0119,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "value": "Elfo M\u00f6bel",
+              "weight": 0.0119,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "value": "G+K",
+              "weight": 0.0595,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "value": "Gasper",
+              "weight": 0.0119,
+              "frequency": null,
+              "selected": false
+            }
+          ]
+        },
+        {
+          "type": "range-slider",
+          "totalRange": {
+            "min": 5.95,
+            "max": 999
+          },
+          "selectedRange": {
+            "min": 5.95,
+            "max": 999
+          },
+          "stepSize": 0.1,
+          "unit": "\u20ac",
+          "name": "price",
+          "displayName": "Preis",
+          "selectMode": "single",
+          "values": [
+            {
+              "value": {
+                "min": 5.95,
+                "max": 11.95
+              },
+              "weight": 0.6667,
+              "frequency": null
+            },
+            {
+              "value": {
+                "min": 13.9,
+                "max": 29.95
+              },
+              "weight": 0.619,
+              "frequency": null
+            },
+            {
+              "value": {
+                "min": 39,
+                "max": 119.9
+              },
+              "weight": 0.5357,
+              "frequency": null
+            },
+            {
+              "value": {
+                "min": 179,
+                "max": 999
+              },
+              "weight": 0.1786,
+              "frequency": null
+            }
+          ]
+        }
+      ],
+      "other": [
+        {
+          "type": "label",
+          "name": "shipping_free",
+          "displayName": "Versandkostenfrei",
+          "selectMode": "multiple",
+          "combinationOperation": "and",
+          "values": [
+            {
+              "value": "0",
+              "weight": 0.0119,
+              "frequency": 167,
+              "selected": false
+            },
+            {
+              "value": "1",
+              "weight": 0.0119,
+              "frequency": 1,
+              "selected": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -8,12 +8,10 @@ use FINDOLOGIC\Api\Requests\Request;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchNavigationRequest;
 use FINDOLOGIC\Api\Responses\Response;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Psr7\Response as GuzzleResponse;
+use Psr\Http\Message\ResponseInterface as GuzzleResponse;
 
 class Client
 {
-    const METHOD_GET = 'GET';
-
     /** @var Config */
     private $config;
 

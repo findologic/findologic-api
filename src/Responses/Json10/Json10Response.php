@@ -18,7 +18,7 @@ class Json10Response extends Response
     {
         $parsedResponse = json_decode($response, true);
 
-        $this->request = $parsedResponse['request'];
+        $this->request = new Request($parsedResponse['request']);
         $this->result = $parsedResponse['result'];
     }
 

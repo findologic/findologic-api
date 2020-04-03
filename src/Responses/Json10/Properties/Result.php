@@ -36,4 +36,36 @@ class Result
             $this->otherFilters[] = Filter::getInstance($otherFilter);
         }
     }
+
+    /**
+     * @return Metadata
+     */
+    public function getMetadata()
+    {
+        return $this->metadata;
+    }
+
+    /**
+     * @return Item[]
+     */
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    /**
+     * @return Variant
+     */
+    public function getVariant()
+    {
+        return $this->variant;
+    }
+
+    /**
+     * @return Filter[]
+     */
+    public function getOtherFilters()
+    {
+        return $this->otherFilters;
+    }
 }
