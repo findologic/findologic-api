@@ -19,6 +19,7 @@ class QueryParameter extends Definition
         FIRST = 'first',
         IDENTIFIER = 'identifier',
         GROUP = 'group',
+        USERGROUP = 'usergrouphash',
         FORCE_ORIGINAL_QUERY = 'forceOriginalQuery',
         OUTPUT_ATTRIB = 'outputAttrib',
         SELECTED = 'selected',

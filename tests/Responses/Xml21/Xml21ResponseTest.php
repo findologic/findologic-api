@@ -420,7 +420,7 @@ class Xml21ResponseTest extends TestCase
             $this->fail('The demo response should have filters.');
         }
 
-        $this->assertEquals($expectedImages, $actualImages);
+        $this->assertSame($expectedImages, $actualImages);
     }
 
     public function testResponseWillReturnColorsOfItemsAsExpected()

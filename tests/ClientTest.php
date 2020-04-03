@@ -53,10 +53,10 @@ class ClientTest extends TestBase
         $expectedAlivetestBody,
         $expectedSearchResultBody
     ) {
-        $this->httpClientMock->method('request')
+        $this->httpClientMock->method('get')
             ->withConsecutive(
-                ['GET', $expectedAlivetestUrl, ['connect_timeout' => 1.0]],
-                ['GET', $expectedRequestUrl, ['connect_timeout' => 3.0]]
+                [$expectedAlivetestUrl, ['connect_timeout' => 1.0]],
+                [$expectedRequestUrl, ['connect_timeout' => 3.0]]
             )
             ->willReturnOnConsecutiveCalls($this->responseMock, $this->responseMock);
         $this->responseMock->method('getBody')
@@ -267,8 +267,8 @@ class ClientTest extends TestBase
 
         $expectedAlivetestUrl = 'https://service.findologic.com/ps/blubbergurken.de/alivetest.php?' . $requestParams;
 
-        $this->httpClientMock->method('request')
-            ->with('GET', $expectedAlivetestUrl, ['connect_timeout' => 1.0])
+        $this->httpClientMock->method('get')
+            ->with($expectedAlivetestUrl, ['connect_timeout' => 1.0])
             ->willThrowException(new RequestException(
                 $expectedExceptionMessage,
                 new Request('GET', $expectedAlivetestUrl)
@@ -305,8 +305,8 @@ class ClientTest extends TestBase
 
         $expectedAlivetestUrl = 'https://service.findologic.com/ps/blubbergurken.de/alivetest.php?' . $requestParams;
 
-        $this->httpClientMock->method('request')
-            ->with('GET', $expectedAlivetestUrl, ['connect_timeout' => 1.0])
+        $this->httpClientMock->method('get')
+            ->with($expectedAlivetestUrl, ['connect_timeout' => 1.0])
             ->willReturnOnConsecutiveCalls($this->responseMock);
         $this->responseMock->method('getBody')
             ->with()

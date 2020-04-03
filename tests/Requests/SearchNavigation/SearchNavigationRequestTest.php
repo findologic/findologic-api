@@ -55,7 +55,7 @@ class SearchNavigationRequestTest extends TestBase
      */
     public function testSendingSearchRequestsWithoutRequiredParamsWillThrowAnException(array $options)
     {
-        $this->httpClientMock->method('request')->willReturn($this->responseMock);
+        $this->httpClientMock->method('get')->willReturn($this->responseMock);
         $this->responseMock->method('getBody')->willReturn($this->streamMock);
         $this->responseMock->method('getStatusCode')->willReturn(200);
         $this->streamMock->method('getContents')
@@ -88,7 +88,7 @@ class SearchNavigationRequestTest extends TestBase
 
     public function testSendingNavigationRequestsWithoutRequiredParamsWillThrowAnException()
     {
-        $this->httpClientMock->method('request')->willReturn($this->responseMock);
+        $this->httpClientMock->method('get')->willReturn($this->responseMock);
         $this->responseMock->method('getBody')->willReturn($this->streamMock);
         $this->responseMock->method('getStatusCode')->willReturn(200);
         $this->streamMock->method('getContents')
@@ -649,6 +649,39 @@ class SearchNavigationRequestTest extends TestBase
     }
 
     /**
+     * @dataProvider userGroupProvider
+     *
+     * @param string $expectedUserGroupHash
+     */
+    public function testAddUserGroupWillSetItInAValidFormat($expectedUserGroupHash)
+    {
+        $expectedParameter = 'usergrouphash';
+
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
+
+        $searchRequest->addUserGroup($expectedUserGroupHash);
+        $params = $searchRequest->getParams();
+        $this->assertArrayHasKey($expectedParameter, $params);
+        $this->assertEquals([$expectedUserGroupHash], $params[$expectedParameter]);
+    }
+
+    /**
+     * @dataProvider invalidUserGroupProvider
+     * @param mixed $invalidUserGroup
+     */
+    public function testInvalidUserGroupWillThrowAnException($invalidUserGroup)
+    {
+        $this->expectException(InvalidParamException::class);
+        $this->expectExceptionMessage('Parameter usergrouphash is not valid.');
+
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
+
+        $searchRequest->addUserGroup($invalidUserGroup);
+    }
+
+    /**
      * @dataProvider attributeProvider
      * @param string $expectedAttributeName
      * @param string $expectedAttributeValue
@@ -776,5 +809,39 @@ class SearchNavigationRequestTest extends TestBase
         $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParam, $params);
         $this->assertEquals($expectedGroups, $params[$expectedParam]);
+    }
+
+    public function testAttributesAreMergedTogetherProperly()
+    {
+        $searchRequest = new SearchRequest();
+
+        $searchRequest
+            ->setShopUrl('blubbergurken.io')
+            ->addAttribute('someFilter', 'someValue')
+            ->addAttribute('someFilter', 'someOtherValue');
+
+        $expectedUri = 'https://service.findologic.com/ps/blubbergurken.io/index.php?shopurl=blubbergurken.io&';
+        $expectedUri .= 'attrib%5BsomeFilter%5D%5B0%5D=someValue&attrib%5BsomeFilter%5D%5B1%5D=someOtherValue';
+        $expectedUri .= '&shopkey=ABCDABCDABCDABCDABCDABCDABCDABCD';
+
+        $uri = $searchRequest->buildRequestUrl($this->config);
+        $this->assertEquals($expectedUri, $uri);
+    }
+
+    public function testAttributesAreNotMergedWhenNotNeeded()
+    {
+        $searchRequest = new SearchRequest();
+
+        $searchRequest
+            ->setShopUrl('blubbergurken.io')
+            ->addAttribute('someFilter1', 'someValue')
+            ->addAttribute('someFilter2', 'someOtherValue');
+
+        $expectedUri = 'https://service.findologic.com/ps/blubbergurken.io/index.php?shopurl=blubbergurken.io&';
+        $expectedUri .= 'attrib%5BsomeFilter1%5D%5B%5D=someValue&attrib%5BsomeFilter2%5D%5B%5D=someOtherValue';
+        $expectedUri .= '&shopkey=ABCDABCDABCDABCDABCDABCDABCDABCD';
+
+        $uri = $searchRequest->buildRequestUrl($this->config);
+        $this->assertEquals($expectedUri, $uri);
     }
 }
