@@ -1,7 +1,6 @@
 {
     "name": "findologic/findologic-api",
     "description": "Library for FINDOLOGIC API requests",
-    "version": "v1.0.2",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -41,13 +40,13 @@
         "friendsofphp/php-cs-fixer": "^2.14"
     },
     "autoload": {
-        "psr-0": {
-            "FINDOLOGIC\\Api": "src/"
+        "psr-4": {
+            "FINDOLOGIC\\Api\\": "src/"
         }
     },
     "autoload-dev": {
-        "psr-0": {
-            "FINDOLOGIC\\Api\\Tests": "tests/"
+        "psr-4": {
+            "FINDOLOGIC\\Api\\Tests\\": "tests/Tests/"
         }
     },
     "scripts": {
