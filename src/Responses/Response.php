@@ -10,7 +10,7 @@ use FINDOLOGIC\Api\Requests\SearchNavigation\SearchNavigationRequest;
 use FINDOLOGIC\Api\Responses\Autocomplete\SuggestResponse;
 use FINDOLOGIC\Api\Responses\Html\GenericHtmlResponse;
 use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
-use GuzzleHttp\Psr7\Response as GuzzleResponse;
+use GuzzleHttp\Message\Response as GuzzleResponse;
 use InvalidArgumentException;
 
 abstract class Response

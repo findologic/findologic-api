@@ -3,7 +3,7 @@
 namespace FINDOLOGIC\Api\Tests;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Message\Response;
 use GuzzleHttp\Psr7\Stream;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
@@ -26,6 +26,7 @@ class TestBase extends TestCase
             ->setMethods(['get'])
             ->getMock();
         $this->responseMock = $this->getMockBuilder(Response::class)
+            ->disableOriginalConstructor()
             ->setMethods(['getBody', 'getStatusCode'])
             ->getMock();
         $this->streamMock = $this->getMockBuilder(Stream::class)

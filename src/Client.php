@@ -8,7 +8,8 @@ use FINDOLOGIC\Api\Requests\AlivetestRequest;
 use FINDOLOGIC\Api\Requests\Request;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchNavigationRequest;
 use FINDOLOGIC\Api\Responses\Response;
-use GuzzleHttp\Psr7\Response as GuzzleResponse;
+use GuzzleHttp\Message\ResponseInterface;
+use GuzzleHttp\Message\Response as GuzzleResponse;
 
 class Client
 {
@@ -34,6 +35,7 @@ class Client
         $alivetestResponse = $this->doAlivetest($request);
 
         $requestStart = microtime(true);
+        /** @var GuzzleResponse $response */
         $response = $this->sendRequest($request);
         $responseTime = microtime(true) - $requestStart;
 
@@ -42,7 +44,7 @@ class Client
 
     /**
      * @param Request $request
-     * @return GuzzleResponse
+     * @return ResponseInterface
      * @throws ServiceNotAliveException If the request was not successful.
      */
     private function sendRequest(Request $request)
@@ -67,7 +69,7 @@ class Client
      * SearchRequest/NavigationRequest.
      *
      * @param Request $request
-     * @return GuzzleResponse|null|void
+     * @return ResponseInterface|null|void
      */
     private function doAlivetest(Request $request)
     {

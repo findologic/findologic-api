@@ -8,9 +8,7 @@ use FINDOLOGIC\Api\Responses\Html\GenericHtmlResponse;
 use FINDOLOGIC\Api\Responses\Response;
 use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
 use FINDOLOGIC\Api\Tests\TestBase;
-use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
 class ResponseTest extends TestBase
@@ -28,7 +26,8 @@ class ResponseTest extends TestBase
             ->getMock();
         $request->expects($this->any())->method('getOutputAdapter')->willReturn($expectedOutputAdapter);
 
-        Response::buildInstance($request, new GuzzleResponse, null, null);
+        $this->setExpectationsForRequests('', '');
+        Response::buildInstance($request, $this->responseMock, null, null);
     }
 
     public function availableResponseProvider()
@@ -55,6 +54,7 @@ class ResponseTest extends TestBase
 
     /**
      * @dataProvider availableResponseProvider
+     *
      * @param Response $response
      * @param string $expectedRawResponse
      */
