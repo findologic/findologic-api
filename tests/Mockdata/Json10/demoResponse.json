@@ -675,6 +675,14 @@
               "selected": false
             }
           ]
+        },
+        {
+          "type": "label",
+          "name": "filter_without_values",
+          "displayName": "Filter without values",
+          "selectMode": "multiple",
+          "combinationOperation": "and",
+          "values": null
         }
       ]
     }

@@ -189,7 +189,7 @@ class Json10ResponseTest extends TestCase
         $response = $this->getRealResponseData();
         $otherFilters = $response->getResult()->getOtherFilters();
 
-        $this->assertCount(1, $otherFilters);
+        $this->assertCount(2, $otherFilters);
         $otherFilter = $otherFilters[0];
         $this->assertInstanceOf(LabelFilter::class, $otherFilter);
         $this->assertSame('shipping_free', $otherFilter->getName());
