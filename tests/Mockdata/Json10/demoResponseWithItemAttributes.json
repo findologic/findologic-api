@@ -29,12 +29,12 @@
           "16490.6.1"
         ],
         "price": 5.95,
-        "attributes": [],
+        "attributes": {
+          "vendor": [
+            "Blubbergurken inc."
+          ]
+        },
         "properties": [],
-        "productPlacement": "nice product placement",
-        "pushRules": [
-          "Awesome PushRule!"
-        ],
         "imageUrl": "http:\/\/blubbergurken.de\/media\/7b\/ea\/45\/1585143022\/Click-Frame-21-cm-Wood-16490_6_1_001.jpg"
       },
       {

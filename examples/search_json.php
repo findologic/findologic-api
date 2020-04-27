@@ -4,4 +4,5 @@
 // Please note that since this is entirely written in PHP, therefore you will experience page reloads
 // after selecting a filter.
 
+require_once __DIR__ . '/../vendor/autoload.php';
 

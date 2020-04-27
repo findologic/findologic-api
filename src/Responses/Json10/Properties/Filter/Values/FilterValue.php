@@ -3,6 +3,7 @@
 namespace FINDOLOGIC\Api\Responses\Json10\Properties\Filter\Values;
 
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
+use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\ColorFilter;
 use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\Filter;
 use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\ImageFilter;
 use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\LabelFilter;
@@ -48,6 +49,8 @@ abstract class FilterValue
                 return new RangeSliderValue($filterValue);
             case $filter instanceof ImageFilter:
                 return new ImageFilterValue($filterValue);
+            case $filter instanceof ColorFilter:
+                return new ColorFilterValue($filterValue);
             case $filter instanceof SelectFilter:
             case $filter instanceof LabelFilter:
             default:

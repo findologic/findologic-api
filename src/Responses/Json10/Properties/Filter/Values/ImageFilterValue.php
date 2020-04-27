@@ -15,4 +15,12 @@ class ImageFilterValue extends FilterValue
 
         $this->image = ResponseHelper::getStringProperty($filterValue, 'image');
     }
+
+    /**
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
 }

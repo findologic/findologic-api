@@ -12,7 +12,10 @@
   },
   "result": {
     "metadata": {
-      "landingpage": null,
+      "landingpage": {
+        "name": "GTC",
+        "url": "https://blubbergurken.io/gtc"
+      },
       "promotion": null,
       "searchConcept": null,
       "totalResults": 168,
@@ -31,10 +34,6 @@
         "price": 5.95,
         "attributes": [],
         "properties": [],
-        "productPlacement": "nice product placement",
-        "pushRules": [
-          "Awesome PushRule!"
-        ],
         "imageUrl": "http:\/\/blubbergurken.de\/media\/7b\/ea\/45\/1585143022\/Click-Frame-21-cm-Wood-16490_6_1_001.jpg"
       },
       {

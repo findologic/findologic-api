@@ -3,12 +3,19 @@
 namespace FINDOLOGIC\Api\Tests\Responses\Json10;
 
 use FINDOLOGIC\Api\Responses\Json10\Json10Response;
+use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\ColorFilter;
+use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\ImageFilter;
 use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\LabelFilter;
 use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\Range;
 use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\RangeSliderFilter;
 use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\SelectFilter;
+use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\Values\ColorFilterValue;
 use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\Values\DefaultFilterValue;
+use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\Values\ImageFilterValue;
 use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\Values\RangeSliderValue;
+use FINDOLOGIC\Api\Responses\Json10\Properties\Item;
+use FINDOLOGIC\Api\Responses\Json10\Properties\LandingPage;
+use FINDOLOGIC\Api\Responses\Json10\Properties\Promotion;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_Constraint_IsType as IsType;
 
@@ -45,6 +52,7 @@ class Json10ResponseTest extends TestCase
         $this->assertSame('salesfrequency', $order->getField());
         $this->assertTrue($order->isRelevanceBased());
         $this->assertSame('DESC', $order->getDirection());
+        $this->assertSame('salesfrequency dynamic DESC', $order->__toString());
     }
 
     public function testMetadataWillBeReturnedAsExpected()
@@ -82,7 +90,8 @@ class Json10ResponseTest extends TestCase
         $this->assertNull($firstItem->getMatchingOrdernumber());
         $this->assertSame(5.95, $firstItem->getPrice());
         $this->assertNull($firstItem->getSummary());
-        $this->assertNull($firstItem->getPushRules());
+        $this->assertSame('nice product placement', $firstItem->getProductPlacement());
+        $this->assertSame(['Awesome PushRule!'], $firstItem->getPushRules());
         $this->assertSame(
             'http://blubbergurken.de/media/7b/ea/45/1585143022/Click-Frame-21-cm-Wood-16490_6_1_001.jpg',
             $firstItem->getImageUrl()
@@ -197,5 +206,138 @@ class Json10ResponseTest extends TestCase
         $this->assertFalse($otherFilterValue->isSelected());
         $this->assertSame(0.0119, $otherFilterValue->getWeight());
         $this->assertSame(167, $otherFilterValue->getFrequency());
+    }
+
+    public function testLandingPageIsReturnedAsExpected()
+    {
+        $response = $this->getRealResponseData('demoResponseWithLandingPage.json');
+        $landingPage = $response->getResult()->getMetadata()->getLandingPage();
+
+        $this->assertInstanceOf(LandingPage::class, $landingPage);
+        $this->assertSame($landingPage->getName(), 'GTC');
+        $this->assertSame($landingPage->getUrl(), 'https://blubbergurken.io/gtc');
+    }
+
+    public function testPromotionIsReturnedAsExpected()
+    {
+        $response = $this->getRealResponseData('demoResponseWithPromotion.json');
+        $promotion = $response->getResult()->getMetadata()->getPromotion();
+
+        $this->assertInstanceOf(Promotion::class, $promotion);
+        $this->assertSame('Promotion', $promotion->getName());
+        $this->assertSame('https://blubbergurken.io/promotion', $promotion->getUrl());
+        $this->assertSame('https://blubbergurken.io/assets/images/promotion.png', $promotion->getImageUrl());
+    }
+
+    public function testItemPropertiesAreReturnedAsExpected()
+    {
+        $response = $this->getRealResponseData('demoResponseWithItemProperties.json');
+        $items = $response->getResult()->getItems();
+
+        $item = $items[0];
+        $this->assertInstanceOf(Item::class, $item);
+
+        $this->assertCount(1, $item->getProperties());
+        $this->assertArrayHasKey('ordernumber', $item->getProperties());
+        $this->assertSame('YEEEETTTTEERRRR-123', $item->getProperties()['ordernumber']);
+        $this->assertSame($item->getProperties()['ordernumber'], $item->getProperty('ordernumber'));
+    }
+
+    public function testItemPropertyWillReturnNullIfPropertyDoesNotExist()
+    {
+        $response = $this->getRealResponseData();
+        $items = $response->getResult()->getItems();
+
+        $item = $items[0];
+        $this->assertInstanceOf(Item::class, $item);
+
+        $this->assertEmpty($item->getProperties());
+        $this->assertNull($item->getProperty('ordernumber'));
+
+        $expectedDefault = 'nice default!';
+        $this->assertEquals($expectedDefault, $item->getProperty('ordernumber', $expectedDefault));
+    }
+
+    public function testItemAttributesAreReturnedAsExpected()
+    {
+        $response = $this->getRealResponseData('demoResponseWithItemAttributes.json');
+        $items = $response->getResult()->getItems();
+
+        $item = $items[0];
+        $this->assertInstanceOf(Item::class, $item);
+
+        $this->assertCount(1, $item->getAttributes());
+        $this->assertArrayHasKey('vendor', $item->getAttributes());
+        $this->assertSame(['Blubbergurken inc.'], $item->getAttributes()['vendor']);
+        $this->assertSame($item->getAttributes()['vendor'], $item->getAttribute('vendor'));
+    }
+
+    public function testItemAttributeWillReturnNullIfAttributeDoesNotExist()
+    {
+        $response = $this->getRealResponseData();
+        $items = $response->getResult()->getItems();
+
+        $item = $items[0];
+        $this->assertInstanceOf(Item::class, $item);
+
+        $this->assertEmpty($item->getAttributes());
+        $this->assertNull($item->getAttribute('vendor'));
+
+        $expectedDefault = 'nice default!';
+        $this->assertEquals($expectedDefault, $item->getAttribute('vendor', $expectedDefault));
+    }
+
+    public function testColorFilterIsReturnedAsExpected()
+    {
+        $response = $this->getRealResponseData('demoResponseWithColorFilter.json');
+        $filters = $response->getResult()->getOtherFilters();
+
+        /** @var ColorFilter $colorFilter */
+        $colorFilter = $filters[0];
+        $this->assertInstanceOf(ColorFilter::class, $colorFilter);
+        $this->assertSame('color', $colorFilter->getName());
+        $this->assertSame('Farbe', $colorFilter->getDisplayName());
+        $this->assertSame('multiple', $colorFilter->getSelectMode());
+        $this->assertSame('NO COLORS', $colorFilter->getNoAvailableFiltersText());
+        $this->assertSame('or', $colorFilter->getCombinationOperation());
+
+        $this->assertCount(108, $colorFilter->getValues());
+        /** @var ColorFilterValue $colorFilterValue */
+        $colorFilterValue = $colorFilter->getValues()[0];
+        $this->assertSame('#3289c7', $colorFilterValue->getColor());
+        $this->assertFalse($colorFilterValue->isSelected());
+        $this->assertSame(
+            'https://blubbergurken.io/assets/images/color/antiquewhite.png',
+            $colorFilterValue->getImage()
+        );
+        $this->assertSame('antiquewhite', $colorFilterValue->getName());
+        $this->assertSame(0.0667, $colorFilterValue->getWeight());
+        $this->assertNull($colorFilterValue->getFrequency());
+    }
+
+    public function testVendorImageFilterIsReturnedAsExpected()
+    {
+        $response = $this->getRealResponseData('demoResponseWithVendorImageFilter.json');
+        $filters = $response->getResult()->getMainFilters();
+
+        $imageFilter = $filters[1];
+        $this->assertInstanceOf(ImageFilter::class, $imageFilter);
+        $this->assertSame('vendor', $imageFilter->getName());
+        $this->assertSame('Hersteller', $imageFilter->getDisplayName());
+        $this->assertSame('multiple', $imageFilter->getSelectMode());
+        $this->assertSame('and', $imageFilter->getCombinationOperation());
+
+        $this->assertCount(38, $imageFilter->getValues());
+        /** @var ImageFilterValue $imageFilterValue */
+        $imageFilterValue = $imageFilter->getValues()[0];
+        $this->assertInstanceOf(ImageFilterValue::class, $imageFilterValue);
+        $this->assertSame(
+            'https://blubbergurken.io/assets/images/vendor/anderson_gusikowski_and_barton.png',
+            $imageFilterValue->getImage()
+        );
+        $this->assertSame('Anderson, Gusikowski and Barton', $imageFilterValue->getName());
+        $this->assertSame(0.0333, $imageFilterValue->getWeight());
+        $this->assertNull($imageFilterValue->getFrequency());
+        $this->assertFalse($imageFilterValue->isSelected());
     }
 }

@@ -31,10 +31,6 @@
         "price": 5.95,
         "attributes": [],
         "properties": [],
-        "productPlacement": "nice product placement",
-        "pushRules": [
-          "Awesome PushRule!"
-        ],
         "imageUrl": "http:\/\/blubbergurken.de\/media\/7b\/ea\/45\/1585143022\/Click-Frame-21-cm-Wood-16490_6_1_001.jpg"
       },
       {
@@ -571,33 +567,275 @@
           ]
         },
         {
-          "type": "label",
+          "type": "image",
           "name": "vendor",
           "displayName": "Hersteller",
           "selectMode": "multiple",
           "combinationOperation": "and",
           "values": [
             {
-              "value": "Casablanca",
-              "weight": 0.0119,
+              "image": "https://blubbergurken.io/assets/images/vendor/anderson_gusikowski_and_barton.png",
+              "value": "Anderson, Gusikowski and Barton",
+              "weight": 0.0333,
               "frequency": null,
               "selected": false
             },
             {
-              "value": "Elfo M\u00f6bel",
-              "weight": 0.0119,
+              "image": "https://blubbergurken.io/assets/images/vendor/armstrong_group.png",
+              "value": "Armstrong Group",
+              "weight": 0.0667,
               "frequency": null,
               "selected": false
             },
             {
-              "value": "G+K",
-              "weight": 0.0595,
+              "image": "https://blubbergurken.io/assets/images/vendor/armstrong_inc.png",
+              "value": "Armstrong Inc",
+              "weight": 0.0667,
               "frequency": null,
               "selected": false
             },
             {
-              "value": "Gasper",
-              "weight": 0.0119,
+              "image": "https://blubbergurken.io/assets/images/vendor/bednar_ltd.png",
+              "value": "Bednar Ltd",
+              "weight": 0.0667,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/beier_glover_and_mcclure.png",
+              "value": "Beier, Glover and McClure",
+              "weight": 0.0333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/bernier_group.png",
+              "value": "Bernier Group",
+              "weight": 0.0667,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/bins_macejkovic.png",
+              "value": "Bins-Macejkovic",
+              "weight": 0.0333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/bruen_wisoky.png",
+              "value": "Bruen-Wisoky",
+              "weight": 0.0333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/buckridge_fisher.png",
+              "value": "Buckridge-Fisher",
+              "weight": 0.0333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/casper_inc.png",
+              "value": "Casper Inc",
+              "weight": 0.0667,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/connelly_eichmann_and_weissnat.png",
+              "value": "Connelly, Eichmann and Weissnat",
+              "weight": 0.1,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/conn_llc.png",
+              "value": "Conn LLC",
+              "weight": 0.0667,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/corwin_mayert.png",
+              "value": "Corwin-Mayert",
+              "weight": 0.0667,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/denesik_wiegand.png",
+              "value": "Denesik-Wiegand",
+              "weight": 0.0333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/grant_farrell_and_halvorson.png",
+              "value": "Grant, Farrell and Halvorson",
+              "weight": 0.0333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/haag_bernier_and_schoen.png",
+              "value": "Haag, Bernier and Schoen",
+              "weight": 0.1,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/hauck_ltd.png",
+              "value": "Hauck Ltd",
+              "weight": 0.1,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/homenick_mante.png",
+              "value": "Homenick-Mante",
+              "weight": 0.0333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/huel_mclaughlin_and_hyatt.png",
+              "value": "Huel, McLaughlin and Hyatt",
+              "weight": 0.0333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/jacobson_bergnaum_and_wilkinson.png",
+              "value": "Jacobson, Bergnaum and Wilkinson",
+              "weight": 0.0333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/kassulke_and_sons.png",
+              "value": "Kassulke and Sons",
+              "weight": 0.0333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/kshlerin_cruickshank_and_olson.png",
+              "value": "Kshlerin, Cruickshank and Olson",
+              "weight": 0.0333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/kshlerin_ziemann_and_feest.png",
+              "value": "Kshlerin, Ziemann and Feest",
+              "weight": 0.1333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/leffler_botsford_and_bashirian.png",
+              "value": "Leffler, Botsford and Bashirian",
+              "weight": 0.0333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/lowe_zemlak.png",
+              "value": "Lowe-Zemlak",
+              "weight": 0.0667,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/lueilwitz_terry_and_howe.png",
+              "value": "Lueilwitz, Terry and Howe",
+              "weight": 0.0333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/mante_llc.png",
+              "value": "Mante LLC",
+              "weight": 0.0667,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/mcclure_jakubowski.png",
+              "value": "McClure-Jakubowski",
+              "weight": 0.1,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/mcglynn_konopelski.png",
+              "value": "McGlynn-Konopelski",
+              "weight": 0.1,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/mckenzie_wolff_and_homenick.png",
+              "value": "McKenzie, Wolff and Homenick",
+              "weight": 0.0333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/medhurst_rutherford.png",
+              "value": "Medhurst-Rutherford",
+              "weight": 0.0333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/miller_harber_and_lynch.png",
+              "value": "Miller, Harber and Lynch",
+              "weight": 0.0333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/mitchell_spencer.png",
+              "value": "Mitchell-Spencer",
+              "weight": 0.0333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/murphy_bashirian_and_vandervort.png",
+              "value": "Murphy, Bashirian and Vandervort",
+              "weight": 0.0333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/nikolaus_cormier_and_maggio.png",
+              "value": "Nikolaus, Cormier and Maggio",
+              "weight": 0.0333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/rosenbaum_reynolds.png",
+              "value": "Rosenbaum-Reynolds",
+              "weight": 0.0333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/towne_plc.png",
+              "value": "Towne PLC",
+              "weight": 0.0333,
+              "frequency": null,
+              "selected": false
+            },
+            {
+              "image": "https://blubbergurken.io/assets/images/vendor/wolff_ryan_and_gaylord.png",
+              "value": "Wolff, Ryan and Gaylord",
+              "weight": 0.0333,
               "frequency": null,
               "selected": false
             }

@@ -10,6 +10,7 @@ use FINDOLOGIC\Api\Requests\Autocomplete\SuggestRequest;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
 use FINDOLOGIC\Api\Responses\Autocomplete\SuggestResponse;
 use FINDOLOGIC\Api\Responses\Html\GenericHtmlResponse;
+use FINDOLOGIC\Api\Responses\Json10\Json10Response;
 use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
@@ -397,5 +398,42 @@ class ClientTest extends TestBase
         $response = $client->send($searchRequest);
 
         $this->assertInstanceOf(Xml21Response::class, $response);
+    }
+
+    public function testJSON10OutputAdapterWillReturnJSON10Response()
+    {
+        $requestParams = http_build_query([
+            'query' => 'blubbergurken',
+            'shopurl' => 'blubbergurken.de',
+            'userip' => '127.0.0.1',
+            'referer' => 'https://www.google.at/?query=blubbergurken',
+            'revision' => '1.0.0',
+            'outputAdapter' => 'JSON_1.0',
+            'shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD',
+        ]);
+
+        $expectedRequestUrl = 'https://service.findologic.com/ps/blubbergurken.de/index.php?' . $requestParams;
+        $expectedAlivetestUrl = 'https://service.findologic.com/ps/blubbergurken.de/alivetest.php?' . $requestParams;
+
+        $this->setExpectationsForAliveTestRequests(
+            $expectedRequestUrl,
+            $expectedAlivetestUrl,
+            $this->getMockResponse('Json10/demoResponse.json')
+        );
+
+        $searchRequest = new SearchRequest();
+        $searchRequest
+            ->setQuery('blubbergurken')
+            ->setShopUrl('blubbergurken.de')
+            ->setUserIp('127.0.0.1')
+            ->setReferer('https://www.google.at/?query=blubbergurken')
+            ->setRevision('1.0.0')
+            ->setOutputAdapter('JSON_1.0');
+
+        $this->config->setHttpClient($this->httpClientMock);
+        $client = new Client($this->config);
+        $response = $client->send($searchRequest);
+
+        $this->assertInstanceOf(Json10Response::class, $response);
     }
 }

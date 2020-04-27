@@ -36,17 +36,17 @@ class Item
     /** @var string|null */
     private $summary;
 
-    /** @var Attribute[] */
+    /** @var array<string, array<string>> */
     private $attributes = [];
 
-    /** @var Property[] */
+    /** @var array<string, string> */
     private $properties = [];
 
     /** @var string|null */
     private $productPlacement;
 
-    /** @var string[]|null */
-    private $pushRules;
+    /** @var string[] */
+    private $pushRules = [];
 
     /** @var string */
     private $imageUrl;
@@ -69,14 +69,10 @@ class Item
         $this->summary = ResponseHelper::getStringProperty($item, 'summary');
 
         if (isset($item['attributes'])) {
-            foreach ($item['attributes'] as $attribute) {
-                $this->attributes[] = new Attribute($attribute);
-            }
+            $this->attributes = $item['attributes'];
         }
         if (isset($item['properties'])) {
-            foreach ($item['properties'] as $property) {
-                $this->properties[] = new Property($property);
-            }
+            $this->properties = $item['properties'];
         }
         if (isset($item['pushRules'])) {
             $this->pushRules = $item['pushRules'];
@@ -159,7 +155,21 @@ class Item
     }
 
     /**
-     * @return Attribute[]
+     * Returns filters that are assigned to a product e.g.
+     * ```
+     * [
+     *     'filter-name' => [
+     *         'value1',
+     *         'value2',
+     *         // ...
+     *     ]
+     * ];
+     * ```
+     *
+     * An attribute may only be returned when explicitly adding it to the request with
+     * `$searchRequest->addOutputAttrib($filterName)`.
+     *
+     * @return array<string, array<string>>
      */
     public function getAttributes()
     {
@@ -167,11 +177,55 @@ class Item
     }
 
     /**
-     * @return Property[]
+     * Returns the attribute/filter by the given name. If the attribute does not exist, the default may be returned.
+     *
+     * @param string $attributeName
+     * @param mixed|null $default
+     * @return array|mixed
+     */
+    public function getAttribute($attributeName, $default = null)
+    {
+        if (!isset($this->attributes[$attributeName])) {
+            return $default;
+        }
+
+        return $this->attributes[$attributeName];
+    }
+
+    /**
+     * Returns properties that are assigned to a product e.g.
+     * ```
+     * [
+     *     'property-1' => 'some-value',
+     *     'property-2' => 'some-value',
+     *     // ...
+     * ];
+     * ```
+     *
+     * A property may only be returned when explicitly adding it to the request with
+     * `$searchRequest->addProperty($propertyName)`.
+     *
+     * @return array<string, string>
      */
     public function getProperties()
     {
         return $this->properties;
+    }
+
+    /**
+     * Returns the property by the given name. If the property does not exist, the default will be returned.
+     *
+     * @param string $propertyName
+     * @param mixed|null $default
+     * @return string|mixed
+     */
+    public function getProperty($propertyName, $default = null)
+    {
+        if (!isset($this->properties[$propertyName])) {
+            return $default;
+        }
+
+        return $this->properties[$propertyName];
     }
 
     /**
@@ -183,7 +237,7 @@ class Item
     }
 
     /**
-     * @return string[]|null
+     * @return string[]
      */
     public function getPushRules()
     {

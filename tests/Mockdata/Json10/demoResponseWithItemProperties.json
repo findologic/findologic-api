@@ -26,15 +26,13 @@
         "name": "Click Frame 21 cm Wood",
         "highlightedName": "Click Frame 21 cm Wood",
         "ordernumbers": [
-          "16490.6.1"
+          "YEEEETTTTEERRRR-123"
         ],
         "price": 5.95,
         "attributes": [],
-        "properties": [],
-        "productPlacement": "nice product placement",
-        "pushRules": [
-          "Awesome PushRule!"
-        ],
+        "properties": {
+          "ordernumber": "YEEEETTTTEERRRR-123"
+        },
         "imageUrl": "http:\/\/blubbergurken.de\/media\/7b\/ea\/45\/1585143022\/Click-Frame-21-cm-Wood-16490_6_1_001.jpg"
       },
       {
