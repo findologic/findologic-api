@@ -4,10 +4,11 @@ namespace FINDOLOGIC\Api\Helpers;
 
 class ResponseHelper
 {
-    const TYPE_STRING = 'string',
-          TYPE_INT = 'int',
-          TYPE_FLOAT = 'float',
-          TYPE_BOOL = 'bool';
+    const
+        TYPE_STRING = 'string',
+        TYPE_INT = 'int',
+        TYPE_FLOAT = 'float',
+        TYPE_BOOL = 'bool';
 
     /**
      * Gets a property from an object and converts it to a string.

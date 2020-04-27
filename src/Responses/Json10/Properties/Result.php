@@ -64,6 +64,14 @@ class Result
     /**
      * @return Filter[]
      */
+    public function getMainFilters()
+    {
+        return $this->mainFilters;
+    }
+
+    /**
+     * @return Filter[]
+     */
     public function getOtherFilters()
     {
         return $this->otherFilters;

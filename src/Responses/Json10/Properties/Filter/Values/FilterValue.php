@@ -25,10 +25,20 @@ abstract class FilterValue
 
     public function __construct(array $filterValue)
     {
-        $this->name = ResponseHelper::getStringProperty($filterValue, 'value');
-        $this->selected = ResponseHelper::getBoolProperty($filterValue, 'selected');
-        $this->weight = ResponseHelper::getFloatProperty($filterValue, 'weight', true);
-        $this->frequency = ResponseHelper::getIntProperty($filterValue, 'frequency');
+        // Continuously check if the values aren't set already, to allow filter-classes to manually set these
+        // values.
+        if ($this->name === null) {
+            $this->name = ResponseHelper::getStringProperty($filterValue, 'value');
+        }
+        if ($this->selected === null) {
+            $this->selected = ResponseHelper::getBoolProperty($filterValue, 'selected');
+        }
+        if ($this->weight === null) {
+            $this->weight = ResponseHelper::getFloatProperty($filterValue, 'weight', true);
+        }
+        if ($this->frequency === null) {
+            $this->frequency = ResponseHelper::getIntProperty($filterValue, 'frequency');
+        }
     }
 
     public static function getInstance(Filter $filter, array $filterValue)
@@ -43,5 +53,37 @@ abstract class FilterValue
             default:
                 return new DefaultFilterValue($filterValue);
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSelected()
+    {
+        return $this->selected;
+    }
+
+    /**
+     * @return float
+     */
+    public function getWeight()
+    {
+        return $this->weight;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getFrequency()
+    {
+        return $this->frequency;
     }
 }
