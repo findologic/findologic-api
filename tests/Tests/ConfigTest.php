@@ -5,7 +5,7 @@ namespace FINDOLOGIC\Api\Tests;
 use Exception;
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Exceptions\ConfigException;
-use GuzzleHttp\Client;
+use FINDOLOGIC\GuzzleHttp\Client;
 use TypeError;
 
 class ConfigTest extends TestBase
