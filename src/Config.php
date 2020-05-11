@@ -4,7 +4,7 @@ namespace FINDOLOGIC\Api;
 
 use FINDOLOGIC\Api\Exceptions\ConfigException;
 use FINDOLOGIC\Api\Validators\ConfigValidator;
-use GuzzleHttp\Client;
+use FINDOLOGIC\GuzzleHttp\Client;
 
 class Config
 {

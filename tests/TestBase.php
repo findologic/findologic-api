@@ -2,7 +2,7 @@
 
 namespace FINDOLOGIC\Api\Tests;
 
-use GuzzleHttp\Client;
+use FINDOLOGIC\GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Stream;
 use PHPUnit\Framework\TestCase;

@@ -18,10 +18,10 @@
 
 ## Synopsis
 
-FINDOLOGIC-API is an object oriented wrapper for the FINDOLOGIC API, with over 300 automated unit-tests and 100% code coverage.
+FINDOLOGIC-API is an object oriented wrapper for the Findologic API, with over 300 automated unit-tests and 100% code coverage.
 
-This library not only helps requesting the FINDOLOGIC API but also getting data from the response and mapping them to corresponding objects.
-You won't have to mess around with sending requests and getting the data from the FINDOLOGICs response anymore.  
+This library not only helps requesting the Findologic API, but also getting data from the response and mapping them to corresponding objects.
+You won't have to mess around with sending requests and getting the data from the Findologic's response anymore.  
 
 You want to get filters? Just call `->getMainFilters()` on your response object. It really is that simple and if you dont trust us,
 try out the [Basic Usage](#basic-usage) or test the [Examples](#examples).
@@ -40,8 +40,8 @@ Currently, we support the following response formats:
 |-------------------|--------|---------|--------------------------------------------------|-------------------------------|
 | Search/Navigation | JSON   | 1.0     | :heavy_check_mark:                               | Not in the foreseeable future |
 |                   | XML    | 2.1     | :heavy_check_mark:                               | Not in the foreseeable future |
-|                   | XML    | 2.0     | :x: => Use XML_2.1 instead                       | 2019-10-18                    |
-|                   | HTML   | any     | :heavy_check_mark: => The response is not parsed | Not in the foreseeable future |
+|                   | XML    | 2.0     | :heavy_multiplication_x: → Use XML_2.1 instead   | 2019-10-18                    |
+|                   | HTML   | any     | :heavy_check_mark: →  The response is not parsed | Not in the foreseeable future |
 | Smart Suggest     | JSON   | latest  | :heavy_check_mark:                               | Not in the foreseeable future |
 
 ## Requirements
