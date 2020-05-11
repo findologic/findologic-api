@@ -26,7 +26,7 @@ You won't have to mess around with sending requests and getting the data from th
 You want to get filters? Just call `->getMainFilters()` on your response object. It really is that simple and if you dont trust us,
 try out the [Basic Usage](#basic-usage) or test the [Examples](#examples).
 
-To have a better understanding about the API, please make sure to read the general FINDOLOGIC API documentation. We already got you covered with quicklinks to it:
+To have a better understanding about the API, please make sure to read the general Findologic API documentation. We already got you covered with quicklinks to it:
 
  * [Requesting the API](https://docs.findologic.com/doku.php?id=integration_documentation:request)
  * [XML response](https://docs.findologic.com/doku.php?id=integration_documentation:response_xml)
@@ -70,7 +70,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Client;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
-use FINDOLOGIC\Api\Responses\Json10\Json10Response;
+use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
 
 $config = new Config();
 // ServiceId/Shopkey, you can find it in the customer account.
