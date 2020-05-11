@@ -70,28 +70,25 @@ require_once __DIR__ . '/vendor/autoload.php';
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Client;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
-use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
+use FINDOLOGIC\Api\Responses\Json10\Json10Response;
 
-$config = new Config();
-// ServiceId/Shopkey, you can find it in the customer account.
-$config->setServiceId('ABCDABCDABCDABCDABCDABCDABCDABCD');
-
-// Client used for requests
+// Set your ServiceId/Shopkey, which can be found in the customer account.
+$config = new Config('ABCDABCDABCDABCDABCDABCDABCDABCD');
 $client = new Client($config);
 
 $searchRequest = new SearchRequest();
 $searchRequest
-    ->setQuery('shirt') // Users search query
-    ->setShopUrl('blubbergurken.de') // Url of the shop
-    ->setUserIp('127.0.0.1') // Users IP
-    ->setReferer($_SERVER['HTTP_REFERER']) // Page where search was fired
-    ->setRevision('1.0.0') // Version of your API wrapper
+    ->setQuery('shirt') // Users search query.
+    ->setShopUrl('blubbergurken.de') // Url of the shop.
+    ->setUserIp('127.0.0.1') // Users IP.
+    ->setReferer($_SERVER['HTTP_REFERER']) // Page where search was fired.
+    ->setRevision('1.0.0') // Version of your API wrapper.
     ->setOutputAdapter('JSON_1.0'); // Optional setting of output format.
 
 /** @var Json10Response $jsonResponse */
 $jsonResponse = $client->send($searchRequest);
 
-var_dump($jsonResponse->getResult()->getItems()); // Get all products.
+var_dump($jsonResponse->getResult()->getItems()); // Get all products/items.
 var_dump($jsonResponse->getResult()->getMainFilters()); // Get all main filters easily.
 var_dump($jsonResponse->getResult()->getOtherFilters()); // Get all other filters easily.
 var_dump($jsonResponse); // Entire response, full of helper methods.

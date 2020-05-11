@@ -20,7 +20,7 @@ class Config
         DEFAULT_ALIVETEST_TIMEOUT = 1.0,
         DEFAULT_REQUEST_TIMEOUT = 3.0;
 
-    /** @var string */
+    /** @var string|null */
     private $serviceId;
 
     /** @var string */
@@ -35,8 +35,12 @@ class Config
     /** @var Client */
     private $httpClient;
 
-    public function __construct()
+    public function __construct($serviceId = null)
     {
+        if ($serviceId) {
+            $this->setServiceId($serviceId);
+        }
+
         $this->httpClient = new Client();
     }
 
