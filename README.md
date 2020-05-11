@@ -69,7 +69,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Client;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
-use FINDOLOGIC\Api\Responses\Xml21\Xml21Response
+use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
 
 $config = new Config();
 // ServiceId/Shopkey, you can find it in the customer account.
