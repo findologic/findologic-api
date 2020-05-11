@@ -38,10 +38,10 @@ Currently, we support the following response formats:
 | Response Type     | Format | Version | Supported                                        | End of life                   |
 |-------------------|--------|---------|--------------------------------------------------|-------------------------------|
 | Search/Navigation | JSON   | 1.0     | :x: → See [this PR](https://github.com/findologic/findologic-api/pull/69)        | Not in the foreseeable future |
-|                   | XML    | 2.1     | :heavy_check_mark:                               | Not in the foreseeable future |
+|                   | XML    | 2.1     | :white_check_mark:                               | Not in the foreseeable future |
 |                   | XML    | 2.0     | :x: → Use XML_2.1 instead                        | 2019-10-18                    |
-|                   | HTML   | any     | :heavy_check_mark: →  The response is not parsed | Not in the foreseeable future |
-| Smart Suggest     | JSON   | latest  | :heavy_check_mark:                               | Not in the foreseeable future |
+|                   | HTML   | any     | :white_check_mark: →  The response is not parsed | Not in the foreseeable future |
+| Smart Suggest     | JSON   | latest  | :white_check_mark:                               | Not in the foreseeable future |
 
 ## Requirements
 
