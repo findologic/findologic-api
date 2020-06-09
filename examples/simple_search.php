@@ -8,7 +8,10 @@ use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
 use FINDOLOGIC\Api\Responses\Json10\Json10Response;
 use FINDOLOGIC\Api\Responses\Json10\Properties\Item;
 
-const SERVICE_ID = '< SET YOUR SERVICE ID / SHOPKEY HERE >';
+/**
+ * SET YOUR SERVICE ID / SHOPKEY HERE.
+ */
+const SERVICE_ID = '';
 
 const ITEM_TEMPLATE = <<<EOL
 <div class="col-3">
@@ -19,7 +22,10 @@ const ITEM_TEMPLATE = <<<EOL
         <div class="card-body">
             <h5 class="card-title">%s</h5>
             <p class="card-text">%s</p>
-            <a href="%s" class="btn btn-primary">Buy</a>
+            <div class="price-information">
+                <h4>%.2f %s</h4>
+                <a href="%s" class="btn btn-primary">Buy</a>
+            </div>
         </div>
     </div>
 </div>
@@ -29,7 +35,7 @@ function fetchProducts()
 {
     require_once __DIR__ . '/../vendor/autoload.php';
 
-    $config = new Config(SERVICE_ID);
+    $config = new Config(isset($_GET['shopkey']) ? $_GET['shopkey'] : SERVICE_ID);
     $client = new Client($config);
 
     $searchRequest = new SearchRequest();
@@ -59,7 +65,7 @@ function getRenderedProducts(Json10Response $response)
             $rendered .= '<div class="row mb-4">';
         }
 
-        $rendered .= wrapItem($item);
+        $rendered .= wrapItem($item, $response->getResult()->getMetadata()->getCurrencySymbol());
 
         $count++;
     }
@@ -67,7 +73,7 @@ function getRenderedProducts(Json10Response $response)
     return $rendered;
 }
 
-function wrapItem(Item $item)
+function wrapItem(Item $item, $currencySymbol)
 {
     return sprintf(
         ITEM_TEMPLATE,
@@ -76,6 +82,8 @@ function wrapItem(Item $item)
         $item->getName(),
         $item->getName(),
         $item->getSummary(),
+        $item->getPrice(),
+        $currencySymbol,
         $item->getUrl()
     );
 }
@@ -100,12 +108,17 @@ function wrapItem(Item $item)
             width: 100%
         }
         .col-3 .card {
-            min-height: 360px;
+            height: 100%;
         }
         .card-text {
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
+            margin-bottom: 100px;
+        }
+        .price-information {
+            position: absolute;
+            bottom: 20px;
         }
     </style>
 </head>
@@ -114,9 +127,12 @@ function wrapItem(Item $item)
         <h2>Simple search example</h2>
     </div>
     <div class="ml-5 mr-5">
-        <form action="search_json.php">
+        <form action="simple_search.php">
             <div class="row">
-                <div class="col-11">
+                <div class="col-3">
+                    <input class="form-control" type="text" placeholder="ENTER YOUR SHOPKEY HERE" aria-label="Search" name="shopkey" value="<?php echo isset($_GET['shopkey']) ? $_GET['shopkey'] : SERVICE_ID ?>">
+                </div>
+                <div class="col-8">
                     <input class="form-control" type="text" placeholder="Search" aria-label="Search" name="query">
                 </div>
                 <div class="col-1">

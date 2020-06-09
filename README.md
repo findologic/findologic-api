@@ -13,7 +13,9 @@
 1. [Installation](#installation)
 1. [Basic usage](#basic-usage)
 1. [Examples](#examples)
-1. [Found a bug?](#found-a-bug)
+    1. [Projects using this library](#projects-using-this-library)
+1. [FINDOLOGIC-API In Action](#findologic-api-in-action)
+1. [Bug report](#bug-report)
 1. [Contributing](#contributing)
 
 ## Synopsis
@@ -23,14 +25,14 @@ FINDOLOGIC-API is an object oriented wrapper for the Findologic API, with over 3
 This library not only helps requesting the Findologic API, but also getting data from the response and mapping them to corresponding objects.
 You won't have to mess around with sending requests and getting the data from the Findologic's response anymore.  
 
-You want to get filters? Just call `->getMainFilters()` on your response object. It really is that simple and if you dont trust us,
-try out the [Basic Usage](#basic-usage) or test the [Examples](#examples).
+You want to get filters? Just call `Response::getMainFilters()`. It really is that simple, just
+try out the [Basic Usage](#basic-usage) or see some [Examples](#examples).
 
 To have a better understanding about the API, please make sure to read the general Findologic API documentation. We already got you covered with quicklinks to it:
 
  * [Requesting the API](https://docs.findologic.com/doku.php?id=integration_documentation:request)
- * [XML response](https://docs.findologic.com/doku.php?id=integration_documentation:response_xml)
- * JSON response (no docs available yet)
+ * [Response: XML](https://docs.findologic.com/doku.php?id=integration_documentation:response_xml) | [API spec (non-interactive)](https://github.com/findologic/xml-response-schema/blob/master/schema.xsd)
+ * Response: JSON | [API spec (interactive)](https://service.findologic.com/ps/centralized-frontend/spec/) | [API spec (non-interactive)](https://github.com/findologic/json-response-schema/blob/0.x/resources/schema.json)
 
 ### Limitations
 
@@ -101,7 +103,14 @@ var_dump($jsonResponse); // Entire response, full of helper methods.
 * The documentation can be found in our
 [Project Wiki](https://github.com/findologic/findologic-api/wiki).
 
-## Found a bug?
+### Projects using this library
+
+* [FINDOLOGIC Shopware 6 plugin](https://github.com/findologic/plugin-shopware-6)
+* [FINDOLOGIC Shopware 5 plugin](https://github.com/findologic/plugin-shopware-5)
+* [Simple Symfony 5 demo](https://github.com/TheKeymaster/findologic-api-demo-symfony) (shows a simple FINDOLOGIC-API integration)
+* Many more to come...
+
+## Bug Report
 
 We need your help! If you find any bug, please submit an issue and use our template! Be as precise as possible
 so we can reproduce your case easier. For further information, please refer to our issue template at
