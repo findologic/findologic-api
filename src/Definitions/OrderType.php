@@ -15,5 +15,7 @@ class OrderType extends Definition
         TOP_SELLERS_LAST = 'salesfrequency ASC',
         TOP_SELLERS_DYNAMIC_LAST = 'salesfrequency dynamic ASC',
         NEWEST_FIRST = 'dateadded DESC',
-        NEWEST_LAST = 'dateadded ASC';
+        NEWEST_LAST = 'dateadded ASC',
+        SHOPSORT_ASCENDING = 'shopsort ASC',
+        SHOPSORT_DESCENDING = 'shopsort DESC';
 }
