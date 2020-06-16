@@ -9,9 +9,9 @@ class SearchRequest extends SearchNavigationRequest
 {
     protected $endpoint = Endpoint::SEARCH;
 
-    public function __construct()
+    public function __construct(array $params = [])
     {
-        parent::__construct();
+        parent::__construct($params);
         $this->addRequiredParam(QueryParameter::QUERY);
     }
 }

@@ -12,8 +12,9 @@ use FINDOLOGIC\Api\Validators\ParameterValidator;
  */
 abstract class SearchNavigationRequest extends Request
 {
-    public function __construct()
+    public function __construct(array $params = [])
     {
+        parent::__construct($params);
         $this->addRequiredParams([
             QueryParameter::USER_IP,
             QueryParameter::REVISION,

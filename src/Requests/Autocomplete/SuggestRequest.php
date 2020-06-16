@@ -13,8 +13,9 @@ class SuggestRequest extends Request
 {
     protected $endpoint = Endpoint::SUGGEST;
 
-    public function __construct()
+    public function __construct(array $params = [])
     {
+        parent::__construct($params);
         $this->addRequiredParam(QueryParameter::QUERY);
     }
 
