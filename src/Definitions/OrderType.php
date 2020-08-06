@@ -8,7 +8,8 @@ class OrderType extends Definition
         FIELD_PRICE = 'price',
         FIELD_LABEL = 'label',
         FIELD_SALES_FREQUENCY = 'salesfrequency',
-        FIELD_DATE_ADDED = 'dateadded';
+        FIELD_DATE_ADDED = 'dateadded',
+        FIELD_SHOPSORT = 'shopsort';
 
     const
         DIRECTION_ASCENDING = 'ASC',
@@ -25,7 +26,9 @@ class OrderType extends Definition
         TOP_SELLERS_FIRST = self::FIELD_SALES_FREQUENCY . ' ' . self::DIRECTION_DESCENDING,
         TOP_SELLERS_LAST = self::FIELD_SALES_FREQUENCY . ' ' . self::DIRECTION_ASCENDING,
         NEWEST_FIRST = self::FIELD_DATE_ADDED . ' ' . self::DIRECTION_DESCENDING,
-        NEWEST_LAST = self::FIELD_DATE_ADDED . ' ' . self::DIRECTION_ASCENDING;
+        NEWEST_LAST = self::FIELD_DATE_ADDED . ' ' . self::DIRECTION_ASCENDING,
+        SHOPSORT_ASCENDING = self::FIELD_SHOPSORT . ' ' . self::DIRECTION_ASCENDING,
+        SHOPSORT_DESCENDING = self::FIELD_SHOPSORT . ' ' . self::DIRECTION_DESCENDING;
 
     /**
      * Builds a custom order parameter.
@@ -55,6 +58,8 @@ class OrderType extends Definition
             'TOP_SELLERS_DYNAMIC_LAST' => self::buildOrder(self::FIELD_SALES_FREQUENCY),
             'NEWEST_FIRST' => self::NEWEST_FIRST,
             'NEWEST_LAST' => self::NEWEST_LAST,
+            'SHOPSORT_ASCENDING' => self::SHOPSORT_ASCENDING,
+            'SHOPSORT_DESCENDING' => self::SHOPSORT_DESCENDING,
         ];
     }
 }
