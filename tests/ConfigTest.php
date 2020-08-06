@@ -95,4 +95,13 @@ class ConfigTest extends TestBase
         $config = new Config();
         $config->getServiceId();
     }
+
+    public function testShopkeyCanBeSetAsConstructorArgument()
+    {
+        $expectedShopkey = $this->validConfig['shopkey'];
+
+        $config = new Config($expectedShopkey);
+
+        $this->assertSame($expectedShopkey, $config->getServiceId());
+    }
 }
