@@ -164,7 +164,8 @@ trait SearchNavigationRequestDataProvider
         return [
             'normal revision' => ['1.0.0'],
             'other revision' => ['5.1.3'],
-            'more different revision' => ['55.3.11']
+            'more different revision' => ['55.3.11'],
+            'release candidate' => ['1.4.3-rc.1'],
         ];
     }
 
