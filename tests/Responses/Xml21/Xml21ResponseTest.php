@@ -607,4 +607,16 @@ class Xml21ResponseTest extends TestCase
         $this->assertEmpty($response->getOtherFilters());
         $this->assertFalse($response->hasOtherFilters());
     }
+
+    public function testResponseWithMinOrMaxZeroWillNotBeConvertedToNull()
+    {
+        $response = $this->getRealResponseData('demoResponseWithMinAndMaxZero.xml');
+
+        /** @var RangeSliderFilter $priceFilter */
+        $priceFilter = $response->getMainFilters()['price'];
+        $this->assertSame(0.0, $priceFilter->getAttributes()->getSelectedRange()->getMin());
+        $this->assertSame(0.0, $priceFilter->getAttributes()->getSelectedRange()->getMax());
+        $this->assertSame(0.0, $priceFilter->getAttributes()->getTotalRange()->getMin());
+        $this->assertSame(0.0, $priceFilter->getAttributes()->getTotalRange()->getMax());
+    }
 }

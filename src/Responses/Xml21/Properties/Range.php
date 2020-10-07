@@ -15,8 +15,8 @@ class Range
 
     public function __construct(SimpleXMLElement $response)
     {
-        $this->min = ResponseHelper::getFloatProperty($response, 'min');
-        $this->max = ResponseHelper::getFloatProperty($response, 'max');
+        $this->min = ResponseHelper::getFloatProperty($response, 'min', true);
+        $this->max = ResponseHelper::getFloatProperty($response, 'max', true);
     }
 
     /**
