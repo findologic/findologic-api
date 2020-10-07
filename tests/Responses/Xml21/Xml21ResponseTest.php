@@ -27,7 +27,7 @@ class Xml21ResponseTest extends TestCase
     public function getRealResponseData($filename = 'demoResponse.xml')
     {
         // Get contents from a real response locally.
-        $realResponseData = file_get_contents(__DIR__ . '/../../../Mockdata/Xml21/' . $filename);
+        $realResponseData = file_get_contents(__DIR__ . '/../../Mockdata/Xml21/' . $filename);
 
         return new Xml21Response($realResponseData);
     }

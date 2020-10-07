@@ -13,7 +13,9 @@
 1. [Installation](#installation)
 1. [Basic usage](#basic-usage)
 1. [Examples](#examples)
-1. [Found a bug?](#found-a-bug)
+    1. [Projects using this library](#projects-using-this-library)
+1. [FINDOLOGIC-API In Action](#findologic-api-in-action)
+1. [Bug report](#bug-report)
 1. [Contributing](#contributing)
 
 ## Synopsis
@@ -23,13 +25,14 @@ FINDOLOGIC-API is an object oriented wrapper for the Findologic API, with over 3
 This library not only helps requesting the Findologic API, but also getting data from the response and mapping them to corresponding objects.
 You won't have to mess around with sending requests and getting the data from the Findologic's response anymore.  
 
-You want to get filters? Just call `->getMainFilters()` on your response object. It really is that simple and if you dont trust us,
-try out the [Basic Usage](#basic-usage) or test the [Examples](#examples).
+You want to get filters? Just call `Response::getMainFilters()`. It really is that simple, just
+try out the [Basic Usage](#basic-usage) or see some [Examples](#examples).
 
 To have a better understanding about the API, please make sure to read the general Findologic API documentation. We already got you covered with quicklinks to it:
 
  * [Requesting the API](https://docs.findologic.com/doku.php?id=integration_documentation:request)
- * [XML response](https://docs.findologic.com/doku.php?id=integration_documentation:response_xml)
+ * [Response: XML](https://docs.findologic.com/doku.php?id=integration_documentation:response_xml) | [API spec (non-interactive)](https://github.com/findologic/xml-response-schema/blob/master/schema.xsd)
+ * Response: JSON | [API spec (interactive)](https://service.findologic.com/ps/centralized-frontend/spec/) | [API spec (non-interactive)](https://github.com/findologic/json-response-schema/blob/0.x/resources/schema.json)
 
 ### Limitations
 
@@ -37,7 +40,7 @@ Currently, we support the following response formats:
 
 | Response Type     | Format | Version | Supported                                        | End of life                   |
 |-------------------|--------|---------|--------------------------------------------------|-------------------------------|
-| Search/Navigation | JSON   | 1.0     | :heavy_multiplication_x: → See [this PR](https://github.com/findologic/findologic-api/pull/69)        | Not in the foreseeable future |
+| Search/Navigation | JSON   | 1.0     | :heavy_check_mark:                               | Not in the foreseeable future |
 |                   | XML    | 2.1     | :heavy_check_mark:                               | Not in the foreseeable future |
 |                   | XML    | 2.0     | :heavy_multiplication_x: → Use XML_2.1 instead   | 2019-10-18                    |
 |                   | HTML   | any     | :heavy_check_mark: →  The response is not parsed | Not in the foreseeable future |
@@ -69,37 +72,45 @@ require_once __DIR__ . '/vendor/autoload.php';
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Client;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
-use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
+use FINDOLOGIC\Api\Responses\Json10\Json10Response;
 
-$config = new Config();
-// ServiceId/Shopkey, you can find it in the customer account.
-$config->setServiceId('ABCDABCDABCDABCDABCDABCDABCDABCD');
-
-// Client used for requests
+// Set your ServiceId/Shopkey, which can be found in the customer account.
+$config = new Config('ABCDABCDABCDABCDABCDABCDABCDABCD');
 $client = new Client($config);
 
 $searchRequest = new SearchRequest();
 $searchRequest
-    ->setQuery('shirt') // Users search query
-    ->setShopUrl('blubbergurken.de') // Url of the shop
-    ->setUserIp('127.0.0.1') // Users IP
-    ->setReferer($_SERVER['HTTP_REFERER']) // Page where search was fired
-    ->setRevision('1.0.0'); // Version of your API wrapper
+    ->setQuery('shirt') // Users search query.
+    ->setShopUrl('blubbergurken.de') // Url of the shop.
+    ->setUserIp('127.0.0.1') // Users IP.
+    ->setReferer($_SERVER['HTTP_REFERER']) // Page where search was fired.
+    ->setRevision('1.0.0') // Version of your API wrapper.
+    ->setOutputAdapter('JSON_1.0'); // Optional setting of output format.
 
-/** @var Xml21Response $xmlResponse */
-$xmlResponse = $client->send($searchRequest);
+/** @var Json10Response $jsonResponse */
+$jsonResponse = $client->send($searchRequest);
 
-var_dump($xmlResponse->getMainFilters()); // Get all main filters easily
-var_dump($xmlResponse->getOtherFilters()); // Get all other filters easily
-var_dump($xmlResponse); // Entire response, full of helper methods
+var_dump($jsonResponse->getResult()->getItems()); // Get all products/items.
+var_dump($jsonResponse->getResult()->getMainFilters()); // Get all main filters easily.
+var_dump($jsonResponse->getResult()->getOtherFilters()); // Get all other filters easily.
+var_dump($jsonResponse); // Entire response, full of helper methods.
 ```
 
 ## Examples
 
+* Working examples can be found in the
+[`/examples`](https://github.com/findologic/findologic-api/tree/master/examples) directory.
 * The documentation can be found in our
 [Project Wiki](https://github.com/findologic/findologic-api/wiki).
 
-## Found a bug?
+### Projects using this library
+
+* [FINDOLOGIC Shopware 6 plugin](https://github.com/findologic/plugin-shopware-6)
+* [FINDOLOGIC Shopware 5 plugin](https://github.com/findologic/plugin-shopware-5)
+* [Simple Symfony 5 demo](https://github.com/TheKeymaster/findologic-api-demo-symfony) (shows a simple FINDOLOGIC-API integration)
+* Many more to come...
+
+## Bug Report
 
 We need your help! If you find any bug, please submit an issue and use our template! Be as precise as possible
 so we can reproduce your case easier. For further information, please refer to our issue template at

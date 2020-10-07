@@ -4,16 +4,17 @@ namespace FINDOLOGIC\Api\Helpers;
 
 class ResponseHelper
 {
-    const TYPE_STRING = 'string',
-          TYPE_INT = 'int',
-          TYPE_FLOAT = 'float',
-          TYPE_BOOL = 'bool';
+    const
+        TYPE_STRING = 'string',
+        TYPE_INT = 'int',
+        TYPE_FLOAT = 'float',
+        TYPE_BOOL = 'bool';
 
     /**
      * Gets a property from an object and converts it to a string.
      *
-     * @param $obj
-     * @param $property
+     * @param object|array $obj
+     * @param string $property
      * @param bool $allowEmptyValues If true, values that are 0 or 0.0 are allowed.
      *
      * @return string|null Returns the property as a string or null if it does not exist.
@@ -26,8 +27,8 @@ class ResponseHelper
     /**
      * Gets a property from an object and converts it to an int.
      *
-     * @param $obj
-     * @param $property
+     * @param object|array $obj
+     * @param string $property
      * @param bool $allowEmptyValues If true, values that are 0 or 0.0 are allowed.
      *
      * @return int|null Returns the property as an int or null if it does not exist.
@@ -40,8 +41,8 @@ class ResponseHelper
     /**
      * Gets a property from an object and converts it to a float.
      *
-     * @param $obj
-     * @param $property
+     * @param object|array $obj
+     * @param string $property
      * @param bool $allowEmptyValues If true, values that are 0 or 0.0 are allowed.
      *
      * @return float|null Returns the property as a float or null if it does not exist.
@@ -54,8 +55,8 @@ class ResponseHelper
     /**
      * Gets a property from an object and converts it to a bool.
      *
-     * @param $obj
-     * @param $property
+     * @param object|array $obj
+     * @param string $property
      * @param bool $allowEmptyValues If true, values that are 0 or 0.0 are allowed.
      *
      * @return bool|null Returns the property as a bool or null if it does not exist.
@@ -68,7 +69,7 @@ class ResponseHelper
     /**
      * Gets a property from an object.
      *
-     * @param object $obj
+     * @param object|array $obj
      * @param string $property
      * @param null|string $type Convert value to another type. Optional.
      * @param bool $allowEmptyValues If true, values that are 0 or 0.0 are allowed.
@@ -77,20 +78,41 @@ class ResponseHelper
      */
     private static function getProperty($obj, $property, $type, $allowEmptyValues)
     {
-        if (!property_exists($obj, $property)) {
+        if (!is_array($obj) && !is_object($obj)) {
             return null;
         }
 
-        $propertyValue = $obj->{$property};
+        if (is_object($obj) && !property_exists($obj, $property)) {
+            return null;
+        }
+        if (is_array($obj) && !isset($obj[$property])) {
+            return null;
+        }
 
-        settype($propertyValue, $type);
+        if (is_object($obj)) {
+            $value = self::getFromObj($obj, $property);
+        } else {
+            $value = self::getFromArray($obj, $property);
+        }
+
+        settype($value, $type);
 
         // Check for empty after the property has been casted to submitted the type.
-        if (!$allowEmptyValues && self::isEmpty($propertyValue)) {
+        if (!$allowEmptyValues && self::isEmpty($value)) {
             return null;
         }
 
-        return $propertyValue;
+        return $value;
+    }
+
+    private static function getFromObj($obj, $property)
+    {
+        return $obj->{$property};
+    }
+
+    private static function getFromArray(array $arr, $key)
+    {
+        return $arr[$key];
     }
 
     /**

@@ -19,7 +19,7 @@ abstract class Request
         ADD_VALUE = 'add';
 
     /** @var array */
-    protected $params = [];
+    protected $params;
 
     /** @var array */
     protected $requiredParams = [
@@ -34,6 +34,11 @@ abstract class Request
 
     /** @var string */
     protected $outputAdapter = OutputAdapter::XML_21;
+
+    public function __construct(array $params = [])
+    {
+        $this->params = $params;
+    }
 
     /**
      * Gets all currently set params.

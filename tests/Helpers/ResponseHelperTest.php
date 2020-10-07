@@ -83,4 +83,36 @@ class ResponseHelperTest extends TestCase
         $this->testObject->something = $originalObjectValue;
         $this->assertSame($expectedResult, ResponseHelper::getBoolProperty($this->testObject, 'something'));
     }
+
+    /**
+     * @return array
+     */
+    public function nonArrayObjectProvider()
+    {
+        return [
+            'passing a string as object' => [
+                'data' => 'i am just a string :('
+            ],
+            'passing a bool as object' => [
+                'data' => true
+            ],
+            'passing an int as object' => [
+                'data' => 420
+            ],
+            'passing a float as object' => [
+                'data' => 4.20
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider nonArrayObjectProvider
+     */
+    public function testCallingResponseHelperWithNoArrayAndNoObjectReturnsNull($data)
+    {
+        $this->assertNull(ResponseHelper::getBoolProperty($data, 'does-not-matter'));
+        $this->assertNull(ResponseHelper::getFloatProperty($data, 'does-not-matter'));
+        $this->assertNull(ResponseHelper::getIntProperty($data, 'does-not-matter'));
+        $this->assertNull(ResponseHelper::getStringProperty($data, 'does-not-matter'));
+    }
 }

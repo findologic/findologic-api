@@ -9,9 +9,10 @@ use FINDOLOGIC\Api\Requests\Request;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchNavigationRequest;
 use FINDOLOGIC\Api\Responses\Autocomplete\SuggestResponse;
 use FINDOLOGIC\Api\Responses\Html\GenericHtmlResponse;
+use FINDOLOGIC\Api\Responses\Json10\Json10Response;
 use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
-use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use InvalidArgumentException;
+use Psr\Http\Message\ResponseInterface as GuzzleResponse;
 
 abstract class Response
 {
@@ -113,6 +114,8 @@ abstract class Response
         $responseTime
     ) {
         switch ($request->getOutputAdapter()) {
+            case OutputAdapter::JSON_10:
+                return new Json10Response($responseContents, $responseTime);
             case OutputAdapter::XML_21:
                 return new Xml21Response($responseContents, $responseTime);
             case OutputAdapter::HTML_20:

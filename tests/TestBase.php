@@ -92,6 +92,6 @@ class TestBase extends TestCase
 
     protected function getMockResponse($file)
     {
-        return file_get_contents(__DIR__ . '/../Mockdata/' . $file);
+        return file_get_contents(__DIR__ . '/Mockdata/' . $file);
     }
 }

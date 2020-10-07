@@ -8,14 +8,17 @@ use FINDOLOGIC\Api\Requests\Request;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchNavigationRequest;
 use FINDOLOGIC\Api\Responses\Response;
 use FINDOLOGIC\GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Psr7\Response as GuzzleResponse;
+use Psr\Http\Message\ResponseInterface as GuzzleResponse;
 
 class Client
 {
-    const METHOD_GET = 'GET';
-
     /** @var Config */
     private $config;
+
+    /**
+     * @var bool Weither an alivetest was sent or not. Only one alivetest is sent per client lifetime.
+     */
+    private $alivetestSent = false;
 
     public function __construct(Config $config)
     {
@@ -67,15 +70,21 @@ class Client
      * SearchRequest/NavigationRequest.
      *
      * @param Request $request
-     * @return GuzzleResponse|null|void
+     * @return GuzzleResponse|null
      */
     private function doAlivetest(Request $request)
     {
-        if ($request instanceof SearchNavigationRequest) {
-            // We need to make sure that the alivetest uses the same parameters as the request itself.
-            $alivetestRequest = new AlivetestRequest();
-            $alivetestRequest->setParams($request->getParams());
-            return $this->sendRequest($alivetestRequest);
+        if (!$request instanceof SearchNavigationRequest || $this->alivetestSent) {
+            return null;
         }
+
+        // We need to make sure that the alivetest uses the same parameters as the request itself.
+        $alivetestRequest = new AlivetestRequest();
+        $alivetestRequest->setParams($request->getParams());
+
+        $response = $this->sendRequest($alivetestRequest);
+        $this->alivetestSent = true;
+
+        return $response;
     }
 }
