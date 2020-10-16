@@ -4,6 +4,7 @@ namespace FINDOLOGIC\Api\Requests\SearchNavigation;
 
 use FINDOLOGIC\Api\Definitions\QueryParameter;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
+use FINDOLOGIC\Api\Requests\Parameters\Parameter;
 use FINDOLOGIC\Api\Requests\Request;
 use FINDOLOGIC\Api\Validators\ParameterValidator;
 

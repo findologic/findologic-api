@@ -6,6 +6,8 @@ use FINDOLOGIC\Api\Client;
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\Exceptions\ParamNotSetException;
+use FINDOLOGIC\Api\Requests\Parameters\AttributeParameter;
+use FINDOLOGIC\Api\Requests\Parameters\SimpleParameter;
 use FINDOLOGIC\Api\Requests\SearchNavigation\NavigationRequest;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
 use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
@@ -843,5 +845,24 @@ class SearchNavigationRequestTest extends TestBase
 
         $uri = $searchRequest->buildRequestUrl($this->config);
         $this->assertEquals($expectedUri, $uri);
+    }
+
+    public function testParameterCanBeSetViaParameterInstance()
+    {
+        $expectedSimpleParameterName = 'rating';
+        $expectedSimpleParameterValue = '3';
+        $expectedAttributeName = 'cat';
+        $expectedAttributes = ['Shoes', 'A & C Design'];
+
+        $searchRequest = new SearchRequest();
+        $searchRequest
+            ->addParameter(new SimpleParameter($expectedSimpleParameterName, $expectedSimpleParameterValue))
+            ->addParameter(new AttributeParameter($expectedAttributeName, $expectedAttributes));
+
+        $params = $searchRequest->getParams();
+        $this->assertEquals($expectedSimpleParameterValue, $params[$expectedSimpleParameterName]);
+        $this->assertEquals([
+
+        ], $params);
     }
 }
