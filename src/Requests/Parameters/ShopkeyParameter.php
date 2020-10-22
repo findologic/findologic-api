@@ -9,9 +9,7 @@ class ShopkeyParameter extends SimpleParameter
         parent::__construct('shopkey', $shopkey);
 
         $this->setValidationRules([
-            'regex' => [
-                ['shopkey', '/^[A-F0-9]{32}$/']
-            ]
+            $this->buildRule('regex', '/^[A-F0-9]{32}$/')
         ]);
     }
 }

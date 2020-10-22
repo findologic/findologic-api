@@ -2,6 +2,8 @@
 
 namespace FINDOLOGIC\Api\Requests\Parameters;
 
+use FINDOLOGIC\Api\Validators\Rules\Rule;
+
 abstract class Parameter
 {
     /** @var string */
@@ -46,15 +48,32 @@ abstract class Parameter
     }
 
     /**
-     * @return array
+     * @return Rule[]
      */
     public function getValidationRules()
     {
         return $this->validationRules;
     }
 
+    /**
+     * @param Rule[] $rules
+     */
     public function setValidationRules(array $rules)
     {
         $this->validationRules = $rules;
+    }
+
+    /**
+     * @param string $rule
+     * @param string|array|null $params
+     * @return Rule
+     */
+    protected function buildRule($rule, $params = null)
+    {
+        return Rule::getInstance(
+            $this->name,
+            $rule,
+            $params
+        );
     }
 }
