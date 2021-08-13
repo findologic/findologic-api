@@ -10,6 +10,7 @@ use FINDOLOGIC\Api\Definitions\Endpoint;
 class AlivetestRequest extends Request
 {
     protected $endpoint = Endpoint::ALIVETEST;
+    protected $method = Request::METHOD_GET;
 
     /**
      * @internal

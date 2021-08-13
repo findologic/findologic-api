@@ -50,15 +50,11 @@ class Client
      */
     private function sendRequest(Request $request)
     {
-        $requestTimeout = $this->config->getRequestTimeout();
-        if ($request instanceof AlivetestRequest) {
-            $requestTimeout = $this->config->getAlivetestTimeout();
-        }
-
         try {
-            return $this->config->getHttpClient()->get(
+            return $this->config->getHttpClient()->request(
+                $request->getMethod(),
                 $request->buildRequestUrl($this->config),
-                ['connect_timeout' => $requestTimeout]
+                $this->buildRequestOptions($request)
             );
         } catch (GuzzleException $e) {
             throw new ServiceNotAliveException($e->getMessage());
@@ -86,5 +82,28 @@ class Client
         $this->alivetestSent = true;
 
         return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    private function buildRequestOptions(Request $request)
+    {
+        $requestTimeout = $this->config->getRequestTimeout();
+        if ($request instanceof AlivetestRequest) {
+            $requestTimeout = $this->config->getAlivetestTimeout();
+        }
+
+        $options = [];
+        $options['connect_timeout'] = $requestTimeout;
+
+        if ($this->config->getAccessToken()) {
+            $options['headers'] = [
+                'Authorization' => 'Bearer ' . $this->config->getAccessToken()
+            ];
+        }
+
+        return $options;
     }
 }

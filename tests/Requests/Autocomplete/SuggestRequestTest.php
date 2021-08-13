@@ -49,7 +49,7 @@ class SuggestRequestTest extends TestBase
             $this->assertEquals('Required param query is not set.', $e->getMessage());
         }
 
-        $this->httpClientMock->method('get')->willReturn($this->responseMock);
+        $this->httpClientMock->method('request')->willReturn($this->responseMock);
         $this->responseMock->method('getBody')->willReturn($this->streamMock);
         $this->responseMock->method('getStatusCode')->willReturn(200);
         $this->streamMock->method('getContents')

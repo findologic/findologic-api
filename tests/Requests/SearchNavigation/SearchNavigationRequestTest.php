@@ -55,7 +55,7 @@ class SearchNavigationRequestTest extends TestBase
      */
     public function testSendingSearchRequestsWithoutRequiredParamsWillThrowAnException(array $options)
     {
-        $this->httpClientMock->method('get')->willReturn($this->responseMock);
+        $this->httpClientMock->method('request')->willReturn($this->responseMock);
         $this->responseMock->method('getBody')->willReturn($this->streamMock);
         $this->responseMock->method('getStatusCode')->willReturn(200);
         $this->streamMock->method('getContents')
@@ -88,7 +88,7 @@ class SearchNavigationRequestTest extends TestBase
 
     public function testSendingNavigationRequestsWithoutRequiredParamsWillThrowAnException()
     {
-        $this->httpClientMock->method('get')->willReturn($this->responseMock);
+        $this->httpClientMock->method('request')->willReturn($this->responseMock);
         $this->responseMock->method('getBody')->willReturn($this->streamMock);
         $this->responseMock->method('getStatusCode')->willReturn(200);
         $this->streamMock->method('getContents')

@@ -14,7 +14,8 @@ class EndpointTest extends TestBase
             'SEARCH' => 'index.php',
             'NAVIGATION' => 'selector.php',
             'SUGGEST' => 'autocomplete.php',
-            'TRACKING' => 'tracking.php'
+            'TRACKING' => 'tracking.php',
+            'UPDATE' => 'update.php',
         ];
         $availableEndpoints = Endpoint::getConstants();
 

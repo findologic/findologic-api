@@ -12,6 +12,7 @@ use FINDOLOGIC\Api\Validators\ParameterValidator;
 class SuggestRequest extends Request
 {
     protected $endpoint = Endpoint::SUGGEST;
+    protected $method = Request::METHOD_GET;
 
     public function __construct(array $params = [])
     {

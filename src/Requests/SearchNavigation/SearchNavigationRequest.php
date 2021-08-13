@@ -12,6 +12,8 @@ use FINDOLOGIC\Api\Validators\ParameterValidator;
  */
 abstract class SearchNavigationRequest extends Request
 {
+    protected $method = Request::METHOD_GET;
+
     public function __construct(array $params = [])
     {
         parent::__construct($params);

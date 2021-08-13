@@ -18,6 +18,17 @@ abstract class Request
         SET_VALUE = 'set',
         ADD_VALUE = 'add';
 
+    const METHOD_HEAD = 'HEAD';
+    const METHOD_GET = 'GET';
+    const METHOD_POST = 'POST';
+    const METHOD_PUT = 'PUT';
+    const METHOD_PATCH = 'PATCH';
+    const METHOD_DELETE = 'DELETE';
+    const METHOD_PURGE = 'PURGE';
+    const METHOD_OPTIONS = 'OPTIONS';
+    const METHOD_TRACE = 'TRACE';
+    const METHOD_CONNECT = 'CONNECT';
+
     /** @var array */
     protected $params;
 
@@ -29,8 +40,8 @@ abstract class Request
     /** @var string */
     protected $endpoint;
 
-    /** @var Client */
-    protected $client;
+    /** @var string */
+    protected $method;
 
     /** @var string */
     protected $outputAdapter = OutputAdapter::XML_21;
@@ -48,6 +59,16 @@ abstract class Request
     public function getParams()
     {
         return $this->params;
+    }
+
+    /**
+     * Returns the request body.
+     *
+     * @return string|null
+     */
+    public function getBody()
+    {
+        return null;
     }
 
     /**
@@ -250,6 +271,14 @@ abstract class Request
             default:
                 throw new InvalidArgumentException('Unknown method type.');
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethod()
+    {
+        return $this->method;
     }
 
     /**
