@@ -59,7 +59,7 @@ class SuggestRequest extends Request
             throw new InvalidParamException(SuggestQueryParameter::AUTOCOMPLETEBLOCKS);
         }
 
-        $this->addParam(SuggestQueryParameter::AUTOCOMPLETEBLOCKS, $value, self::ADD_VALUE);
+        $this->addParam(SuggestQueryParameter::AUTOCOMPLETEBLOCKS, [$value], self::ADD_VALUE);
         return $this;
     }
 
