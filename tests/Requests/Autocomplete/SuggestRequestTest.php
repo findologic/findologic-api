@@ -108,7 +108,27 @@ class SuggestRequestTest extends TestBase
         $searchRequest->addAutocompleteBlocks($autocompleteBlock);
         $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
-        $this->assertEquals($autocompleteBlock, $params[$expectedParameter]);
+        $this->assertSame([$autocompleteBlock], $params[$expectedParameter]);
+    }
+
+    public function testMultipleAutocompleteBlocksCanBeAdded()
+    {
+        $expectedParameter = 'autocompleteblocks';
+
+        $searchRequest = new SuggestRequest();
+        $this->setRequiredParamsForSuggestRequest($searchRequest);
+
+        $searchRequest->addAutocompleteBlocks('product');
+        $searchRequest->addAutocompleteBlocks('ordernumber');
+        $searchRequest->addAutocompleteBlocks('cat');
+
+        $params = $searchRequest->getParams();
+        $this->assertArrayHasKey($expectedParameter, $params);
+        $this->assertSame([
+            'product',
+            'ordernumber',
+            'cat'
+        ], $params[$expectedParameter]);
     }
 
     /**
