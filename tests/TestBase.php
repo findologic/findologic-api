@@ -42,10 +42,19 @@ class TestBase extends TestCase
      * @param string $expectedBody
      * @param int $statusCode
      */
-    protected function setExpectationsForRequests($expectedRequestUrl, $expectedBody, $statusCode = 200)
-    {
+    protected function setExpectationsForRequests(
+        $expectedRequestUrl,
+        $expectedBody,
+        $statusCode = 200,
+        $requestMethod = 'GET',
+        array $guzzleOptionsOverride = []
+    ) {
         $this->httpClientMock->method('request')
-            ->with($this->equalTo('GET'), $expectedRequestUrl, ['connect_timeout' => 3.0])
+            ->with(
+                $this->equalTo($requestMethod),
+                $expectedRequestUrl,
+                array_merge(['connect_timeout' => 3.0], $guzzleOptionsOverride)
+            )
             ->willReturnOnConsecutiveCalls($this->responseMock);
         $this->responseMock->method('getBody')
             ->with()

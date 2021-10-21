@@ -73,6 +73,11 @@ class ItemUpdateRequest extends Request
         $this->rawBody['update'][$productId] = array_merge_recursive($this->rawBody['update'][$productId], $changes);
     }
 
+    public function getOutputAdapter()
+    {
+        return null;
+    }
+
     public function setQuery($value)
     {
         throw new BadMethodCallException('Parameter "query" is not supported for item updates');
@@ -91,6 +96,11 @@ class ItemUpdateRequest extends Request
     public function addUserGroup($value)
     {
         throw new BadMethodCallException('Parameter "usergroup" is not supported for item updates');
+    }
+
+    public function setOutputAdapter($value)
+    {
+        throw new BadMethodCallException('Parameter "outputAdapter" is not supported for item updates');
     }
 
     public function getBody()

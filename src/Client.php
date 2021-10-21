@@ -44,6 +44,15 @@ class Client
     }
 
     /**
+     * Only call this method if you know what you are doing! It is highly recommended that an alivetest
+     * is sent before a search/navigation request!
+     */
+    public function withoutAlivetest()
+    {
+        $this->alivetestSent = true;
+    }
+
+    /**
      * @param Request $request
      * @return GuzzleResponse
      * @throws ServiceNotAliveException If the request was not successful.

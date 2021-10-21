@@ -31,6 +31,9 @@ class ConfigTest extends TestBase
         $expectedHttpClient = new Client();
         $expectedShopkey = $this->validConfig['shopkey'];
         $expectedApiUrl = 'www.blubbergurken.io/ps/%s/%s';
+        $expectedAccessToken =
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE0MTY5MjkxMDksImp0aSI6ImFhN2Y4ZDBh' .
+            'OTVjIiwic2NvcGVzIjpbInJlcG8iLCJwdWJsaWNfcmVwbyJdfQ.XCEwpBGvOLma4TCoh36FU7XhUbcskygS81HE1uHLf0E';
 
         $config = new Config();
         $config
@@ -38,13 +41,15 @@ class ConfigTest extends TestBase
             ->setApiUrl($expectedApiUrl)
             ->setAlivetestTimeout($expectedAlivetestTimeout)
             ->setRequestTimeout($expectedRequestTimeout)
-            ->setHttpClient($expectedHttpClient);
+            ->setHttpClient($expectedHttpClient)
+            ->setAccessToken($expectedAccessToken);
 
         $this->assertEquals($expectedRequestTimeout, $config->getRequestTimeout());
         $this->assertEquals($expectedAlivetestTimeout, $config->getAlivetestTimeout());
         $this->assertEquals($expectedHttpClient, $config->getHttpClient());
         $this->assertEquals($expectedShopkey, $config->getServiceId());
         $this->assertEquals($expectedApiUrl, $config->getApiUrl());
+        $this->assertEquals($expectedAccessToken, $config->getAccessToken());
     }
 
     public function invalidConfigProvider()

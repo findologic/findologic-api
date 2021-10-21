@@ -1,0 +1,11 @@
+{
+  "errors": {
+    "123": [
+      "Does not exist."
+    ],
+    "abc": [
+      "New visible value for usergroup \"foobar\" has been ignored, because that usergroup does not exist.",
+      "New price value for usergroup \"foobar\" has been ignored, because that usergroup does not exist."
+    ]
+  }
+}

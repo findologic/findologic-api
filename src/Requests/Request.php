@@ -2,7 +2,6 @@
 
 namespace FINDOLOGIC\Api\Requests;
 
-use FINDOLOGIC\Api\Client;
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Definitions\OutputAdapter;
 use FINDOLOGIC\Api\Definitions\QueryParameter;
@@ -241,6 +240,9 @@ abstract class Request
         return $this->endpoint;
     }
 
+    /**
+     * @return string|null
+     */
     public function getOutputAdapter()
     {
         return $this->outputAdapter;
