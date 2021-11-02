@@ -1,6 +1,6 @@
 # FINDOLOGIC-API
 
-[![Build Status](https://travis-ci.org/findologic/findologic-api.svg?branch=master)](https://travis-ci.org/findologic/findologic-api)
+[![Tests](https://github.com/findologic/findologic-api/actions/workflows/phpunit.yml/badge.svg)](https://github.com/findologic/findologic-api/actions/workflows/phpunit.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/b7efba0a8475fc2095cc/maintainability)](https://codeclimate.com/github/findologic/findologic-api/maintainability)
 [![codecov](https://codecov.io/gh/findologic/findologic-api/branch/master/graph/badge.svg)](https://codecov.io/gh/findologic/findologic-api)
 [![Packagist](https://img.shields.io/packagist/v/findologic/findologic-api.svg)](https://packagist.org/packages/findologic/findologic-api)
