@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Api\Requests\SearchNavigation;
 
+use BadMethodCallException;
 use FINDOLOGIC\Api\Definitions\QueryParameter;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\Requests\Request;
@@ -21,6 +22,11 @@ abstract class SearchNavigationRequest extends Request
             QueryParameter::USER_IP,
             QueryParameter::REVISION,
         ]);
+    }
+
+    public function getBody()
+    {
+        throw new BadMethodCallException('Request body is not supported for search & navigation requests');
     }
 
     /**

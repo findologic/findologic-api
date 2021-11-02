@@ -3,74 +3,118 @@
 namespace FINDOLOGIC\Api\Requests\Item;
 
 use BadMethodCallException;
+use FINDOLOGIC\Api\Definitions\Defaults;
 use FINDOLOGIC\Api\Definitions\Endpoint;
+use FINDOLOGIC\Api\Requests\Item\Changes\PriceChange;
+use FINDOLOGIC\Api\Requests\Item\Changes\VisibilityChange;
 use FINDOLOGIC\Api\Requests\Request;
+use InvalidArgumentException;
 
 class ItemUpdateRequest extends Request
 {
     protected $endpoint = Endpoint::UPDATE;
     protected $method = Request::METHOD_PATCH;
 
-    private $rawBody = [];
-
-    public function __construct(array $params = [])
-    {
-        parent::__construct($params);
-
-        $this->body = json_encode(['update' => []]);
-    }
+    /** @var Item[] */
+    private $items = [];
 
     /**
-     * @param string $productId
+     * @param string $id
      * @param string $userGroup
      */
-    public function markInvisible($productId, $userGroup = '')
+    public function markInvisible($id, $userGroup = Defaults::USER_GROUP)
     {
-        $this->addUpdate($productId, [
-            'visible' => [
-                $userGroup => false
-            ]
-        ]);
+        $item = $this->getOrCreateItem($id);
+
+        /** @var VisibilityChange $change */
+        $change = $item->getOrCreateChange(Item::VISIBILITY_CHANGE, $userGroup);
+        $change->setInvisible();
+
+        $item->addChange($change);
+
+        $this->items[$item->getId()] = $item;
     }
 
     /**
-     * @param string $productId
+     * @param string $id
      * @param string $userGroup
      */
-    public function markVisible($productId, $userGroup = '')
+    public function markVisible($id, $userGroup = Defaults::USER_GROUP)
     {
-        $this->addUpdate($productId, [
-            'visible' => [
-                $userGroup => true
-            ]
-        ]);
+        $item = $this->getOrCreateItem($id);
+
+        /** @var VisibilityChange $change */
+        $change = $item->getOrCreateChange(Item::VISIBILITY_CHANGE, $userGroup);
+        $change->setVisible();
+
+        $item->addChange($change);
+
+        $this->items[$item->getId()] = $item;
     }
 
     /**
-     * @param string $productId
+     * @param string $id
      * @param float $price
      * @param string $userGroup
      */
-    public function setPrice($productId, $price, $userGroup = '')
+    public function setPrice($id, $price, $userGroup = Defaults::USER_GROUP)
     {
-        $this->addUpdate($productId, [
-            'price' => [
-                $userGroup => $price
-            ]
-        ]);
+        $item = $this->getOrCreateItem($id);
+
+        /** @var PriceChange $change */
+        $change = $item->getOrCreateChange(Item::PRICE_CHANGE, $userGroup);
+        $change->setPrice($price);
+
+        $item->addChange($change);
+
+        $this->items[$item->getId()] = $item;
     }
 
-    private function addUpdate($productId, array $changes)
+    public function reset()
     {
-        if (!isset($this->rawBody['update'])) {
-            $this->rawBody['update'] = [];
-        }
-        if (!isset($this->rawBody['update'][$productId])) {
-            $this->rawBody['update'][$productId] = $changes;
-            return;
+        $this->items = [];
+    }
+
+    /**
+     * @param string $id
+     */
+    public function resetItemChanges($id)
+    {
+        $this->findItem($id)->resetChanges();
+    }
+
+    /**
+     * @param string $id
+     * @return Item
+     */
+    public function getItem($id)
+    {
+        return $this->findItem($id);
+    }
+
+    /**
+     * @param string $id
+     * @return Item
+     */
+    private function findItem($id)
+    {
+        if (!isset($this->items[$id])) {
+            throw new InvalidArgumentException(sprintf(
+                'Could not find item with id "%s"',
+                $id
+            ));
         }
 
-        $this->rawBody['update'][$productId] = array_merge_recursive($this->rawBody['update'][$productId], $changes);
+        return $this->items[$id];
+    }
+
+    private function getOrCreateItem($id)
+    {
+        if (isset($this->items[$id])) {
+            return $this->items[$id];
+        }
+
+        return new Item($id);
     }
 
     public function getOutputAdapter()
@@ -105,6 +149,17 @@ class ItemUpdateRequest extends Request
 
     public function getBody()
     {
-        return json_encode($this->rawBody);
+        $body = [];
+        $body['update'] = [];
+
+        foreach ($this->items as $item) {
+            $body['update'][$item->getId()] = [];
+
+            foreach ($item->getChanges() as $change) {
+                $body['update'][$item->getId()][$change->getKey()][$change->getUserGroup()] = $change->getValue();
+            }
+        }
+
+        return json_encode($body);
     }
 }

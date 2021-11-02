@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Api\Requests;
 
+use BadMethodCallException;
 use FINDOLOGIC\Api\Definitions\Endpoint;
 
 /**
@@ -19,5 +20,10 @@ class AlivetestRequest extends Request
     public function setParams(array $params)
     {
         $this->params = $params;
+    }
+
+    public function getBody()
+    {
+        throw new BadMethodCallException('Request body is not supported for alivetest requests');
     }
 }

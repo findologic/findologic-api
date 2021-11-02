@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Api\Tests\Requests\Autocomplete;
 
+use BadMethodCallException;
 use FINDOLOGIC\Api\Client;
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
@@ -188,5 +189,14 @@ class SuggestRequestTest extends TestBase
         $this->setRequiredParamsForSuggestRequest($suggestRequest);
 
         $suggestRequest->setMultishopId($invalidMultishopId);
+    }
+
+    public function testGetBodyIsNotSupported()
+    {
+        $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage('Request body is not supported for suggest requests');
+
+        $suggestRequest = new SuggestRequest();
+        $suggestRequest->getBody();
     }
 }

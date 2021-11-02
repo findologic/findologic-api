@@ -61,14 +61,11 @@ abstract class Request
     }
 
     /**
-     * Returns the request body.
+     * Returns the request body. An exception must be thrown on requests that do not support a request body.
      *
      * @return string|null
      */
-    public function getBody()
-    {
-        return null;
-    }
+    abstract public function getBody();
 
     /**
      * Sets the shopkey param. It is used to determine the service. The shopkey param is set by default (from the
