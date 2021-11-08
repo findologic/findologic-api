@@ -13,7 +13,8 @@ class Config
         API_URL = 'apiUrl',
         ALIVETEST_TIMEOUT = 'alivetestTimeout',
         REQUEST_TIMEOUT = 'requestTimeout',
-        HTTP_CLIENT = 'httpClient';
+        HTTP_CLIENT = 'httpClient',
+        ACCESS_TOKEN = 'accessToken';
 
     const
         DEFAULT_TEMPLATE_API_URL = 'https://service.findologic.com/ps/%s/%s',
@@ -22,6 +23,9 @@ class Config
 
     /** @var string|null */
     private $serviceId;
+
+    /** @var string|null */
+    private $accessToken;
 
     /** @var string */
     private $apiUrl = self::DEFAULT_TEMPLATE_API_URL;
@@ -85,6 +89,24 @@ class Config
     public function setServiceId($serviceId)
     {
         $this->setConfigValue(self::SERVICE_ID, $serviceId, ['required', 'shopkey']);
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAccessToken()
+    {
+        return $this->accessToken;
+    }
+
+    /**
+     * @param string $accessToken
+     * @return $this
+     */
+    public function setAccessToken($accessToken)
+    {
+        $this->setConfigValue(self::ACCESS_TOKEN, $accessToken, ['required']);
         return $this;
     }
 

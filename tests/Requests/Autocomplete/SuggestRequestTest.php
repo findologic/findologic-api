@@ -2,6 +2,7 @@
 
 namespace FINDOLOGIC\Api\Tests\Requests\Autocomplete;
 
+use BadMethodCallException;
 use FINDOLOGIC\Api\Client;
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
@@ -49,7 +50,7 @@ class SuggestRequestTest extends TestBase
             $this->assertEquals('Required param query is not set.', $e->getMessage());
         }
 
-        $this->httpClientMock->method('get')->willReturn($this->responseMock);
+        $this->httpClientMock->method('request')->willReturn($this->responseMock);
         $this->responseMock->method('getBody')->willReturn($this->streamMock);
         $this->responseMock->method('getStatusCode')->willReturn(200);
         $this->streamMock->method('getContents')
@@ -208,5 +209,14 @@ class SuggestRequestTest extends TestBase
         $this->setRequiredParamsForSuggestRequest($suggestRequest);
 
         $suggestRequest->setMultishopId($invalidMultishopId);
+    }
+
+    public function testGetBodyIsNotSupported()
+    {
+        $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage('Request body is not supported for suggest requests');
+
+        $suggestRequest = new SuggestRequest();
+        $suggestRequest->getBody();
     }
 }

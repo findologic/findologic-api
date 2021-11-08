@@ -7,6 +7,7 @@ use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
 use FINDOLOGIC\Api\Requests\AlivetestRequest;
 use FINDOLOGIC\Api\Requests\Autocomplete\SuggestRequest;
+use FINDOLOGIC\Api\Requests\Item\ItemUpdateRequest;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
 use FINDOLOGIC\Api\Responses\Autocomplete\SuggestResponse;
 use FINDOLOGIC\Api\Responses\Html\GenericHtmlResponse;
@@ -54,10 +55,10 @@ class ClientTest extends TestBase
         $expectedAlivetestBody,
         $expectedSearchResultBody
     ) {
-        $this->httpClientMock->method('get')
+        $this->httpClientMock->method('request')
             ->withConsecutive(
-                [$expectedAlivetestUrl, ['connect_timeout' => 1.0]],
-                [$expectedRequestUrl, ['connect_timeout' => 3.0]]
+                ['GET', $expectedAlivetestUrl, ['connect_timeout' => 1.0]],
+                ['GET', $expectedRequestUrl, ['connect_timeout' => 3.0]]
             )
             ->willReturnOnConsecutiveCalls($this->responseMock, $this->responseMock);
         $this->responseMock->method('getBody')
@@ -268,8 +269,8 @@ class ClientTest extends TestBase
 
         $expectedAlivetestUrl = 'https://service.findologic.com/ps/blubbergurken.de/alivetest.php?' . $requestParams;
 
-        $this->httpClientMock->method('get')
-            ->with($expectedAlivetestUrl, ['connect_timeout' => 1.0])
+        $this->httpClientMock->method('request')
+            ->with('GET', $expectedAlivetestUrl, ['connect_timeout' => 1.0])
             ->willThrowException(new RequestException(
                 $expectedExceptionMessage,
                 new Request('GET', $expectedAlivetestUrl)
@@ -306,8 +307,8 @@ class ClientTest extends TestBase
 
         $expectedAlivetestUrl = 'https://service.findologic.com/ps/blubbergurken.de/alivetest.php?' . $requestParams;
 
-        $this->httpClientMock->method('get')
-            ->with($expectedAlivetestUrl, ['connect_timeout' => 1.0])
+        $this->httpClientMock->method('request')
+            ->with('GET', $expectedAlivetestUrl, ['connect_timeout' => 1.0])
             ->willReturnOnConsecutiveCalls($this->responseMock);
         $this->responseMock->method('getBody')
             ->with()
@@ -435,5 +436,39 @@ class ClientTest extends TestBase
         $response = $client->send($searchRequest);
 
         $this->assertInstanceOf(Json10Response::class, $response);
+    }
+
+    public function testBearerTokenIsSentIfSet()
+    {
+        $expectedAccessToken = 'YEEEET';
+
+        $requestParams = http_build_query([
+            'shopurl' => 'blubbergurken.de',
+            'shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD',
+        ]);
+
+        $expectedRequestUrl = 'https://service.findologic.com/ps/blubbergurken.de/update.php?' . $requestParams;
+
+        $this->setExpectationsForRequests(
+            $expectedRequestUrl,
+            $this->getMockResponse('Item/demoResponse.json'),
+            200,
+            'PATCH',
+            [
+                'connect_timeout' => 3.0,
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $expectedAccessToken
+                ]
+            ]
+        );
+
+        $searchRequest = new ItemUpdateRequest();
+        $searchRequest->setShopUrl('blubbergurken.de');
+
+        $this->config->setAccessToken($expectedAccessToken);
+        $client = new Client($this->config);
+        $client->withoutAlivetest();
+
+        $client->send($searchRequest);
     }
 }

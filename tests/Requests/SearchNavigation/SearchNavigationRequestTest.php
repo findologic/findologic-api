@@ -2,11 +2,13 @@
 
 namespace FINDOLOGIC\Api\Tests\Requests\SearchNavigation;
 
+use BadMethodCallException;
 use FINDOLOGIC\Api\Client;
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\Exceptions\ParamNotSetException;
 use FINDOLOGIC\Api\Requests\SearchNavigation\NavigationRequest;
+use FINDOLOGIC\Api\Requests\SearchNavigation\SearchNavigationRequest;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
 use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
 use FINDOLOGIC\Api\Tests\TestBase;
@@ -55,7 +57,7 @@ class SearchNavigationRequestTest extends TestBase
      */
     public function testSendingSearchRequestsWithoutRequiredParamsWillThrowAnException(array $options)
     {
-        $this->httpClientMock->method('get')->willReturn($this->responseMock);
+        $this->httpClientMock->method('request')->willReturn($this->responseMock);
         $this->responseMock->method('getBody')->willReturn($this->streamMock);
         $this->responseMock->method('getStatusCode')->willReturn(200);
         $this->streamMock->method('getContents')
@@ -88,7 +90,7 @@ class SearchNavigationRequestTest extends TestBase
 
     public function testSendingNavigationRequestsWithoutRequiredParamsWillThrowAnException()
     {
-        $this->httpClientMock->method('get')->willReturn($this->responseMock);
+        $this->httpClientMock->method('request')->willReturn($this->responseMock);
         $this->responseMock->method('getBody')->willReturn($this->streamMock);
         $this->responseMock->method('getStatusCode')->willReturn(200);
         $this->streamMock->method('getContents')
@@ -843,5 +845,28 @@ class SearchNavigationRequestTest extends TestBase
 
         $uri = $searchRequest->buildRequestUrl($this->config);
         $this->assertEquals($expectedUri, $uri);
+    }
+
+    public function getBodyIsNotSupportedProvider()
+    {
+        return [
+            'search' => [
+                'request' => new SearchRequest()
+            ],
+            'navigation' => [
+                'request' => new NavigationRequest()
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getBodyIsNotSupportedProvider
+     */
+    public function testGetBodyIsNotSupported(SearchNavigationRequest $request)
+    {
+        $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage('Request body is not supported for search & navigation requests');
+
+        $request->getBody();
     }
 }

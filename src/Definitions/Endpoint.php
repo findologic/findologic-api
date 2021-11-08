@@ -9,5 +9,6 @@ class Endpoint extends Definition
         SEARCH = 'index.php',
         NAVIGATION = 'selector.php',
         SUGGEST = 'autocomplete.php',
-        TRACKING = 'tracking.php';
+        TRACKING = 'tracking.php',
+        UPDATE = 'update.php';
 }

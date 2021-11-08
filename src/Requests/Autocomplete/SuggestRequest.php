@@ -2,8 +2,10 @@
 
 namespace FINDOLOGIC\Api\Requests\Autocomplete;
 
+use BadMethodCallException;
 use FINDOLOGIC\Api\Definitions\Endpoint;
 use FINDOLOGIC\Api\Definitions\QueryParameter;
+use FINDOLOGIC\Api\Definitions\RequestMethod;
 use FINDOLOGIC\Api\Definitions\SuggestQueryParameter;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\Requests\Request;
@@ -12,11 +14,17 @@ use FINDOLOGIC\Api\Validators\ParameterValidator;
 class SuggestRequest extends Request
 {
     protected $endpoint = Endpoint::SUGGEST;
+    protected $method = RequestMethod::GET;
 
     public function __construct(array $params = [])
     {
         parent::__construct($params);
         $this->addRequiredParam(QueryParameter::QUERY);
+    }
+
+    public function getBody()
+    {
+        throw new BadMethodCallException('Request body is not supported for suggest requests');
     }
 
     /**

@@ -5,10 +5,12 @@ namespace FINDOLOGIC\Api\Responses;
 use FINDOLOGIC\Api\Definitions\OutputAdapter;
 use FINDOLOGIC\Api\Exceptions\ServiceNotAliveException;
 use FINDOLOGIC\Api\Requests\Autocomplete\SuggestRequest;
+use FINDOLOGIC\Api\Requests\Item\ItemUpdateRequest;
 use FINDOLOGIC\Api\Requests\Request;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchNavigationRequest;
 use FINDOLOGIC\Api\Responses\Autocomplete\SuggestResponse;
 use FINDOLOGIC\Api\Responses\Html\GenericHtmlResponse;
+use FINDOLOGIC\Api\Responses\Item\ItemUpdateResponse;
 use FINDOLOGIC\Api\Responses\Json10\Json10Response;
 use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
 use InvalidArgumentException;
@@ -73,6 +75,8 @@ abstract class Response
                 );
             case $request instanceof SuggestRequest:
                 return new SuggestResponse($response->getBody()->getContents(), $responseTime);
+            case $request instanceof ItemUpdateRequest:
+                return new ItemUpdateResponse($response->getBody()->getContents(), $responseTime);
             default:
                 throw new InvalidArgumentException(sprintf(
                     'Unknown Request: %s',

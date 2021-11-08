@@ -6,10 +6,13 @@ use ReflectionClass;
 
 abstract class Definition
 {
+    /**
+     * Returns a key value pair of defined constants.
+     *
+     * @return array
+     */
     public static function getConstants()
     {
-        /** @noinspection PhpUnhandledExceptionInspection Current class will always exist. */
-        $reflectionClass = new ReflectionClass(get_called_class());
-        return $reflectionClass->getConstants();
+        return (new ReflectionClass(get_called_class()))->getConstants();
     }
 }

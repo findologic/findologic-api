@@ -2,26 +2,34 @@
 
 namespace FINDOLOGIC\Api\Requests;
 
-use FINDOLOGIC\Api\Client;
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Definitions\OutputAdapter;
 use FINDOLOGIC\Api\Definitions\QueryParameter;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\Exceptions\ParamNotSetException;
+use FINDOLOGIC\Api\Requests\Autocomplete\SuggestRequest;
+use FINDOLOGIC\Api\Requests\Item\ItemUpdateRequest;
+use FINDOLOGIC\Api\Requests\SearchNavigation\NavigationRequest;
+use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
 use FINDOLOGIC\Api\Validators\ParameterValidator;
 use InvalidArgumentException;
 use Valitron\Validator;
 
 abstract class Request
 {
-    const
-        SET_VALUE = 'set',
-        ADD_VALUE = 'add';
+    const TYPE_SEARCH = 0;
+    const TYPE_NAVIGATION = 1;
+    const TYPE_SUGGEST_V3 = 2;
+    const TYPE_ALIVETEST = 3;
+    const TYPE_ITEM_UPDATE = 4;
+
+    const SET_VALUE = 'set';
+    const ADD_VALUE = 'add';
 
     /** @var array */
     protected $params;
 
-    /** @var array */
+    /** @var string[] */
     protected $requiredParams = [
         QueryParameter::SHOP_URL,
     ];
@@ -29,8 +37,8 @@ abstract class Request
     /** @var string */
     protected $endpoint;
 
-    /** @var Client */
-    protected $client;
+    /** @var string */
+    protected $method;
 
     /** @var string */
     protected $outputAdapter = OutputAdapter::XML_21;
@@ -38,6 +46,28 @@ abstract class Request
     public function __construct(array $params = [])
     {
         $this->params = $params;
+    }
+
+    /**
+     * @param int $type
+     * @return Request
+     */
+    public static function getInstance($type)
+    {
+        switch ($type) {
+            case self::TYPE_SEARCH:
+                return new SearchRequest();
+            case self::TYPE_NAVIGATION:
+                return new NavigationRequest();
+            case self::TYPE_SUGGEST_V3:
+                return new SuggestRequest();
+            case self::TYPE_ALIVETEST:
+                return new AlivetestRequest();
+            case self::TYPE_ITEM_UPDATE:
+                return new ItemUpdateRequest();
+            default:
+                throw new InvalidArgumentException(sprintf('Unknown request type "%d"', $type));
+        }
     }
 
     /**
@@ -49,6 +79,13 @@ abstract class Request
     {
         return $this->params;
     }
+
+    /**
+     * Returns the request body. An exception must be thrown on requests that do not support a request body.
+     *
+     * @return string|null
+     */
+    abstract public function getBody();
 
     /**
      * Sets the shopkey param. It is used to determine the service. The shopkey param is set by default (from the
@@ -220,6 +257,9 @@ abstract class Request
         return $this->endpoint;
     }
 
+    /**
+     * @return string|null
+     */
     public function getOutputAdapter()
     {
         return $this->outputAdapter;
@@ -250,6 +290,14 @@ abstract class Request
             default:
                 throw new InvalidArgumentException('Unknown method type.');
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethod()
+    {
+        return $this->method;
     }
 
     /**

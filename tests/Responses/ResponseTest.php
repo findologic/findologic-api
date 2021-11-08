@@ -5,6 +5,7 @@ namespace FINDOLOGIC\Api\Tests\Responses;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
 use FINDOLOGIC\Api\Responses\Autocomplete\SuggestResponse;
 use FINDOLOGIC\Api\Responses\Html\GenericHtmlResponse;
+use FINDOLOGIC\Api\Responses\Item\ItemUpdateResponse;
 use FINDOLOGIC\Api\Responses\Json10\Json10Response;
 use FINDOLOGIC\Api\Responses\Response;
 use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
@@ -38,6 +39,7 @@ class ResponseTest extends TestBase
         $expectedHtmlResponse = $this->getMockResponse('Html/demoResponse.html');
         $expectedXml21Response = $this->getMockResponse('Xml21/demoResponse.xml');
         $expectedJson10Response = $this->getMockResponse('Json10/demoResponse.json');
+        $expectedItemUpdateResponse = $this->getMockResponse('Item/demoResponse.json');
 
         return [
             'suggest response' => [
@@ -55,6 +57,10 @@ class ResponseTest extends TestBase
             'JSON 1.0 response' => [
                 'response' => new Json10Response($expectedJson10Response),
                 'expectedRawResponse' => $expectedJson10Response
+            ],
+            'ItemUpdate response' => [
+                'response' => new ItemUpdateResponse($expectedItemUpdateResponse),
+                'expectedRawResponse' => $expectedItemUpdateResponse
             ],
         ];
     }
