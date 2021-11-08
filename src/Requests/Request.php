@@ -7,31 +7,29 @@ use FINDOLOGIC\Api\Definitions\OutputAdapter;
 use FINDOLOGIC\Api\Definitions\QueryParameter;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\Exceptions\ParamNotSetException;
+use FINDOLOGIC\Api\Requests\Autocomplete\SuggestRequest;
+use FINDOLOGIC\Api\Requests\Item\ItemUpdateRequest;
+use FINDOLOGIC\Api\Requests\SearchNavigation\NavigationRequest;
+use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
 use FINDOLOGIC\Api\Validators\ParameterValidator;
 use InvalidArgumentException;
 use Valitron\Validator;
 
 abstract class Request
 {
-    const
-        SET_VALUE = 'set',
-        ADD_VALUE = 'add';
+    const TYPE_SEARCH = 0;
+    const TYPE_NAVIGATION = 1;
+    const TYPE_SUGGEST_V3 = 2;
+    const TYPE_ALIVETEST = 3;
+    const TYPE_ITEM_UPDATE = 4;
 
-    const METHOD_HEAD = 'HEAD';
-    const METHOD_GET = 'GET';
-    const METHOD_POST = 'POST';
-    const METHOD_PUT = 'PUT';
-    const METHOD_PATCH = 'PATCH';
-    const METHOD_DELETE = 'DELETE';
-    const METHOD_PURGE = 'PURGE';
-    const METHOD_OPTIONS = 'OPTIONS';
-    const METHOD_TRACE = 'TRACE';
-    const METHOD_CONNECT = 'CONNECT';
+    const SET_VALUE = 'set';
+    const ADD_VALUE = 'add';
 
     /** @var array */
     protected $params;
 
-    /** @var array */
+    /** @var string[] */
     protected $requiredParams = [
         QueryParameter::SHOP_URL,
     ];
@@ -48,6 +46,28 @@ abstract class Request
     public function __construct(array $params = [])
     {
         $this->params = $params;
+    }
+
+    /**
+     * @param int $type
+     * @return Request
+     */
+    public static function getInstance($type)
+    {
+        switch ($type) {
+            case self::TYPE_SEARCH:
+                return new SearchRequest();
+            case self::TYPE_NAVIGATION:
+                return new NavigationRequest();
+            case self::TYPE_SUGGEST_V3:
+                return new SuggestRequest();
+            case self::TYPE_ALIVETEST:
+                return new AlivetestRequest();
+            case self::TYPE_ITEM_UPDATE:
+                return new ItemUpdateRequest();
+            default:
+                throw new InvalidArgumentException(sprintf('Unknown request type "%d"', $type));
+        }
     }
 
     /**

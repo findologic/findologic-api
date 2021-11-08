@@ -5,6 +5,7 @@ namespace FINDOLOGIC\Api\Requests\Autocomplete;
 use BadMethodCallException;
 use FINDOLOGIC\Api\Definitions\Endpoint;
 use FINDOLOGIC\Api\Definitions\QueryParameter;
+use FINDOLOGIC\Api\Definitions\RequestMethod;
 use FINDOLOGIC\Api\Definitions\SuggestQueryParameter;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\Requests\Request;
@@ -13,7 +14,7 @@ use FINDOLOGIC\Api\Validators\ParameterValidator;
 class SuggestRequest extends Request
 {
     protected $endpoint = Endpoint::SUGGEST;
-    protected $method = Request::METHOD_GET;
+    protected $method = RequestMethod::GET;
 
     public function __construct(array $params = [])
     {

@@ -4,6 +4,7 @@ namespace FINDOLOGIC\Api\Requests;
 
 use BadMethodCallException;
 use FINDOLOGIC\Api\Definitions\Endpoint;
+use FINDOLOGIC\Api\Definitions\RequestMethod;
 
 /**
  * @internal
@@ -11,7 +12,7 @@ use FINDOLOGIC\Api\Definitions\Endpoint;
 class AlivetestRequest extends Request
 {
     protected $endpoint = Endpoint::ALIVETEST;
-    protected $method = Request::METHOD_GET;
+    protected $method = RequestMethod::GET;
 
     /**
      * @internal

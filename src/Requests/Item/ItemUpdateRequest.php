@@ -5,6 +5,7 @@ namespace FINDOLOGIC\Api\Requests\Item;
 use BadMethodCallException;
 use FINDOLOGIC\Api\Definitions\Defaults;
 use FINDOLOGIC\Api\Definitions\Endpoint;
+use FINDOLOGIC\Api\Definitions\RequestMethod;
 use FINDOLOGIC\Api\Requests\Item\Changes\PriceChange;
 use FINDOLOGIC\Api\Requests\Item\Changes\VisibilityChange;
 use FINDOLOGIC\Api\Requests\Request;
@@ -13,7 +14,7 @@ use InvalidArgumentException;
 class ItemUpdateRequest extends Request
 {
     protected $endpoint = Endpoint::UPDATE;
-    protected $method = Request::METHOD_PATCH;
+    protected $method = RequestMethod::PATCH;
 
     /** @var Item[] */
     private $items = [];

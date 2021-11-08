@@ -1,22 +1,8 @@
 # FINDOLOGIC-API
 
 [![Tests](https://github.com/findologic/findologic-api/actions/workflows/phpunit.yml/badge.svg)](https://github.com/findologic/findologic-api/actions/workflows/phpunit.yml)
-[![Maintainability](https://api.codeclimate.com/v1/badges/b7efba0a8475fc2095cc/maintainability)](https://codeclimate.com/github/findologic/findologic-api/maintainability)
 [![codecov](https://codecov.io/gh/findologic/findologic-api/branch/master/graph/badge.svg)](https://codecov.io/gh/findologic/findologic-api)
 [![Packagist](https://img.shields.io/packagist/v/findologic/findologic-api.svg)](https://packagist.org/packages/findologic/findologic-api)
-
-## Table of Contents
-
-1. [Synopsis](#synopsis)
-    1. [Limitations](#limitations)
-1. [Requirements](#requirements)
-1. [Installation](#installation)
-1. [Basic usage](#basic-usage)
-1. [Examples](#examples)
-    1. [Projects using this library](#projects-using-this-library)
-1. [FINDOLOGIC-API In Action](#findologic-api-in-action)
-1. [Bug report](#bug-report)
-1. [Contributing](#contributing)
 
 ## Synopsis
 
@@ -44,7 +30,8 @@ Currently, we support the following response formats:
 |                   | XML    | 2.1     | :heavy_check_mark:                               | Not in the foreseeable future |
 |                   | XML    | 2.0     | :heavy_multiplication_x: → Use XML_2.1 instead   | 2019-10-18                    |
 |                   | HTML   | any     | :heavy_check_mark: →  The response is not parsed | Not in the foreseeable future |
-| Smart Suggest     | JSON   | latest  | :heavy_check_mark:                               | Not in the foreseeable future |
+| Smart Suggest     | JSON   | 3.0     | :heavy_check_mark:                               | Not in the foreseeable future |
+| Item Update       | JSON   | latest  | :heavy_check_mark:                               | Not in the foreseeable future |
 
 ## Requirements
 
@@ -71,6 +58,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Client;
+use FINDOLOGIC\Api\Requests\Request;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
 use FINDOLOGIC\Api\Responses\Json10\Json10Response;
 
@@ -78,22 +66,22 @@ use FINDOLOGIC\Api\Responses\Json10\Json10Response;
 $config = new Config('ABCDABCDABCDABCDABCDABCDABCDABCD');
 $client = new Client($config);
 
-$searchRequest = new SearchRequest();
-$searchRequest
-    ->setQuery('shirt') // Users search query.
+/** @var SearchRequest $request */
+$request = Request::getInstance(Request::TYPE_SEARCH);
+$request->setQuery('shirt') // Users search query.
     ->setShopUrl('blubbergurken.de') // Url of the shop.
     ->setUserIp('127.0.0.1') // Users IP.
     ->setReferer($_SERVER['HTTP_REFERER']) // Page where search was fired.
     ->setRevision('1.0.0') // Version of your API wrapper.
     ->setOutputAdapter('JSON_1.0'); // Optional setting of output format.
 
-/** @var Json10Response $jsonResponse */
-$jsonResponse = $client->send($searchRequest);
+/** @var Json10Response $response */
+$response = $client->send($request);
 
-var_dump($jsonResponse->getResult()->getItems()); // Get all products/items.
-var_dump($jsonResponse->getResult()->getMainFilters()); // Get all main filters easily.
-var_dump($jsonResponse->getResult()->getOtherFilters()); // Get all other filters easily.
-var_dump($jsonResponse); // Entire response, full of helper methods.
+var_dump($response->getResult()->getItems()); // Get all products/items.
+var_dump($response->getResult()->getMainFilters()); // Get all main filters easily.
+var_dump($response->getResult()->getOtherFilters()); // Get all other filters easily.
+var_dump($response); // Entire response, full of helper methods.
 ```
 
 ## Examples

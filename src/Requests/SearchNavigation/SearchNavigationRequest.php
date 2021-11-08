@@ -4,6 +4,7 @@ namespace FINDOLOGIC\Api\Requests\SearchNavigation;
 
 use BadMethodCallException;
 use FINDOLOGIC\Api\Definitions\QueryParameter;
+use FINDOLOGIC\Api\Definitions\RequestMethod;
 use FINDOLOGIC\Api\Exceptions\InvalidParamException;
 use FINDOLOGIC\Api\Requests\Request;
 use FINDOLOGIC\Api\Validators\ParameterValidator;
@@ -13,7 +14,7 @@ use FINDOLOGIC\Api\Validators\ParameterValidator;
  */
 abstract class SearchNavigationRequest extends Request
 {
-    protected $method = Request::METHOD_GET;
+    protected $method = RequestMethod::GET;
 
     public function __construct(array $params = [])
     {
