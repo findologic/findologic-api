@@ -8,7 +8,7 @@
 
 FINDOLOGIC-API is an object-oriented wrapper for the Findologic API, with ~300 automated unit-tests and **100% code coverage**.
 
-This library not only helps to request the Findologic API, but also getting data from the response and mapping them to corresponding objects.
+This library not only helps to request the Findologic API, but also getting data from the response and mapping them to corresponding data objects.
 You won't have to mess around with sending requests and getting the data from the Findologic's response anymore.  
 
 You want to get filters? Just call `Response::getMainFilters()`. It really is that simple, just

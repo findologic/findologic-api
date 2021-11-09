@@ -27,12 +27,6 @@ class ParameterValidator extends Validator
         $this->addInstanceRule('version', function ($field, $value) {
             return (is_string($value) && preg_match(self::SEMVER_VERSION_REGEX, $value));
         }, self::ERROR_DEFAULT);
-        $this->addInstanceRule('string', function ($field, $value) {
-            return (is_string($value));
-        }, self::ERROR_DEFAULT);
-        $this->addInstanceRule('stringOrNull', function ($field, $value) {
-            return (is_string($value) || is_null($value));
-        }, self::ERROR_DEFAULT);
         $this->addInstanceRule('stringOrNumeric', function ($field, $value) {
             return (is_string($value) || is_numeric($value));
         }, self::ERROR_DEFAULT);

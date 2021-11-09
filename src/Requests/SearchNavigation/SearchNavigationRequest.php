@@ -96,16 +96,8 @@ abstract class SearchNavigationRequest extends Request
      */
     public function addAttribute(string $filterName, $value, ?string $specifier = null): self
     {
-        $validator = new ParameterValidator([
-            'filterName' => $filterName,
-            'value' => $value,
-            'specifier' => $specifier,
-        ]);
-
-        $validator
-            ->rule('string', 'filterName')
-            ->rule('stringOrNumeric', 'value')
-            ->rule('stringOrNull', 'specifier');
+        $validator = new ParameterValidator(['value' => $value]);
+        $validator->rule('stringOrNumeric', 'value');
 
         if (!$validator->validate()) {
             throw new InvalidParamException(QueryParameter::ATTRIB);
