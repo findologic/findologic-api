@@ -7,18 +7,14 @@ use SimpleXMLElement;
 
 class Results
 {
-    /** @var int $count */
-    private $count;
+    private int $count;
 
     public function __construct(SimpleXMLElement $response)
     {
         $this->count = ResponseHelper::getIntProperty($response, 'count', true);
     }
 
-    /**
-     * @return int
-     */
-    public function getCount()
+    public function getCount(): int
     {
         return $this->count;
     }

@@ -6,7 +6,7 @@ use RuntimeException;
 
 class ServiceNotAliveException extends RuntimeException
 {
-    public function __construct($message)
+    public function __construct(string $message)
     {
         parent::__construct(sprintf('The service is not alive. Reason: %s', $message));
     }

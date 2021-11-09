@@ -6,20 +6,17 @@ use FINDOLOGIC\Api\Definitions\Defaults;
 
 abstract class Change
 {
-    /** @var string */
-    private $userGroup;
+    private string $userGroup;
 
-    public function __construct($userGroup = Defaults::USER_GROUP)
+    public function __construct(string $userGroup = Defaults::USER_GROUP)
     {
         $this->userGroup = $userGroup;
     }
 
     /**
      * Must return the key name as described in the API spec.
-     *
-     * @return string
      */
-    abstract public function getKey();
+    abstract public function getKey(): string;
 
     /**
      * Must return the value for the specified change as described in the API spec.
@@ -28,10 +25,7 @@ abstract class Change
      */
     abstract public function getValue();
 
-    /**
-     * @return string
-     */
-    public function getUserGroup()
+    public function getUserGroup(): string
     {
         return $this->userGroup;
     }

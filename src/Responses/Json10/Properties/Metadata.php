@@ -6,20 +6,11 @@ use FINDOLOGIC\Api\Helpers\ResponseHelper;
 
 class Metadata
 {
-    /** @var LandingPage|null */
-    private $landingPage;
-
-    /** @var Promotion|null */
-    private $promotion;
-
-    /** @var string */
-    private $searchConcept;
-
-    /** @var int */
-    private $totalResults;
-
-    /** @var string */
-    private $currencySymbol;
+    private ?LandingPage $landingPage = null;
+    private ?Promotion $promotion = null;
+    private ?string $searchConcept;
+    private int $totalResults;
+    private string $currencySymbol;
 
     public function __construct(array $metadata)
     {
@@ -35,42 +26,27 @@ class Metadata
         $this->currencySymbol = ResponseHelper::getStringProperty($metadata, 'currencySymbol');
     }
 
-    /**
-     * @return LandingPage|null
-     */
-    public function getLandingPage()
+    public function getLandingPage(): ?LandingPage
     {
         return $this->landingPage;
     }
 
-    /**
-     * @return Promotion|null
-     */
-    public function getPromotion()
+    public function getPromotion(): ?Promotion
     {
         return $this->promotion;
     }
 
-    /**
-     * @return string
-     */
-    public function getSearchConcept()
+    public function getSearchConcept(): ?string
     {
         return $this->searchConcept;
     }
 
-    /**
-     * @return int
-     */
-    public function getTotalResults()
+    public function getTotalResults(): int
     {
         return $this->totalResults;
     }
 
-    /**
-     * @return string
-     */
-    public function getCurrencySymbol()
+    public function getCurrencySymbol(): string
     {
         return $this->currencySymbol;
     }

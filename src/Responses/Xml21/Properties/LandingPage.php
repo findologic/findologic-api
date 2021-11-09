@@ -7,18 +7,14 @@ use SimpleXMLElement;
 
 class LandingPage
 {
-    /** @var string $link */
-    private $link;
+    private string $link;
 
     public function __construct(SimpleXMLElement $response)
     {
         $this->link = ResponseHelper::getStringProperty($response, 'link');
     }
 
-    /**
-     * @return string
-     */
-    public function getLink()
+    public function getLink(): string
     {
         return $this->link;
     }

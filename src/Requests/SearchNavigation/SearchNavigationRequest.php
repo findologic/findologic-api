@@ -14,7 +14,7 @@ use FINDOLOGIC\Api\Validators\ParameterValidator;
  */
 abstract class SearchNavigationRequest extends Request
 {
-    protected $method = RequestMethod::GET;
+    protected string $method = RequestMethod::GET;
 
     public function __construct(array $params = [])
     {
@@ -25,7 +25,7 @@ abstract class SearchNavigationRequest extends Request
         ]);
     }
 
-    public function getBody()
+    public function getBody(): ?string
     {
         throw new BadMethodCallException('Request body is not supported for search & navigation requests');
     }
@@ -33,11 +33,9 @@ abstract class SearchNavigationRequest extends Request
     /**
      * Sets the userip param. It is used for billing and for the user identifier. Required.
      *
-     * @param $value string
-     * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#required_parameters
-     * @return $this
+     * @see https://docs.findologic.com/doku.php?id=integration_documentation:parameters#required_parameters
      */
-    public function setUserIp($value)
+    public function setUserIp(string $value): self
     {
         $validator = new ParameterValidator([QueryParameter::USER_IP => $value]);
         $validator->rule('ip', QueryParameter::USER_IP);
@@ -47,23 +45,23 @@ abstract class SearchNavigationRequest extends Request
         }
 
         $this->addParam(QueryParameter::USER_IP, $value);
+
         return $this;
     }
 
     /**
      * Sets the referer param. It is used to determine on which page a search was fired.
      *
-     * @param $value string
-     * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#required_parameters
-     * @return $this
+     * @see https://docs.findologic.com/doku.php?id=integration_documentation:parameters#required_parameters
      */
-    public function setReferer($value)
+    public function setReferer(string $value): self
     {
         if (!is_string($value) || !preg_match('/^((^https?:\/\/)|^www\.)/', $value)) {
             throw new InvalidParamException(QueryParameter::REFERER);
         }
 
         $this->addParam(QueryParameter::REFERER, $value);
+
         return $this;
     }
 
@@ -71,11 +69,9 @@ abstract class SearchNavigationRequest extends Request
      * Sets the revision param. It is used to identify the version of the plugin. Can be set to 1.0.0 if you are not
      * sure which value should be passed to the API. Required.
      *
-     * @param $value string
-     * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#required_parameters
-     * @return $this
+     * @see https://docs.findologic.com/doku.php?id=integration_documentation:parameters#required_parameters
      */
-    public function setRevision($value)
+    public function setRevision(string $value): self
     {
         $validator = new ParameterValidator([QueryParameter::REVISION => $value]);
         $validator->rule('version', QueryParameter::REVISION);
@@ -85,19 +81,18 @@ abstract class SearchNavigationRequest extends Request
         }
 
         $this->addParam(QueryParameter::REVISION, $value);
+
         return $this;
     }
 
     /**
      * Adds the attrib param. It is used to filter the search results.
      *
-     * @param $filterName string
      * @param $value mixed
      * @param $specifier null|string is used for sliders such as price. Can be either 'min' or 'max'.
-     * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#search_parameter
-     * @return $this
+     * @see https://docs.findologic.com/doku.php?id=integration_documentation:parameters#search_parameters
      */
-    public function addAttribute($filterName, $value, $specifier = null)
+    public function addAttribute(string $filterName, $value, ?string $specifier = null): self
     {
         $validator = new ParameterValidator([
             'filterName' => $filterName,
@@ -115,18 +110,17 @@ abstract class SearchNavigationRequest extends Request
         }
 
         $this->addParam(QueryParameter::ATTRIB, [$filterName => [$specifier => $value]], self::ADD_VALUE);
+
         return $this;
     }
 
     /**
      * Sets the order param. It is used to set the order of the products. Please use the given OrderType for setting
-     * this value. E.g. OrderType::RELEVANCE for the FINDOLOGIC relevance.
+     * this value. E.g. OrderType::RELEVANCE for the Findologic relevance.
      *
-     * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#search_parameter
-     * @param $value string
-     * @return $this
+     * @see https://docs.findologic.com/doku.php?id=integration_documentation:parameters#search_parameters
      */
-    public function setOrder($value)
+    public function setOrder(string $value): self
     {
         $validator = new ParameterValidator([QueryParameter::ORDER => $value]);
         $validator->rule('isOrderParam', QueryParameter::ORDER);
@@ -136,17 +130,16 @@ abstract class SearchNavigationRequest extends Request
         }
 
         $this->addParam(QueryParameter::ORDER, $value);
+
         return $this;
     }
 
     /**
      * Adds the property param. If set the response will display additional data that was exported in this column.
      *
-     * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#search_parameter
-     * @param $value string
-     * @return $this
+     * @see https://docs.findologic.com/doku.php?id=integration_documentation:parameters#search_parameters
      */
-    public function addProperty($value)
+    public function addProperty(string $value): self
     {
         $validator = new ParameterValidator([QueryParameter::PROPERTIES => $value]);
         $validator->rule('string', QueryParameter::PROPERTIES);
@@ -156,20 +149,20 @@ abstract class SearchNavigationRequest extends Request
         }
 
         $this->addParam(QueryParameter::PROPERTIES, [$value], self::ADD_VALUE);
+
         return $this;
     }
 
     /**
      * Adds the pushAttrib param. It is used to push products based on their attributes and the factor.
      *
-     * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#search_parameter
+     * @see https://docs.findologic.com/doku.php?id=integration_documentation:parameters#search_parameters
      * @see https://docs.findologic.com/doku.php?id=personalization
-     * @param $key string Name of the Filter. E.g. Color
-     * @param $value string Value of the Filter. E.g. Black
-     * @param $factor float Indicates how much the pushed filter influences the result.
-     * @return $this
+     * @param string $key Name of the Filter. E.g. Color
+     * @param string $value Value of the Filter. E.g. Black
+     * @param float $factor Indicates how much the pushed filter influences the result.
      */
-    public function addPushAttrib($key, $value, $factor)
+    public function addPushAttrib(string $key, string $value, float $factor): self
     {
         $validator = new ParameterValidator([
             'key' => $key,
@@ -186,6 +179,7 @@ abstract class SearchNavigationRequest extends Request
         }
 
         $this->addParam(QueryParameter::PUSH_ATTRIB, [$key => [$value => $factor]], self::ADD_VALUE);
+
         return $this;
     }
 
@@ -194,11 +188,9 @@ abstract class SearchNavigationRequest extends Request
      * to the second page, set this parameter to 20 --> the first product on the next page. Do not set the parameter to
      * 21, because the product listing is 0-based.
      *
-     * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#limiting_paging_parameters
-     * @param $value int
-     * @return $this
+     * @see https://docs.findologic.com/doku.php?id=integration_documentation:parameters#limiting_paging_parameters
      */
-    public function setFirst($value)
+    public function setFirst(int $value): self
     {
         $validator = new ParameterValidator([QueryParameter::FIRST => $value]);
         $validator->rule('equalOrHigherThanZero', QueryParameter::FIRST);
@@ -208,18 +200,18 @@ abstract class SearchNavigationRequest extends Request
         }
 
         $this->addParam(QueryParameter::FIRST, $value);
+
         return $this;
     }
 
     /**
      * Sets the identifier param. It is used to display only the item that is given. If this param is set, the query
-     * param is being ignored by FINDOLOGIC.
+     * param will be ignored.
      *
-     * @see https://docs.findologic.com/doku.php?id=integration_documentation:request#limiting_paging_parameters
+     * @see https://docs.findologic.com/doku.php?id=integration_documentation:parameters#limiting_paging_parameters
      * @param string $value ID of the item.
-     * @return $this
      */
-    public function setIdentifier($value)
+    public function setIdentifier(string $value): self
     {
         $validator = new ParameterValidator([QueryParameter::IDENTIFIER => $value]);
         $validator->rule('string', QueryParameter::IDENTIFIER);
@@ -229,16 +221,15 @@ abstract class SearchNavigationRequest extends Request
         }
 
         $this->addParam(QueryParameter::IDENTIFIER, $value);
+
         return $this;
     }
 
     /**
-     * Adds the pushAttrib param. Name of the attributes which may be available in the template.
-     *
-     * @param string $value Parameter that should be available in the template.
-     * @return $this
+     * Adds the outputAttrib param. Name of the attributes which may be available in the template. Mainly relevant
+     * for HTML and JSON output.
      */
-    public function addOutputAttrib($value)
+    public function addOutputAttrib(string $value): self
     {
         $validator = new ParameterValidator([QueryParameter::OUTPUT_ATTRIB => $value]);
         $validator->rule('string', QueryParameter::OUTPUT_ATTRIB);
@@ -248,6 +239,7 @@ abstract class SearchNavigationRequest extends Request
         }
 
         $this->addParam(QueryParameter::OUTPUT_ATTRIB, [$value], self::ADD_VALUE);
+
         return $this;
     }
 
@@ -256,11 +248,11 @@ abstract class SearchNavigationRequest extends Request
      * functionality is disabled and the search results are based on the user's query.
      *
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:response_xml#forced_query
-     * @return $this
      */
-    public function setForceOriginalQuery()
+    public function setForceOriginalQuery(): self
     {
         $this->addParam(QueryParameter::FORCE_ORIGINAL_QUERY, 1);
+
         return $this;
     }
 }

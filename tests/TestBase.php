@@ -5,21 +5,21 @@ namespace FINDOLOGIC\Api\Tests;
 use FINDOLOGIC\GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Stream;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 
 class TestBase extends TestCase
 {
-    /** @var Client|PHPUnit_Framework_MockObject_MockObject */
+    /** @var Client|MockObject */
     protected $httpClientMock;
 
-    /** @var Response|PHPUnit_Framework_MockObject_MockObject */
+    /** @var Response|MockObject */
     protected $responseMock;
 
-    /** @var Stream|PHPUnit_Framework_MockObject_MockObject */
+    /** @var Stream|MockObject */
     protected $streamMock;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->httpClientMock = $this->getMockBuilder(Client::class)

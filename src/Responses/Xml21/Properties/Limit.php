@@ -7,11 +7,8 @@ use SimpleXMLElement;
 
 class Limit
 {
-    /** @var int $first */
-    private $first;
-
-    /** @var int $count */
-    private $count;
+    private int $first;
+    private int $count;
 
     public function __construct(SimpleXMLElement $response)
     {
@@ -19,18 +16,12 @@ class Limit
         $this->count = ResponseHelper::getIntProperty($response, 'count', true);
     }
 
-    /**
-     * @return int
-     */
-    public function getFirst()
+    public function getFirst(): int
     {
         return $this->first;
     }
 
-    /**
-     * @return int
-     */
-    public function getCount()
+    public function getCount(): int
     {
         return $this->count;
     }

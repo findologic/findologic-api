@@ -7,17 +7,10 @@ use SimpleXMLElement;
 
 class Query
 {
-    /** @var Limit $limit */
-    private $limit;
-
-    /** @var QueryString $queryString */
-    private $queryString;
-
-    /** @var string|null $didYouMeanQuery */
-    private $didYouMeanQuery;
-
-    /** @var OriginalQuery|null $originalQuery */
-    private $originalQuery = null;
+    private Limit $limit;
+    private QueryString $queryString;
+    private ?string $didYouMeanQuery;
+    private ?OriginalQuery $originalQuery = null;
 
     public function __construct(SimpleXMLElement $response)
     {
@@ -29,34 +22,22 @@ class Query
         }
     }
 
-    /**
-     * @return Limit
-     */
-    public function getLimit()
+    public function getLimit(): Limit
     {
         return $this->limit;
     }
 
-    /**
-     * @return QueryString
-     */
-    public function getQueryString()
+    public function getQueryString(): QueryString
     {
         return $this->queryString;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getDidYouMeanQuery()
+    public function getDidYouMeanQuery(): ?string
     {
         return $this->didYouMeanQuery;
     }
 
-    /**
-     * @return OriginalQuery
-     */
-    public function getOriginalQuery()
+    public function getOriginalQuery(): ?OriginalQuery
     {
         return $this->originalQuery;
     }
@@ -66,9 +47,8 @@ class Query
      * @see https://github.com/findologic/findologic-api/wiki/Response-Helper-methods
      *
      * Will return the didYouMeanQuery if it was set, otherwise the value of the queryString is returned.
-     * @return string
      */
-    public function getAlternativeQuery()
+    public function getAlternativeQuery(): string
     {
         if ($this->didYouMeanQuery) {
             return $this->didYouMeanQuery;

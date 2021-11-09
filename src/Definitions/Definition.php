@@ -8,10 +8,8 @@ abstract class Definition
 {
     /**
      * Returns a key value pair of defined constants.
-     *
-     * @return array
      */
-    public static function getConstants()
+    public static function getConstants(): array
     {
         return (new ReflectionClass(get_called_class()))->getConstants();
     }

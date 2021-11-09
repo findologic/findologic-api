@@ -6,13 +6,9 @@ use FINDOLOGIC\Api\Helpers\ResponseHelper;
 
 class RangeSliderValue extends FilterValue
 {
-    protected $selected = false;
-
-    /** @var float */
-    protected $min;
-
-    /** @var float */
-    protected $max;
+    protected ?bool $selected = false;
+    protected float $min;
+    protected float $max;
 
     public function __construct(array $filterValue)
     {
@@ -24,18 +20,12 @@ class RangeSliderValue extends FilterValue
         parent::__construct($filterValue);
     }
 
-    /**
-     * @return float
-     */
-    public function getMin()
+    public function getMin(): float
     {
         return $this->min;
     }
 
-    /**
-     * @return float
-     */
-    public function getMax()
+    public function getMax(): float
     {
         return $this->max;
     }

@@ -4,8 +4,7 @@ namespace FINDOLOGIC\Api\Definitions;
 
 class SelectType extends Definition
 {
-    const
-        SINGLE = 'single',
-        MULTIPLE = 'multiple',
-        MULTI_SELECT = 'multiselect';
+    public const SINGLE = 'single';
+    public const MULTIPLE = 'multiple';
+    public const MULTI_SELECT = 'multiselect';
 }

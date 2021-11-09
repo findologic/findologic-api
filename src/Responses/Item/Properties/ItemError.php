@@ -4,26 +4,21 @@ namespace FINDOLOGIC\Api\Responses\Item\Properties;
 
 class ItemError
 {
-    /** @var string */
-    private $id;
+    private string $id;
 
     /** @var string[] */
-    private $reasons;
+    private array $reasons;
 
     /**
-     * @param string $id
      * @param string[] $reasons
      */
-    public function __construct($id, $reasons)
+    public function __construct(string $id, array $reasons)
     {
         $this->id = $id;
         $this->reasons = $reasons;
     }
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -31,7 +26,7 @@ class ItemError
     /**
      * @return string[]
      */
-    public function getReasons()
+    public function getReasons(): array
     {
         return $this->reasons;
     }

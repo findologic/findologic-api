@@ -7,11 +7,8 @@ use SimpleXMLElement;
 
 class QueryString
 {
-    /** @var string $value */
-    private $value;
-
-    /** @var string|null $type */
-    private $type;
+    private string $value;
+    private ?string $type;
 
     public function __construct(SimpleXMLElement $response)
     {
@@ -19,18 +16,12 @@ class QueryString
         $this->type = ResponseHelper::getStringProperty($response->attributes(), 'type');
     }
 
-    /**
-     * @return string
-     */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }

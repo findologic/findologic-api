@@ -6,8 +6,7 @@ use FINDOLOGIC\Api\Helpers\ResponseHelper;
 
 class ImageFilterValue extends FilterValue
 {
-    /** @var string */
-    protected $image;
+    protected string $image;
 
     public function __construct(array $filterValue)
     {
@@ -16,10 +15,7 @@ class ImageFilterValue extends FilterValue
         $this->image = ResponseHelper::getStringProperty($filterValue, 'image');
     }
 
-    /**
-     * @return string
-     */
-    public function getImage()
+    public function getImage(): string
     {
         return $this->image;
     }

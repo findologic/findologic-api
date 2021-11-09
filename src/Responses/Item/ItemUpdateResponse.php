@@ -8,9 +8,9 @@ use FINDOLOGIC\Api\Responses\Response;
 class ItemUpdateResponse extends Response
 {
     /** @var ItemError[] */
-    private $errors = [];
+    private array $errors = [];
 
-    protected function buildResponseElementInstances($response)
+    protected function buildResponseElementInstances(string $response): void
     {
         $contents = json_decode($response, true);
 
@@ -21,9 +21,8 @@ class ItemUpdateResponse extends Response
 
     /**
      * @see ItemUpdateResponse::getErrors()
-     * @return bool
      */
-    public function hasErrors()
+    public function hasErrors(): bool
     {
         return count($this->errors) > 0;
     }
@@ -32,7 +31,7 @@ class ItemUpdateResponse extends Response
      * @see ItemUpdateResponse::hasErrors()
      * @return ItemError[]
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }

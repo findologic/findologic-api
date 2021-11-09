@@ -2,18 +2,14 @@
 
 namespace FINDOLOGIC\Api\Responses\Json10\Properties;
 
+use FINDOLOGIC\Api\Definitions\OrderType;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 
 class Order
 {
-    /** @var string */
-    private $field;
-
-    /** @var bool */
-    private $relevanceBased;
-
-    /** @var string */
-    private $direction;
+    private string $field;
+    private bool $relevanceBased;
+    private string $direction;
 
     public function __construct(array $order)
     {
@@ -22,39 +18,26 @@ class Order
         $this->direction = ResponseHelper::getStringProperty($order, 'direction');
     }
 
-    /**
-     * @return string
-     */
-    public function getField()
+    public function getField(): string
     {
         return $this->field;
     }
 
-    /**
-     * @return bool
-     */
-    public function isRelevanceBased()
+    public function isRelevanceBased(): bool
     {
         return $this->relevanceBased;
     }
 
-    /**
-     * @return string
-     */
-    public function getDirection()
+    public function getDirection(): string
     {
         return $this->direction;
     }
 
     /**
      * May return "salesfrequency dynamic DESC" or similar.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        $dynamic = $this->relevanceBased ? 'dynamic ' : '';
-
-        return sprintf('%s %s%s', $this->field, $dynamic, $this->direction);
+        return OrderType::buildOrder($this->field, $this->relevanceBased, $this->direction);
     }
 }

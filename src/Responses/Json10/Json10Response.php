@@ -8,13 +8,10 @@ use FINDOLOGIC\Api\Responses\Response;
 
 class Json10Response extends Response
 {
-    /** @var Request */
-    private $request;
+    private Request $request;
+    private Result $result;
 
-    /** @var Result */
-    private $result;
-
-    protected function buildResponseElementInstances($response)
+    protected function buildResponseElementInstances(string $response): void
     {
         $parsedResponse = json_decode($response, true);
 
@@ -22,18 +19,12 @@ class Json10Response extends Response
         $this->result = new Result($parsedResponse['result']);
     }
 
-    /**
-     * @return Request
-     */
-    public function getRequest()
+    public function getRequest(): Request
     {
         return $this->request;
     }
 
-    /**
-     * @return Result
-     */
-    public function getResult()
+    public function getResult(): Result
     {
         return $this->result;
     }

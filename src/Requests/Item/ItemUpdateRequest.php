@@ -13,17 +13,13 @@ use InvalidArgumentException;
 
 class ItemUpdateRequest extends Request
 {
-    protected $endpoint = Endpoint::UPDATE;
-    protected $method = RequestMethod::PATCH;
+    protected string $endpoint = Endpoint::UPDATE;
+    protected string $method = RequestMethod::PATCH;
 
     /** @var Item[] */
-    private $items = [];
+    private array $items = [];
 
-    /**
-     * @param string $id
-     * @param string $userGroup
-     */
-    public function markInvisible($id, $userGroup = Defaults::USER_GROUP)
+    public function markInvisible(string $id, string $userGroup = Defaults::USER_GROUP): void
     {
         $item = $this->getOrCreateItem($id);
 
@@ -36,11 +32,7 @@ class ItemUpdateRequest extends Request
         $this->items[$item->getId()] = $item;
     }
 
-    /**
-     * @param string $id
-     * @param string $userGroup
-     */
-    public function markVisible($id, $userGroup = Defaults::USER_GROUP)
+    public function markVisible(string $id, string $userGroup = Defaults::USER_GROUP): void
     {
         $item = $this->getOrCreateItem($id);
 
@@ -53,12 +45,7 @@ class ItemUpdateRequest extends Request
         $this->items[$item->getId()] = $item;
     }
 
-    /**
-     * @param string $id
-     * @param float $price
-     * @param string $userGroup
-     */
-    public function setPrice($id, $price, $userGroup = Defaults::USER_GROUP)
+    public function setPrice(string $id, float $price, string $userGroup = Defaults::USER_GROUP): void
     {
         $item = $this->getOrCreateItem($id);
 
@@ -71,33 +58,22 @@ class ItemUpdateRequest extends Request
         $this->items[$item->getId()] = $item;
     }
 
-    public function reset()
+    public function reset(): void
     {
         $this->items = [];
     }
 
-    /**
-     * @param string $id
-     */
-    public function resetItemChanges($id)
+    public function resetItemChanges(string $id): void
     {
         $this->findItem($id)->resetChanges();
     }
 
-    /**
-     * @param string $id
-     * @return Item
-     */
-    public function getItem($id)
+    public function getItem(string $id): Item
     {
         return $this->findItem($id);
     }
 
-    /**
-     * @param string $id
-     * @return Item
-     */
-    private function findItem($id)
+    private function findItem(string $id): Item
     {
         if (!isset($this->items[$id])) {
             throw new InvalidArgumentException(sprintf(
@@ -109,7 +85,7 @@ class ItemUpdateRequest extends Request
         return $this->items[$id];
     }
 
-    private function getOrCreateItem($id)
+    private function getOrCreateItem(string $id): Item
     {
         if (isset($this->items[$id])) {
             return $this->items[$id];
@@ -118,37 +94,37 @@ class ItemUpdateRequest extends Request
         return new Item($id);
     }
 
-    public function getOutputAdapter()
+    public function getOutputAdapter(): ?string
     {
         return null;
     }
 
-    public function setQuery($value)
+    public function setQuery(string $value): self
     {
         throw new BadMethodCallException('Parameter "query" is not supported for item updates');
     }
 
-    public function setCount($value)
+    public function setCount(int $value): self
     {
         throw new BadMethodCallException('Parameter "count" is not supported for item updates');
     }
 
-    public function addGroup($value)
+    public function addGroup(string $value): self
     {
         throw new BadMethodCallException('Parameter "group" is not supported for item updates');
     }
 
-    public function addUserGroup($value)
+    public function addUserGroup(string $value): self
     {
         throw new BadMethodCallException('Parameter "usergroup" is not supported for item updates');
     }
 
-    public function setOutputAdapter($value)
+    public function setOutputAdapter(string $value): self
     {
         throw new BadMethodCallException('Parameter "outputAdapter" is not supported for item updates');
     }
 
-    public function getBody()
+    public function getBody(): string
     {
         $body = [];
         $body['update'] = [];

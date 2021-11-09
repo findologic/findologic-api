@@ -11,7 +11,7 @@ use FINDOLOGIC\Api\Responses\Response;
  */
 class GenericHtmlResponse extends Response
 {
-    protected function buildResponseElementInstances($response)
+    protected function buildResponseElementInstances(string $response): void
     {
         // Nothing to do here.
     }

@@ -9,47 +9,24 @@ use FINDOLOGIC\Api\Helpers\ResponseHelper;
  */
 class Item
 {
-    /** @var string */
-    private $id;
-
-    /** @var float */
-    private $score;
-
-    /** @var string */
-    private $url;
-
-    /** @var string */
-    private $name;
-
-    /** @var string */
-    private $highlightedName;
-
+    private string $id;
+    private float $score;
+    private string $url;
+    private string $name;
+    private string $highlightedName;
     /** @var string[] */
-    private $ordernumbers = [];
-
-    /** @var string|null */
-    private $matchingOrdernumber;
-
-    /** @var float */
-    private $price;
-
-    /** @var string|null */
-    private $summary;
-
+    private array $ordernumbers = [];
+    private ?string $matchingOrdernumber;
+    private float $price;
+    private ?string $summary;
     /** @var array<string, array<string>> */
-    private $attributes = [];
-
+    private array $attributes = [];
     /** @var array<string, string> */
-    private $properties = [];
-
-    /** @var string|null */
-    private $productPlacement;
-
+    private array $properties = [];
+    private ?string $productPlacement;
     /** @var string[] */
-    private $pushRules = [];
-
-    /** @var string */
-    private $imageUrl;
+    private array $pushRules = [];
+    private string $imageUrl;
 
     public function __construct(array $item)
     {
@@ -82,42 +59,27 @@ class Item
         $this->imageUrl = ResponseHelper::getStringProperty($item, 'imageUrl');
     }
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return float
-     */
-    public function getScore()
+    public function getScore(): float
     {
         return $this->score;
     }
 
-    /**
-     * @return string
-     */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getHighlightedName()
+    public function getHighlightedName(): string
     {
         return $this->highlightedName;
     }
@@ -125,31 +87,22 @@ class Item
     /**
      * @return string[]
      */
-    public function getOrdernumbers()
+    public function getOrdernumbers(): array
     {
         return $this->ordernumbers;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getMatchingOrdernumber()
+    public function getMatchingOrdernumber(): ?string
     {
         return $this->matchingOrdernumber;
     }
 
-    /**
-     * @return float
-     */
-    public function getPrice()
+    public function getPrice(): float
     {
         return $this->price;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getSummary()
+    public function getSummary(): ?string
     {
         return $this->summary;
     }
@@ -171,7 +124,7 @@ class Item
      *
      * @return array<string, array<string>>
      */
-    public function getAttributes()
+    public function getAttributes(): array
     {
         return $this->attributes;
     }
@@ -179,11 +132,10 @@ class Item
     /**
      * Returns the attribute/filter by the given name. If the attribute does not exist, the default may be returned.
      *
-     * @param string $attributeName
      * @param mixed|null $default
      * @return array|mixed
      */
-    public function getAttribute($attributeName, $default = null)
+    public function getAttribute(string $attributeName, $default = null)
     {
         if (!isset($this->attributes[$attributeName])) {
             return $default;
@@ -207,7 +159,7 @@ class Item
      *
      * @return array<string, string>
      */
-    public function getProperties()
+    public function getProperties(): array
     {
         return $this->properties;
     }
@@ -215,11 +167,10 @@ class Item
     /**
      * Returns the property by the given name. If the property does not exist, the default will be returned.
      *
-     * @param string $propertyName
      * @param mixed|null $default
      * @return string|mixed
      */
-    public function getProperty($propertyName, $default = null)
+    public function getProperty(string $propertyName, $default = null)
     {
         if (!isset($this->properties[$propertyName])) {
             return $default;
@@ -228,10 +179,7 @@ class Item
         return $this->properties[$propertyName];
     }
 
-    /**
-     * @return string|null
-     */
-    public function getProductPlacement()
+    public function getProductPlacement(): ?string
     {
         return $this->productPlacement;
     }
@@ -239,15 +187,12 @@ class Item
     /**
      * @return string[]
      */
-    public function getPushRules()
+    public function getPushRules(): array
     {
         return $this->pushRules;
     }
 
-    /**
-     * @return string
-     */
-    public function getImageUrl()
+    public function getImageUrl(): string
     {
         return $this->imageUrl;
     }

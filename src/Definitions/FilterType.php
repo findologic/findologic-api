@@ -4,12 +4,11 @@ namespace FINDOLOGIC\Api\Definitions;
 
 class FilterType extends Definition
 {
-    const
-        SELECT = 'select',
-        LABEL = 'label',
-        RANGE_SLIDER = 'range-slider',
-        COLOR = 'color',
-        COLOR_ALTERNATIVE = 'color-picker',
-        VENDOR_IMAGE = 'image',
-        VENDOR_IMAGE_ALTERNATIVE = 'image-filter';
+    public const SELECT = 'select';
+    public const LABEL = 'label';
+    public const RANGE_SLIDER = 'range-slider';
+    public const COLOR = 'color';
+    public const COLOR_ALTERNATIVE = 'color-picker';
+    public const VENDOR_IMAGE = 'image';
+    public const VENDOR_IMAGE_ALTERNATIVE = 'image-filter';
 }

@@ -7,33 +7,24 @@ use SimpleXMLElement;
 
 class OriginalQuery
 {
-    /** @var string $value */
-    private $value;
-
-    /** @var bool $allowOverride */
-    private $allowOverride;
+    private string $value;
+    private bool $allowOverride;
 
     public function __construct(SimpleXMLElement $response)
     {
         $this->value = (string)$response;
-        $this->allowOverride = ResponseHelper::getBoolProperty(
+        $this->allowOverride = (bool)ResponseHelper::getBoolProperty(
             $response->attributes(),
             'allow-override'
-        ) ? true : false;
+        );
     }
 
-    /**
-     * @return string
-     */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
 
-    /**
-     * @return bool
-     */
-    public function getAllowOverride()
+    public function getAllowOverride(): bool
     {
         return $this->allowOverride;
     }

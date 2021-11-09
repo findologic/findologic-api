@@ -20,7 +20,7 @@ class SuggestRequestTest extends TestBase
     /** @var string */
     private $rawMockResponse;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->config = new Config();
@@ -81,21 +81,6 @@ class SuggestRequestTest extends TestBase
     }
 
     /**
-     * @dataProvider invalidQueryProvider
-     * @param mixed $invalidQuery
-     */
-    public function testSetQueryWillThrowAnExceptionWhenSubmittingInvalidQueries($invalidQuery)
-    {
-        $this->expectException(InvalidParamException::class);
-        $this->expectExceptionMessage('Parameter query is not valid.');
-
-        $searchRequest = new SuggestRequest();
-        $this->setRequiredParamsForSuggestRequest($searchRequest);
-
-        $searchRequest->setQuery($invalidQuery);
-    }
-
-    /**
      * @dataProvider autocompleteBlocksProvider
      * @param string $autocompleteBlock
      */
@@ -134,9 +119,8 @@ class SuggestRequestTest extends TestBase
 
     /**
      * @dataProvider invalidAutocompleteBlocksProvider
-     * @param mixed $invalidAutocompleteblock
      */
-    public function testInvalidAutocompleteBlocksWillThrowAnException($invalidAutocompleteblock)
+    public function testInvalidAutocompleteBlocksWillThrowAnException(string $invalidAutocompleteblock)
     {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter autocompleteblocks is not valid.');
@@ -165,21 +149,6 @@ class SuggestRequestTest extends TestBase
     }
 
     /**
-     * @dataProvider invalidUsergroupProvider
-     * @param mixed $invalidUsergroup
-     */
-    public function testInvalidUsergroupHashWillThrowAnException($invalidUsergroup)
-    {
-        $this->expectException(InvalidParamException::class);
-        $this->expectExceptionMessage('Parameter usergrouphash is not valid.');
-
-        $suggestRequest = new SuggestRequest();
-        $this->setRequiredParamsForSuggestRequest($suggestRequest);
-
-        $suggestRequest->setUsergrouphash($invalidUsergroup);
-    }
-
-    /**
      * @dataProvider multishopIdProvider
      * @param string $usergroup
      */
@@ -194,21 +163,6 @@ class SuggestRequestTest extends TestBase
         $params = $suggestRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals($usergroup, $params[$expectedParameter]);
-    }
-
-    /**
-     * @dataProvider invalidMultishopIdProvider
-     * @param mixed $invalidMultishopId
-     */
-    public function testInvalidMultishopIdWillThrowAnException($invalidMultishopId)
-    {
-        $this->expectException(InvalidParamException::class);
-        $this->expectExceptionMessage('Parameter multishop_id is not valid.');
-
-        $suggestRequest = new SuggestRequest();
-        $this->setRequiredParamsForSuggestRequest($suggestRequest);
-
-        $suggestRequest->setMultishopId($invalidMultishopId);
     }
 
     public function testGetBodyIsNotSupported()

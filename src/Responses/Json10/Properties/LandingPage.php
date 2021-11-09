@@ -6,11 +6,8 @@ use FINDOLOGIC\Api\Helpers\ResponseHelper;
 
 class LandingPage
 {
-    /** @var string */
-    private $name;
-
-    /** @var string */
-    private $url;
+    private string $name;
+    private string $url;
 
     public function __construct(array $landingPage)
     {
@@ -18,18 +15,12 @@ class LandingPage
         $this->url = ResponseHelper::getStringProperty($landingPage, 'url');
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }

@@ -7,33 +7,20 @@ use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\Values\FilterValue;
 
 abstract class Filter
 {
-    const
-        FILTER_TYPE_SELECT = 'select',
-        FILTER_TYPE_LABEL = 'label',
-        FILER_TYPE_RANGE = 'range-slider',
-        FILTER_TYPE_COLOR = 'color',
-        FILTER_TYPE_IMAGE = 'image';
+    public const FILTER_TYPE_SELECT = 'select';
+    public const FILTER_TYPE_LABEL = 'label';
+    public const FILER_TYPE_RANGE = 'range-slider';
+    public const FILTER_TYPE_COLOR = 'color';
+    public const FILTER_TYPE_IMAGE = 'image';
 
-    /** @var string */
-    protected $name;
-
-    /** @var string */
-    protected $displayName;
-
-    /** @var string */
-    protected $selectMode;
-
-    /** @var string|null */
-    protected $cssClass;
-
-    /** @var string|null */
-    protected $noAvailableFiltersText;
-
-    /** @var string|null */
-    protected $combinationOperation;
-
+    protected string $name;
+    protected string $displayName;
+    protected string $selectMode;
+    protected ?string $cssClass;
+    protected ?string $noAvailableFiltersText;
+    protected ?string $combinationOperation;
     /** @var FilterValue[] */
-    protected $values = [];
+    protected array $values = [];
 
     public function __construct(array $filter)
     {
@@ -53,7 +40,7 @@ abstract class Filter
         }
     }
 
-    public static function getInstance(array $filter)
+    public static function getInstance(array $filter): Filter
     {
         $filterType = ResponseHelper::getStringProperty($filter, 'type');
 
@@ -72,50 +59,32 @@ abstract class Filter
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getDisplayName()
+    public function getDisplayName(): string
     {
         return $this->displayName;
     }
 
-    /**
-     * @return string
-     */
-    public function getSelectMode()
+    public function getSelectMode(): string
     {
         return $this->selectMode;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getCssClass()
+    public function getCssClass(): ?string
     {
         return $this->cssClass;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getNoAvailableFiltersText()
+    public function getNoAvailableFiltersText(): ?string
     {
         return $this->noAvailableFiltersText;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getCombinationOperation()
+    public function getCombinationOperation(): ?string
     {
         return $this->combinationOperation;
     }
@@ -123,7 +92,7 @@ abstract class Filter
     /**
      * @return FilterValue[]
      */
-    public function getValues()
+    public function getValues(): array
     {
         return $this->values;
     }

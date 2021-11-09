@@ -7,14 +7,9 @@ use SimpleXMLElement;
 
 class Product
 {
-    /** @var string $id */
-    private $id;
-
-    /** @var float $relevance */
-    private $relevance;
-
-    /** @var array $properties */
-    private $properties = [];
+    private string $id;
+    private float $relevance;
+    private array $properties = [];
 
     public function __construct(SimpleXMLElement $response)
     {
@@ -31,26 +26,17 @@ class Product
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return float
-     */
-    public function getRelevance()
+    public function getRelevance(): float
     {
         return $this->relevance;
     }
 
-    /**
-     * @return array
-     */
-    public function getProperties()
+    public function getProperties(): array
     {
         return $this->properties;
     }

@@ -10,7 +10,7 @@ class ResponseHelperTest extends TestCase
 {
     private $testObject;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->testObject = new stdClass();
     }

@@ -6,14 +6,9 @@ use FINDOLOGIC\Api\Helpers\ResponseHelper;
 
 class Promotion
 {
-    /** @var string */
-    private $name;
-
-    /** @var string */
-    private $url;
-
-    /** @var string */
-    private $imageUrl;
+    private string $name;
+    private string $url;
+    private string $imageUrl;
 
     public function __construct(array $promotion)
     {
@@ -22,26 +17,17 @@ class Promotion
         $this->imageUrl = ResponseHelper::getStringProperty($promotion, 'imageUrl');
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
 
-    /**
-     * @return string
-     */
-    public function getImageUrl()
+    public function getImageUrl(): string
     {
         return $this->imageUrl;
     }

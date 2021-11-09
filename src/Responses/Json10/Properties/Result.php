@@ -6,20 +6,14 @@ use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\Filter;
 
 class Result
 {
-    /** @var Metadata */
-    private $metadata;
-
+    private Metadata $metadata;
     /** @var Item[] */
-    private $items = [];
-
-    /** @var Variant */
-    private $variant;
-
+    private array $items = [];
+    private Variant $variant;
     /** @var Filter[] */
-    private $mainFilters;
-
+    private array $mainFilters;
     /** @var Filter[] */
-    private $otherFilters;
+    private array $otherFilters;
 
     public function __construct(array $result)
     {
@@ -37,10 +31,7 @@ class Result
         }
     }
 
-    /**
-     * @return Metadata
-     */
-    public function getMetadata()
+    public function getMetadata(): Metadata
     {
         return $this->metadata;
     }
@@ -48,15 +39,12 @@ class Result
     /**
      * @return Item[]
      */
-    public function getItems()
+    public function getItems(): array
     {
         return $this->items;
     }
 
-    /**
-     * @return Variant
-     */
-    public function getVariant()
+    public function getVariant(): Variant
     {
         return $this->variant;
     }
@@ -64,7 +52,7 @@ class Result
     /**
      * @return Filter[]
      */
-    public function getMainFilters()
+    public function getMainFilters(): array
     {
         return $this->mainFilters;
     }
@@ -72,7 +60,7 @@ class Result
     /**
      * @return Filter[]
      */
-    public function getOtherFilters()
+    public function getOtherFilters(): array
     {
         return $this->otherFilters;
     }

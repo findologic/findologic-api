@@ -6,11 +6,8 @@ use FINDOLOGIC\Api\Helpers\ResponseHelper;
 
 class Range
 {
-    /** @var float */
-    protected $min;
-
-    /** @var float */
-    protected $max;
+    protected float $min;
+    protected float $max;
 
     public function __construct(array $range)
     {
@@ -18,18 +15,12 @@ class Range
         $this->max = ResponseHelper::getFloatProperty($range, 'max');
     }
 
-    /**
-     * @return float
-     */
-    public function getMin()
+    public function getMin(): float
     {
         return $this->min;
     }
 
-    /**
-     * @return float
-     */
-    public function getMax()
+    public function getMax(): float
     {
         return $this->max;
     }

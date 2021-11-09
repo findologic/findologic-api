@@ -6,17 +6,10 @@ use FINDOLOGIC\Api\Helpers\ResponseHelper;
 
 class RangeSliderFilter extends Filter
 {
-    /** @var float */
-    protected $stepSize;
-
-    /** @var string */
-    protected $unit;
-
-    /** @var Range */
-    protected $totalRange;
-
-    /** @var Range */
-    protected $selectedRange;
+    protected float $stepSize;
+    protected string $unit;
+    protected Range $totalRange;
+    protected Range $selectedRange;
 
     public function __construct(array $filter)
     {
@@ -29,34 +22,22 @@ class RangeSliderFilter extends Filter
         $this->selectedRange = new Range($filter['selectedRange']);
     }
 
-    /**
-     * @return float
-     */
-    public function getStepSize()
+    public function getStepSize(): float
     {
         return $this->stepSize;
     }
 
-    /**
-     * @return string
-     */
-    public function getUnit()
+    public function getUnit(): string
     {
         return $this->unit;
     }
 
-    /**
-     * @return Range
-     */
-    public function getTotalRange()
+    public function getTotalRange(): Range
     {
         return $this->totalRange;
     }
 
-    /**
-     * @return Range
-     */
-    public function getSelectedRange()
+    public function getSelectedRange(): Range
     {
         return $this->selectedRange;
     }

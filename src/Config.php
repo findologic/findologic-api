@@ -8,36 +8,24 @@ use FINDOLOGIC\GuzzleHttp\Client;
 
 class Config
 {
-    const
-        SERVICE_ID = 'serviceId',
-        API_URL = 'apiUrl',
-        ALIVETEST_TIMEOUT = 'alivetestTimeout',
-        REQUEST_TIMEOUT = 'requestTimeout',
-        HTTP_CLIENT = 'httpClient',
-        ACCESS_TOKEN = 'accessToken';
+    public const DEFAULT_TEMPLATE_API_URL = 'https://service.findologic.com/ps/%s/%s';
+    public const DEFAULT_ALIVETEST_TIMEOUT = 1.0;
+    public const DEFAULT_REQUEST_TIMEOUT = 3.0;
 
-    const
-        DEFAULT_TEMPLATE_API_URL = 'https://service.findologic.com/ps/%s/%s',
-        DEFAULT_ALIVETEST_TIMEOUT = 1.0,
-        DEFAULT_REQUEST_TIMEOUT = 3.0;
+    private const SERVICE_ID = 'serviceId';
+    private const API_URL = 'apiUrl';
+    private const ALIVETEST_TIMEOUT = 'alivetestTimeout';
+    private const REQUEST_TIMEOUT = 'requestTimeout';
+    private const HTTP_CLIENT = 'httpClient';
+    private const ACCESS_TOKEN = 'accessToken';
 
-    /** @var string|null */
-    private $serviceId;
+    private string $serviceId = '';
+    private Client $httpClient;
 
-    /** @var string|null */
-    private $accessToken;
-
-    /** @var string */
-    private $apiUrl = self::DEFAULT_TEMPLATE_API_URL;
-
-    /** @var float */
-    private $alivetestTimeout = self::DEFAULT_ALIVETEST_TIMEOUT;
-
-    /** @var float */
-    private $requestTimeout = self::DEFAULT_REQUEST_TIMEOUT;
-
-    /** @var Client */
-    private $httpClient;
+    private ?string $accessToken = null;
+    private string $apiUrl = self::DEFAULT_TEMPLATE_API_URL;
+    private float $alivetestTimeout = self::DEFAULT_ALIVETEST_TIMEOUT;
+    private float $requestTimeout = self::DEFAULT_REQUEST_TIMEOUT;
 
     public function __construct($serviceId = null)
     {
@@ -51,11 +39,10 @@ class Config
     /**
      * Sets a specified config value and validates them according to the given validation rules.
      *
-     * @param string $key
      * @param mixed $value
      * @param array $validationRules
      */
-    private function setConfigValue($key, $value, array $validationRules)
+    private function setConfigValue(string $key, $value, array $validationRules): void
     {
         $validator = new ConfigValidator([$key => $value]);
 
@@ -70,10 +57,7 @@ class Config
         $this->{$key} = $value;
     }
 
-    /**
-     * @return string
-     */
-    public function getServiceId()
+    public function getServiceId(): string
     {
         if (!$this->serviceId) {
             throw new ConfigException(self::SERVICE_ID, 'Required parameter "%s" was not set');
@@ -82,105 +66,73 @@ class Config
         return $this->serviceId;
     }
 
-    /**
-     * @param string $serviceId
-     * @return $this
-     */
-    public function setServiceId($serviceId)
+    public function setServiceId($serviceId): self
     {
         $this->setConfigValue(self::SERVICE_ID, $serviceId, ['required', 'shopkey']);
+
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getAccessToken()
+    public function getAccessToken(): ?string
     {
         return $this->accessToken;
     }
 
-    /**
-     * @param string $accessToken
-     * @return $this
-     */
-    public function setAccessToken($accessToken)
+    public function setAccessToken(string $accessToken): self
     {
         $this->setConfigValue(self::ACCESS_TOKEN, $accessToken, ['required']);
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getApiUrl()
+    public function getApiUrl(): string
     {
         return $this->apiUrl;
     }
 
-    /**
-     * @param string $apiUrl
-     * @return $this
-     */
-    public function setApiUrl($apiUrl)
+    public function setApiUrl(string $apiUrl): self
     {
         $this->setConfigValue(self::API_URL, $apiUrl, ['required']);
+
         return $this;
     }
 
-    /**
-     * @return float
-     */
-    public function getAlivetestTimeout()
+    public function getAlivetestTimeout(): float
     {
         return $this->alivetestTimeout;
     }
 
-    /**
-     * @param float $alivetestTimeout
-     * @return $this
-     */
-    public function setAlivetestTimeout($alivetestTimeout)
+    public function setAlivetestTimeout(float $alivetestTimeout): self
     {
         $this->setConfigValue(self::ALIVETEST_TIMEOUT, $alivetestTimeout, ['required', 'numeric']);
+
         return $this;
     }
 
-    /**
-     * @return float
-     */
-    public function getRequestTimeout()
+    public function getRequestTimeout(): float
     {
         return $this->requestTimeout;
     }
 
-    /**
-     * @param float $requestTimeout
-     * @return $this
-     */
-    public function setRequestTimeout($requestTimeout)
+    public function setRequestTimeout(float $requestTimeout): self
     {
         $this->setConfigValue(self::REQUEST_TIMEOUT, $requestTimeout, ['required', 'numeric']);
+
         return $this;
     }
 
     /**
      * If not explicitly overridden, will return a Guzzle client that's used for sending requests.
-     *
-     * @return Client
      */
-    public function getHttpClient()
+    public function getHttpClient(): Client
     {
         return $this->httpClient;
     }
 
-    /**
-     * @param Client $httpClient
-     * @return $this
-     */
-    public function setHttpClient(Client $httpClient)
+    public function setHttpClient(Client $httpClient): self
     {
         $this->setConfigValue(self::HTTP_CLIENT, $httpClient, ['required']);
+
         return $this;
     }
 }

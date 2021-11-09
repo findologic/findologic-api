@@ -7,17 +7,10 @@ use SimpleXMLElement;
 
 class Attributes
 {
-    /** @var Range $selectedRange */
-    private $selectedRange;
-
-    /** @var Range $totalRange */
-    private $totalRange;
-
-    /** @var float $stepSize */
-    private $stepSize;
-
-    /** @var string $unit */
-    private $unit;
+    private Range $selectedRange;
+    private Range $totalRange;
+    private float $stepSize;
+    private string $unit;
 
     public function __construct(SimpleXMLElement $response)
     {
@@ -33,34 +26,22 @@ class Attributes
         }
     }
 
-    /**
-     * @return Range
-     */
-    public function getSelectedRange()
+    public function getSelectedRange(): Range
     {
         return $this->selectedRange;
     }
 
-    /**
-     * @return Range
-     */
-    public function getTotalRange()
+    public function getTotalRange(): Range
     {
         return $this->totalRange;
     }
 
-    /**
-     * @return float
-     */
-    public function getStepSize()
+    public function getStepSize(): float
     {
         return $this->stepSize;
     }
 
-    /**
-     * @return string
-     */
-    public function getUnit()
+    public function getUnit(): string
     {
         return $this->unit;
     }

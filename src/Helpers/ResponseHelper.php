@@ -4,11 +4,10 @@ namespace FINDOLOGIC\Api\Helpers;
 
 class ResponseHelper
 {
-    const
-        TYPE_STRING = 'string',
-        TYPE_INT = 'int',
-        TYPE_FLOAT = 'float',
-        TYPE_BOOL = 'bool';
+    private const TYPE_STRING = 'string';
+    private const TYPE_INT = 'int';
+    private const TYPE_FLOAT = 'float';
+    private const TYPE_BOOL = 'bool';
 
     /**
      * Gets a property from an object and converts it to a string.
@@ -19,7 +18,7 @@ class ResponseHelper
      *
      * @return string|null Returns the property as a string or null if it does not exist.
      */
-    public static function getStringProperty($obj, $property, $allowEmptyValues = false)
+    public static function getStringProperty($obj, string $property, bool $allowEmptyValues = false)
     {
         return self::getProperty($obj, $property, self::TYPE_STRING, $allowEmptyValues);
     }
@@ -33,7 +32,7 @@ class ResponseHelper
      *
      * @return int|null Returns the property as an int or null if it does not exist.
      */
-    public static function getIntProperty($obj, $property, $allowEmptyValues = false)
+    public static function getIntProperty($obj, string $property, bool $allowEmptyValues = false)
     {
         return self::getProperty($obj, $property, self::TYPE_INT, $allowEmptyValues);
     }
@@ -47,7 +46,7 @@ class ResponseHelper
      *
      * @return float|null Returns the property as a float or null if it does not exist.
      */
-    public static function getFloatProperty($obj, $property, $allowEmptyValues = false)
+    public static function getFloatProperty($obj, string $property, bool $allowEmptyValues = false)
     {
         return self::getProperty($obj, $property, self::TYPE_FLOAT, $allowEmptyValues);
     }
@@ -61,7 +60,7 @@ class ResponseHelper
      *
      * @return bool|null Returns the property as a bool or null if it does not exist.
      */
-    public static function getBoolProperty($obj, $property, $allowEmptyValues = false)
+    public static function getBoolProperty($obj, string $property, bool $allowEmptyValues = false)
     {
         return self::getProperty($obj, $property, self::TYPE_BOOL, $allowEmptyValues);
     }
@@ -76,7 +75,7 @@ class ResponseHelper
      *
      * @return mixed|null Returns the property value or null if it does not exist.
      */
-    private static function getProperty($obj, $property, $type, $allowEmptyValues)
+    private static function getProperty($obj, string $property, ?string $type, bool $allowEmptyValues)
     {
         if (!is_array($obj) && !is_object($obj)) {
             return null;
@@ -105,12 +104,12 @@ class ResponseHelper
         return $value;
     }
 
-    private static function getFromObj($obj, $property)
+    private static function getFromObj(object $obj, string $property)
     {
         return $obj->{$property};
     }
 
-    private static function getFromArray(array $arr, $key)
+    private static function getFromArray(array $arr, string $key)
     {
         return $arr[$key];
     }
@@ -121,10 +120,8 @@ class ResponseHelper
      * is considered as "not empty".
      *
      * @param mixed $var
-     *
-     * @return bool
      */
-    private static function isEmpty($var)
+    private static function isEmpty($var): bool
     {
         return ($var === '' || $var === 0 || $var === 0.0);
     }

@@ -15,43 +15,23 @@ use SimpleXMLElement;
 
 class Xml21Response extends Response
 {
-    /** @var Servers $servers */
-    private $servers;
-
-    /** @var Query $query */
-    private $query;
-
-    /** @var LandingPage|null $landingPage */
-    private $landingPage;
-
-    /** @var Promotion|null $promotion */
-    private $promotion;
-
-    /** @var Results $results */
-    private $results;
-
+    private Servers $servers;
+    private Query $query;
+    private ?LandingPage $landingPage;
+    private ?Promotion $promotion;
+    private Results $results;
     /** @var Product[] $products */
-    private $products = [];
-
+    private array $products = [];
     /** @var Filter[] $mainFilters */
-    private $mainFilters = [];
-
+    private array $mainFilters = [];
     /** @var Filter[] $otherFilters */
-    private $otherFilters = [];
+    private array $otherFilters = [];
+    private bool $hasMainFilters = false;
+    private bool $hasOtherFilters = false;
+    private int $mainFilterCount = 0;
+    private int $otherFilterCount = 0;
 
-    /** @var bool $hasMainFilters */
-    private $hasMainFilters = false;
-
-    /** @var bool $hasMainFilters */
-    private $hasOtherFilters = false;
-
-    /** @var int $mainFilterCount */
-    private $mainFilterCount = 0;
-
-    /** @var int $otherFilterCount */
-    private $otherFilterCount = 0;
-
-    protected function buildResponseElementInstances($response)
+    protected function buildResponseElementInstances(string $response): void
     {
         $xmlResponse = new SimpleXMLElement($response);
 
@@ -87,12 +67,8 @@ class Xml21Response extends Response
 
     /**
      * If the response contains a LandingPage, it will be returned, otherwise return null.
-     *
-     * @param SimpleXMLElement $xmlResponse
-     *
-     * @return LandingPage|null
      */
-    private function getLandingPageFromResponse(SimpleXMLElement $xmlResponse)
+    private function getLandingPageFromResponse(SimpleXMLElement $xmlResponse): ?LandingPage
     {
         if ($xmlResponse->landingPage) {
             return new LandingPage($xmlResponse->landingPage[0]->attributes());
@@ -103,12 +79,8 @@ class Xml21Response extends Response
 
     /**
      * If the response contains a Promotion, it will be returned, otherwise return null.
-     *
-     * @param SimpleXMLElement $xmlResponse
-     *
-     * @return Promotion|null
      */
-    private function getPromotionFromResponse(SimpleXMLElement $xmlResponse)
+    private function getPromotionFromResponse(SimpleXMLElement $xmlResponse): ?Promotion
     {
         if ($xmlResponse->promotion) {
             return new Promotion($xmlResponse->promotion[0]->attributes());
@@ -117,42 +89,27 @@ class Xml21Response extends Response
         return null;
     }
 
-    /**
-     * @return Servers
-     */
-    public function getServers()
+    public function getServers(): Servers
     {
         return $this->servers;
     }
 
-    /**
-     * @return Query
-     */
-    public function getQuery()
+    public function getQuery(): Query
     {
         return $this->query;
     }
 
-    /**
-     * @return LandingPage|null
-     */
-    public function getLandingPage()
+    public function getLandingPage(): ?LandingPage
     {
         return $this->landingPage;
     }
 
-    /**
-     * @return Promotion|null
-     */
-    public function getPromotion()
+    public function getPromotion(): ?Promotion
     {
         return $this->promotion;
     }
 
-    /**
-     * @return Results
-     */
-    public function getResults()
+    public function getResults(): Results
     {
         return $this->results;
     }
@@ -160,7 +117,7 @@ class Xml21Response extends Response
     /**
      * @return Product[]
      */
-    public function getProducts()
+    public function getProducts(): array
     {
         return $this->products;
     }
@@ -168,7 +125,7 @@ class Xml21Response extends Response
     /**
      * @return Filter[]
      */
-    public function getMainFilters()
+    public function getMainFilters(): array
     {
         return $this->mainFilters;
     }
@@ -176,7 +133,7 @@ class Xml21Response extends Response
     /**
      * @return Filter[]
      */
-    public function getOtherFilters()
+    public function getOtherFilters(): array
     {
         return $this->otherFilters;
     }
@@ -184,7 +141,7 @@ class Xml21Response extends Response
     /**
      * @return bool
      */
-    public function hasMainFilters()
+    public function hasMainFilters(): bool
     {
         return $this->hasMainFilters;
     }
@@ -192,7 +149,7 @@ class Xml21Response extends Response
     /**
      * @return bool
      */
-    public function hasOtherFilters()
+    public function hasOtherFilters(): bool
     {
         return $this->hasOtherFilters;
     }
@@ -200,7 +157,7 @@ class Xml21Response extends Response
     /**
      * @return int
      */
-    public function getMainFilterCount()
+    public function getMainFilterCount(): int
     {
         return $this->mainFilterCount;
     }
@@ -208,7 +165,7 @@ class Xml21Response extends Response
     /**
      * @return int
      */
-    public function getOtherFilterCount()
+    public function getOtherFilterCount(): int
     {
         return $this->otherFilterCount;
     }

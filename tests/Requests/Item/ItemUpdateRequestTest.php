@@ -179,22 +179,27 @@ class ItemUpdateRequestTest extends TestBase
         return [
             'setQuery' => [
                 'methodName' => 'setQuery',
+                'argument' => '',
                 'expectedExceptionMessage' => 'Parameter "query" is not supported for item updates',
             ],
             'setCount' => [
                 'methodName' => 'setCount',
+                'argument' => 0,
                 'expectedExceptionMessage' => 'Parameter "count" is not supported for item updates',
             ],
             'addGroup' => [
                 'methodName' => 'addGroup',
+                'argument' => '',
                 'expectedExceptionMessage' => 'Parameter "group" is not supported for item updates',
             ],
             'addUserGroup' => [
                 'methodName' => 'addUserGroup',
+                'argument' => '',
                 'expectedExceptionMessage' => 'Parameter "usergroup" is not supported for item updates',
             ],
             'setOutputAdapter' => [
                 'methodName' => 'setOutputAdapter',
+                'argument' => '',
                 'expectedExceptionMessage' => 'Parameter "outputAdapter" is not supported for item updates',
             ],
         ];
@@ -202,16 +207,15 @@ class ItemUpdateRequestTest extends TestBase
 
     /**
      * @dataProvider unsupportedSetterProvider
-     * @param string $methodName
-     * @param string $expectedExceptionMessage
+     * @param mixed $argument
      */
-    public function testUnsupportedSettersThrowErrors($methodName, $expectedExceptionMessage)
+    public function testUnsupportedSettersThrowErrors(string $methodName, $argument, string $expectedExceptionMessage)
     {
         $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
 
         $updateRequest = new ItemUpdateRequest();
-        $updateRequest->{$methodName}('');
+        $updateRequest->{$methodName}($argument);
     }
 
     public function testOutputAdapterAlwaysReturnsNull()

@@ -6,37 +6,18 @@ use FINDOLOGIC\Api\Helpers\ResponseHelper;
 
 class Suggestion
 {
-    /** @var string $label */
-    private $label;
+    private string $label;
+    private string $block;
+    private string $frequency;
+    private ?string $imageUrl;
+    private ?float $price;
+    private ?string $identifier;
+    private ?float $basePrice;
+    private ?string $basePriceUnit;
+    private ?string $url;
+    private ?string $ordernumber;
 
-    /** @var string $block */
-    private $block;
-
-    /** @var string $frequency */
-    private $frequency;
-
-    /** @var string|null $imageUrl */
-    private $imageUrl;
-
-    /** @var float|null $price */
-    private $price;
-
-    /** @var string|null $identifier */
-    private $identifier;
-
-    /** @var float|null $basePrice */
-    private $basePrice;
-
-    /** @var string|null $basePriceUnit */
-    private $basePriceUnit;
-
-    /** @var string|null $basePriceUnit */
-    private $url;
-
-    /** @var string|null $ordernumber */
-    private $ordernumber;
-
-    public function __construct($response)
+    public function __construct(array $response)
     {
         $this->label = ResponseHelper::getStringProperty($response, 'label');
         $this->block = ResponseHelper::getStringProperty($response, 'block');
@@ -50,82 +31,52 @@ class Suggestion
         $this->ordernumber = ResponseHelper::getStringProperty($response, 'ordernumber');
     }
 
-    /**
-     * @return string
-     */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }
 
-    /**
-     * @return string
-     */
-    public function getBlock()
+    public function getBlock(): string
     {
         return $this->block;
     }
 
-    /**
-     * @return string
-     */
-    public function getFrequency()
+    public function getFrequency(): string
     {
         return $this->frequency;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getImageUrl()
+    public function getImageUrl(): ?string
     {
         return $this->imageUrl;
     }
 
-    /**
-     * @return float|null
-     */
-    public function getPrice()
+    public function getPrice(): ?float
     {
         return $this->price;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getIdentifier()
+    public function getIdentifier(): ?string
     {
         return $this->identifier;
     }
 
-    /**
-     * @return float|null
-     */
-    public function getBasePrice()
+    public function getBasePrice(): ?float
     {
         return $this->basePrice;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getBasePriceUnit()
+    public function getBasePriceUnit(): ?string
     {
         return $this->basePriceUnit;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getUrl()
+    public function getUrl(): ?string
     {
         return $this->url;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getOrdernumber()
+    public function getOrdernumber(): ?string
     {
         return $this->ordernumber;
     }

@@ -18,20 +18,13 @@ use Psr\Http\Message\ResponseInterface as GuzzleResponse;
 
 abstract class Response
 {
-    const STATUS_OK = 200;
-    const SERVICE_ALIVE_BODY = 'alive';
+    public const STATUS_OK = 200;
+    public const SERVICE_ALIVE_BODY = 'alive';
 
-    /** @var float|null */
-    protected $responseTime;
+    protected ?float $responseTime;
+    protected string $rawResponse;
 
-    /** @var string */
-    protected $rawResponse;
-
-    /**
-     * @param string $response Raw response as string.
-     * @param float|null $responseTime Response time in microseconds.
-     */
-    public function __construct($response, $responseTime = null)
+    public function __construct(string $response, ?float $responseTime = null)
     {
         $this->rawResponse = $response;
         $this->responseTime = $responseTime;
@@ -41,26 +34,18 @@ abstract class Response
 
     /**
      * Builds the response instances for all classes for the current response.
-     *
-     * @param $response
      */
-    abstract protected function buildResponseElementInstances($response);
+    abstract protected function buildResponseElementInstances(string $response): void;
 
     /**
      * Builds a new Response instance based on the given Request.
-     *
-     * @param Request $request
-     * @param GuzzleResponse $response
-     * @param GuzzleResponse|null $alivetestResponse The alivetest response, or null if no alivetest was made.
-     * @param float|null $responseTime
-     * @return Response
      */
     public static function buildInstance(
         Request $request,
         GuzzleResponse $response,
-        $alivetestResponse = null,
-        $responseTime = null
-    ) {
+        ?GuzzleResponse $alivetestResponse = null,
+        ?float $responseTime = null
+    ): Response {
         if ($alivetestResponse !== null) {
             self::checkAlivetestBody($alivetestResponse);
         }
@@ -85,12 +70,7 @@ abstract class Response
         }
     }
 
-    /**
-     * Returns the raw response as string.
-     *
-     * @return string
-     */
-    public function getRawResponse()
+    public function getRawResponse(): string
     {
         return $this->rawResponse;
     }
@@ -98,25 +78,17 @@ abstract class Response
     /**
      * Gets the response time that FINDOLOGIC took to respond to the request in microseconds. Please note that this
      * time also includes latency, etc.
-     *
-     * @return float|null
      */
-    public function getResponseTime()
+    public function getResponseTime(): ?float
     {
         return $this->responseTime;
     }
 
-    /**
-     * @param Request $request
-     * @param string $responseContents
-     * @param float|null $responseTime
-     * @return Response
-     */
     private static function buildSearchOrNavigationResponse(
         Request $request,
-        $responseContents,
-        $responseTime
-    ) {
+        string $responseContents,
+        ?float $responseTime
+    ): Response {
         switch ($request->getOutputAdapter()) {
             case OutputAdapter::JSON_10:
                 return new Json10Response($responseContents, $responseTime);
@@ -136,10 +108,8 @@ abstract class Response
 
     /**
      * Checks if the response is valid. If not, an exception will be thrown.
-     *
-     * @param GuzzleResponse $response
      */
-    protected static function checkResponseIsValid(GuzzleResponse $response)
+    protected static function checkResponseIsValid(GuzzleResponse $response): void
     {
         $statusCode = $response->getStatusCode();
         if ($statusCode !== self::STATUS_OK) {
@@ -150,7 +120,7 @@ abstract class Response
     /**
      * @param GuzzleResponse $response
      */
-    protected static function checkAlivetestBody($response)
+    protected static function checkAlivetestBody(GuzzleResponse $response): void
     {
         $alivetestContents = $response->getBody()->getContents();
         if ($alivetestContents !== self::SERVICE_ALIVE_BODY) {

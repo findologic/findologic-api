@@ -7,11 +7,8 @@ use SimpleXMLElement;
 
 class Range
 {
-    /** @var float|null $min */
-    private $min;
-
-    /** @var float|null $min */
-    private $max;
+    private ?float $min;
+    private ?float $max;
 
     public function __construct(SimpleXMLElement $response)
     {
@@ -19,18 +16,12 @@ class Range
         $this->max = ResponseHelper::getFloatProperty($response, 'max', true);
     }
 
-    /**
-     * @return float|null
-     */
-    public function getMin()
+    public function getMin(): ?float
     {
         return $this->min;
     }
 
-    /**
-     * @return float|null
-     */
-    public function getMax()
+    public function getMax(): ?float
     {
         return $this->max;
     }

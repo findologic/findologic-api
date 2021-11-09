@@ -6,17 +6,10 @@ use FINDOLOGIC\Api\Helpers\ResponseHelper;
 
 class Variant
 {
-    /** @var string */
-    private $name;
-
-    /** @var string|null */
-    private $correctedQuery;
-
-    /** @var string|null */
-    private $improvedQuery;
-
-    /** @var string|null */
-    private $didYouMeanQuery;
+    private string $name;
+    private ?string $correctedQuery;
+    private ?string $improvedQuery;
+    private ?string $didYouMeanQuery;
 
     public function __construct(array $variant)
     {
@@ -26,34 +19,22 @@ class Variant
         $this->didYouMeanQuery = ResponseHelper::getStringProperty($variant, 'didYouMeanQuery');
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getCorrectedQuery()
+    public function getCorrectedQuery(): ?string
     {
         return $this->correctedQuery;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getImprovedQuery()
+    public function getImprovedQuery(): ?string
     {
         return $this->improvedQuery;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getDidYouMeanQuery()
+    public function getDidYouMeanQuery(): ?string
     {
         return $this->didYouMeanQuery;
     }

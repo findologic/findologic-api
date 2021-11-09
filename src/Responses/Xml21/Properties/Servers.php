@@ -7,11 +7,8 @@ use SimpleXMLElement;
 
 class Servers
 {
-    /** @var string $frontend */
-    private $frontend;
-
-    /** @var string $backend */
-    private $backend;
+    private string $frontend;
+    private string $backend;
 
     public function __construct(SimpleXMLElement $response)
     {
@@ -19,18 +16,12 @@ class Servers
         $this->backend = ResponseHelper::getStringProperty($response, 'backend');
     }
 
-    /**
-     * @return string
-     */
-    public function getFrontend()
+    public function getFrontend(): string
     {
         return $this->frontend;
     }
 
-    /**
-     * @return string
-     */
-    public function getBackend()
+    public function getBackend(): string
     {
         return $this->backend;
     }

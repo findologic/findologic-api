@@ -4,34 +4,24 @@ namespace FINDOLOGIC\Api\Requests\Item\Changes;
 
 class PriceChange extends Change
 {
-    /** @var float */
-    private $price = 0.0;
+    private float $price = 0.0;
 
-    public function getKey()
+    public function getKey(): string
     {
         return 'price';
     }
 
-    /**
-     * @return float
-     */
-    public function getValue()
+    public function getValue(): float
     {
         return $this->getPrice();
     }
 
-    /**
-     * @param float $price
-     */
-    public function setPrice($price)
+    public function setPrice(float $price): void
     {
         $this->price = $price;
     }
 
-    /**
-     * @return float
-     */
-    public function getPrice()
+    public function getPrice(): float
     {
         return $this->price;
     }

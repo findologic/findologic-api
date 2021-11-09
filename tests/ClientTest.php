@@ -28,7 +28,7 @@ class ClientTest extends TestBase
     /** @var SearchRequest */
     private $searchRequest;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -197,7 +197,7 @@ class ClientTest extends TestBase
 
         // Local response time should be fast since the data will not be sent to another server, but instead it
         // will be directly read from the ram.
-        $this->assertEquals(0, $xmlResponse->getResponseTime(), '', 0.01);
+        $this->assertEqualsWithDelta(0, $xmlResponse->getResponseTime(), 0.01);
     }
 
     public function badAliveTestBodies()
@@ -440,6 +440,9 @@ class ClientTest extends TestBase
 
     public function testBearerTokenIsSentIfSet()
     {
+        // Does perform assertions based on mock expectations.
+        $this->expectNotToPerformAssertions();
+
         $expectedAccessToken = 'YEEEET';
 
         $requestParams = http_build_query([

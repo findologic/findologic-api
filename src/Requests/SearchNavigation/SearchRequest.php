@@ -7,7 +7,7 @@ use FINDOLOGIC\Api\Definitions\QueryParameter;
 
 class SearchRequest extends SearchNavigationRequest
 {
-    protected $endpoint = Endpoint::SEARCH;
+    protected string $endpoint = Endpoint::SEARCH;
 
     public function __construct(array $params = [])
     {

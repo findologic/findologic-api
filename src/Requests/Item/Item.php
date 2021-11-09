@@ -10,37 +10,28 @@ use InvalidArgumentException;
 
 class Item
 {
-    const VISIBILITY_CHANGE = 0;
-    const PRICE_CHANGE = 1;
-
-    /** @var string */
-    private $id;
-
+    public const VISIBILITY_CHANGE = 0;
+    public const PRICE_CHANGE = 1;
+    private string $id;
     /** @var Change[] */
-    private $changes = [];
+    private array $changes = [];
 
-    /**
-     * @param string $id
-     */
-    public function __construct($id)
+    public function __construct(string $id)
     {
         $this->id = $id;
     }
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
-    public function addChange(Change $change)
+    public function addChange(Change $change): void
     {
         $this->changes[] = $change;
     }
 
-    public function resetChanges()
+    public function resetChanges(): void
     {
         $this->changes = [];
     }
@@ -48,17 +39,12 @@ class Item
     /**
      * @return Change[]
      */
-    public function getChanges()
+    public function getChanges(): array
     {
         return $this->changes;
     }
 
-    /**
-     * @param int $type
-     * @param string $userGroup
-     * @return Change
-     */
-    public function getOrCreateChange($type, $userGroup = Defaults::USER_GROUP)
+    public function getOrCreateChange(int $type, string $userGroup = Defaults::USER_GROUP): Change
     {
         switch ($type) {
             case self::VISIBILITY_CHANGE:

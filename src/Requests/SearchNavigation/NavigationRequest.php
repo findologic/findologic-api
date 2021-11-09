@@ -9,16 +9,12 @@ use FINDOLOGIC\Api\Validators\ParameterValidator;
 
 class NavigationRequest extends SearchNavigationRequest
 {
-    protected $endpoint = Endpoint::NAVIGATION;
+    protected string $endpoint = Endpoint::NAVIGATION;
 
     /**
      * Sets the selected param. It is used to tell FINDOLOGIC on which navigation page the user is.
-     *
-     * @param $filterName string
-     * @param $value string
-     * @return $this
      */
-    public function setSelected($filterName, $value)
+    public function setSelected(string $filterName, string $value): self
     {
         $validator = new ParameterValidator([
             'filterName' => $filterName,
@@ -34,6 +30,7 @@ class NavigationRequest extends SearchNavigationRequest
         }
 
         $this->addParam(QueryParameter::SELECTED, [$filterName => [$value]]);
+
         return $this;
     }
 }

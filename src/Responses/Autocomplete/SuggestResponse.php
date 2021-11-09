@@ -11,11 +11,11 @@ use FINDOLOGIC\Api\Responses\Response;
 class SuggestResponse extends Response
 {
     /** @var Suggestion[] */
-    private $suggestions = [];
+    private array $suggestions = [];
 
-    protected function buildResponseElementInstances($response)
+    protected function buildResponseElementInstances(string $response): void
     {
-        $suggestions = json_decode($response);
+        $suggestions = json_decode($response, true);
 
         foreach ($suggestions as $suggestion) {
             $this->suggestions[] = new Suggestion($suggestion);
@@ -25,7 +25,7 @@ class SuggestResponse extends Response
     /**
      * @return Suggestion[]
      */
-    public function getSuggestions()
+    public function getSuggestions(): array
     {
         return $this->suggestions;
     }
@@ -33,13 +33,12 @@ class SuggestResponse extends Response
     /**
      * Filter the suggestions based on the specified block types.
      *
-     * @param array $blockTypes A list of block types which should be returned from the response.
+     * @param string[] $blockTypes A list of block types which should be returned from the response.
      * @return Suggestion[]
      */
-    public function getFilteredSuggestions(array $blockTypes)
+    public function getFilteredSuggestions(array $blockTypes): array
     {
         return array_values(array_filter($this->getSuggestions(), function ($suggestion) use ($blockTypes) {
-            /** @var Suggestion $suggestion */
             return in_array($suggestion->getBlock(), $blockTypes);
         }));
     }

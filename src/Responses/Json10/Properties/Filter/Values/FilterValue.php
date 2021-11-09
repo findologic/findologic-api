@@ -12,17 +12,10 @@ use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\SelectFilter;
 
 abstract class FilterValue
 {
-    /** @var string */
-    protected $name;
-
-    /** @var bool */
-    protected $selected;
-
-    /** @var float */
-    protected $weight;
-
-    /** @var int|null */
-    protected $frequency;
+    protected ?string $name = null;
+    protected ?bool $selected = null;
+    protected ?float $weight = null;
+    protected ?int $frequency = null;
 
     public function __construct(array $filterValue)
     {
@@ -58,34 +51,22 @@ abstract class FilterValue
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return bool
-     */
-    public function isSelected()
+    public function isSelected(): bool
     {
         return $this->selected;
     }
 
-    /**
-     * @return float
-     */
-    public function getWeight()
+    public function getWeight(): float
     {
         return $this->weight;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getFrequency()
+    public function getFrequency(): ?int
     {
         return $this->frequency;
     }

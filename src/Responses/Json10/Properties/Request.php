@@ -6,23 +6,12 @@ use FINDOLOGIC\Api\Helpers\ResponseHelper;
 
 class Request
 {
-    /** @var string|null */
-    private $query;
-
-    /** @var int */
-    private $first;
-
-    /** @var int */
-    private $count;
-
-    /** @var string */
-    private $serviceId;
-
-    /** @var string|null */
-    private $usergroup;
-
-    /** @var Order */
-    private $order;
+    private ?string $query;
+    private int $first;
+    private int $count;
+    private string $serviceId;
+    private ?string $usergroup;
+    private Order $order;
 
     public function __construct(array $request)
     {
@@ -34,50 +23,32 @@ class Request
         $this->order = new Order($request['order']);
     }
 
-    /**
-     * @return string|null
-     */
-    public function getQuery()
+    public function getQuery(): ?string
     {
         return $this->query;
     }
 
-    /**
-     * @return int
-     */
-    public function getFirst()
+    public function getFirst(): int
     {
         return $this->first;
     }
 
-    /**
-     * @return int
-     */
-    public function getCount()
+    public function getCount(): int
     {
         return $this->count;
     }
 
-    /**
-     * @return string
-     */
-    public function getServiceId()
+    public function getServiceId(): string
     {
         return $this->serviceId;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getUsergroup()
+    public function getUsergroup(): ?string
     {
         return $this->usergroup;
     }
 
-    /**
-     * @return Order
-     */
-    public function getOrder()
+    public function getOrder(): Order
     {
         return $this->order;
     }

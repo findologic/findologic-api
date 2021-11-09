@@ -29,7 +29,7 @@ class SearchNavigationRequestTest extends TestBase
     /** @var string */
     private $rawMockResponse;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->config = new Config();
@@ -85,7 +85,7 @@ class SearchNavigationRequestTest extends TestBase
 
         /** @var Xml21Response $response */
         $response = $client->send($searchRequest);
-        $this->assertEquals(0, $response->getResponseTime(), '', 0.1);
+        $this->assertEqualsWithDelta(0, $response->getResponseTime(), 0.1);
     }
 
     public function testSendingNavigationRequestsWithoutRequiredParamsWillThrowAnException()
@@ -128,7 +128,7 @@ class SearchNavigationRequestTest extends TestBase
 
         /** @var Xml21Response $response */
         $response = $client->send($navigationRequest);
-        $this->assertEquals(0, $response->getResponseTime(), '', 0.1);
+        $this->assertEqualsWithDelta(0, $response->getResponseTime(), 0.1);
     }
 
     /**
@@ -146,21 +146,6 @@ class SearchNavigationRequestTest extends TestBase
         $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals($expectedQuery, $params[$expectedParameter]);
-    }
-
-    /**
-     * @dataProvider invalidQueryProvider
-     * @param mixed $invalidQuery
-     */
-    public function testSetQueryWillThrowAnExceptionWhenSubmittingInvalidQueries($invalidQuery)
-    {
-        $this->expectException(InvalidParamException::class);
-        $this->expectExceptionMessage('Parameter query is not valid.');
-
-        $searchRequest = new SearchRequest();
-        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
-
-        $searchRequest->setQuery($invalidQuery);
     }
 
     /**
@@ -362,26 +347,6 @@ class SearchNavigationRequestTest extends TestBase
     }
 
     /**
-     * @dataProvider invalidAttributeProvider
-     * @param mixed $expectedAttributeName
-     * @param mixed $expectedAttributeValue
-     * @param mixed $specifier
-     */
-    public function testInvalidAttributeWillThrowAnException(
-        $expectedAttributeName,
-        $expectedAttributeValue,
-        $specifier
-    ) {
-        $this->expectException(InvalidParamException::class);
-        $this->expectExceptionMessage('Parameter attrib is not valid.');
-
-        $searchRequest = new SearchRequest();
-        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
-
-        $searchRequest->addAttribute($expectedAttributeName, $expectedAttributeValue, $specifier);
-    }
-
-    /**
      * @dataProvider orderProvider
      * @param string $expectedOrder
      */
@@ -431,21 +396,6 @@ class SearchNavigationRequestTest extends TestBase
     }
 
     /**
-     * @dataProvider invalidPropertyProvider
-     * @param mixed $invalidProperty
-     */
-    public function testInvalidPropertyWillThrowAnException($invalidProperty)
-    {
-        $this->expectException(InvalidParamException::class);
-        $this->expectExceptionMessage('Parameter properties is not valid.');
-
-        $searchRequest = new SearchRequest();
-        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
-
-        $searchRequest->addProperty($invalidProperty);
-    }
-
-    /**
      * @dataProvider pushAttribProvider
      * @param string $expectedFilterName
      * @param string $expectedFilterValue
@@ -468,26 +418,6 @@ class SearchNavigationRequestTest extends TestBase
             [$expectedFilterName => [$expectedFilterValue => $expectedFactor]],
             $params[$expectedParameter]
         );
-    }
-
-    /**
-     * @dataProvider invalidPushAttribProvider
-     * @param mixed $expectedFilterName
-     * @param mixed $expectedFilterValue
-     * @param mixed $expectedFactor
-     */
-    public function testInvalidPushAttribWillThrowAnException(
-        $expectedFilterName,
-        $expectedFilterValue,
-        $expectedFactor
-    ) {
-        $this->expectException(InvalidParamException::class);
-        $this->expectExceptionMessage('Parameter pushAttrib is not valid.');
-
-        $searchRequest = new SearchRequest();
-        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
-
-        $searchRequest->addPushAttrib($expectedFilterName, $expectedFilterValue, $expectedFactor);
     }
 
     /**
@@ -572,21 +502,6 @@ class SearchNavigationRequestTest extends TestBase
     }
 
     /**
-     * @dataProvider invalidIdentifierProvider
-     * @param mixed $invalidIdentifier
-     */
-    public function testInvalidIdentifierWillThrowAnException($invalidIdentifier)
-    {
-        $this->expectException(InvalidParamException::class);
-        $this->expectExceptionMessage('Parameter identifier is not valid.');
-
-        $searchRequest = new SearchRequest();
-        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
-
-        $searchRequest->setIdentifier($invalidIdentifier);
-    }
-
-    /**
      * @dataProvider outputAttribProvider
      * @param string $expectedOutputAttrib
      */
@@ -601,21 +516,6 @@ class SearchNavigationRequestTest extends TestBase
         $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals([$expectedOutputAttrib], $params[$expectedParameter]);
-    }
-
-    /**
-     * @dataProvider invalidOutputAttribProvider
-     * @param mixed $outputAttrib
-     */
-    public function testInvalidOutputAttribWillThrowAnException($outputAttrib)
-    {
-        $this->expectException(InvalidParamException::class);
-        $this->expectExceptionMessage('Parameter outputAttrib is not valid.');
-
-        $searchRequest = new SearchRequest();
-        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
-
-        $searchRequest->addOutputAttrib($outputAttrib);
     }
 
     /**
@@ -636,21 +536,6 @@ class SearchNavigationRequestTest extends TestBase
     }
 
     /**
-     * @dataProvider invalidGroupProvider
-     * @param mixed $invalidGroup
-     */
-    public function testInvalidGroupWillThrowAnException($invalidGroup)
-    {
-        $this->expectException(InvalidParamException::class);
-        $this->expectExceptionMessage('Parameter group is not valid.');
-
-        $searchRequest = new SearchRequest();
-        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
-
-        $searchRequest->addGroup($invalidGroup);
-    }
-
-    /**
      * @dataProvider userGroupProvider
      *
      * @param string $expectedUserGroupHash
@@ -666,21 +551,6 @@ class SearchNavigationRequestTest extends TestBase
         $params = $searchRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals([$expectedUserGroupHash], $params[$expectedParameter]);
-    }
-
-    /**
-     * @dataProvider invalidUserGroupProvider
-     * @param mixed $invalidUserGroup
-     */
-    public function testInvalidUserGroupWillThrowAnException($invalidUserGroup)
-    {
-        $this->expectException(InvalidParamException::class);
-        $this->expectExceptionMessage('Parameter usergrouphash is not valid.');
-
-        $searchRequest = new SearchRequest();
-        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
-
-        $searchRequest->addUserGroup($invalidUserGroup);
     }
 
     /**
@@ -704,24 +574,6 @@ class SearchNavigationRequestTest extends TestBase
             [$expectedAttributeName => [$expectedAttributeValue]],
             $params[$expectedParameter]
         );
-    }
-
-    /**
-     * @dataProvider invalidSelectedProvider
-     * @param mixed $expectedAttributeName
-     * @param mixed $expectedAttributeValue
-     */
-    public function testInvalidSelectedWillThrowAnException(
-        $expectedAttributeName,
-        $expectedAttributeValue
-    ) {
-        $this->expectException(InvalidParamException::class);
-        $this->expectExceptionMessage('Parameter selected is not valid.');
-
-        $navigationRequest = new NavigationRequest();
-        $this->setRequiredParamsForSearchNavigationRequest($navigationRequest);
-
-        $navigationRequest->setSelected($expectedAttributeName, $expectedAttributeValue);
     }
 
     public function testSetForceOriginalQueryWillSetItInAValidFormat()

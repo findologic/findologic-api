@@ -11,8 +11,8 @@ use FINDOLOGIC\Api\Definitions\RequestMethod;
  */
 class AlivetestRequest extends Request
 {
-    protected $endpoint = Endpoint::ALIVETEST;
-    protected $method = RequestMethod::GET;
+    protected string $endpoint = Endpoint::ALIVETEST;
+    protected string $method = RequestMethod::GET;
 
     /**
      * @internal
@@ -23,7 +23,7 @@ class AlivetestRequest extends Request
         $this->params = $params;
     }
 
-    public function getBody()
+    public function getBody(): ?string
     {
         throw new BadMethodCallException('Request body is not supported for alivetest requests');
     }

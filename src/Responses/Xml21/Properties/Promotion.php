@@ -7,11 +7,8 @@ use SimpleXMLElement;
 
 class Promotion
 {
-    /** @var string $image */
-    private $image;
-
-    /** @var string $link */
-    private $link;
+    private string $image;
+    private string $link;
 
     public function __construct(SimpleXMLElement $response)
     {
@@ -19,18 +16,12 @@ class Promotion
         $this->link = ResponseHelper::getStringProperty($response, 'link');
     }
 
-    /**
-     * @return string
-     */
-    public function getImage()
+    public function getImage(): string
     {
         return $this->image;
     }
 
-    /**
-     * @return string
-     */
-    public function getLink()
+    public function getLink(): string
     {
         return $this->link;
     }

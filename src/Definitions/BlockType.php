@@ -4,12 +4,11 @@ namespace FINDOLOGIC\Api\Definitions;
 
 class BlockType extends Definition
 {
-    const
-        SUGGEST_BLOCK = 'suggest',
-        LANDINGPAGE_BLOCK = 'landingpage',
-        CAT_BLOCK = 'cat',
-        VENDOR_BLOCK = 'vendor',
-        ORDERNUMBER_BLOCK = 'ordernumber',
-        PRODUCT_BLOCK = 'product',
-        PROMOTION_BLOCK = 'promotion';
+    public const SUGGEST_BLOCK = 'suggest';
+    public const LANDINGPAGE_BLOCK = 'landingpage';
+    public const CAT_BLOCK = 'cat';
+    public const VENDOR_BLOCK = 'vendor';
+    public const ORDERNUMBER_BLOCK = 'ordernumber';
+    public const PRODUCT_BLOCK = 'product';
+    public const PROMOTION_BLOCK = 'promotion';
 }

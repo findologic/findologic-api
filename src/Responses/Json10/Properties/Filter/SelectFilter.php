@@ -9,8 +9,7 @@ use FINDOLOGIC\Api\Helpers\ResponseHelper;
  */
 class SelectFilter extends Filter
 {
-    /** @var int */
-    protected $pinnedFilterValueCount;
+    protected int $pinnedFilterValueCount;
 
     public function __construct(array $filter)
     {
@@ -19,10 +18,7 @@ class SelectFilter extends Filter
         $this->pinnedFilterValueCount = ResponseHelper::getIntProperty($filter, 'pinnedFilterValueCount');
     }
 
-    /**
-     * @return int
-     */
-    public function getPinnedFilterValueCount()
+    public function getPinnedFilterValueCount(): int
     {
         return $this->pinnedFilterValueCount;
     }

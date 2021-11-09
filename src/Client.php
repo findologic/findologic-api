@@ -12,13 +12,12 @@ use Psr\Http\Message\ResponseInterface as GuzzleResponse;
 
 class Client
 {
-    /** @var Config */
-    private $config;
+    private Config $config;
 
     /**
-     * @var bool Weither an alivetest was sent or not. Only one alivetest is sent per client lifetime.
+     * Weither an alivetest was sent or not. Only one alivetest is sent per client lifetime.
      */
-    private $alivetestSent = false;
+    private bool $alivetestSent = false;
 
     public function __construct(Config $config)
     {
@@ -27,11 +26,8 @@ class Client
 
     /**
      * Sends a request to FINDOLOGIC. An alivetest may be sent if the request is a search or a navigation request.
-     *
-     * @param Request $request
-     * @return Response
      */
-    public function send(Request $request)
+    public function send(Request $request): Response
     {
         $request->checkRequiredParamsAreSet();
         $alivetestResponse = $this->doAlivetest($request);
@@ -47,17 +43,15 @@ class Client
      * Only call this method if you know what you are doing! It is highly recommended that an alivetest
      * is sent before a search/navigation request!
      */
-    public function withoutAlivetest()
+    public function withoutAlivetest(): void
     {
         $this->alivetestSent = true;
     }
 
     /**
-     * @param Request $request
-     * @return GuzzleResponse
      * @throws ServiceNotAliveException If the request was not successful.
      */
-    private function sendRequest(Request $request)
+    private function sendRequest(Request $request): GuzzleResponse
     {
         try {
             return $this->config->getHttpClient()->request(
@@ -73,11 +67,8 @@ class Client
     /**
      * Will do an alivetest if the given Request requires one. An alivetest may be done if the Request is a
      * SearchRequest/NavigationRequest.
-     *
-     * @param Request $request
-     * @return GuzzleResponse|null
      */
-    private function doAlivetest(Request $request)
+    private function doAlivetest(Request $request): ?GuzzleResponse
     {
         if (!$request instanceof SearchNavigationRequest || $this->alivetestSent) {
             return null;
@@ -93,11 +84,7 @@ class Client
         return $response;
     }
 
-    /**
-     * @param Request $request
-     * @return array
-     */
-    private function buildRequestOptions(Request $request)
+    private function buildRequestOptions(Request $request): array
     {
         $requestTimeout = $this->config->getRequestTimeout();
         if ($request instanceof AlivetestRequest) {

@@ -4,36 +4,29 @@ namespace FINDOLOGIC\Api\Requests\Item\Changes;
 
 class VisibilityChange extends Change
 {
-    /** @var bool */
-    private $isVisible = false;
+    private bool $isVisible = false;
 
-    public function getKey()
+    public function getKey(): string
     {
         return 'visible';
     }
 
-    /**
-     * @return bool
-     */
-    public function getValue()
+    public function getValue(): bool
     {
         return $this->isVisible();
     }
 
-    public function setVisible()
+    public function setVisible(): void
     {
         $this->isVisible = true;
     }
 
-    public function setInvisible()
+    public function setInvisible(): void
     {
         $this->isVisible = false;
     }
 
-    /**
-     * @return bool
-     */
-    public function isVisible()
+    public function isVisible(): bool
     {
         return $this->isVisible;
     }

@@ -6,11 +6,8 @@ use FINDOLOGIC\Api\Helpers\ResponseHelper;
 
 class ColorFilterValue extends FilterValue
 {
-    /** @var string */
-    protected $color;
-
-    /** @var string */
-    protected $image;
+    protected ?string $color;
+    protected ?string $image;
 
     public function __construct(array $filterValue)
     {
@@ -20,18 +17,12 @@ class ColorFilterValue extends FilterValue
         $this->color = ResponseHelper::getStringProperty($filterValue, 'color');
     }
 
-    /**
-     * @return string
-     */
-    public function getColor()
+    public function getColor(): ?string
     {
         return $this->color;
     }
 
-    /**
-     * @return string
-     */
-    public function getImage()
+    public function getImage(): ?string
     {
         return $this->image;
     }
