@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Item;
 
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
@@ -9,7 +11,7 @@ use SimpleXMLElement;
 class CategoryItem extends Item
 {
     /** @var CategoryItem[] $items */
-    protected $items = [];
+    protected array $items = [];
 
     public function __construct(SimpleXMLElement $item, CategoryFilter $filter)
     {
@@ -19,9 +21,6 @@ class CategoryItem extends Item
 
     /**
      * Items might have sub items. Sub items may only be set for subcategories.
-     *
-     * @param SimpleXMLElement $response
-     * @param CategoryFilter $filter
      */
     private function addSubItems(SimpleXMLElement $response, CategoryFilter $filter)
     {
@@ -36,7 +35,7 @@ class CategoryItem extends Item
     /**
      * @return CategoryItem[]
      */
-    public function getItems()
+    public function getItems(): array
     {
         return $this->items;
     }

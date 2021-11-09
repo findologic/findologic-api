@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Responses\Xml21;
 
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
@@ -138,33 +140,21 @@ class Xml21Response extends Response
         return $this->otherFilters;
     }
 
-    /**
-     * @return bool
-     */
     public function hasMainFilters(): bool
     {
         return $this->hasMainFilters;
     }
 
-    /**
-     * @return bool
-     */
     public function hasOtherFilters(): bool
     {
         return $this->hasOtherFilters;
     }
 
-    /**
-     * @return int
-     */
     public function getMainFilterCount(): int
     {
         return $this->mainFilterCount;
     }
 
-    /**
-     * @return int
-     */
     public function getOtherFilterCount(): int
     {
         return $this->otherFilterCount;

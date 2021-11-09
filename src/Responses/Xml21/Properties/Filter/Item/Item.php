@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Item;
 
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
@@ -14,17 +16,10 @@ use SimpleXMLElement;
 
 abstract class Item
 {
-    /** @var string $name */
-    protected $name;
-
-    /** @var float|null $weight */
-    protected $weight;
-
-    /** @var int|null $frequency */
-    protected $frequency;
-
-    /** @var bool $selected */
-    protected $selected;
+    protected string $name;
+    protected ?float $weight;
+    protected ?int $frequency;
+    protected bool $selected;
 
     public function __construct(SimpleXMLElement $item)
     {
@@ -34,7 +29,7 @@ abstract class Item
         $this->selected = ResponseHelper::getBoolProperty($item->attributes(), 'selected') ? true : false;
     }
 
-    public static function getInstance(Filter $filter, SimpleXMLElement $item)
+    public static function getInstance(Filter $filter, SimpleXMLElement $item): Item
     {
         switch (true) {
             case $filter instanceof CategoryFilter:
@@ -52,34 +47,22 @@ abstract class Item
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return float|null
-     */
-    public function getWeight()
+    public function getWeight(): ?float
     {
         return $this->weight;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getFrequency()
+    public function getFrequency(): ?int
     {
         return $this->frequency;
     }
 
-    /**
-     * @return bool
-     */
-    public function isSelected()
+    public function isSelected(): bool
     {
         return $this->selected;
     }

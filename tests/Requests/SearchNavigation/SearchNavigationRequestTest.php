@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Tests\Requests\SearchNavigation;
 
 use BadMethodCallException;
@@ -53,7 +55,6 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider requiredParamsProvider
-     * @param array $options
      */
     public function testSendingSearchRequestsWithoutRequiredParamsWillThrowAnException(array $options)
     {
@@ -167,7 +168,6 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider invalidShopkeyProvider
-     * @param mixed $invalidShopkey
      */
     public function testInvalidShopkeyWillThrowAnException($invalidShopkey)
     {
@@ -212,7 +212,6 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider invalidShopurlProvider
-     * @param mixed $invalidShopurl
      */
     public function testInvalidShopurlWillThrowAnException($invalidShopurl)
     {
@@ -244,7 +243,6 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider invalidUseripProvider
-     * @param mixed $invalidUserip
      */
     public function testInvalidUseripWillThrowAnException($invalidUserip)
     {
@@ -276,7 +274,6 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider invalidRefererProvider
-     * @param mixed $invalidReferer
      */
     public function testInvalidRefererWillThrowAnException($invalidReferer)
     {
@@ -308,7 +305,6 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider invalidRevisionProvider
-     * @param mixed $invalidRevision
      */
     public function testInvalidRevisionWillThrowAnException($invalidRevision)
     {
@@ -347,6 +343,26 @@ class SearchNavigationRequestTest extends TestBase
     }
 
     /**
+     * @dataProvider invalidAttributeProvider
+     * @param mixed $expectedAttributeName
+     * @param mixed $expectedAttributeValue
+     * @param mixed $specifier
+     */
+    public function testInvalidAttributeWillThrowAnException(
+        $expectedAttributeName,
+        $expectedAttributeValue,
+        $specifier
+    ) {
+        $this->expectException(InvalidParamException::class);
+        $this->expectExceptionMessage('Parameter attrib is not valid.');
+
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
+
+        $searchRequest->addAttribute($expectedAttributeName, $expectedAttributeValue, $specifier);
+    }
+
+    /**
      * @dataProvider orderProvider
      * @param string $expectedOrder
      */
@@ -365,7 +381,6 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider invalidOrderProvider
-     * @param mixed $invalidOrder
      */
     public function testInvalidOrderWillThrowAnException($invalidOrder)
     {
@@ -421,6 +436,26 @@ class SearchNavigationRequestTest extends TestBase
     }
 
     /**
+     * @dataProvider invalidPushAttribProvider
+     * @param mixed $expectedFilterName
+     * @param mixed $expectedFilterValue
+     * @param mixed $expectedFactor
+     */
+    public function testInvalidPushAttribWillThrowAnException(
+        $expectedFilterName,
+        $expectedFilterValue,
+        $expectedFactor
+    ) {
+        $this->expectException(InvalidParamException::class);
+        $this->expectExceptionMessage('Parameter pushAttrib is not valid.');
+
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
+
+        $searchRequest->addPushAttrib($expectedFilterName, $expectedFilterValue, $expectedFactor);
+    }
+
+    /**
      * @dataProvider countProvider
      * @param int $expectedCount
      */
@@ -439,7 +474,6 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider invalidCountProvider
-     * @param mixed $invalidCount
      */
     public function testInvalidCountWillThrowAnException($invalidCount)
     {
@@ -471,7 +505,6 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider invalidFirstProvider
-     * @param mixed $invalidFirst
      */
     public function testInvalidFirstWillThrowAnException($invalidFirst)
     {

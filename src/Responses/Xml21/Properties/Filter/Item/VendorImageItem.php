@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Item;
 
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
@@ -7,19 +9,18 @@ use SimpleXMLElement;
 
 class VendorImageItem extends Item
 {
-    /** @var string|null $image */
-    protected $image;
+    protected ?string $image;
 
     public function __construct(SimpleXMLElement $item)
     {
         parent::__construct($item);
-        $this->image = trim(ResponseHelper::getStringProperty($item, 'image'));
+
+        if ($image = ResponseHelper::getStringProperty($item, 'image')) {
+            $this->image = trim($image);
+        }
     }
 
-    /**
-     * @return string|null
-     */
-    public function getImage()
+    public function getImage(): ?string
     {
         return $this->image;
     }

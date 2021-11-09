@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Responses\Html;
 
 use FINDOLOGIC\Api\Responses\Response;

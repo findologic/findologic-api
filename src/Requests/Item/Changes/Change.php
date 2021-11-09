@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Requests\Item\Changes;
 
 use FINDOLOGIC\Api\Definitions\Defaults;
@@ -21,7 +23,6 @@ abstract class Change
     /**
      * Must return the value for the specified change as described in the API spec.
      *
-     * @return mixed
      */
     abstract public function getValue();
 

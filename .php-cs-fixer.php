@@ -1,14 +1,22 @@
 <?php
 
-$finder = PhpCsFixer\Finder::create()
-    ->exclude('somedir')
-    ->notPath('src/Symfony/Component/Translation/Tests/fixtures/resources.php')
-    ->in(__DIR__);
+use PhpCsFixer\Config;
+use PhpCsFixer\Finder;
 
-$config = new PhpCsFixer\Config();
-return $config->setRules([
+$config = new Config();
+
+$finder = Finder::create()->in(['src', 'tests']);
+$config->setFinder($finder);
+
+$rules = [
     '@PSR12' => true,
-    'strict_param' => true,
-    'declare_strict_types' => true,
     'array_syntax' => ['syntax' => 'short'],
-])->setFinder($finder);
+    'constant_case' => true,
+    'declare_strict_types' => true,
+    'no_superfluous_phpdoc_tags' => true,
+    'single_quote' => true,
+    'strict_param' => true,
+];
+$config->setRules($rules);
+
+return $config;

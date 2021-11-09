@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Validators;
 
 use FINDOLOGIC\Api\Definitions\BlockType;
@@ -35,13 +37,13 @@ class ParameterValidator extends Validator
             return (is_string($value) || is_numeric($value));
         }, self::ERROR_DEFAULT);
         $this->addInstanceRule('isOrderParam', function ($field, $value) {
-            return (in_array($value, OrderType::getConstants()));
+            return (in_array($value, OrderType::getConstants(), true));
         }, self::ERROR_DEFAULT);
         $this->addInstanceRule('isAutocompleteBlockParam', function ($field, $value) {
-            return (in_array($value, BlockType::getConstants()));
+            return (in_array($value, BlockType::getConstants(), true));
         }, self::ERROR_DEFAULT);
         $this->addInstanceRule('isOutputAdapterParam', function ($field, $value) {
-            return (in_array($value, OutputAdapter::getConstants()));
+            return (in_array($value, OutputAdapter::getConstants(), true));
         }, self::ERROR_DEFAULT);
         $this->addInstanceRule('equalOrHigherThanZero', function ($field, $value) {
             return (is_integer($value) && $value >= 0);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Requests;
 
 use BadMethodCallException;
@@ -16,7 +18,6 @@ class AlivetestRequest extends Request
 
     /**
      * @internal
-     * @param array $params
      */
     public function setParams(array $params)
     {

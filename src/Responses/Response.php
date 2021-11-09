@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Responses;
 
 use FINDOLOGIC\Api\Definitions\OutputAdapter;
@@ -117,9 +119,6 @@ abstract class Response
         }
     }
 
-    /**
-     * @param GuzzleResponse $response
-     */
     protected static function checkAlivetestBody(GuzzleResponse $response): void
     {
         $alivetestContents = $response->getBody()->getContents();

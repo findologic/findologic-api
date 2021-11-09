@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Tests;
 
 use FINDOLOGIC\Api\Client;
@@ -440,9 +442,6 @@ class ClientTest extends TestBase
 
     public function testBearerTokenIsSentIfSet()
     {
-        // Does perform assertions based on mock expectations.
-        $this->expectNotToPerformAssertions();
-
         $expectedAccessToken = 'YEEEET';
 
         $requestParams = http_build_query([
@@ -473,5 +472,8 @@ class ClientTest extends TestBase
         $client->withoutAlivetest();
 
         $client->send($searchRequest);
+
+        // @see https://github.com/sebastianbergmann/phpunit/issues/3016
+        $this->assertTrue(true);
     }
 }

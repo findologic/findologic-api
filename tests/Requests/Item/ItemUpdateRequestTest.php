@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Tests\Requests\Item;
 
 use BadMethodCallException;
@@ -207,7 +209,6 @@ class ItemUpdateRequestTest extends TestBase
 
     /**
      * @dataProvider unsupportedSetterProvider
-     * @param mixed $argument
      */
     public function testUnsupportedSettersThrowErrors(string $methodName, $argument, string $expectedExceptionMessage)
     {

@@ -1,7 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Tests\Responses;
 
+use FINDOLOGIC\Api\Requests\Autocomplete\SuggestRequest;
+use FINDOLOGIC\Api\Requests\Item\ItemUpdateRequest;
+use FINDOLOGIC\Api\Requests\Request;
+use FINDOLOGIC\Api\Requests\SearchNavigation\NavigationRequest;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchRequest;
 use FINDOLOGIC\Api\Responses\Autocomplete\SuggestResponse;
 use FINDOLOGIC\Api\Responses\Html\GenericHtmlResponse;
@@ -12,8 +18,8 @@ use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
 use FINDOLOGIC\Api\Tests\TestBase;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Http\Message\ResponseInterface;
 
 class ResponseTest extends TestBase
 {
@@ -23,10 +29,10 @@ class ResponseTest extends TestBase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf('Unknown or invalid outputAdapter "%s"', $expectedOutputAdapter));
 
-        /** @var SearchRequest|PHPUnit_Framework_MockObject_MockObject $request */
+        /** @var SearchRequest|MockObject $request */
         $request = $this->getMockBuilder(SearchRequest::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getOutputAdapter'])
+            ->onlyMethods(['getOutputAdapter'])
             ->getMock();
         $request->expects($this->any())->method('getOutputAdapter')->willReturn($expectedOutputAdapter);
 
@@ -67,11 +73,53 @@ class ResponseTest extends TestBase
 
     /**
      * @dataProvider availableResponseProvider
-     * @param Response $response
      * @param string $expectedRawResponse
      */
     public function testGettingRawResponseAsStringReturnsItAsExpected(Response $response, $expectedRawResponse)
     {
         $this->assertEquals($expectedRawResponse, $response->getRawResponse());
+    }
+
+    public function responseProvider(): array
+    {
+        return [
+            'search request' => [
+                'request' => new SearchRequest(),
+                'response' => new GuzzleResponse(200, [], $this->getMockResponse('Xml21/demoResponse.xml')),
+                'expectedResponseInstance' => Xml21Response::class
+            ],
+            'navigation request' => [
+                'request' => new NavigationRequest(),
+                'response' => new GuzzleResponse(200, [], $this->getMockResponse('Xml21/demoResponse.xml')),
+                'expectedResponseInstance' => Xml21Response::class
+            ],
+            'suggest request' => [
+                'request' => new SuggestRequest(),
+                'response' => new GuzzleResponse(
+                    200,
+                    [],
+                    $this->getMockResponse('Autocomplete/demoResponseSuggest.json')
+                ),
+                'expectedResponseInstance' => SuggestResponse::class
+            ],
+            'item update request' => [
+                'request' => new ItemUpdateRequest(),
+                'response' => new GuzzleResponse(200, [], $this->getMockResponse('Item/demoResponse.json')),
+                'expectedResponseInstance' => ItemUpdateResponse::class
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider responseProvider
+     */
+    public function testResponseDependsOnRequestInstance(
+        Request $request,
+        ResponseInterface $response,
+        string $expectedResponseInstance
+    ): void {
+        $response = Response::buildInstance($request, $response);
+
+        $this->assertInstanceOf($expectedResponseInstance, $response);
     }
 }

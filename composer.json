@@ -55,14 +55,8 @@
         }
     },
     "scripts": {
-        "lint": [
-            "php-cs-fixer fix --allow-risky=yes --dry-run --using-cache=no src",
-            "php-cs-fixer fix --dry-run --using-cache=no tests"
-        ],
-        "fix": [
-            "php-cs-fixer fix --using-cache=no src",
-            "php-cs-fixer fix --using-cache=no tests"
-        ],
+        "lint": "php-cs-fixer fix --allow-risky=yes --dry-run --using-cache=no",
+        "fix": "php-cs-fixer fix --allow-risky=yes --using-cache=no",
         "test": [
             "XDEBUG_MODE=coverage phpunit --configuration phpunit.xml --coverage-text --coverage-clover=coverage.xml"
         ]

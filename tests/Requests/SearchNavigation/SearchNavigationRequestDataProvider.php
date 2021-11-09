@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Tests\Requests\SearchNavigation;
 
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchNavigationRequest;
@@ -159,6 +161,14 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
+    public function invalidAttributeProvider()
+    {
+        return [
+            'attribute value is an array' => ['price', ['50'], null],
+            'attribute value is an object' => ['price', new \stdClass(), null],
+        ];
+    }
+
     public function selectedProvider()
     {
         return [
@@ -206,6 +216,14 @@ trait SearchNavigationRequestDataProvider
             'normal pushAttrib' => ['vendor', 'TomTailor', 0.3],
             'other pushAttrib' => ['Material', 'Leather', 2.1],
             'more different pushAttrib' => ['Color', 'Black', 3.0]
+        ];
+    }
+
+    public function invalidPushAttribProvider()
+    {
+        return [
+            'pushAttrib value is an array' => ['Tom Tailor', ['50'], 3],
+            'pushAttrib value is an object' => ['Tom Tailor', new \stdClass(), 3],
         ];
     }
 

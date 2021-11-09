@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Requests\SearchNavigation;
 
 use FINDOLOGIC\Api\Definitions\Endpoint;
 use FINDOLOGIC\Api\Definitions\QueryParameter;
-use FINDOLOGIC\Api\Exceptions\InvalidParamException;
-use FINDOLOGIC\Api\Validators\ParameterValidator;
 
 class NavigationRequest extends SearchNavigationRequest
 {
@@ -16,19 +16,6 @@ class NavigationRequest extends SearchNavigationRequest
      */
     public function setSelected(string $filterName, string $value): self
     {
-        $validator = new ParameterValidator([
-            'filterName' => $filterName,
-            'value' => $value,
-        ]);
-
-        $validator
-            ->rule('string', 'filterName')
-            ->rule('stringOrNumeric', 'value');
-
-        if (!$validator->validate()) {
-            throw new InvalidParamException(QueryParameter::SELECTED);
-        }
-
         $this->addParam(QueryParameter::SELECTED, [$filterName => [$value]]);
 
         return $this;

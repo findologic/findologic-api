@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Requests\SearchNavigation;
 
 use BadMethodCallException;
@@ -88,7 +90,7 @@ abstract class SearchNavigationRequest extends Request
     /**
      * Adds the attrib param. It is used to filter the search results.
      *
-     * @param $value mixed
+     * @param $value string|int|float
      * @param $specifier null|string is used for sliders such as price. Can be either 'min' or 'max'.
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:parameters#search_parameters
      */
@@ -141,13 +143,6 @@ abstract class SearchNavigationRequest extends Request
      */
     public function addProperty(string $value): self
     {
-        $validator = new ParameterValidator([QueryParameter::PROPERTIES => $value]);
-        $validator->rule('string', QueryParameter::PROPERTIES);
-
-        if (!$validator->validate()) {
-            throw new InvalidParamException(QueryParameter::PROPERTIES);
-        }
-
         $this->addParam(QueryParameter::PROPERTIES, [$value], self::ADD_VALUE);
 
         return $this;
@@ -159,20 +154,13 @@ abstract class SearchNavigationRequest extends Request
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:parameters#search_parameters
      * @see https://docs.findologic.com/doku.php?id=personalization
      * @param string $key Name of the Filter. E.g. Color
-     * @param string $value Value of the Filter. E.g. Black
+     * @param string|int|float $value Value of the Filter. E.g. Black
      * @param float $factor Indicates how much the pushed filter influences the result.
      */
-    public function addPushAttrib(string $key, string $value, float $factor): self
+    public function addPushAttrib(string $key, $value, float $factor): self
     {
-        $validator = new ParameterValidator([
-            'key' => $key,
-            'value' => $value,
-            'factor' => $factor,
-        ]);
-
-        $validator
-            ->rule('string', ['key', 'value'])
-            ->rule('numeric', 'factor');
+        $validator = new ParameterValidator(['value' => $value]);
+        $validator->rule('stringOrNumeric', ['value']);
 
         if (!$validator->validate()) {
             throw new InvalidParamException(QueryParameter::PUSH_ATTRIB);
@@ -213,13 +201,6 @@ abstract class SearchNavigationRequest extends Request
      */
     public function setIdentifier(string $value): self
     {
-        $validator = new ParameterValidator([QueryParameter::IDENTIFIER => $value]);
-        $validator->rule('string', QueryParameter::IDENTIFIER);
-
-        if (!$validator->validate()) {
-            throw new InvalidParamException(QueryParameter::IDENTIFIER);
-        }
-
         $this->addParam(QueryParameter::IDENTIFIER, $value);
 
         return $this;
@@ -231,13 +212,6 @@ abstract class SearchNavigationRequest extends Request
      */
     public function addOutputAttrib(string $value): self
     {
-        $validator = new ParameterValidator([QueryParameter::OUTPUT_ATTRIB => $value]);
-        $validator->rule('string', QueryParameter::OUTPUT_ATTRIB);
-
-        if (!$validator->validate()) {
-            throw new InvalidParamException(QueryParameter::OUTPUT_ATTRIB);
-        }
-
         $this->addParam(QueryParameter::OUTPUT_ATTRIB, [$value], self::ADD_VALUE);
 
         return $this;

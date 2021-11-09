@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Tests;
 
 use Exception;
@@ -72,7 +74,6 @@ class ConfigTest extends TestBase
     /**
      * @dataProvider invalidConfigProvider
      * @param string $configValue
-     * @param mixed $value
      */
     public function testInvalidConfigThrowsAnException($configValue, $value)
     {

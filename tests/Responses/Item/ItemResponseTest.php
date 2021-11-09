@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Tests\Responses\Item;
 
 use FINDOLOGIC\Api\Responses\Item\ItemUpdateResponse;

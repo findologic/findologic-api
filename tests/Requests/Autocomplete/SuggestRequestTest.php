@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Tests\Requests\Autocomplete;
 
 use BadMethodCallException;
@@ -69,6 +71,10 @@ class SuggestRequestTest extends TestBase
      */
     public function testSetQueryWillBeSetItInAValidFormat($expectedQuery)
     {
+        if ($expectedQuery === '') {
+            $this->markTestSkipped('Empty queries are not allowed for suggest requests');
+        }
+
         $expectedParameter = 'query';
 
         $suggestRequest = new SuggestRequest();
@@ -78,6 +84,21 @@ class SuggestRequestTest extends TestBase
         $params = $suggestRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
         $this->assertEquals($expectedQuery, $params[$expectedParameter]);
+    }
+
+    /**
+     * @dataProvider invalidQueryProvider
+     * @param mixed $invalidQuery
+     */
+    public function testSetQueryWillThrowAnExceptionWhenSubmittingInvalidQueries($invalidQuery)
+    {
+        $this->expectException(InvalidParamException::class);
+        $this->expectExceptionMessage('Parameter query is not valid.');
+
+        $searchRequest = new SuggestRequest();
+        $this->setRequiredParamsForSuggestRequest($searchRequest);
+
+        $searchRequest->setQuery($invalidQuery);
     }
 
     /**

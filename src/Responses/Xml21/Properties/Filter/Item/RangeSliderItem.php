@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Item;
 
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Range;
@@ -7,10 +9,8 @@ use SimpleXMLElement;
 
 class RangeSliderItem extends Item
 {
-    protected $selected = false;
-
-    /** @var Range|null $parameters */
-    protected $parameters;
+    protected bool $selected = false;
+    protected ?Range $parameters;
 
     public function __construct(SimpleXMLElement $item)
     {
@@ -20,10 +20,7 @@ class RangeSliderItem extends Item
         }
     }
 
-    /**
-     * @return Range|null
-     */
-    public function getParameters()
+    public function getParameters(): ?Range
     {
         return $this->parameters;
     }

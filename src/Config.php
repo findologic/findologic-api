@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api;
 
 use FINDOLOGIC\Api\Exceptions\ConfigException;
@@ -38,9 +40,6 @@ class Config
 
     /**
      * Sets a specified config value and validates them according to the given validation rules.
-     *
-     * @param mixed $value
-     * @param array $validationRules
      */
     private function setConfigValue(string $key, $value, array $validationRules): void
     {

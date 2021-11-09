@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Requests\Autocomplete;
 
 use BadMethodCallException;
@@ -36,9 +38,7 @@ class SuggestRequest extends Request
     public function setQuery(string $value): self
     {
         $validator = new ParameterValidator([QueryParameter::QUERY => $value]);
-        $validator
-            ->rule('string', QueryParameter::QUERY)
-            ->rule('lengthMin', QueryParameter::QUERY, 1);
+        $validator->rule('required', QueryParameter::QUERY);
 
         if (!$validator->validate()) {
             throw new InvalidParamException(QueryParameter::QUERY);
@@ -77,13 +77,6 @@ class SuggestRequest extends Request
      */
     public function setUsergrouphash(string $value): self
     {
-        $validator = new ParameterValidator([SuggestQueryParameter::USERGROUPHASH => $value]);
-        $validator->rule('string', SuggestQueryParameter::USERGROUPHASH);
-
-        if (!$validator->validate()) {
-            throw new InvalidParamException(SuggestQueryParameter::USERGROUPHASH);
-        }
-
         $this->addParam(SuggestQueryParameter::USERGROUPHASH, $value);
 
         return $this;
@@ -96,13 +89,6 @@ class SuggestRequest extends Request
      */
     public function setMultishopId(int $value): self
     {
-        $validator = new ParameterValidator([SuggestQueryParameter::MULTISHOP_ID => $value]);
-        $validator->rule('integer', SuggestQueryParameter::MULTISHOP_ID);
-
-        if (!$validator->validate()) {
-            throw new InvalidParamException(SuggestQueryParameter::MULTISHOP_ID);
-        }
-
         $this->addParam(SuggestQueryParameter::MULTISHOP_ID, $value, self::ADD_VALUE);
 
         return $this;

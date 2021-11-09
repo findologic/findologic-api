@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Tests\Responses\Autocomplete;
 
 use FINDOLOGIC\Api\Definitions\BlockType;

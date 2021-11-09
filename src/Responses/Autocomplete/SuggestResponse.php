@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Responses\Autocomplete;
 
 use FINDOLOGIC\Api\Responses\Autocomplete\Properties\Suggestion;
@@ -39,7 +41,7 @@ class SuggestResponse extends Response
     public function getFilteredSuggestions(array $blockTypes): array
     {
         return array_values(array_filter($this->getSuggestions(), function ($suggestion) use ($blockTypes) {
-            return in_array($suggestion->getBlock(), $blockTypes);
+            return in_array($suggestion->getBlock(), $blockTypes, true);
         }));
     }
 }

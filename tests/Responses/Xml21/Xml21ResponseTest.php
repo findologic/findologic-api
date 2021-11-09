@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Tests\Responses\Xml21;
 
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\CategoryFilter;

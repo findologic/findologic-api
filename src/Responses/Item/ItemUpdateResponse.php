@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Responses\Item;
 
 use FINDOLOGIC\Api\Responses\Item\Properties\ItemError;
@@ -15,7 +17,7 @@ class ItemUpdateResponse extends Response
         $contents = json_decode($response, true);
 
         foreach ($contents['errors'] as $itemId => $reasons) {
-            $this->errors[] = new ItemError($itemId, $reasons);
+            $this->errors[] = new ItemError((string)$itemId, $reasons);
         }
     }
 

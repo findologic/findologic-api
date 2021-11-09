@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Responses\Json10\Properties\Filter\Values;
 
 use FINDOLOGIC\Api\Helpers\ResponseHelper;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Requests;
 
 use FINDOLOGIC\Api\Config;
@@ -114,13 +116,6 @@ abstract class Request
      */
     public function setQuery(string $value): self
     {
-        $validator = new ParameterValidator([QueryParameter::QUERY => $value]);
-        $validator->rule('string', QueryParameter::QUERY);
-
-        if (!$validator->validate()) {
-            throw new InvalidParamException(QueryParameter::QUERY);
-        }
-
         $this->addParam(QueryParameter::QUERY, $value);
 
         return $this;
@@ -153,13 +148,6 @@ abstract class Request
      */
     public function addGroup(string $value): self
     {
-        $validator = new ParameterValidator([QueryParameter::GROUP => $value]);
-        $validator->rule('string', QueryParameter::GROUP);
-
-        if (!$validator->validate()) {
-            throw new InvalidParamException(QueryParameter::GROUP);
-        }
-
         $this->addParam(QueryParameter::GROUP, [$value], self::ADD_VALUE);
 
         return $this;
@@ -172,13 +160,6 @@ abstract class Request
      */
     public function addUserGroup(string $value): self
     {
-        $validator = new ParameterValidator([QueryParameter::USERGROUP => $value]);
-        $validator->rule('string', QueryParameter::USERGROUP);
-
-        if (!$validator->validate()) {
-            throw new InvalidParamException(QueryParameter::USERGROUP);
-        }
-
         $this->addParam(QueryParameter::USERGROUP, [$value], self::ADD_VALUE);
 
         return $this;
@@ -192,8 +173,7 @@ abstract class Request
     public function setOutputAdapter(string $value): self
     {
         $validator = new ParameterValidator([QueryParameter::OUTPUT_ADAPTER => $value]);
-        $validator
-            ->rule('isOutputAdapterParam', QueryParameter::OUTPUT_ADAPTER);
+        $validator->rule('isOutputAdapterParam', QueryParameter::OUTPUT_ADAPTER);
 
         if (!$validator->validate()) {
             throw new InvalidParamException(QueryParameter::OUTPUT_ADAPTER);

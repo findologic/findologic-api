@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Tests;
 
 use FINDOLOGIC\GuzzleHttp\Client;
@@ -23,30 +25,26 @@ class TestBase extends TestCase
     {
         parent::setUp();
         $this->httpClientMock = $this->getMockBuilder(Client::class)
-            ->setMethods(['request'])
+            ->onlyMethods(['request'])
             ->getMock();
         $this->responseMock = $this->getMockBuilder(Response::class)
-            ->setMethods(['getBody', 'getStatusCode'])
+            ->onlyMethods(['getBody', 'getStatusCode'])
             ->getMock();
         $this->streamMock = $this->getMockBuilder(Stream::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getContents'])
+            ->onlyMethods(['getContents'])
             ->getMock();
     }
 
     /**
      * Will set the default expectations for doing a request, which is required by all tests that are dealing with
      * sending requests.
-     *
-     * @param string $expectedRequestUrl
-     * @param string $expectedBody
-     * @param int $statusCode
      */
     protected function setExpectationsForRequests(
-        $expectedRequestUrl,
-        $expectedBody,
-        $statusCode = 200,
-        $requestMethod = 'GET',
+        string $expectedRequestUrl,
+        string $expectedBody,
+        int $statusCode = 200,
+        string $requestMethod = 'GET',
         array $guzzleOptionsOverride = []
     ) {
         $this->httpClientMock->method('request')

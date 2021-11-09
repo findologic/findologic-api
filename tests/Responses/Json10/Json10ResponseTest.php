@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Tests\Responses\Json10;
 
 use FINDOLOGIC\Api\Responses\Json10\Json10Response;

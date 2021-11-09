@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Tests\Requests\Autocomplete;
 
 use FINDOLOGIC\Api\Requests\Autocomplete\SuggestRequest;
@@ -22,6 +24,15 @@ trait SuggestDataProvider
             ],
             'special characters in query should be set' => [
                 'expectedQuery' => '/ /',
+            ],
+        ];
+    }
+
+    public function invalidQueryProvider()
+    {
+        return [
+            'empty query' => [
+                'query' => '',
             ],
         ];
     }

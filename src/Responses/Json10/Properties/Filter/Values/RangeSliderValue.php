@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FINDOLOGIC\Api\Responses\Json10\Properties\Filter\Values;
 
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
@@ -7,8 +9,8 @@ use FINDOLOGIC\Api\Helpers\ResponseHelper;
 class RangeSliderValue extends FilterValue
 {
     protected ?bool $selected = false;
-    protected float $min;
-    protected float $max;
+    protected ?float $min;
+    protected ?float $max;
 
     public function __construct(array $filterValue)
     {
@@ -20,12 +22,12 @@ class RangeSliderValue extends FilterValue
         parent::__construct($filterValue);
     }
 
-    public function getMin(): float
+    public function getMin(): ?float
     {
         return $this->min;
     }
 
-    public function getMax(): float
+    public function getMax(): ?float
     {
         return $this->max;
     }
