@@ -8,12 +8,15 @@ use FINDOLOGIC\Api\Requests\Autocomplete\SuggestRequest;
 
 trait SuggestDataProvider
 {
-    public function setRequiredParamsForSuggestRequest(SuggestRequest $suggestRequest)
+    public function setRequiredParamsForSuggestRequest(SuggestRequest $suggestRequest): void
     {
         $suggestRequest->setShopUrl('www.blubbergurken.io');
     }
 
-    public function queryProvider()
+    /**
+     * @return array<string, array<string, string>>
+     */
+    public function queryProvider(): array
     {
         return [
             'some random query can be set' => [
@@ -28,7 +31,10 @@ trait SuggestDataProvider
         ];
     }
 
-    public function invalidQueryProvider()
+    /**
+     * @return array<string, array<string, string>>
+     */
+    public function invalidQueryProvider(): array
     {
         return [
             'empty query' => [
@@ -37,7 +43,10 @@ trait SuggestDataProvider
         ];
     }
 
-    public function autocompleteBlocksProvider()
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function autocompleteBlocksProvider(): array
     {
         return [
             'normal autocompleteBlock' => ['suggest'],
@@ -47,7 +56,10 @@ trait SuggestDataProvider
         ];
     }
 
-    public function invalidAutocompleteBlocksProvider()
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function invalidAutocompleteBlocksProvider(): array
     {
         return [
             'some different string' => ['bom'],
@@ -55,7 +67,10 @@ trait SuggestDataProvider
         ];
     }
 
-    public function usergroupProvider()
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function usergroupProvider(): array
     {
         return [
             'normal usergroup' => ['customer132'],
@@ -65,7 +80,10 @@ trait SuggestDataProvider
         ];
     }
 
-    public function multishopIdProvider()
+    /**
+     * @return array<string, array<int, int>>
+     */
+    public function multishopIdProvider(): array
     {
         return [
             'normal usergroup' => [1],

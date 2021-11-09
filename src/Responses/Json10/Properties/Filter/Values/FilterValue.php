@@ -19,6 +19,9 @@ abstract class FilterValue
     protected ?float $weight = null;
     protected ?int $frequency = null;
 
+    /**
+     * @param array<string, string|int|float|bool|null> $filterValue
+     */
     public function __construct(array $filterValue)
     {
         // Continuously check if the values aren't set already, to allow filter-classes to manually set these
@@ -37,7 +40,10 @@ abstract class FilterValue
         }
     }
 
-    public static function getInstance(Filter $filter, array $filterValue)
+    /**
+     * @param array<string, string|int|float|bool|null> $filterValue
+     */
+    public static function getInstance(Filter $filter, array $filterValue): FilterValue
     {
         switch (true) {
             case $filter instanceof RangeSliderFilter:

@@ -11,7 +11,10 @@ use InvalidArgumentException;
 
 class ItemUpdateRequestTest extends TestBase
 {
-    public function itemsVisibleProvider()
+    /**
+     * @return array<string, array<string, array<int|string, array<int|string, array<string, array<string, bool>>|string>>>>
+     */
+    public function itemsVisibleProvider(): array
     {
         return [
             'make single item visible' => [
@@ -62,8 +65,10 @@ class ItemUpdateRequestTest extends TestBase
 
     /**
      * @dataProvider itemsVisibleProvider
+     * @param array<int|string, array<string, string>|string> $items
+     * @param array<string, array<string, array<string>>> $expectedRequestBody
      */
-    public function testItemsCanBeMarkedAsVisible(array $items, array $expectedRequestBody)
+    public function testItemsCanBeMarkedAsVisible(array $items, array $expectedRequestBody): void
     {
         $updateRequest = new ItemUpdateRequest();
         foreach ($items as $item) {
@@ -75,7 +80,7 @@ class ItemUpdateRequestTest extends TestBase
         $this->assertEquals($expectedRequestBody, $requestBody);
     }
 
-    public function testItemsCanBeMarkedAsVisibleAndInvisibleIteratively()
+    public function testItemsCanBeMarkedAsVisibleAndInvisibleIteratively(): void
     {
         $productId = '123';
         $updateRequest = new ItemUpdateRequest();
@@ -88,7 +93,7 @@ class ItemUpdateRequestTest extends TestBase
         $this->assertFalse($requestBody['update'][$productId]['visible']['']);
     }
 
-    public function testItemVisibilityIsDependentOnTheUserGroup()
+    public function testItemVisibilityIsDependentOnTheUserGroup(): void
     {
         $productId = '1234';
         $defaultUserGroup = '';
@@ -117,7 +122,7 @@ class ItemUpdateRequestTest extends TestBase
         $this->assertFalse($productUpdates['visible'][$notSpecialUserGroupInvisibleItem]);
     }
 
-    public function testChangesCanBeReset()
+    public function testChangesCanBeReset(): void
     {
         $updateRequest = new ItemUpdateRequest();
         $updateRequest->markInvisible('1234');
@@ -130,7 +135,7 @@ class ItemUpdateRequestTest extends TestBase
         $this->assertEmpty($requestBody['update']);
     }
 
-    public function testChangesCanBeResetPerItem()
+    public function testChangesCanBeResetPerItem(): void
     {
         $itemWithChanges = '1234';
         $itemWithResetChanges = '4321';
@@ -148,7 +153,7 @@ class ItemUpdateRequestTest extends TestBase
         $this->assertNotEmpty($requestBody['update'][$itemWithChanges]);
     }
 
-    public function testItemNotExistsFails()
+    public function testItemNotExistsFails(): void
     {
         $expectedNonExistingItemId = 'i do not exist';
 
@@ -162,7 +167,7 @@ class ItemUpdateRequestTest extends TestBase
         $updateRequest->getItem('i do not exist');
     }
 
-    public function testAddUnknownChangeThrowsAnError()
+    public function testAddUnknownChangeThrowsAnError(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown change type provided');
@@ -176,7 +181,10 @@ class ItemUpdateRequestTest extends TestBase
         $item->getOrCreateChange(69);
     }
 
-    public function unsupportedSetterProvider()
+    /**
+     * @return array<string, array<string, int|string>>
+     */
+    public function unsupportedSetterProvider(): array
     {
         return [
             'setQuery' => [
@@ -209,9 +217,13 @@ class ItemUpdateRequestTest extends TestBase
 
     /**
      * @dataProvider unsupportedSetterProvider
+     * @param string|int $argument
      */
-    public function testUnsupportedSettersThrowErrors(string $methodName, $argument, string $expectedExceptionMessage)
-    {
+    public function testUnsupportedSettersThrowErrors(
+        string $methodName,
+        $argument,
+        string $expectedExceptionMessage
+    ): void {
         $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
 
@@ -219,7 +231,7 @@ class ItemUpdateRequestTest extends TestBase
         $updateRequest->{$methodName}($argument);
     }
 
-    public function testOutputAdapterAlwaysReturnsNull()
+    public function testOutputAdapterAlwaysReturnsNull(): void
     {
         $updateRequest = new ItemUpdateRequest();
         $this->assertNull($updateRequest->getOutputAdapter());

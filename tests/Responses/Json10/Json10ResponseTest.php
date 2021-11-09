@@ -23,13 +23,9 @@ use PHPUnit\Framework\TestCase;
 class Json10ResponseTest extends TestCase
 {
     /**
-     * Will use a real response that could come from a request. It returns the Object.
-     *
-     * @param string $filename
-     *
-     * @return Json10Response
+     * Will use a real response that could come from a request.
      */
-    public function getRealResponseData($filename = 'demoResponse.json')
+    public function getRealResponseData(string $filename = 'demoResponse.json'): Json10Response
     {
         // Get contents from a real response locally.
         $realResponseData = file_get_contents(__DIR__ . '/../../Mockdata/Json10/' . $filename);
@@ -37,7 +33,7 @@ class Json10ResponseTest extends TestCase
         return new Json10Response($realResponseData);
     }
 
-    public function testRequestWillBeReturnedAsExpected()
+    public function testRequestWillBeReturnedAsExpected(): void
     {
         $response = $this->getRealResponseData();
         $request = $response->getRequest();
@@ -56,7 +52,7 @@ class Json10ResponseTest extends TestCase
         $this->assertSame('salesfrequency dynamic DESC', $order->__toString());
     }
 
-    public function testMetadataWillBeReturnedAsExpected()
+    public function testMetadataWillBeReturnedAsExpected(): void
     {
         $response = $this->getRealResponseData();
         $metadata = $response->getResult()->getMetadata();
@@ -68,7 +64,7 @@ class Json10ResponseTest extends TestCase
         $this->assertSame('€', $metadata->getCurrencySymbol());
     }
 
-    public function testItemsWillBeReturnedAsExpected()
+    public function testItemsWillBeReturnedAsExpected(): void
     {
         $response = $this->getRealResponseData();
         $items = $response->getResult()->getItems();
@@ -99,7 +95,7 @@ class Json10ResponseTest extends TestCase
         );
     }
 
-    public function testVariantIsReturnedAsExpected()
+    public function testVariantIsReturnedAsExpected(): void
     {
         $response = $this->getRealResponseData();
         $variant = $response->getResult()->getVariant();
@@ -110,7 +106,7 @@ class Json10ResponseTest extends TestCase
         $this->assertNull($variant->getImprovedQuery());
     }
 
-    public function testMainFiltersAreReturnedAsExpected()
+    public function testMainFiltersAreReturnedAsExpected(): void
     {
         $response = $this->getRealResponseData();
         $mainFilters = $response->getResult()->getMainFilters();
@@ -185,7 +181,7 @@ class Json10ResponseTest extends TestCase
         $this->assertNull($thirdFilterValue->getFrequency());
     }
 
-    public function testOtherFiltersAreReturnedAsExpected()
+    public function testOtherFiltersAreReturnedAsExpected(): void
     {
         $response = $this->getRealResponseData();
         $otherFilters = $response->getResult()->getOtherFilters();
@@ -209,7 +205,7 @@ class Json10ResponseTest extends TestCase
         $this->assertSame(167, $otherFilterValue->getFrequency());
     }
 
-    public function testLandingPageIsReturnedAsExpected()
+    public function testLandingPageIsReturnedAsExpected(): void
     {
         $response = $this->getRealResponseData('demoResponseWithLandingPage.json');
         $landingPage = $response->getResult()->getMetadata()->getLandingPage();
@@ -219,7 +215,7 @@ class Json10ResponseTest extends TestCase
         $this->assertSame($landingPage->getUrl(), 'https://blubbergurken.io/gtc');
     }
 
-    public function testPromotionIsReturnedAsExpected()
+    public function testPromotionIsReturnedAsExpected(): void
     {
         $response = $this->getRealResponseData('demoResponseWithPromotion.json');
         $promotion = $response->getResult()->getMetadata()->getPromotion();
@@ -230,7 +226,7 @@ class Json10ResponseTest extends TestCase
         $this->assertSame('https://blubbergurken.io/assets/images/promotion.png', $promotion->getImageUrl());
     }
 
-    public function testItemPropertiesAreReturnedAsExpected()
+    public function testItemPropertiesAreReturnedAsExpected(): void
     {
         $response = $this->getRealResponseData('demoResponseWithItemProperties.json');
         $items = $response->getResult()->getItems();
@@ -244,7 +240,7 @@ class Json10ResponseTest extends TestCase
         $this->assertSame($item->getProperties()['ordernumber'], $item->getProperty('ordernumber'));
     }
 
-    public function testItemPropertyWillReturnNullIfPropertyDoesNotExist()
+    public function testItemPropertyWillReturnNullIfPropertyDoesNotExist(): void
     {
         $response = $this->getRealResponseData();
         $items = $response->getResult()->getItems();
@@ -259,7 +255,7 @@ class Json10ResponseTest extends TestCase
         $this->assertEquals($expectedDefault, $item->getProperty('ordernumber', $expectedDefault));
     }
 
-    public function testItemAttributesAreReturnedAsExpected()
+    public function testItemAttributesAreReturnedAsExpected(): void
     {
         $response = $this->getRealResponseData('demoResponseWithItemAttributes.json');
         $items = $response->getResult()->getItems();
@@ -273,7 +269,7 @@ class Json10ResponseTest extends TestCase
         $this->assertSame($item->getAttributes()['vendor'], $item->getAttribute('vendor'));
     }
 
-    public function testItemAttributeWillReturnNullIfAttributeDoesNotExist()
+    public function testItemAttributeWillReturnNullIfAttributeDoesNotExist(): void
     {
         $response = $this->getRealResponseData();
         $items = $response->getResult()->getItems();
@@ -288,7 +284,7 @@ class Json10ResponseTest extends TestCase
         $this->assertEquals($expectedDefault, $item->getAttribute('vendor', $expectedDefault));
     }
 
-    public function testColorFilterIsReturnedAsExpected()
+    public function testColorFilterIsReturnedAsExpected(): void
     {
         $response = $this->getRealResponseData('demoResponseWithColorFilter.json');
         $filters = $response->getResult()->getOtherFilters();
@@ -316,7 +312,7 @@ class Json10ResponseTest extends TestCase
         $this->assertNull($colorFilterValue->getFrequency());
     }
 
-    public function testVendorImageFilterIsReturnedAsExpected()
+    public function testVendorImageFilterIsReturnedAsExpected(): void
     {
         $response = $this->getRealResponseData('demoResponseWithVendorImageFilter.json');
         $filters = $response->getResult()->getMainFilters();

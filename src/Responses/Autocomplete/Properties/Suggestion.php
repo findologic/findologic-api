@@ -19,6 +19,9 @@ class Suggestion
     private ?string $url;
     private ?string $ordernumber;
 
+    /**
+     * @param array<string, string|int|null> $response
+     */
     public function __construct(array $response)
     {
         $this->label = ResponseHelper::getStringProperty($response, 'label');

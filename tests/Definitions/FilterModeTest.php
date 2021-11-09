@@ -9,7 +9,7 @@ use FINDOLOGIC\Api\Tests\TestBase;
 
 class FilterModeTest extends TestBase
 {
-    public function testAllFilterModesAreAvailable()
+    public function testAllFilterModesAreAvailable(): void
     {
         $expectedAvailableFilterModes = [
             'SINGLE' => 'single',

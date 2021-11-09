@@ -13,7 +13,6 @@ $rules = [
     'array_syntax' => ['syntax' => 'short'],
     'constant_case' => true,
     'declare_strict_types' => true,
-    'no_superfluous_phpdoc_tags' => true,
     'single_quote' => true,
     'strict_param' => true,
 ];

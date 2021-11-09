@@ -13,6 +13,9 @@ class Variant
     private ?string $improvedQuery;
     private ?string $didYouMeanQuery;
 
+    /**
+     * @param array<string, string|null> $variant
+     */
     public function __construct(array $variant)
     {
         $this->name = ResponseHelper::getStringProperty($variant, 'name');

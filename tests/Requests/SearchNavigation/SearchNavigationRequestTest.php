@@ -42,7 +42,10 @@ class SearchNavigationRequestTest extends TestBase
         $this->rawMockResponse = $this->getMockResponse('Xml21/demoResponse.xml');
     }
 
-    public function requiredParamsProvider()
+    /**
+     * @return array<string, array<int, array<string, string>>>
+     */
+    public function requiredParamsProvider(): array
     {
         return [
             'config' => [[
@@ -55,8 +58,9 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider requiredParamsProvider
+     * @param array<string, string|int|float|bool|null> $options
      */
-    public function testSendingSearchRequestsWithoutRequiredParamsWillThrowAnException(array $options)
+    public function testSendingSearchRequestsWithoutRequiredParamsWillThrowAnException(array $options): void
     {
         $this->httpClientMock->method('request')->willReturn($this->responseMock);
         $this->responseMock->method('getBody')->willReturn($this->streamMock);
@@ -89,7 +93,7 @@ class SearchNavigationRequestTest extends TestBase
         $this->assertEqualsWithDelta(0, $response->getResponseTime(), 0.1);
     }
 
-    public function testSendingNavigationRequestsWithoutRequiredParamsWillThrowAnException()
+    public function testSendingNavigationRequestsWithoutRequiredParamsWillThrowAnException(): void
     {
         $this->httpClientMock->method('request')->willReturn($this->responseMock);
         $this->responseMock->method('getBody')->willReturn($this->streamMock);
@@ -136,7 +140,7 @@ class SearchNavigationRequestTest extends TestBase
      * @dataProvider queryProvider
      * @param string $expectedQuery
      */
-    public function testSetQueryCanBeSetAndIsFormattedAsQueryString($expectedQuery)
+    public function testSetQueryCanBeSetAndIsFormattedAsQueryString($expectedQuery): void
     {
         $expectedParameter = 'query';
 
@@ -153,7 +157,7 @@ class SearchNavigationRequestTest extends TestBase
      * @dataProvider shopkeyProvider
      * @param string $expectedShopkey
      */
-    public function testSetShopkeyCanBeSetAndIsFormattedAsQueryString($expectedShopkey)
+    public function testSetShopkeyCanBeSetAndIsFormattedAsQueryString($expectedShopkey): void
     {
         $expectedParameter = 'shopkey';
 
@@ -169,7 +173,7 @@ class SearchNavigationRequestTest extends TestBase
     /**
      * @dataProvider invalidShopkeyProvider
      */
-    public function testInvalidShopkeyWillThrowAnException($invalidShopkey)
+    public function testInvalidShopkeyWillThrowAnException(string $invalidShopkey): void
     {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter shopkey is not valid.');
@@ -180,7 +184,7 @@ class SearchNavigationRequestTest extends TestBase
         $searchRequest->setShopkey($invalidShopkey);
     }
 
-    public function testShopkeyIsAutomaticallyAddedFromTheConfigIfNotOverridden()
+    public function testShopkeyIsAutomaticallyAddedFromTheConfigIfNotOverridden(): void
     {
         $expectedParameter = 'shopkey';
 
@@ -197,7 +201,7 @@ class SearchNavigationRequestTest extends TestBase
      * @dataProvider shopurlProvider
      * @param string $expectedShopurl
      */
-    public function testShopurlCanBeSetAndIsFormattedAsQueryString($expectedShopurl)
+    public function testShopurlCanBeSetAndIsFormattedAsQueryString(string $expectedShopurl): void
     {
         $expectedParameter = 'shopurl';
 
@@ -213,7 +217,7 @@ class SearchNavigationRequestTest extends TestBase
     /**
      * @dataProvider invalidShopurlProvider
      */
-    public function testInvalidShopurlWillThrowAnException($invalidShopurl)
+    public function testInvalidShopurlWillThrowAnException(string $invalidShopurl): void
     {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter shopurl is not valid.');
@@ -226,9 +230,8 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider useripProvider
-     * @param string $expectedUserip
      */
-    public function testUseripCanBeSetAndIsFormattedAsQueryString($expectedUserip)
+    public function testUseripCanBeSetAndIsFormattedAsQueryString(string $expectedUserip): void
     {
         $expectedParameter = 'userip';
 
@@ -244,7 +247,7 @@ class SearchNavigationRequestTest extends TestBase
     /**
      * @dataProvider invalidUseripProvider
      */
-    public function testInvalidUseripWillThrowAnException($invalidUserip)
+    public function testInvalidUseripWillThrowAnException(string $invalidUserip): void
     {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter userip is not valid.');
@@ -257,9 +260,8 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider refererProvider
-     * @param string $expectedReferer
      */
-    public function testRefererCanBeSetAndIsFormattedAsQueryString($expectedReferer)
+    public function testRefererCanBeSetAndIsFormattedAsQueryString(string $expectedReferer): void
     {
         $expectedParameter = 'referer';
 
@@ -275,7 +277,7 @@ class SearchNavigationRequestTest extends TestBase
     /**
      * @dataProvider invalidRefererProvider
      */
-    public function testInvalidRefererWillThrowAnException($invalidReferer)
+    public function testInvalidRefererWillThrowAnException(string $invalidReferer): void
     {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter referer is not valid.');
@@ -288,9 +290,8 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider revisionProvider
-     * @param string $expectedRevision
      */
-    public function testRevisionCanBeSetAndIsFormattedAsQueryString($expectedRevision)
+    public function testRevisionCanBeSetAndIsFormattedAsQueryString(string $expectedRevision): void
     {
         $expectedParameter = 'revision';
 
@@ -306,7 +307,7 @@ class SearchNavigationRequestTest extends TestBase
     /**
      * @dataProvider invalidRevisionProvider
      */
-    public function testInvalidRevisionWillThrowAnException($invalidRevision)
+    public function testInvalidRevisionWillThrowAnException(string $invalidRevision): void
     {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter revision is not valid.');
@@ -319,15 +320,12 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider attributeProvider
-     * @param string $expectedAttributeName
-     * @param string $expectedAttributeValue
-     * @param string $specifier
      */
     public function testAddAttributeWillSetItInAValidFormat(
-        $expectedAttributeName,
-        $expectedAttributeValue,
-        $specifier
-    ) {
+        string $expectedAttributeName,
+        string $expectedAttributeValue,
+        ?string $specifier
+    ): void {
         $expectedParameter = 'attrib';
 
         $searchRequest = new SearchRequest();
@@ -344,12 +342,13 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider invalidAttributeProvider
+     * @param mixed $expectedAttributeValue
      */
     public function testInvalidAttributeWillThrowAnException(
-        $expectedAttributeName,
+        string $expectedAttributeName,
         $expectedAttributeValue,
-        $specifier
-    ) {
+        ?string $specifier
+    ): void {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter attrib is not valid.');
 
@@ -361,9 +360,8 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider orderProvider
-     * @param string $expectedOrder
      */
-    public function testSetOrderWillSetItInAValidFormat($expectedOrder)
+    public function testSetOrderWillSetItInAValidFormat(string $expectedOrder): void
     {
         $expectedParameter = 'order';
 
@@ -379,7 +377,7 @@ class SearchNavigationRequestTest extends TestBase
     /**
      * @dataProvider invalidOrderProvider
      */
-    public function testInvalidOrderWillThrowAnException($invalidOrder)
+    public function testInvalidOrderWillThrowAnException(string $invalidOrder): void
     {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter order is not valid.');
@@ -392,9 +390,8 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider propertyProvider
-     * @param string $expectedProperty
      */
-    public function testAddPropertyWillSetItInAValidFormat($expectedProperty)
+    public function testAddPropertyWillSetItInAValidFormat(string $expectedProperty): void
     {
         $expectedParameter = 'properties';
 
@@ -409,15 +406,12 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider pushAttribProvider
-     * @param string $expectedFilterName
-     * @param string $expectedFilterValue
-     * @param float $expectedFactor
      */
     public function testAddPushAttribWillSetItInAValidFormat(
-        $expectedFilterName,
-        $expectedFilterValue,
-        $expectedFactor
-    ) {
+        string $expectedFilterName,
+        string $expectedFilterValue,
+        float $expectedFactor
+    ): void {
         $expectedParameter = 'pushAttrib';
 
         $searchRequest = new SearchRequest();
@@ -434,12 +428,13 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider invalidPushAttribProvider
+     * @param mixed $expectedFilterValue
      */
     public function testInvalidPushAttribWillThrowAnException(
-        $expectedFilterName,
+        string $expectedFilterName,
         $expectedFilterValue,
-        $expectedFactor
-    ) {
+        float $expectedFactor
+    ): void {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter pushAttrib is not valid.');
 
@@ -451,9 +446,8 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider countProvider
-     * @param int $expectedCount
      */
-    public function testSetCountWillSetItInAValidFormat($expectedCount)
+    public function testSetCountWillSetItInAValidFormat(int $expectedCount): void
     {
         $expectedParameter = 'count';
 
@@ -469,7 +463,7 @@ class SearchNavigationRequestTest extends TestBase
     /**
      * @dataProvider invalidCountProvider
      */
-    public function testInvalidCountWillThrowAnException($invalidCount)
+    public function testInvalidCountWillThrowAnException(int $invalidCount): void
     {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter count is not valid.');
@@ -482,9 +476,8 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider firstProvider
-     * @param int $expectedFirst
      */
-    public function testSetFirstWillSetItInAValidFormat($expectedFirst)
+    public function testSetFirstWillSetItInAValidFormat(int $expectedFirst): void
     {
         $expectedParameter = 'first';
 
@@ -500,7 +493,7 @@ class SearchNavigationRequestTest extends TestBase
     /**
      * @dataProvider invalidFirstProvider
      */
-    public function testInvalidFirstWillThrowAnException($invalidFirst)
+    public function testInvalidFirstWillThrowAnException(int $invalidFirst): void
     {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter first is not valid.');
@@ -513,9 +506,8 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider identifierProvider
-     * @param string $expectedIdentifier
      */
-    public function testSetIdentifierWillSetItInAValidFormat($expectedIdentifier)
+    public function testSetIdentifierWillSetItInAValidFormat(string $expectedIdentifier): void
     {
         $expectedParameter = 'identifier';
 
@@ -530,9 +522,8 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider outputAttribProvider
-     * @param string $expectedOutputAttrib
      */
-    public function testSetOutputAttribWillSetItInAValidFormat($expectedOutputAttrib)
+    public function testSetOutputAttribWillSetItInAValidFormat(string $expectedOutputAttrib): void
     {
         $expectedParameter = 'outputAttrib';
 
@@ -547,9 +538,8 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider groupProvider
-     * @param string $expectedGroup
      */
-    public function testAddGroupWillSetItInAValidFormat($expectedGroup)
+    public function testAddGroupWillSetItInAValidFormat(string $expectedGroup): void
     {
         $expectedParameter = 'group';
 
@@ -564,10 +554,8 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider userGroupProvider
-     *
-     * @param string $expectedUserGroupHash
      */
-    public function testAddUserGroupWillSetItInAValidFormat($expectedUserGroupHash)
+    public function testAddUserGroupWillSetItInAValidFormat(string $expectedUserGroupHash): void
     {
         $expectedParameter = 'usergrouphash';
 
@@ -582,13 +570,11 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider attributeProvider
-     * @param string $expectedAttributeName
-     * @param string $expectedAttributeValue
      */
     public function testSetSelectedWillSetItInAValidFormat(
-        $expectedAttributeName,
-        $expectedAttributeValue
-    ) {
+        string $expectedAttributeName,
+        string $expectedAttributeValue
+    ): void {
         $expectedParameter = 'selected';
 
         $navigationRequest = new NavigationRequest();
@@ -603,7 +589,7 @@ class SearchNavigationRequestTest extends TestBase
         );
     }
 
-    public function testSetForceOriginalQueryWillSetItInAValidFormat()
+    public function testSetForceOriginalQueryWillSetItInAValidFormat(): void
     {
         $expectedForceOriginalQuery = 1;
         $expectedParameter = 'forceOriginalQuery';
@@ -617,7 +603,7 @@ class SearchNavigationRequestTest extends TestBase
         $this->assertEquals($expectedForceOriginalQuery, $params[$expectedParameter]);
     }
 
-    public function testSetOutputAdapterWillSetItInAValidFormat()
+    public function testSetOutputAdapterWillSetItInAValidFormat(): void
     {
         $expectedOutputAdapter = 'XML_2.1';
         $expectedParameter = 'outputAdapter';
@@ -631,7 +617,7 @@ class SearchNavigationRequestTest extends TestBase
         $this->assertEquals($expectedOutputAdapter, $params[$expectedParameter]);
     }
 
-    public function testInvalidOutputAdapterWillThrowAnException()
+    public function testInvalidOutputAdapterWillThrowAnException(): void
     {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter outputAdapter is not valid.');
@@ -644,12 +630,12 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider individualParamProvider
-     * @param string $expectedKey
-     * @param string $expectedValue
-     * @param string $expectedMethod
      */
-    public function testAddIndividualParamWillSetItInAValidFormat($expectedKey, $expectedValue, $expectedMethod)
-    {
+    public function testAddIndividualParamWillSetItInAValidFormat(
+        string $expectedKey,
+        string $expectedValue,
+        string $expectedMethod
+    ): void {
         $searchRequest = new SearchRequest();
         $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
@@ -659,7 +645,7 @@ class SearchNavigationRequestTest extends TestBase
         $this->assertEquals($expectedValue, $params[$expectedKey]);
     }
 
-    public function testAddingParamsWithARandomValueWillThrowAnException()
+    public function testAddingParamsWithARandomValueWillThrowAnException(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown method type.');
@@ -674,7 +660,7 @@ class SearchNavigationRequestTest extends TestBase
         $searchRequest->addIndividualParam($expectedKey, $expectedValue, $expectedInvalidMethod);
     }
 
-    public function testAddParamsOverTheSameKeyWillMergeThemTogether()
+    public function testAddParamsOverTheSameKeyWillMergeThemTogether(): void
     {
         $expectedGroups = ['groupOne', 'groupTwo', 'muchMoreGroups'];
         $expectedParam = 'group';
@@ -692,7 +678,7 @@ class SearchNavigationRequestTest extends TestBase
         $this->assertEquals($expectedGroups, $params[$expectedParam]);
     }
 
-    public function testAttributesAreMergedTogetherProperly()
+    public function testAttributesAreMergedTogetherProperly(): void
     {
         $searchRequest = new SearchRequest();
 
@@ -709,7 +695,7 @@ class SearchNavigationRequestTest extends TestBase
         $this->assertEquals($expectedUri, $uri);
     }
 
-    public function testAttributesAreNotMergedWhenNotNeeded()
+    public function testAttributesAreNotMergedWhenNotNeeded(): void
     {
         $searchRequest = new SearchRequest();
 
@@ -726,7 +712,10 @@ class SearchNavigationRequestTest extends TestBase
         $this->assertEquals($expectedUri, $uri);
     }
 
-    public function getBodyIsNotSupportedProvider()
+    /**
+     * @return array<string, array<string, NavigationRequest|SearchRequest>>
+     */
+    public function getBodyIsNotSupportedProvider(): array
     {
         return [
             'search' => [
@@ -741,7 +730,7 @@ class SearchNavigationRequestTest extends TestBase
     /**
      * @dataProvider getBodyIsNotSupportedProvider
      */
-    public function testGetBodyIsNotSupported(SearchNavigationRequest $request)
+    public function testGetBodyIsNotSupported(SearchNavigationRequest $request): void
     {
         $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage('Request body is not supported for search & navigation requests');

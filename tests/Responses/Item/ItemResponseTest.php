@@ -9,7 +9,10 @@ use FINDOLOGIC\Api\Tests\TestBase;
 
 class ItemResponseTest extends TestBase
 {
-    public function itemResponseProvider()
+    /**
+     * @return array<string, array<string, mixed>>
+     */
+    public function itemResponseProvider(): array
     {
         return [
             'response one error' => [
@@ -33,9 +36,9 @@ class ItemResponseTest extends TestBase
 
     /**
      * @dataProvider itemResponseProvider
-     * @param string $rawResponse
+     * @param mixed $expectedItemErrors
      */
-    public function testErrorsCanBeFetched($rawResponse, array $expectedItemErrors)
+    public function testErrorsCanBeFetched(string $rawResponse, $expectedItemErrors): void
     {
         $response = new ItemUpdateResponse($rawResponse);
 
@@ -47,7 +50,7 @@ class ItemResponseTest extends TestBase
         }
     }
 
-    public function testResponseWithoutErrors()
+    public function testResponseWithoutErrors(): void
     {
         $response = new ItemUpdateResponse($this->getMockResponse('Item/response_without_errors.json'));
 

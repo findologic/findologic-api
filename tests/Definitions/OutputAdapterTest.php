@@ -9,7 +9,7 @@ use FINDOLOGIC\Api\Tests\TestBase;
 
 class OutputAdapterTest extends TestBase
 {
-    public function testAllQueryParametersAreAvailable()
+    public function testAllQueryParametersAreAvailable(): void
     {
         $expectedAvailableOutputAdapter = [
             'XML_21' => 'XML_2.1',

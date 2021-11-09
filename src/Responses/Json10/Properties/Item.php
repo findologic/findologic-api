@@ -30,6 +30,9 @@ class Item
     private array $pushRules = [];
     private string $imageUrl;
 
+    /**
+     * @param array<string, array<string, array<string>>|array<string, string>|string[]|string|float|null> $item
+     */
     public function __construct(array $item)
     {
         $this->id = ResponseHelper::getStringProperty($item, 'id');

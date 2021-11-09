@@ -12,19 +12,16 @@ use PHPUnit\Framework\TestCase;
 class SuggestResponseTest extends TestCase
 {
     /**
-     * Will use a real response that could come from a request. It returns the Object.
-     *
-     * @param string $filename
-     * @return SuggestResponse
+     * Will use a real response that could come from a request.
      */
-    public function getRealResponseData($filename = 'demoResponseSuggest.json')
+    public function getRealResponseData(string $filename = 'demoResponseSuggest.json'): SuggestResponse
     {
         // Get contents from a real response locally.
         $realResponseData = file_get_contents(__DIR__ . '/../../Mockdata/Autocomplete/' . $filename);
         return new SuggestResponse($realResponseData);
     }
 
-    public function testResponseWillReturnExpectedLabels()
+    public function testResponseWillReturnExpectedLabels(): void
     {
         $expectedLabels = [
             'siemens',
@@ -47,7 +44,7 @@ class SuggestResponseTest extends TestCase
         $this->assertSame($expectedLabels, $actualLabels);
     }
 
-    public function testResponseWillReturnExpectedBlocks()
+    public function testResponseWillReturnExpectedBlocks(): void
     {
         $expectedBlocks = [
             'suggest',
@@ -70,7 +67,7 @@ class SuggestResponseTest extends TestCase
         $this->assertSame($expectedBlocks, $actualBlocks);
     }
 
-    public function testResponseWillReturnExpectedFrequencies()
+    public function testResponseWillReturnExpectedFrequencies(): void
     {
         $expectedFrequencies = [
             '617',
@@ -93,7 +90,7 @@ class SuggestResponseTest extends TestCase
         $this->assertSame($expectedFrequencies, $actualFrequencies);
     }
 
-    public function testResponseWillReturnExpectedImageUrls()
+    public function testResponseWillReturnExpectedImageUrls(): void
     {
         $expectedImageUrls = [
             null,
@@ -116,7 +113,7 @@ class SuggestResponseTest extends TestCase
         $this->assertSame($expectedImageUrls, $actualImageUrls);
     }
 
-    public function testResponseWillReturnExpectedPrice()
+    public function testResponseWillReturnExpectedPrice(): void
     {
         $expectedPrice = [
             null,
@@ -139,7 +136,7 @@ class SuggestResponseTest extends TestCase
         $this->assertSame($expectedPrice, $actualPrice);
     }
 
-    public function testResponseWillReturnExpectedIdentifier()
+    public function testResponseWillReturnExpectedIdentifier(): void
     {
         $expectedIdentifier = [
             null,
@@ -162,7 +159,7 @@ class SuggestResponseTest extends TestCase
         $this->assertSame($expectedIdentifier, $actualIdentifier);
     }
 
-    public function testResponseWillReturnExpectedBasePrice()
+    public function testResponseWillReturnExpectedBasePrice(): void
     {
         $expectedBasePrice = [
             null,
@@ -185,7 +182,7 @@ class SuggestResponseTest extends TestCase
         $this->assertSame($expectedBasePrice, $actualBasePrice);
     }
 
-    public function testResponseWillReturnExpectedBasePriceUnit()
+    public function testResponseWillReturnExpectedBasePriceUnit(): void
     {
         $expectedBasePriceUnit = [
             null,
@@ -208,7 +205,7 @@ class SuggestResponseTest extends TestCase
         $this->assertSame($expectedBasePriceUnit, $actualBasePriceUnit);
     }
 
-    public function testResponseWillReturnExpectedUrl()
+    public function testResponseWillReturnExpectedUrl(): void
     {
         $expectedUrl = [
             null,
@@ -231,7 +228,7 @@ class SuggestResponseTest extends TestCase
         $this->assertSame($expectedUrl, $actualUrl);
     }
 
-    public function testResponseWillReturnExpectedOrdernumber()
+    public function testResponseWillReturnExpectedOrdernumber(): void
     {
         $expectedOrdernumber = [
             null,
@@ -254,7 +251,7 @@ class SuggestResponseTest extends TestCase
         $this->assertSame($expectedOrdernumber, $actualOrdernumber);
     }
 
-    public function testResponseWillReturnFilteredSuggestions()
+    public function testResponseWillReturnFilteredSuggestions(): void
     {
         $expectedBlockType = [
             'suggest',

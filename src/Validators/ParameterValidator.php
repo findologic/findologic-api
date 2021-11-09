@@ -18,7 +18,13 @@ class ParameterValidator extends Validator
      */
     public const SEMVER_VERSION_REGEX = '/^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/';
 
-    public function __construct(array $data = [], array $fields = [], $lang = null, $langDir = null)
+    /**
+     * @param mixed $data
+     * @param mixed $fields
+     * @param string|null $lang
+     * @param string|null $langDir
+     */
+    public function __construct($data = [], $fields = [], $lang = null, $langDir = null)
     {
         parent::__construct($data, $fields, $lang, $langDir);
         $this->addInstanceRule('shopkey', function ($field, $value) {

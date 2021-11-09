@@ -90,8 +90,8 @@ abstract class SearchNavigationRequest extends Request
     /**
      * Adds the attrib param. It is used to filter the search results.
      *
-     * @param $value string|int|float
-     * @param $specifier null|string is used for sliders such as price. Can be either 'min' or 'max'.
+     * @param string|int|float $value
+     * @param null|string $specifier is used for sliders such as price. Can be either 'min' or 'max'.
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:parameters#search_parameters
      */
     public function addAttribute(string $filterName, $value, ?string $specifier = null): self

@@ -9,7 +9,7 @@ use FINDOLOGIC\Api\Tests\TestBase;
 
 class OrderTypeTest extends TestBase
 {
-    public function testAllOrderTypesAreAvailable()
+    public function testAllOrderTypesAreAvailable(): void
     {
         $expectedAvailableOrderTypes = [
             'RELEVANCE' => 'rank',

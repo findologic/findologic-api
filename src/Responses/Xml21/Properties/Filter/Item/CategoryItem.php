@@ -22,12 +22,17 @@ class CategoryItem extends Item
     /**
      * Items might have sub items. Sub items may only be set for subcategories.
      */
-    private function addSubItems(SimpleXMLElement $response, CategoryFilter $filter)
+    private function addSubItems(SimpleXMLElement $response, CategoryFilter $filter): void
     {
         if (isset($response->items)) {
             foreach ($response->items->children() as $item) {
                 $itemName = ResponseHelper::getStringProperty($item, 'name');
-                $this->items[$itemName] = Item::getInstance($filter, $item);
+                $categoryItem = Item::getInstance($filter, $item);
+                if (!$categoryItem instanceof CategoryItem) {
+                    continue;
+                }
+
+                $this->items[$itemName] = $categoryItem;
             }
         }
     }

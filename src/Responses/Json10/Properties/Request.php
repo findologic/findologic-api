@@ -15,6 +15,9 @@ class Request
     private ?string $usergroup;
     private Order $order;
 
+    /**
+     * @param array<string, array<string, string|bool>|string|int|null> $request
+     */
     public function __construct(array $request)
     {
         $this->query = ResponseHelper::getStringProperty($request, 'query');

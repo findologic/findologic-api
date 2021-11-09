@@ -17,6 +17,9 @@ class Result
     /** @var Filter[] */
     private array $otherFilters;
 
+    /**
+     * @param array<string, array<array<string, string>|string|int|null>|array<string, string|null>|array<array<string|bool|float|int|null>|string|null>|array<array<string[]|array<string, array<string>>>|string|float|null>> $result
+     */
     public function __construct(array $result)
     {
         $this->metadata = new Metadata($result['metadata']);

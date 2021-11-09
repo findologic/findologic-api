@@ -10,20 +10,20 @@ use stdClass;
 
 class ResponseHelperTest extends TestCase
 {
-    private $testObject;
+    private stdClass $testObject;
 
     public function setUp(): void
     {
         $this->testObject = new stdClass();
     }
 
-    public function testGetPropertyReturnsNullIfPropertyDoesNotExist()
+    public function testGetPropertyReturnsNullIfPropertyDoesNotExist(): void
     {
         $propertyValue = ResponseHelper::getStringProperty($this->testObject, 'iDoNotExist');
         $this->assertNull($propertyValue);
     }
 
-    public function testGetPropertyReturnsThePropertyIfSet()
+    public function testGetPropertyReturnsThePropertyIfSet(): void
     {
         $expectedPropertyValue = 'blubbergurken';
         $this->testObject->something = $expectedPropertyValue;
@@ -31,7 +31,7 @@ class ResponseHelperTest extends TestCase
         $this->assertSame($expectedPropertyValue, $propertyValue);
     }
 
-    public function testGetPropertyWillThrowAnExceptionIfSubmittingAnUncastableType()
+    public function testGetPropertyWillThrowAnExceptionIfSubmittingAnUncastableType(): void
     {
         $expectedPropertyValue = new stdClass();
         $this->testObject->something = $expectedPropertyValue;
@@ -43,25 +43,28 @@ class ResponseHelperTest extends TestCase
         }
     }
 
-    public function testGetStringPropertyWillAlwaysReturnAString()
+    public function testGetStringPropertyWillAlwaysReturnAString(): void
     {
         $this->testObject->something = 1337;
         $this->assertSame('1337', ResponseHelper::getStringProperty($this->testObject, 'something'));
     }
 
-    public function testGetIntPropertyWillAlwaysReturnAnInt()
+    public function testGetIntPropertyWillAlwaysReturnAnInt(): void
     {
         $this->testObject->something = '1337';
         $this->assertSame(1337, ResponseHelper::getIntProperty($this->testObject, 'something'));
     }
 
-    public function testGetFloatPropertyWillAlwaysReturnAFloat()
+    public function testGetFloatPropertyWillAlwaysReturnAFloat(): void
     {
         $this->testObject->something = '13.37';
         $this->assertSame(13.37, ResponseHelper::getFloatProperty($this->testObject, 'something'));
     }
 
-    public function stringAsBoolProvider()
+    /**
+     * @return array<string, array<string, bool|string>>
+     */
+    public function stringAsBoolProvider(): array
     {
         return [
             '"0" as string' => [
@@ -77,19 +80,17 @@ class ResponseHelperTest extends TestCase
 
     /**
      * @dataProvider stringAsBoolProvider
-     * @param string $originalObjectValue
-     * @param bool $expectedResult
      */
-    public function testGetBoolPropertyWillAlwaysReturnABool($originalObjectValue, $expectedResult)
+    public function testGetBoolPropertyWillAlwaysReturnABool(string $originalObjectValue, bool $expectedResult): void
     {
         $this->testObject->something = $originalObjectValue;
         $this->assertSame($expectedResult, ResponseHelper::getBoolProperty($this->testObject, 'something'));
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, float|int|string|bool>>
      */
-    public function nonArrayObjectProvider()
+    public function nonArrayObjectProvider(): array
     {
         return [
             'passing a string as object' => [
@@ -109,8 +110,9 @@ class ResponseHelperTest extends TestCase
 
     /**
      * @dataProvider nonArrayObjectProvider
+     * @param string|bool|int|float $data
      */
-    public function testCallingResponseHelperWithNoArrayAndNoObjectReturnsNull($data)
+    public function testCallingResponseHelperWithNoArrayAndNoObjectReturnsNull($data): void
     {
         $this->assertNull(ResponseHelper::getBoolProperty($data, 'does-not-matter'));
         $this->assertNull(ResponseHelper::getFloatProperty($data, 'does-not-matter'));

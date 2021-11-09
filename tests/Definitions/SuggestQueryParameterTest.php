@@ -9,7 +9,7 @@ use FINDOLOGIC\Api\Tests\TestBase;
 
 class SuggestQueryParameterTest extends TestBase
 {
-    public function testAllSuggestQueryParametersAreAvailable()
+    public function testAllSuggestQueryParametersAreAvailable(): void
     {
         $expectedAvailableSuggestQueryParameters = [
             'AUTOCOMPLETEBLOCKS' => 'autocompleteblocks',

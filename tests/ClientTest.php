@@ -21,14 +21,9 @@ use InvalidArgumentException;
 
 class ClientTest extends TestBase
 {
-    /** @var string */
-    private $validShopkey = 'ABCDABCDABCDABCDABCDABCDABCDABCD';
-
-    /** @var Config */
-    private $config;
-
-    /** @var SearchRequest */
-    private $searchRequest;
+    private string $validShopkey = 'ABCDABCDABCDABCDABCDABCDABCDABCD';
+    private Config $config;
+    private SuggestRequest $request;
 
     protected function setUp(): void
     {
@@ -38,9 +33,9 @@ class ClientTest extends TestBase
         $this->config
             ->setServiceId($this->validShopkey)
             ->setHttpClient($this->httpClientMock);
-        $this->searchRequest = new SuggestRequest();
+        $this->request = new SuggestRequest();
 
-        $this->searchRequest
+        $this->request
             ->setShopUrl('blubbergurken.de')
             ->setQuery('blubbergurken');
     }
@@ -56,7 +51,7 @@ class ClientTest extends TestBase
         $expectedRequestUrl,
         $expectedAlivetestBody,
         $expectedSearchResultBody
-    ) {
+    ): void {
         $this->httpClientMock->method('request')
             ->withConsecutive(
                 ['GET', $expectedAlivetestUrl, ['connect_timeout' => 1.0]],
@@ -74,7 +69,7 @@ class ClientTest extends TestBase
             ->willReturnOnConsecutiveCalls($expectedAlivetestBody, $expectedSearchResultBody);
     }
 
-    public function testRequestIsBeingCalledWithExpectedParameters()
+    public function testRequestIsBeingCalledWithExpectedParameters(): void
     {
         $requestParams = http_build_query([
             'shopurl' => 'blubbergurken.de',
@@ -92,12 +87,15 @@ class ClientTest extends TestBase
         $client = new Client($this->config);
 
         /** @var SuggestResponse $suggestResponse */
-        $suggestResponse = $client->send($this->searchRequest);
+        $suggestResponse = $client->send($this->request);
 
         $this->assertSame($expectedResult, $suggestResponse->getSuggestions());
     }
 
-    public function badStatusCodeProvider()
+    /**
+     * @return int[][]
+     */
+    public function badStatusCodeProvider(): array
     {
         return [
             [500],
@@ -123,7 +121,7 @@ class ClientTest extends TestBase
      * @dataProvider badStatusCodeProvider
      * @param int $statusCode
      */
-    public function testRequestWillThrowAnExceptionIfItHasAnUnexpectedStatusCode($statusCode)
+    public function testRequestWillThrowAnExceptionIfItHasAnUnexpectedStatusCode($statusCode): void
     {
         $requestParams = http_build_query([
             'shopurl' => 'blubbergurken.de',
@@ -150,7 +148,7 @@ class ClientTest extends TestBase
         $client = new Client($this->config);
 
         try {
-            $client->send($this->searchRequest);
+            $client->send($this->request);
             $this->fail('An ServiceNotAliveException should be thrown if the status code is not OK.');
         } catch (ServiceNotAliveException $e) {
             $this->assertEquals(sprintf(
@@ -160,7 +158,7 @@ class ClientTest extends TestBase
         }
     }
 
-    public function testAliveTestRequestWillBeCalledWithLessTimeout()
+    public function testAliveTestRequestWillBeCalledWithLessTimeout(): void
     {
         $requestParams = http_build_query([
             'query' => 'blubbergurken',
@@ -185,12 +183,11 @@ class ClientTest extends TestBase
         );
 
         $searchRequest = new SearchRequest();
-        $searchRequest
-            ->setQuery('blubbergurken')
-            ->setShopUrl('blubbergurken.de')
-            ->setUserIp('127.0.0.1')
-            ->setReferer('https://www.google.at/?query=blubbergurken')
-            ->setRevision('1.0.0');
+        $searchRequest->setQuery('blubbergurken');
+        $searchRequest->setShopUrl('blubbergurken.de');
+        $searchRequest->setUserIp('127.0.0.1');
+        $searchRequest->setReferer('https://www.google.at/?query=blubbergurken');
+        $searchRequest->setRevision('1.0.0');
 
         $client = new Client($this->config);
 
@@ -202,7 +199,10 @@ class ClientTest extends TestBase
         $this->assertEqualsWithDelta(0, $xmlResponse->getResponseTime(), 0.01);
     }
 
-    public function badAliveTestBodies()
+    /**
+     * @return string[][]
+     */
+    public function badAliveTestBodies(): array
     {
         return [
             [' alive'],
@@ -223,7 +223,7 @@ class ClientTest extends TestBase
      * @dataProvider badAliveTestBodies
      * @param string $expectedBody
      */
-    public function testExceptionIsThrownIfAliveTestBodyIsSomethingElseThenAlive($expectedBody)
+    public function testExceptionIsThrownIfAliveTestBodyIsSomethingElseThenAlive($expectedBody): void
     {
         $this->expectException(ServiceNotAliveException::class);
         $this->expectExceptionMessage(sprintf('The service is not alive. Reason: %s', $expectedBody));
@@ -243,18 +243,17 @@ class ClientTest extends TestBase
         $this->setExpectationsForAliveTestRequests($expectedRequestUrl, $expectedAlivetestUrl, '', $expectedBody);
 
         $searchRequest = new SearchRequest();
-        $searchRequest
-            ->setQuery('blubbergurken')
-            ->setShopUrl('blubbergurken.de')
-            ->setUserIp('127.0.0.1')
-            ->setReferer('https://www.google.at/?query=blubbergurken')
-            ->setRevision('1.0.0');
+        $searchRequest->setQuery('blubbergurken');
+        $searchRequest->setShopUrl('blubbergurken.de');
+        $searchRequest->setUserIp('127.0.0.1');
+        $searchRequest->setReferer('https://www.google.at/?query=blubbergurken');
+        $searchRequest->setRevision('1.0.0');
 
         $client = new Client($this->config);
         $client->send($searchRequest);
     }
 
-    public function testWhenGuzzleFailsWillThrowAnException()
+    public function testWhenGuzzleFailsWillThrowAnException(): void
     {
         $expectedExceptionMessage = 'Guzzle is dying. Maybe it can be saved with a heart massage.';
         $this->expectException(ServiceNotAliveException::class);
@@ -279,12 +278,11 @@ class ClientTest extends TestBase
             ));
 
         $searchRequest = new SearchRequest();
-        $searchRequest
-            ->setQuery('blubbergurken')
-            ->setShopUrl('blubbergurken.de')
-            ->setUserIp('127.0.0.1')
-            ->setReferer('https://www.google.at/?query=blubbergurken')
-            ->setRevision('1.0.0');
+        $searchRequest->setQuery('blubbergurken');
+        $searchRequest->setShopUrl('blubbergurken.de');
+        $searchRequest->setUserIp('127.0.0.1');
+        $searchRequest->setReferer('https://www.google.at/?query=blubbergurken');
+        $searchRequest->setRevision('1.0.0');
 
         $client = new Client($this->config);
         $client->send($searchRequest);
@@ -294,7 +292,7 @@ class ClientTest extends TestBase
      * We are already covered due to our type safety, but you should not be able to make a request with for example
      * an alivetest request, since that one also extends from the Request object.
      */
-    public function testInvalidRequestWillThrowAnException()
+    public function testInvalidRequestWillThrowAnException(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf(
@@ -329,7 +327,7 @@ class ClientTest extends TestBase
         $client->send($alivetestRequest);
     }
 
-    public function testHtmlOutputAdapterWillReturnHtmlResponse()
+    public function testHtmlOutputAdapterWillReturnHtmlResponse(): void
     {
         $requestParams = http_build_query([
             'query' => 'blubbergurken',
@@ -351,13 +349,12 @@ class ClientTest extends TestBase
         );
 
         $searchRequest = new SearchRequest();
-        $searchRequest
-            ->setQuery('blubbergurken')
-            ->setShopUrl('blubbergurken.de')
-            ->setUserIp('127.0.0.1')
-            ->setReferer('https://www.google.at/?query=blubbergurken')
-            ->setRevision('1.0.0')
-            ->setOutputAdapter('HTML_3.1');
+        $searchRequest->setQuery('blubbergurken');
+        $searchRequest->setShopUrl('blubbergurken.de');
+        $searchRequest->setUserIp('127.0.0.1');
+        $searchRequest->setReferer('https://www.google.at/?query=blubbergurken');
+        $searchRequest->setRevision('1.0.0');
+        $searchRequest->setOutputAdapter('HTML_3.1');
 
         $this->config->setHttpClient($this->httpClientMock);
         $client = new Client($this->config);
@@ -366,7 +363,7 @@ class ClientTest extends TestBase
         $this->assertInstanceOf(GenericHtmlResponse::class, $response);
     }
 
-    public function testXML21OutputAdapterWillReturnXML21Response()
+    public function testXML21OutputAdapterWillReturnXML21Response(): void
     {
         $requestParams = http_build_query([
             'query' => 'blubbergurken',
@@ -388,13 +385,12 @@ class ClientTest extends TestBase
         );
 
         $searchRequest = new SearchRequest();
-        $searchRequest
-            ->setQuery('blubbergurken')
-            ->setShopUrl('blubbergurken.de')
-            ->setUserIp('127.0.0.1')
-            ->setReferer('https://www.google.at/?query=blubbergurken')
-            ->setRevision('1.0.0')
-            ->setOutputAdapter('XML_2.1');
+        $searchRequest->setQuery('blubbergurken');
+        $searchRequest->setShopUrl('blubbergurken.de');
+        $searchRequest->setUserIp('127.0.0.1');
+        $searchRequest->setReferer('https://www.google.at/?query=blubbergurken');
+        $searchRequest->setRevision('1.0.0');
+        $searchRequest->setOutputAdapter('XML_2.1');
 
         $this->config->setHttpClient($this->httpClientMock);
         $client = new Client($this->config);
@@ -403,7 +399,7 @@ class ClientTest extends TestBase
         $this->assertInstanceOf(Xml21Response::class, $response);
     }
 
-    public function testJSON10OutputAdapterWillReturnJSON10Response()
+    public function testJSON10OutputAdapterWillReturnJSON10Response(): void
     {
         $requestParams = http_build_query([
             'query' => 'blubbergurken',
@@ -425,13 +421,12 @@ class ClientTest extends TestBase
         );
 
         $searchRequest = new SearchRequest();
-        $searchRequest
-            ->setQuery('blubbergurken')
-            ->setShopUrl('blubbergurken.de')
-            ->setUserIp('127.0.0.1')
-            ->setReferer('https://www.google.at/?query=blubbergurken')
-            ->setRevision('1.0.0')
-            ->setOutputAdapter('JSON_1.0');
+        $searchRequest->setQuery('blubbergurken');
+        $searchRequest->setShopUrl('blubbergurken.de');
+        $searchRequest->setUserIp('127.0.0.1');
+        $searchRequest->setReferer('https://www.google.at/?query=blubbergurken');
+        $searchRequest->setRevision('1.0.0');
+        $searchRequest->setOutputAdapter('JSON_1.0');
 
         $this->config->setHttpClient($this->httpClientMock);
         $client = new Client($this->config);
@@ -440,7 +435,7 @@ class ClientTest extends TestBase
         $this->assertInstanceOf(Json10Response::class, $response);
     }
 
-    public function testBearerTokenIsSentIfSet()
+    public function testBearerTokenIsSentIfSet(): void
     {
         $expectedAccessToken = 'YEEEET';
 

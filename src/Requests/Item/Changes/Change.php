@@ -22,7 +22,7 @@ abstract class Change
 
     /**
      * Must return the value for the specified change as described in the API spec.
-     *
+     * @return mixed
      */
     abstract public function getValue();
 

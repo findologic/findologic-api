@@ -14,6 +14,9 @@ class Metadata
     private int $totalResults;
     private string $currencySymbol;
 
+    /**
+     * @param array<string, array<string, string>|string|int|null> $metadata
+     */
     public function __construct(array $metadata)
     {
         if (isset($metadata['landingpage'])) {

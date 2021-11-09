@@ -33,7 +33,7 @@ class SuggestRequestTest extends TestBase
         $this->rawMockResponse = $this->getMockResponse('Autocomplete/demoResponseSuggest.json');
     }
 
-    public function testSendingRequestsWithoutRequiredParamsWillThrowAnException()
+    public function testSendingRequestsWithoutRequiredParamsWillThrowAnException(): void
     {
         $suggestRequest = new SuggestRequest();
         $client = new Client($this->config);
@@ -69,7 +69,7 @@ class SuggestRequestTest extends TestBase
      * @dataProvider queryProvider
      * @param string $expectedQuery
      */
-    public function testSetQueryWillBeSetItInAValidFormat($expectedQuery)
+    public function testSetQueryWillBeSetItInAValidFormat($expectedQuery): void
     {
         if ($expectedQuery === '') {
             $this->markTestSkipped('Empty queries are not allowed for suggest requests');
@@ -89,7 +89,7 @@ class SuggestRequestTest extends TestBase
     /**
      * @dataProvider invalidQueryProvider
      */
-    public function testSetQueryWillThrowAnExceptionWhenSubmittingInvalidQueries($invalidQuery)
+    public function testSetQueryWillThrowAnExceptionWhenSubmittingInvalidQueries(string $invalidQuery): void
     {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter query is not valid.');
@@ -104,7 +104,7 @@ class SuggestRequestTest extends TestBase
      * @dataProvider autocompleteBlocksProvider
      * @param string $autocompleteBlock
      */
-    public function testAddAutocompleteBlocksWillBeSetItInAValidFormat($autocompleteBlock)
+    public function testAddAutocompleteBlocksWillBeSetItInAValidFormat($autocompleteBlock): void
     {
         $expectedParameter = 'autocompleteblocks';
 
@@ -117,7 +117,7 @@ class SuggestRequestTest extends TestBase
         $this->assertSame([$autocompleteBlock], $params[$expectedParameter]);
     }
 
-    public function testMultipleAutocompleteBlocksCanBeAdded()
+    public function testMultipleAutocompleteBlocksCanBeAdded(): void
     {
         $expectedParameter = 'autocompleteblocks';
 
@@ -140,7 +140,7 @@ class SuggestRequestTest extends TestBase
     /**
      * @dataProvider invalidAutocompleteBlocksProvider
      */
-    public function testInvalidAutocompleteBlocksWillThrowAnException(string $invalidAutocompleteblock)
+    public function testInvalidAutocompleteBlocksWillThrowAnException(string $invalidAutocompleteblock): void
     {
         $this->expectException(InvalidParamException::class);
         $this->expectExceptionMessage('Parameter autocompleteblocks is not valid.');
@@ -155,7 +155,7 @@ class SuggestRequestTest extends TestBase
      * @dataProvider usergroupProvider
      * @param string $usergroup
      */
-    public function testSetUsergroupHashWillBeSetItInAValidFormat($usergroup)
+    public function testSetUsergroupHashWillBeSetItInAValidFormat($usergroup): void
     {
         $expectedParameter = 'usergrouphash';
 
@@ -170,22 +170,21 @@ class SuggestRequestTest extends TestBase
 
     /**
      * @dataProvider multishopIdProvider
-     * @param string $usergroup
      */
-    public function testSetMultishopIdWillBeSetItInAValidFormat($usergroup)
+    public function testSetMultishopIdWillBeSetItInAValidFormat(int $multiShopId): void
     {
         $expectedParameter = 'multishop_id';
 
         $suggestRequest = new SuggestRequest();
         $this->setRequiredParamsForSuggestRequest($suggestRequest);
 
-        $suggestRequest->setMultishopId($usergroup);
+        $suggestRequest->setMultishopId($multiShopId);
         $params = $suggestRequest->getParams();
         $this->assertArrayHasKey($expectedParameter, $params);
-        $this->assertEquals($usergroup, $params[$expectedParameter]);
+        $this->assertEquals($multiShopId, $params[$expectedParameter]);
     }
 
-    public function testGetBodyIsNotSupported()
+    public function testGetBodyIsNotSupported(): void
     {
         $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage('Request body is not supported for suggest requests');

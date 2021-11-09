@@ -139,6 +139,10 @@ class ItemUpdateRequest extends Request
             }
         }
 
-        return json_encode($body);
+        if (!$json = json_encode($body)) {
+            throw new \Exception('Something went wrong while trying to build the JSON body');
+        }
+
+        return $json;
     }
 }

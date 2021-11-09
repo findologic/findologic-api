@@ -10,7 +10,7 @@ use FINDOLOGIC\Api\Tests\TestBase;
 
 class AliveTestRequestTest extends TestBase
 {
-    public function testGetBodyIsNotSupported()
+    public function testGetBodyIsNotSupported(): void
     {
         $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage('Request body is not supported for alivetest requests');

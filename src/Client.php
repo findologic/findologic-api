@@ -86,6 +86,9 @@ class Client
         return $response;
     }
 
+    /**
+     * @return array<string, array<string, string>|float>
+     */
     private function buildRequestOptions(Request $request): array
     {
         $requestTimeout = $this->config->getRequestTimeout();

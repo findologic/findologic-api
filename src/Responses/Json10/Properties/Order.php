@@ -13,6 +13,9 @@ class Order
     private bool $relevanceBased;
     private string $direction;
 
+    /**
+     * @param array<string, string|bool> $order
+     */
     public function __construct(array $order)
     {
         $this->field = ResponseHelper::getStringProperty($order, 'field');

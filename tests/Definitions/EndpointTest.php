@@ -9,7 +9,7 @@ use FINDOLOGIC\Api\Tests\TestBase;
 
 class EndpointTest extends TestBase
 {
-    public function testAllEndpointsAreAvailable()
+    public function testAllEndpointsAreAvailable(): void
     {
         $expectedAvailableEndpoints = [
             'ALIVETEST' => 'alivetest.php',

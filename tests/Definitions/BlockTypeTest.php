@@ -9,7 +9,7 @@ use FINDOLOGIC\Api\Tests\TestBase;
 
 class BlockTypeTest extends TestBase
 {
-    public function testAllBlockTypesAreAvailable()
+    public function testAllBlockTypesAreAvailable(): void
     {
         $expectedAvailableBlockTypes = [
             'SUGGEST_BLOCK' => 'suggest',

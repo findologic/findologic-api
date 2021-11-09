@@ -11,6 +11,9 @@ class ColorFilterValue extends FilterValue
     protected ?string $color;
     protected ?string $image;
 
+    /**
+     * @param array<string, string|null> $filterValue
+     */
     public function __construct(array $filterValue)
     {
         parent::__construct($filterValue);

@@ -11,6 +11,7 @@ class Product
 {
     private string $id;
     private float $relevance;
+    /** @var array<string, string> */
     private array $properties = [];
 
     public function __construct(SimpleXMLElement $response)
@@ -38,6 +39,9 @@ class Product
         return $this->relevance;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getProperties(): array
     {
         return $this->properties;

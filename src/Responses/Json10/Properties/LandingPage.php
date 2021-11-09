@@ -11,6 +11,9 @@ class LandingPage
     private string $name;
     private string $url;
 
+    /**
+     * @param array<string, string> $landingPage
+     */
     public function __construct(array $landingPage)
     {
         $this->name = ResponseHelper::getStringProperty($landingPage, 'name');

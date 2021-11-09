@@ -20,13 +20,9 @@ use PHPUnit\Framework\TestCase;
 class Xml21ResponseTest extends TestCase
 {
     /**
-     * Will use a real response that could come from a request. It returns the Object.
-     *
-     * @param string $filename
-     *
-     * @return Xml21Response
+     * Will use a real response that could come from a request.
      */
-    public function getRealResponseData($filename = 'demoResponse.xml')
+    public function getRealResponseData(string $filename = 'demoResponse.xml'): Xml21Response
     {
         // Get contents from a real response locally.
         $realResponseData = file_get_contents(__DIR__ . '/../../Mockdata/Xml21/' . $filename);
@@ -34,7 +30,7 @@ class Xml21ResponseTest extends TestCase
         return new Xml21Response($realResponseData);
     }
 
-    public function testResponseWillReturnServersAsExpected()
+    public function testResponseWillReturnServersAsExpected(): void
     {
         $expectedFrontendServer = 'martell.frontend.findologic.com';
         $expectedBackendServer = 'hydra.backend.findologic.com';
@@ -45,7 +41,7 @@ class Xml21ResponseTest extends TestCase
         $this->assertSame($expectedBackendServer, $response->getServers()->getBackend());
     }
 
-    public function testResponseWillReturnQueryAsExpected()
+    public function testResponseWillReturnQueryAsExpected(): void
     {
         $expectedAlternativeQuery = 'ps4';
         $expectedDidYouMeanQuery = 'ps4';
@@ -56,14 +52,14 @@ class Xml21ResponseTest extends TestCase
         $this->assertSame($expectedAlternativeQuery, $response->getQuery()->getAlternativeQuery());
     }
 
-    public function testResponseWillReturnAlternativeQueryAsExpectedIfDidYouMeanQueryIsNotSet()
+    public function testResponseWillReturnAlternativeQueryAsExpectedIfDidYouMeanQueryIsNotSet(): void
     {
         $expectedAlternativeQuery = 'ps3';
         $response = $this->getRealResponseData('demoResponseWithoutDidYouMean.xml');
         $this->assertSame($expectedAlternativeQuery, $response->getQuery()->getAlternativeQuery());
     }
 
-    public function testResponseWillReturnLimitAsExpected()
+    public function testResponseWillReturnLimitAsExpected(): void
     {
         $expectedFirst = 0;
         $expectedCount = 24;
@@ -74,7 +70,7 @@ class Xml21ResponseTest extends TestCase
         $this->assertSame($expectedCount, $response->getQuery()->getLimit()->getCount());
     }
 
-    public function testResponseWillReturnQueryStringAsExpected()
+    public function testResponseWillReturnQueryStringAsExpected(): void
     {
         $expectedValue = 'ps3';
 
@@ -84,7 +80,7 @@ class Xml21ResponseTest extends TestCase
         $this->assertNull($response->getQuery()->getQueryString()->getType());
     }
 
-    public function testResponseWithTypeInQueryStringWillReturnOriginalQueryAsExpected()
+    public function testResponseWithTypeInQueryStringWillReturnOriginalQueryAsExpected(): void
     {
         $expectedValue = 'ps3';
         $expectedType = 'forced';
@@ -95,7 +91,7 @@ class Xml21ResponseTest extends TestCase
         $this->assertSame($expectedType, $response->getQuery()->getQueryString()->getType());
     }
 
-    public function testResponseWillReturnOriginalQueryAsExpected()
+    public function testResponseWillReturnOriginalQueryAsExpected(): void
     {
         $expectedValue = 'original query';
 
@@ -105,7 +101,7 @@ class Xml21ResponseTest extends TestCase
         $this->assertTrue($response->getQuery()->getOriginalQuery()->getAllowOverride());
     }
 
-    public function testResponseWithoutAllowOverrideWillReturnNullWhenCallingIt()
+    public function testResponseWithoutAllowOverrideWillReturnNullWhenCallingIt(): void
     {
         $response = $this->getRealResponseData('demoResponseWithoutAllowOverride.xml');
         $actualAllowOverride = $response->getQuery()->getOriginalQuery()->getAllowOverride();
@@ -113,7 +109,7 @@ class Xml21ResponseTest extends TestCase
         $this->assertFalse($actualAllowOverride);
     }
 
-    public function testResponseWithoutOriginalQueryWillReturnNullWhenCallingIt()
+    public function testResponseWithoutOriginalQueryWillReturnNullWhenCallingIt(): void
     {
         $response = $this->getRealResponseData('demoResponseWithoutOriginalQuery.xml');
         $actualOriginalQuery = $response->getQuery()->getOriginalQuery();
@@ -121,7 +117,7 @@ class Xml21ResponseTest extends TestCase
         $this->assertNull($actualOriginalQuery);
     }
 
-    public function testResponseWillReturnLandingpageAsExpected()
+    public function testResponseWillReturnLandingpageAsExpected(): void
     {
         $expectedLink = 'https://www.landingpage.io/agb/';
 
@@ -130,7 +126,7 @@ class Xml21ResponseTest extends TestCase
         $this->assertSame($expectedLink, $response->getLandingPage()->getLink());
     }
 
-    public function testResponseWithoutLandingPageWillReturnNullWhenCallingIt()
+    public function testResponseWithoutLandingPageWillReturnNullWhenCallingIt(): void
     {
         $response = $this->getRealResponseData('demoResponseWithoutLandingPage.xml');
         $actualLandingPage = $response->getLandingPage();
@@ -138,7 +134,7 @@ class Xml21ResponseTest extends TestCase
         $this->assertNull($actualLandingPage);
     }
 
-    public function testResponseWillReturnPromotionAsExpected()
+    public function testResponseWillReturnPromotionAsExpected(): void
     {
         $expectedLink = 'https://promotion.com/';
         $expectedImage = 'https://promotion.com/promotion.png';
@@ -149,7 +145,7 @@ class Xml21ResponseTest extends TestCase
         $this->assertSame($expectedImage, $response->getPromotion()->getImage());
     }
 
-    public function testResponseWithoutPromotionWillReturnNullWhenCallingIt()
+    public function testResponseWithoutPromotionWillReturnNullWhenCallingIt(): void
     {
         $response = $this->getRealResponseData('demoResponseWithoutPromotion.xml');
         $actualPromotion = $response->getPromotion();
@@ -157,7 +153,7 @@ class Xml21ResponseTest extends TestCase
         $this->assertNull($actualPromotion);
     }
 
-    public function testResponseWillReturnResultsAsExpected()
+    public function testResponseWillReturnResultsAsExpected(): void
     {
         $expectedCount = 1808;
 
@@ -166,7 +162,7 @@ class Xml21ResponseTest extends TestCase
         $this->assertSame($expectedCount, $response->getResults()->getCount());
     }
 
-    public function testResponseWillReturnProductsAsExpected()
+    public function testResponseWillReturnProductsAsExpected(): void
     {
         $expectedIds = ['019111105-37900', '029214085-37860'];
         $expectedRelevances = [1.3862943649292, 1.3862943649292];
@@ -181,7 +177,7 @@ class Xml21ResponseTest extends TestCase
         }
     }
 
-    public function testResponseWillReturnPropertiesAsExpected()
+    public function testResponseWillReturnPropertiesAsExpected(): void
     {
         $expectedName = 'ordernumber';
         $expectedValue = '019111105-37900';
@@ -196,7 +192,7 @@ class Xml21ResponseTest extends TestCase
         }
     }
 
-    public function testResponseWillReturnMainFiltersAsExpected()
+    public function testResponseWillReturnMainFiltersAsExpected(): void
     {
         $expectedFilterItemCounts = [null];
         $expectedFilterCssClasses = [null];
@@ -225,7 +221,7 @@ class Xml21ResponseTest extends TestCase
         }
     }
 
-    public function testResponseWillReturnOtherFiltersAsExpected()
+    public function testResponseWillReturnOtherFiltersAsExpected(): void
     {
         $expectedFilterItemCounts = [null, 2, 0, -2, -2, -2];
         $expectedFilterCssClasses = [null, 'fl-material', null, null, null, null];
@@ -265,7 +261,7 @@ class Xml21ResponseTest extends TestCase
         }
     }
 
-    public function testResponseWillReturnAttributesAsExpected()
+    public function testResponseWillReturnAttributesAsExpected(): void
     {
         $expectedAttributesStepSizes = [0.1];
         $expectedAttributesUnits = ['€'];
@@ -285,7 +281,7 @@ class Xml21ResponseTest extends TestCase
         }
     }
 
-    public function testResponseWillReturnAttributeRangeAsExpected()
+    public function testResponseWillReturnAttributeRangeAsExpected(): void
     {
         $expectedAttributeSelectedRangesMin = [0.39];
         $expectedAttributeSelectedRangesMax = [2239.1];
@@ -310,7 +306,7 @@ class Xml21ResponseTest extends TestCase
         }
     }
 
-    public function testResponseWillReturnWeightsOfItemsAsExpected()
+    public function testResponseWillReturnWeightsOfItemsAsExpected(): void
     {
         // Weights do have a float value, but checking the value to its 1:1 value is unnecessary.
         $expectedWeight = [
@@ -337,10 +333,10 @@ class Xml21ResponseTest extends TestCase
             $this->fail('The demo response should have filters.');
         }
 
-        $this->assertEquals($expectedWeight, $actualWeight, '', 1);
+        $this->assertEqualsWithDelta($expectedWeight, $actualWeight, 1);
     }
 
-    public function testResponseWillReturnNamesOfItemsAsExpected()
+    public function testResponseWillReturnNamesOfItemsAsExpected(): void
     {
         $expectedNames = [
             'beige', 'blau', 'braun', // Farbe
@@ -369,7 +365,7 @@ class Xml21ResponseTest extends TestCase
         $this->assertEquals($expectedNames, $actualNames);
     }
 
-    public function testResponseWillReturnColorImagesOfItemsAsExpected()
+    public function testResponseWillReturnColorImagesOfItemsAsExpected(): void
     {
         $expectedImages = [
             'https://blubbergurken.io/farbfilter/beige.gif',
@@ -398,7 +394,7 @@ class Xml21ResponseTest extends TestCase
         $this->assertEquals($expectedImages, $actualImages);
     }
 
-    public function testResponseWillReturnImagesOfItemsAsExpected()
+    public function testResponseWillReturnImagesOfItemsAsExpected(): void
     {
         $expectedImages = [
             'https://blubbergurken.io/farbfilter/image1.gif'
@@ -425,7 +421,7 @@ class Xml21ResponseTest extends TestCase
         $this->assertSame($expectedImages, $actualImages);
     }
 
-    public function testResponseWillReturnColorsOfItemsAsExpected()
+    public function testResponseWillReturnColorsOfItemsAsExpected(): void
     {
         $expectedColors = [
             '#F5F5DC', '#3c6380', '#94651e'
@@ -452,7 +448,7 @@ class Xml21ResponseTest extends TestCase
         $this->assertEquals($expectedColors, $actualColors);
     }
 
-    public function testResponseWillReturnFrequencyOfItemsAsExpected()
+    public function testResponseWillReturnFrequencyOfItemsAsExpected(): void
     {
         $expectedFrequencies = [
             null, null, null, // Farbe
@@ -481,7 +477,7 @@ class Xml21ResponseTest extends TestCase
         $this->assertEquals($expectedFrequencies, $actualFrequencies);
     }
 
-    public function testResponseWillReturnSelectedOfItemsAsExpected()
+    public function testResponseWillReturnSelectedOfItemsAsExpected(): void
     {
         $expectedSelected = [
             false, true, false, // Farbe
@@ -510,7 +506,7 @@ class Xml21ResponseTest extends TestCase
         $this->assertEquals($expectedSelected, $actualSelected);
     }
 
-    public function testResponseWillReturnParametersOfItemsAsExpected()
+    public function testResponseWillReturnParametersOfItemsAsExpected(): void
     {
         $expectedMin = [
             0.39,
@@ -548,7 +544,7 @@ class Xml21ResponseTest extends TestCase
         $this->assertEquals($expectedMax, $actualMax);
     }
 
-    public function testResponseWillReturnSubItemsOfItemsAsExpected()
+    public function testResponseWillReturnSubItemsOfItemsAsExpected(): void
     {
         $expectedSubItemDetails = [
             'name' => 'Beste Bücher',
@@ -585,14 +581,14 @@ class Xml21ResponseTest extends TestCase
         $this->assertSame($expectedSubItemDetails, $actualSubItemDetails);
     }
 
-    public function testResponseWillNotBreakIfNoProductsAreFound()
+    public function testResponseWillNotBreakIfNoProductsAreFound(): void
     {
         $response = $this->getRealResponseData('demoResponseWithoutProducts.xml');
 
         $this->assertCount(0, $response->getProducts());
     }
 
-    public function testResponseWillNotBreakIfNoMainFiltersAreFound()
+    public function testResponseWillNotBreakIfNoMainFiltersAreFound(): void
     {
         $response = $this->getRealResponseData('demoResponseWithoutMainFilters.xml');
 
@@ -601,7 +597,7 @@ class Xml21ResponseTest extends TestCase
         $this->assertFalse($response->hasMainFilters());
     }
 
-    public function testResponseWillNotBreakIfNoOtherFiltersAreFound()
+    public function testResponseWillNotBreakIfNoOtherFiltersAreFound(): void
     {
         $response = $this->getRealResponseData('demoResponseWithoutOtherFilters.xml');
 
@@ -610,7 +606,7 @@ class Xml21ResponseTest extends TestCase
         $this->assertFalse($response->hasOtherFilters());
     }
 
-    public function testResponseWithMinOrMaxZeroWillNotBeConvertedToNull()
+    public function testResponseWithMinOrMaxZeroWillNotBeConvertedToNull(): void
     {
         $response = $this->getRealResponseData('demoResponseWithMinAndMaxZero.xml');
 

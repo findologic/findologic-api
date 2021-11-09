@@ -12,6 +12,9 @@ class Promotion
     private string $url;
     private string $imageUrl;
 
+    /**
+     * @param array<string, string> $promotion
+     */
     public function __construct(array $promotion)
     {
         $this->name = ResponseHelper::getStringProperty($promotion, 'name');

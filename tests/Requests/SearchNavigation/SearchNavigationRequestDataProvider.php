@@ -11,8 +11,9 @@ use FINDOLOGIC\Api\Requests\SearchNavigation\SearchNavigationRequest;
  */
 trait SearchNavigationRequestDataProvider
 {
-    protected function setRequiredParamsForSearchNavigationRequest(SearchNavigationRequest $searchNavigationRequest)
-    {
+    protected function setRequiredParamsForSearchNavigationRequest(
+        SearchNavigationRequest $searchNavigationRequest
+    ): void {
         $searchNavigationRequest
             ->setShopUrl('blubbergurken.io')
             ->setUserIp('127.0.0.1')
@@ -20,7 +21,10 @@ trait SearchNavigationRequestDataProvider
             ->setRevision('2.5.10');
     }
 
-    public function queryProvider()
+    /**
+     * @return array<string, array<string, string>>
+     */
+    public function queryProvider(): array
     {
         return [
             'some random string can be set' => [
@@ -35,7 +39,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function shopkeyProvider()
+    /**
+     * @return array<string, array<string, string>>
+     */
+    public function shopkeyProvider(): array
     {
         return [
             'some random shopkey can be set' => [
@@ -50,7 +57,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function invalidShopkeyProvider()
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function invalidShopkeyProvider(): array
     {
         return [
             'shopkey is not a shopkey' => ['invalidShopkey'],
@@ -62,7 +72,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function shopurlProvider()
+    /**
+     * @return array<string, array<string, string>>
+     */
+    public function shopurlProvider(): array
     {
         return [
             'normal shopurl' => [
@@ -77,7 +90,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function invalidShopurlProvider()
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function invalidShopurlProvider(): array
     {
         return [
             'shopurl is not an url' => ['invalidShopurl'],
@@ -85,7 +101,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function useripProvider()
+    /**
+     * @return array<string, array<string, string>>
+     */
+    public function useripProvider(): array
     {
         return [
             'normal userip' => [
@@ -103,7 +122,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function invalidUseripProvider()
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function invalidUseripProvider(): array
     {
         return [
             'userip is not an ip' => ['invalidIp'],
@@ -111,7 +133,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function refererProvider()
+    /**
+     * @return array<string, array<string, string>>
+     */
+    public function refererProvider(): array
     {
         return [
             'normal referer' => [
@@ -126,7 +151,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function invalidRefererProvider()
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function invalidRefererProvider(): array
     {
         return [
             'referer is not a referer' => ['invalidReferer'],
@@ -134,7 +162,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function revisionProvider()
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function revisionProvider(): array
     {
         return [
             'normal revision' => ['1.0.0'],
@@ -144,7 +175,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function invalidRevisionProvider()
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function invalidRevisionProvider(): array
     {
         return [
             'revision is not a revision' => ['invalidRevision'],
@@ -152,7 +186,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function attributeProvider()
+    /**
+     * @return array<string, array<int, string|null>>
+     */
+    public function attributeProvider(): array
     {
         return [
             'normal attribute' => ['vendor', 'TomTailor', null],
@@ -161,7 +198,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function invalidAttributeProvider()
+    /**
+     * @return array<string, array<int, array<int, string>|object|string|null>>
+     */
+    public function invalidAttributeProvider(): array
     {
         return [
             'attribute value is an array' => ['price', ['50'], null],
@@ -169,7 +209,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function selectedProvider()
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function selectedProvider(): array
     {
         return [
             'normal attribute' => ['vendor', 'TomTailor'],
@@ -178,7 +221,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function orderProvider()
+    /**
+     * @return array<string, array<string, string>>
+     */
+    public function orderProvider(): array
     {
         return [
             'normal order' => [
@@ -193,7 +239,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function invalidOrderProvider()
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function invalidOrderProvider(): array
     {
         return [
             'order is not an valid order' => ['order by blubbergurken'],
@@ -201,7 +250,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function propertyProvider()
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function propertyProvider(): array
     {
         return [
             'normal property' => ['ordernumber'],
@@ -210,7 +262,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function pushAttribProvider()
+    /**
+     * @return array<string, array<int, float|string>>
+     */
+    public function pushAttribProvider(): array
     {
         return [
             'normal pushAttrib' => ['vendor', 'TomTailor', 0.3],
@@ -219,7 +274,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function invalidPushAttribProvider()
+    /**
+     * @return array<string, array<int, array<int, string>|int|object|string>>
+     */
+    public function invalidPushAttribProvider(): array
     {
         return [
             'pushAttrib value is an array' => ['Tom Tailor', ['50'], 3],
@@ -227,7 +285,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function countProvider()
+    /**
+     * @return array<string, array<int, int>>
+     */
+    public function countProvider(): array
     {
         return [
             'normal count' => [20],
@@ -236,14 +297,20 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function invalidCountProvider()
+    /**
+     * @return array<string, array<int, int>>
+     */
+    public function invalidCountProvider(): array
     {
         return [
             'count is below zero' => [-5],
         ];
     }
 
-    public function firstProvider()
+    /**
+     * @return array<string, array<int, int>>
+     */
+    public function firstProvider(): array
     {
         return [
             'normal first' => [20],
@@ -252,14 +319,20 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function invalidFirstProvider()
+    /**
+     * @return array<string, array<int, int>>
+     */
+    public function invalidFirstProvider(): array
     {
         return [
             'first is below zero' => [-91],
         ];
     }
 
-    public function identifierProvider()
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function identifierProvider(): array
     {
         return [
             'normal identifier' => ['15356'],
@@ -268,7 +341,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function outputAttribProvider()
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function outputAttribProvider(): array
     {
         return [
             'normal outputAttrib' => ['revenue'],
@@ -277,7 +353,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function groupProvider()
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function groupProvider(): array
     {
         return [
             'normal group' => ['NDEmNgEN'],
@@ -286,7 +365,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function individualParamProvider()
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function individualParamProvider(): array
     {
         return [
             'normal individual param' => ['shoes', 'abc', 'set'],
@@ -295,7 +377,10 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function userGroupProvider()
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function userGroupProvider(): array
     {
         return [
             'normal usergroup' => ['NDEmNgEN'],

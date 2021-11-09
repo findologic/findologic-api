@@ -12,10 +12,10 @@ use TypeError;
 
 class ConfigTest extends TestBase
 {
-    /** @var array */
+    /** @var array<string, string> */
     private $validConfig = ['shopkey' => 'ABCDABCDABCDABCDABCDABCDABCDABCD'];
 
-    public function testValidConfigWillWorkAndDefaultsAreFilled()
+    public function testValidConfigWillWorkAndDefaultsAreFilled(): void
     {
         $config = new Config();
         $config->setServiceId($this->validConfig['shopkey']);
@@ -26,7 +26,7 @@ class ConfigTest extends TestBase
         $this->assertEquals('https://service.findologic.com/ps/%s/%s', $config->getApiUrl());
     }
 
-    public function testDefaultConfigCanBeOverridden()
+    public function testDefaultConfigCanBeOverridden(): void
     {
         $expectedRequestTimeout = 10.0;
         $expectedAlivetestTimeout = 5.0;
@@ -54,7 +54,10 @@ class ConfigTest extends TestBase
         $this->assertEquals($expectedAccessToken, $config->getAccessToken());
     }
 
-    public function invalidConfigProvider()
+    /**
+     * @return array<string, array<int, int|object|string>>
+     */
+    public function invalidConfigProvider(): array
     {
         return [
             'httpClient as some object' => ['httpClient', new \stdClass()],
@@ -73,9 +76,9 @@ class ConfigTest extends TestBase
 
     /**
      * @dataProvider invalidConfigProvider
-     * @param string $configValue
+     * @param mixed $value
      */
-    public function testInvalidConfigThrowsAnException($configValue, $value)
+    public function testInvalidConfigThrowsAnException(string $configValue, $value): void
     {
         try {
             $configObj = new Config();
@@ -93,7 +96,7 @@ class ConfigTest extends TestBase
         }
     }
 
-    public function testGetShopkeyWillThrowAnExceptionIfItWasNotSetBefore()
+    public function testGetShopkeyWillThrowAnExceptionIfItWasNotSetBefore(): void
     {
         $this->expectException(ConfigException::class);
         $this->expectExceptionMessage('Required parameter "serviceId" was not set');
@@ -102,7 +105,7 @@ class ConfigTest extends TestBase
         $config->getServiceId();
     }
 
-    public function testShopkeyCanBeSetAsConstructorArgument()
+    public function testShopkeyCanBeSetAsConstructorArgument(): void
     {
         $expectedShopkey = $this->validConfig['shopkey'];
 

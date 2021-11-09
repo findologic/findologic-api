@@ -29,7 +29,7 @@ class Config
     private float $alivetestTimeout = self::DEFAULT_ALIVETEST_TIMEOUT;
     private float $requestTimeout = self::DEFAULT_REQUEST_TIMEOUT;
 
-    public function __construct($serviceId = null)
+    public function __construct(?string $serviceId = null)
     {
         if ($serviceId) {
             $this->setServiceId($serviceId);
@@ -40,6 +40,8 @@ class Config
 
     /**
      * Sets a specified config value and validates them according to the given validation rules.
+     * @param mixed $value
+     * @param string[] $validationRules
      */
     private function setConfigValue(string $key, $value, array $validationRules): void
     {
@@ -65,7 +67,7 @@ class Config
         return $this->serviceId;
     }
 
-    public function setServiceId($serviceId): self
+    public function setServiceId(string $serviceId): self
     {
         $this->setConfigValue(self::SERVICE_ID, $serviceId, ['required', 'shopkey']);
 

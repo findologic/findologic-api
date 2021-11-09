@@ -15,7 +15,10 @@ use InvalidArgumentException;
 
 class RequestTest extends TestBase
 {
-    public function getInstancesProvider()
+    /**
+     * @return array<string, array<string, class-string|int>>
+     */
+    public function getInstancesProvider(): array
     {
         return [
             'search request' => [
@@ -43,16 +46,14 @@ class RequestTest extends TestBase
 
     /**
      * @dataProvider getInstancesProvider
-     * @param int $type
-     * @param string $expectedInstance
      */
-    public function testGetInstanceReturnsProperInstances($type, $expectedInstance)
+    public function testGetInstanceReturnsProperInstances(int $type, string $expectedInstance): void
     {
         $request = Request::getInstance($type);
         $this->assertInstanceOf($expectedInstance, $request);
     }
 
-    public function testExceptionIsThrownForUnknownRequestType()
+    public function testExceptionIsThrownForUnknownRequestType(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown request type "1337"');

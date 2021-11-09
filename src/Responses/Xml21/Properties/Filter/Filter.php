@@ -12,35 +12,18 @@ use SimpleXMLElement;
 
 abstract class Filter
 {
-    /** @var int|null $itemCount */
-    protected $itemCount;
-
-    /** @var string|null $cssClass */
-    protected $cssClass;
-
-    /** @var string|null $noAvailableFiltersText */
-    protected $noAvailableFiltersText;
-
-    /** @var string $name */
-    protected $name;
-
-    /** @var string $display */
-    protected $display;
-
-    /** @var string $select */
-    protected $select;
-
-    /** @var int $selectedItemCount */
-    protected $selectedItemCount = 0;
-
+    protected ?int $itemCount;
+    protected ?string $cssClass;
+    protected ?string $noAvailableFiltersText;
+    protected string $name;
+    protected string $display;
+    protected string $select;
+    protected int $selectedItemCount = 0;
     /** @var Item[] */
-    protected $selectedItems = [];
-
-    /** @var Attributes|null $attributes */
-    protected $attributes;
-
+    protected array $selectedItems = [];
+    protected ?Attributes $attributes;
     /** @var Item[] $items */
-    protected $items = [];
+    protected array $items = [];
 
     public function __construct(SimpleXMLElement $response)
     {
@@ -61,7 +44,7 @@ abstract class Filter
         }
     }
 
-    public static function getInstance(SimpleXMLElement $filter)
+    public static function getInstance(SimpleXMLElement $filter): Filter
     {
         $filterName = ResponseHelper::getStringProperty($filter, 'name');
 
@@ -88,7 +71,7 @@ abstract class Filter
         }
     }
 
-    private function fetchItems(SimpleXMLElement $items)
+    private function fetchItems(SimpleXMLElement $items): void
     {
         foreach ($items->children() as $item) {
             $name = ResponseHelper::getStringProperty($item, 'name');
@@ -102,66 +85,42 @@ abstract class Filter
         }
     }
 
-    /**
-     * @return int|null
-     */
-    public function getItemCount()
+    public function getItemCount(): ?int
     {
         return $this->itemCount;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getCssClass()
+    public function getCssClass(): ?string
     {
         return $this->cssClass;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getNoAvailableFiltersText()
+    public function getNoAvailableFiltersText(): ?string
     {
         return $this->noAvailableFiltersText;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getDisplay()
+    public function getDisplay(): string
     {
         return $this->display;
     }
 
-    /**
-     * @return string
-     */
-    public function getSelect()
+    public function getSelect(): string
     {
         return $this->select;
     }
 
-    /**
-     * @return int
-     */
-    public function getSelectedItemCount()
+    public function getSelectedItemCount(): int
     {
         return $this->selectedItemCount;
     }
 
-    /**
-     * @return Attributes|null
-     */
-    public function getAttributes()
+    public function getAttributes(): ?Attributes
     {
         return $this->attributes;
     }
@@ -169,7 +128,7 @@ abstract class Filter
     /**
      * @return Item[]
      */
-    public function getItems()
+    public function getItems(): array
     {
         return $this->items;
     }
@@ -177,7 +136,7 @@ abstract class Filter
     /**
      * @return Item[]
      */
-    public function getSelectedItems()
+    public function getSelectedItems(): array
     {
         return $this->selectedItems;
     }

@@ -10,6 +10,7 @@ abstract class Definition
 {
     /**
      * Returns a key value pair of defined constants.
+     * @return array<string, mixed>
      */
     public static function getConstants(): array
     {

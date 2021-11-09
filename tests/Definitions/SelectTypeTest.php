@@ -9,7 +9,7 @@ use FINDOLOGIC\Api\Tests\TestBase;
 
 class SelectTypeTest extends TestBase
 {
-    public function testAllSelectTypesAreAvailable()
+    public function testAllSelectTypesAreAvailable(): void
     {
         $expectedAvailableSelectTypes = [
             'SINGLE' => 'single',

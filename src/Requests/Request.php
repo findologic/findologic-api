@@ -28,6 +28,7 @@ abstract class Request
     public const SET_VALUE = 'set';
     public const ADD_VALUE = 'add';
 
+    /** @var array<string, array<string|int|float>|string|int|float> $params  */
     protected array $params;
 
     /** @var string[] */
@@ -39,6 +40,9 @@ abstract class Request
     protected string $method;
     protected ?string $outputAdapter = OutputAdapter::XML_21;
 
+    /**
+     * @param array<string, array<string|int|float>|string|int|float> $params
+     */
     public function __construct(array $params = [])
     {
         $this->params = $params;
@@ -62,6 +66,9 @@ abstract class Request
         }
     }
 
+    /**
+     * @return array<string, array<string|int|float>|string|int|float>
+     */
     public function getParams(): array
     {
         return $this->params;
@@ -96,6 +103,7 @@ abstract class Request
      * Sets the shopurl param. It is used to determine the service's url. Required.
      *
      * @see https://docs.findologic.com/doku.php?id=integration_documentation:parameters#required_parameters
+     * @return static
      */
     public function setShopUrl(string $value): self
     {
@@ -193,8 +201,8 @@ abstract class Request
      * supported.** If you think any parameter is missing for doing FINDOLOGIC requests, please create an issue before
      * using this method.
      *
-     * @param $value mixed
-     * @param $method string Use Request::ADD_VALUE to add the param and not overwrite existing ones and
+     * @param mixed $value
+     * @param string $method Use Request::ADD_VALUE to add the param and not overwrite existing ones and
      * Request::SET_VALUE to overwrite existing params.
      *
      * @return $this
@@ -225,14 +233,14 @@ abstract class Request
      * Request::ADD_VALUE allows the value to be set multiple times and Request::SET_VALUE will
      * override any existing ones.
      */
-    protected function addParam(string $key, $value, string $method = self::SET_VALUE)
+    protected function addParam(string $key, $value, string $method = self::SET_VALUE): void
     {
         switch ($method) {
             case self::SET_VALUE:
                 $this->params[$key] = $value;
                 break;
             case self::ADD_VALUE:
-                if (isset($this->params[$key])) {
+                if (isset($this->params[$key]) && is_array($this->params[$key])) {
                     $this->params[$key] = array_merge_recursive($this->params[$key], $value);
                 } else {
                     $this->params[$key] = $value;

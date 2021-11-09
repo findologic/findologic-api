@@ -24,6 +24,9 @@ abstract class Filter
     /** @var FilterValue[] */
     protected array $values = [];
 
+    /**
+     * @param array<string, array<string|int|float|bool|null>|string|null> $filter
+     */
     public function __construct(array $filter)
     {
         $this->name = ResponseHelper::getStringProperty($filter, 'name');
@@ -42,6 +45,10 @@ abstract class Filter
         }
     }
 
+    /**
+     * @param array<string, array<string|int|float|bool|null>|string|null> $filter
+     * @return Filter
+     */
     public static function getInstance(array $filter): Filter
     {
         $filterType = ResponseHelper::getStringProperty($filter, 'type');

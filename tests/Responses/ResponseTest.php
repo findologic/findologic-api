@@ -23,7 +23,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class ResponseTest extends TestBase
 {
-    public function testUnknownResponseWillThrowAnException()
+    public function testUnknownResponseWillThrowAnException(): void
     {
         $expectedOutputAdapter = 'HTML_4.20';
         $this->expectException(InvalidArgumentException::class);
@@ -39,7 +39,10 @@ class ResponseTest extends TestBase
         Response::buildInstance($request, new GuzzleResponse(), null, null);
     }
 
-    public function availableResponseProvider()
+    /**
+     * @return array<string, array<string, mixed>>
+     */
+    public function availableResponseProvider(): array
     {
         $expectedSuggestResponse = $this->getMockResponse('Autocomplete/demoResponseSuggest.json');
         $expectedHtmlResponse = $this->getMockResponse('Html/demoResponse.html');
@@ -73,13 +76,17 @@ class ResponseTest extends TestBase
 
     /**
      * @dataProvider availableResponseProvider
-     * @param string $expectedRawResponse
      */
-    public function testGettingRawResponseAsStringReturnsItAsExpected(Response $response, $expectedRawResponse)
-    {
+    public function testGettingRawResponseAsStringReturnsItAsExpected(
+        Response $response,
+        string $expectedRawResponse
+    ): void {
         $this->assertEquals($expectedRawResponse, $response->getRawResponse());
     }
 
+    /**
+     * @return array<string, array<string, class-string|Request|ResponseInterface>>
+     */
     public function responseProvider(): array
     {
         return [

@@ -39,6 +39,7 @@ class TestBase extends TestCase
     /**
      * Will set the default expectations for doing a request, which is required by all tests that are dealing with
      * sending requests.
+     * @param array<string, mixed> $guzzleOptionsOverride
      */
     protected function setExpectationsForRequests(
         string $expectedRequestUrl,
@@ -46,7 +47,7 @@ class TestBase extends TestCase
         int $statusCode = 200,
         string $requestMethod = 'GET',
         array $guzzleOptionsOverride = []
-    ) {
+    ): void {
         $this->httpClientMock->method('request')
             ->with(
                 $this->equalTo($requestMethod),
@@ -68,18 +69,13 @@ class TestBase extends TestCase
     /**
      * Will set the default expectations for doing an alivetest request, which is required by all tests that are dealing
      * with sending alivetest requests.
-     *
-     * @param $expectedSearchRequestUrl
-     * @param string $expectedRequestUrl
-     * @param string $expectedBody
-     * @param string $expectedAlivetestBody
      */
     protected function setExpectationsForAliveTestRequests(
-        $expectedSearchRequestUrl,
-        $expectedRequestUrl,
-        $expectedBody,
-        $expectedAlivetestBody = 'alive'
-    ) {
+        string $expectedSearchRequestUrl,
+        string $expectedRequestUrl,
+        string $expectedBody,
+        string $expectedAlivetestBody = 'alive'
+    ): void {
         $this->httpClientMock->method('request')
             ->withConsecutive(
                 ['GET', $expectedRequestUrl, ['connect_timeout' => 1.0]],
@@ -97,7 +93,7 @@ class TestBase extends TestCase
             ->willReturnOnConsecutiveCalls($expectedAlivetestBody, $expectedBody, $expectedBody);
     }
 
-    protected function getMockResponse($file)
+    protected function getMockResponse(string $file): string
     {
         return file_get_contents(__DIR__ . '/Mockdata/' . $file);
     }

@@ -9,7 +9,7 @@ use FINDOLOGIC\Api\Tests\TestBase;
 
 class QueryParameterTest extends TestBase
 {
-    public function testAllQueryParametersAreAvailable()
+    public function testAllQueryParametersAreAvailable(): void
     {
         $expectedAvailableQueryParameters = [
             'SERVICE_ID' => 'shopkey',

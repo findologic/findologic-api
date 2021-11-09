@@ -18,8 +18,9 @@ class AlivetestRequest extends Request
 
     /**
      * @internal
+     * @param array<string, array<string|int|float>|string|int|float> $params
      */
-    public function setParams(array $params)
+    public function setParams(array $params): void
     {
         $this->params = $params;
     }
