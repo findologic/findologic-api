@@ -88,7 +88,6 @@ class SuggestRequestTest extends TestBase
 
     /**
      * @dataProvider invalidQueryProvider
-     * @param mixed $invalidQuery
      */
     public function testSetQueryWillThrowAnExceptionWhenSubmittingInvalidQueries($invalidQuery)
     {

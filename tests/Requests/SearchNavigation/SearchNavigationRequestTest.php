@@ -344,9 +344,6 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider invalidAttributeProvider
-     * @param mixed $expectedAttributeName
-     * @param mixed $expectedAttributeValue
-     * @param mixed $specifier
      */
     public function testInvalidAttributeWillThrowAnException(
         $expectedAttributeName,
@@ -437,9 +434,6 @@ class SearchNavigationRequestTest extends TestBase
 
     /**
      * @dataProvider invalidPushAttribProvider
-     * @param mixed $expectedFilterName
-     * @param mixed $expectedFilterValue
-     * @param mixed $expectedFactor
      */
     public function testInvalidPushAttribWillThrowAnException(
         $expectedFilterName,
