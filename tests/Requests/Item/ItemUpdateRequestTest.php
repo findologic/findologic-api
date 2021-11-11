@@ -72,6 +72,7 @@ class ItemUpdateRequestTest extends TestBase
     {
         $updateRequest = new ItemUpdateRequest();
         foreach ($items as $item) {
+            /** @phpstan-ignore-next-line Is always set */
             $updateRequest->markVisible($item['productId'], $item['userGroup']);
         }
 

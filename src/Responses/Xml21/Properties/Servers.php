@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FINDOLOGIC\Api\Responses\Xml21\Properties;
 
+use FINDOLOGIC\Api\Definitions\Defaults;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use SimpleXMLElement;
 
@@ -14,8 +15,8 @@ class Servers
 
     public function __construct(SimpleXMLElement $response)
     {
-        $this->frontend = ResponseHelper::getStringProperty($response, 'frontend');
-        $this->backend = ResponseHelper::getStringProperty($response, 'backend');
+        $this->frontend = ResponseHelper::getStringProperty($response, 'frontend') ?? Defaults::EMPTY;
+        $this->backend = ResponseHelper::getStringProperty($response, 'backend') ?? Defaults::EMPTY;
     }
 
     public function getFrontend(): string

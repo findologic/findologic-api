@@ -18,9 +18,18 @@ class Order
      */
     public function __construct(array $order)
     {
-        $this->field = ResponseHelper::getStringProperty($order, 'field');
-        $this->relevanceBased = ResponseHelper::getBoolProperty($order, 'relevanceBased');
-        $this->direction = ResponseHelper::getStringProperty($order, 'direction');
+        $this->field = ResponseHelper::getStringProperty($order, 'field') ?? OrderType::DEFAULT_SORT;
+        $this->relevanceBased = ResponseHelper::getBoolProperty($order, 'relevanceBased') ?? true;
+        $this->direction = ResponseHelper::getStringProperty($order, 'direction') ?? OrderType::DIRECTION_DESCENDING;
+    }
+
+    public static function getDefault(): Order
+    {
+        return new self([
+            'field' => OrderType::DEFAULT_SORT,
+            'relevanceBased' => true,
+            'direction' => OrderType::DIRECTION_DESCENDING,
+        ]);
     }
 
     public function getField(): string

@@ -58,7 +58,7 @@
     "scripts": {
         "lint": [
             "php-cs-fixer fix --allow-risky=yes --dry-run --using-cache=no",
-            "phpstan analyse src tests --level=7"
+            "phpstan analyse src tests --level=8"
         ],
         "fix": "php-cs-fixer fix --allow-risky=yes --using-cache=no",
         "test": [

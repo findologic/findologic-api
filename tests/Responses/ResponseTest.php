@@ -29,7 +29,7 @@ class ResponseTest extends TestBase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf('Unknown or invalid outputAdapter "%s"', $expectedOutputAdapter));
 
-        /** @var SearchRequest|MockObject $request */
+        /** @var SearchRequest&MockObject $request */
         $request = $this->getMockBuilder(SearchRequest::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['getOutputAdapter'])
@@ -118,6 +118,7 @@ class ResponseTest extends TestBase
     }
 
     /**
+     * @param class-string $expectedResponseInstance
      * @dataProvider responseProvider
      */
     public function testResponseDependsOnRequestInstance(

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FINDOLOGIC\Api\Responses\Json10\Properties\Filter;
 
+use FINDOLOGIC\Api\Definitions\Defaults;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\Values\FilterValue;
 
@@ -25,18 +26,18 @@ abstract class Filter
     protected array $values = [];
 
     /**
-     * @param array<string, array<string|int|float|bool|null>|string|null> $filter
+     * @param array<string, mixed> $filter
      */
     public function __construct(array $filter)
     {
-        $this->name = ResponseHelper::getStringProperty($filter, 'name');
-        $this->displayName = ResponseHelper::getStringProperty($filter, 'displayName');
-        $this->selectMode = ResponseHelper::getStringProperty($filter, 'selectMode');
+        $this->name = ResponseHelper::getStringProperty($filter, 'name') ?? Defaults::EMPTY;
+        $this->displayName = ResponseHelper::getStringProperty($filter, 'displayName') ?? Defaults::EMPTY;
+        $this->selectMode = ResponseHelper::getStringProperty($filter, 'selectMode') ?? Defaults::EMPTY;
         $this->cssClass = ResponseHelper::getStringProperty($filter, 'cssClass');
         $this->noAvailableFiltersText = ResponseHelper::getStringProperty($filter, 'noAvailableFiltersText');
         $this->combinationOperation = ResponseHelper::getStringProperty($filter, 'combinationOperation');
 
-        if (!isset($filter['values'])) {
+        if (!isset($filter['values']) || !is_array($filter['values'])) {
             return;
         }
 

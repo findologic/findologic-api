@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FINDOLOGIC\Api\Responses\Json10\Properties;
 
+use FINDOLOGIC\Api\Definitions\Defaults;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 
 class Metadata
@@ -19,16 +20,16 @@ class Metadata
      */
     public function __construct(array $metadata)
     {
-        if (isset($metadata['landingpage'])) {
+        if (isset($metadata['landingpage']) && is_array($metadata['landingpage'])) {
             $this->landingPage = new LandingPage($metadata['landingpage']);
         }
-        if (isset($metadata['promotion'])) {
+        if (isset($metadata['promotion']) && is_array($metadata['promotion'])) {
             $this->promotion = new Promotion($metadata['promotion']);
         }
 
         $this->searchConcept = ResponseHelper::getStringProperty($metadata, 'searchConcept');
-        $this->totalResults = ResponseHelper::getIntProperty($metadata, 'totalResults');
-        $this->currencySymbol = ResponseHelper::getStringProperty($metadata, 'currencySymbol');
+        $this->totalResults = ResponseHelper::getIntProperty($metadata, 'totalResults') ?? 0;
+        $this->currencySymbol = ResponseHelper::getStringProperty($metadata, 'currencySymbol') ?? Defaults::CURRENCY;
     }
 
     public function getLandingPage(): ?LandingPage

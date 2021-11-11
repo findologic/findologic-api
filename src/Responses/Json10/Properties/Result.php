@@ -18,7 +18,7 @@ class Result
     private array $otherFilters;
 
     /**
-     * @param array<string, array<array<string, string>|string|int|null>|array<string, string|null>|array<array<string|bool|float|int|null>|string|null>|array<array<string[]|array<string, array<string>>>|string|float|null>> $result
+     * @param array<string, mixed> $result
      */
     public function __construct(array $result)
     {

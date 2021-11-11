@@ -9,14 +9,16 @@ use SimpleXMLElement;
 
 class Query
 {
-    private Limit $limit;
+    private ?Limit $limit;
     private QueryString $queryString;
     private ?string $didYouMeanQuery;
     private ?OriginalQuery $originalQuery = null;
 
     public function __construct(SimpleXMLElement $response)
     {
-        $this->limit = new Limit($response->limit->attributes());
+        if ($response->limit->attributes()) {
+            $this->limit = new Limit($response->limit->attributes());
+        }
         $this->queryString = new QueryString($response->queryString);
         $this->didYouMeanQuery = ResponseHelper::getStringProperty($response, 'didYouMeanQuery');
         if ($response->originalQuery) {
@@ -24,7 +26,7 @@ class Query
         }
     }
 
-    public function getLimit(): Limit
+    public function getLimit(): ?Limit
     {
         return $this->limit;
     }

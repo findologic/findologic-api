@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FINDOLOGIC\Api\Responses\Autocomplete\Properties;
 
+use FINDOLOGIC\Api\Definitions\Defaults;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 
 class Suggestion
@@ -24,9 +25,9 @@ class Suggestion
      */
     public function __construct(array $response)
     {
-        $this->label = ResponseHelper::getStringProperty($response, 'label');
-        $this->block = ResponseHelper::getStringProperty($response, 'block');
-        $this->frequency = ResponseHelper::getStringProperty($response, 'frequency');
+        $this->label = ResponseHelper::getStringProperty($response, 'label') ?? Defaults::EMPTY;
+        $this->block = ResponseHelper::getStringProperty($response, 'block') ?? Defaults::EMPTY;
+        $this->frequency = ResponseHelper::getStringProperty($response, 'frequency') ?? Defaults::EMPTY;
         $this->imageUrl = ResponseHelper::getStringProperty($response, 'imageUrl');
         $this->price = ResponseHelper::getFloatProperty($response, 'price');
         $this->identifier = ResponseHelper::getStringProperty($response, 'identifier');

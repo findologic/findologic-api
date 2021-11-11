@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FINDOLOGIC\Api\Responses\Json10\Properties\Filter\Values;
 
+use FINDOLOGIC\Api\Definitions\Defaults;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 
 class ImageFilterValue extends FilterValue
@@ -14,7 +15,7 @@ class ImageFilterValue extends FilterValue
     {
         parent::__construct($filterValue);
 
-        $this->image = ResponseHelper::getStringProperty($filterValue, 'image');
+        $this->image = ResponseHelper::getStringProperty($filterValue, 'image') ?? Defaults::EMPTY;
     }
 
     public function getImage(): string

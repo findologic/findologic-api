@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace FINDOLOGIC\Api\Exceptions;
 
-use RuntimeException;
-
-class ServiceNotAliveException extends RuntimeException
+class ServiceNotAliveException extends FindologicApiException
 {
     public function __construct(string $message)
     {

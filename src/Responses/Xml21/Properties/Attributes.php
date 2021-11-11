@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FINDOLOGIC\Api\Responses\Xml21\Properties;
 
+use FINDOLOGIC\Api\Definitions\Defaults;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use SimpleXMLElement;
 
@@ -16,8 +17,8 @@ class Attributes
 
     public function __construct(SimpleXMLElement $response)
     {
-        $this->stepSize = ResponseHelper::getFloatProperty($response, 'stepSize');
-        $this->unit = ResponseHelper::getStringProperty($response, 'unit');
+        $this->stepSize = ResponseHelper::getFloatProperty($response, 'stepSize') ?? Defaults::RANGE_STEP_SIZE;
+        $this->unit = ResponseHelper::getStringProperty($response, 'unit') ?? Defaults::CURRENCY;
 
         if ($response->selectedRange) {
             $this->selectedRange = new Range($response->selectedRange);

@@ -29,7 +29,9 @@ class CategoryItem extends Item
                 $itemName = ResponseHelper::getStringProperty($item, 'name');
                 $categoryItem = Item::getInstance($filter, $item);
                 if (!$categoryItem instanceof CategoryItem) {
+                    // @codeCoverageIgnoreStart
                     continue;
+                    // @codeCoverageIgnoreEnd
                 }
 
                 $this->items[$itemName] = $categoryItem;

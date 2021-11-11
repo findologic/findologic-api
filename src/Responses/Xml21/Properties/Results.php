@@ -9,14 +9,14 @@ use SimpleXMLElement;
 
 class Results
 {
-    private int $count;
+    private ?int $count;
 
     public function __construct(SimpleXMLElement $response)
     {
         $this->count = ResponseHelper::getIntProperty($response, 'count', true);
     }
 
-    public function getCount(): int
+    public function getCount(): ?int
     {
         return $this->count;
     }

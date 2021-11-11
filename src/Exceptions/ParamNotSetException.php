@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace FINDOLOGIC\Api\Exceptions;
 
-use RuntimeException;
-
-class ParamNotSetException extends RuntimeException
+class ParamNotSetException extends FindologicApiException
 {
     public function __construct(string $param)
     {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Item;
 
+use FINDOLOGIC\Api\Definitions\Defaults;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use SimpleXMLElement;
 
@@ -16,7 +17,9 @@ class ColorItem extends Item
     {
         parent::__construct($item);
         $this->color = ResponseHelper::getStringProperty($item, 'color');
-        $this->image = trim(ResponseHelper::getStringProperty($item, 'image'));
+
+        $image = ResponseHelper::getStringProperty($item, 'image') ?? Defaults::EMPTY;
+        $this->image = trim($image);
     }
 
     public function getColor(): ?string

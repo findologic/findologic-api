@@ -131,6 +131,7 @@ class ClientTest extends TestBase
 
         $expectedRequestUrl = 'https://service.findologic.com/ps/blubbergurken.de/autocomplete.php?' . $requestParams;
 
+        /** @var string $expectedBody */
         $expectedBody = json_encode([
             'label' => 'schuljahr',
             'block' => 'suggest',

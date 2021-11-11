@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace FINDOLOGIC\Api\Exceptions;
 
-use RuntimeException;
-
-class InvalidParamException extends RuntimeException
+class InvalidParamException extends FindologicApiException
 {
     public function __construct(string $param)
     {

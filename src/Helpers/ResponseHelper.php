@@ -67,12 +67,12 @@ class ResponseHelper
      * Gets a property from an object.
      *
      * @param mixed $obj
-     * @param null|string $type Convert value to another type. Optional.
+     * @param string $type Convert value to another type. Optional.
      * @param bool $allowEmptyValues If true, values that are 0 or 0.0 are allowed.
      *
      * @return mixed|null Returns the property value or null if it does not exist.
      */
-    private static function getProperty($obj, string $property, ?string $type, bool $allowEmptyValues)
+    private static function getProperty($obj, string $property, string $type, bool $allowEmptyValues)
     {
         if (!is_array($obj) && !is_object($obj)) {
             return null;

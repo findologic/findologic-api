@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FINDOLOGIC\Api\Responses\Xml21\Properties\Filter;
 
+use FINDOLOGIC\Api\Definitions\Defaults;
 use FINDOLOGIC\Api\Definitions\FilterType;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Attributes;
@@ -30,9 +31,9 @@ abstract class Filter
         $this->itemCount = ResponseHelper::getIntProperty($response, 'itemCount', true);
         $this->cssClass = ResponseHelper::getStringProperty($response, 'cssClass');
         $this->noAvailableFiltersText = ResponseHelper::getStringProperty($response, 'noAvailableFiltersText');
-        $this->name = ResponseHelper::getStringProperty($response, 'name');
-        $this->display = ResponseHelper::getStringProperty($response, 'display');
-        $this->select = ResponseHelper::getStringProperty($response, 'select');
+        $this->name = ResponseHelper::getStringProperty($response, 'name') ?? Defaults::EMPTY;
+        $this->display = ResponseHelper::getStringProperty($response, 'display') ?? Defaults::EMPTY;
+        $this->select = ResponseHelper::getStringProperty($response, 'select') ?? Defaults::EMPTY;
         $this->selectedItemCount = ResponseHelper::getIntProperty($response, 'selectedItems') ?: 0;
 
         if ($response->attributes) {

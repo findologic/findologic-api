@@ -4,21 +4,29 @@ declare(strict_types=1);
 
 namespace FINDOLOGIC\Api\Tests\Responses\Autocomplete;
 
+use Exception;
 use FINDOLOGIC\Api\Definitions\BlockType;
 use FINDOLOGIC\Api\Responses\Autocomplete\Properties\Suggestion;
 use FINDOLOGIC\Api\Responses\Autocomplete\SuggestResponse;
+use FINDOLOGIC\Api\Tests\ResponseDataHelper;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class SuggestResponseTest extends TestCase
 {
-    /**
-     * Will use a real response that could come from a request.
-     */
+    use ResponseDataHelper;
+
     public function getRealResponseData(string $filename = 'demoResponseSuggest.json'): SuggestResponse
     {
-        // Get contents from a real response locally.
-        $realResponseData = file_get_contents(__DIR__ . '/../../Mockdata/Autocomplete/' . $filename);
-        return new SuggestResponse($realResponseData);
+        $response = $this->getResponseData($filename, 'Autocomplete', SuggestResponse::class);
+        if (!$response instanceof SuggestResponse) {
+            throw new Exception(sprintf(
+                'Response was expected to be a SuggestResponse, but is an instance of %s',
+                get_class($response)
+            ));
+        }
+
+        return $response;
     }
 
     public function testResponseWillReturnExpectedLabels(): void

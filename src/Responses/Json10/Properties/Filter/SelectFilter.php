@@ -17,7 +17,7 @@ class SelectFilter extends Filter
     {
         parent::__construct($filter);
 
-        $this->pinnedFilterValueCount = ResponseHelper::getIntProperty($filter, 'pinnedFilterValueCount');
+        $this->pinnedFilterValueCount = ResponseHelper::getIntProperty($filter, 'pinnedFilterValueCount') ?? 0;
     }
 
     public function getPinnedFilterValueCount(): int

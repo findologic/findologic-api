@@ -284,7 +284,7 @@ abstract class Request
         $validator->rule('required', $this->requiredParams, true);
 
         if (!$validator->validate()) {
-            throw new ParamNotSetException(key($validator->errors()));
+            throw new ParamNotSetException((string)key((array)$validator->errors()));
         }
     }
 
@@ -295,13 +295,17 @@ abstract class Request
     {
         $params = $this->getParams();
 
+        if (!isset($params[QueryParameter::SHOP_URL]) || !is_string($params[QueryParameter::SHOP_URL])) {
+            throw new InvalidParamException('shopurl');
+        }
         $shopUrl = $params[QueryParameter::SHOP_URL];
+
         // If the shopkey was not manually overridden, we take the shopkey from the config.
         if (!isset($params[QueryParameter::SERVICE_ID])) {
             $params['shopkey'] = $config->getServiceId();
         }
 
-        if (isset($params[QueryParameter::ATTRIB])) {
+        if (isset($params[QueryParameter::ATTRIB]) && is_array($params[QueryParameter::ATTRIB])) {
             foreach ($params[QueryParameter::ATTRIB] as $key => $values) {
                 if (is_string(array_values($values)[0])) {
                     continue; // Nothing to do for single select filters.

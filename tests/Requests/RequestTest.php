@@ -46,6 +46,7 @@ class RequestTest extends TestBase
 
     /**
      * @dataProvider getInstancesProvider
+     * @param class-string $expectedInstance
      */
     public function testGetInstanceReturnsProperInstances(int $type, string $expectedInstance): void
     {

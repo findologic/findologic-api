@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FINDOLOGIC\Api\Responses\Json10\Properties\Filter;
 
+use FINDOLOGIC\Api\Definitions\Defaults;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 
 class RangeSliderFilter extends Filter
@@ -17,8 +18,8 @@ class RangeSliderFilter extends Filter
     {
         parent::__construct($filter);
 
-        $this->stepSize = ResponseHelper::getFloatProperty($filter, 'stepSize');
-        $this->unit = ResponseHelper::getStringProperty($filter, 'unit');
+        $this->stepSize = ResponseHelper::getFloatProperty($filter, 'stepSize') ?? Defaults::RANGE_STEP_SIZE;
+        $this->unit = ResponseHelper::getStringProperty($filter, 'unit') ?? Defaults::CURRENCY;
 
         $this->totalRange = new Range($filter['totalRange']);
         $this->selectedRange = new Range($filter['selectedRange']);

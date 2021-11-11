@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FINDOLOGIC\Api\Responses\Json10\Properties;
 
+use FINDOLOGIC\Api\Definitions\Defaults;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 
 class Variant
@@ -18,7 +19,7 @@ class Variant
      */
     public function __construct(array $variant)
     {
-        $this->name = ResponseHelper::getStringProperty($variant, 'name');
+        $this->name = ResponseHelper::getStringProperty($variant, 'name') ?? Defaults::EMPTY;
         $this->correctedQuery = ResponseHelper::getStringProperty($variant, 'correctedQuery');
         $this->improvedQuery = ResponseHelper::getStringProperty($variant, 'improvedQuery');
         $this->didYouMeanQuery = ResponseHelper::getStringProperty($variant, 'didYouMeanQuery');

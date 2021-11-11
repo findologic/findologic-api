@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FINDOLOGIC\Api\Responses\Xml21\Properties;
 
+use FINDOLOGIC\Api\Definitions\Defaults;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use SimpleXMLElement;
 
@@ -17,8 +18,8 @@ class Product
     public function __construct(SimpleXMLElement $response)
     {
         $attributes = $response->attributes();
-        $this->id = ResponseHelper::getStringProperty($attributes, 'id');
-        $this->relevance =  ResponseHelper::getFloatProperty($attributes, 'relevance');
+        $this->id = ResponseHelper::getStringProperty($attributes, 'id') ?? Defaults::EMPTY;
+        $this->relevance =  ResponseHelper::getFloatProperty($attributes, 'relevance') ?? 0.0;
 
         if (isset($response->properties)) {
             foreach ($response->properties->children() as $property) {

@@ -7,23 +7,25 @@ namespace FINDOLOGIC\Api\Tests;
 use FINDOLOGIC\GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Stream;
+use http\Exception\InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class TestBase extends TestCase
 {
-    /** @var Client|MockObject */
+    /** @var Client&MockObject */
     protected $httpClientMock;
 
-    /** @var Response|MockObject */
+    /** @var Response&MockObject */
     protected $responseMock;
 
-    /** @var Stream|MockObject */
+    /** @var Stream&MockObject */
     protected $streamMock;
 
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->httpClientMock = $this->getMockBuilder(Client::class)
             ->onlyMethods(['request'])
             ->getMock();
@@ -95,6 +97,12 @@ class TestBase extends TestCase
 
     protected function getMockResponse(string $file): string
     {
-        return file_get_contents(__DIR__ . '/Mockdata/' . $file);
+        $filePath = __DIR__ . '/Mockdata/' . $file;
+        $data = file_get_contents($filePath);
+        if (!$data) {
+            throw new InvalidArgumentException(sprintf('Can not find file "%s"', realpath($filePath)));
+        }
+
+        return $data;
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FINDOLOGIC\Api\Responses\Xml21;
 
+use FINDOLOGIC\Api\Exceptions\ParseException;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use FINDOLOGIC\Api\Responses\Response;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Filter;
@@ -36,6 +37,10 @@ class Xml21Response extends Response
     protected function buildResponseElementInstances(string $response): void
     {
         $xmlResponse = new SimpleXMLElement($response);
+
+        if (!$xmlResponse->servers[0] || !$xmlResponse->query[0] || !$xmlResponse->results[0]) {
+            throw new ParseException('Could not parse XML_2.1 response');
+        }
 
         $this->servers = new Servers($xmlResponse->servers[0]);
         $this->query = new Query($xmlResponse->query[0]);
@@ -72,7 +77,7 @@ class Xml21Response extends Response
      */
     private function getLandingPageFromResponse(SimpleXMLElement $xmlResponse): ?LandingPage
     {
-        if ($xmlResponse->landingPage) {
+        if ($xmlResponse->landingPage && $xmlResponse->landingPage[0] && $xmlResponse->landingPage[0]->attributes()) {
             return new LandingPage($xmlResponse->landingPage[0]->attributes());
         }
 
@@ -84,7 +89,7 @@ class Xml21Response extends Response
      */
     private function getPromotionFromResponse(SimpleXMLElement $xmlResponse): ?Promotion
     {
-        if ($xmlResponse->promotion) {
+        if ($xmlResponse->promotion && $xmlResponse->promotion[0] && $xmlResponse->promotion[0]->attributes()) {
             return new Promotion($xmlResponse->promotion[0]->attributes());
         }
 

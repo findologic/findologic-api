@@ -737,4 +737,15 @@ class SearchNavigationRequestTest extends TestBase
 
         $request->getBody();
     }
+
+    public function testInjectingNonStringShopUrlCausesAnException(): void
+    {
+        $this->expectException(InvalidParamException::class);
+        $this->expectExceptionMessage('Parameter shopurl is not valid.');
+
+        $request = new SearchRequest([
+            'shopurl' => ['this is an array']
+        ]);
+        $request->buildRequestUrl($this->config);
+    }
 }

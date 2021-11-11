@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace FINDOLOGIC\Api\Responses\Json10\Properties;
 
+use FINDOLOGIC\Api\Definitions\Defaults;
+use FINDOLOGIC\Api\Definitions\OrderType;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 
 class Request
 {
     private ?string $query;
     private int $first;
-    private int $count;
+    private ?int $count;
     private string $serviceId;
     private ?string $usergroup;
     private Order $order;
@@ -21,11 +23,15 @@ class Request
     public function __construct(array $request)
     {
         $this->query = ResponseHelper::getStringProperty($request, 'query');
-        $this->first = ResponseHelper::getIntProperty($request, 'first', true);
+        $this->first = ResponseHelper::getIntProperty($request, 'first', true) ?? 0;
         $this->count = ResponseHelper::getIntProperty($request, 'count');
-        $this->serviceId = ResponseHelper::getStringProperty($request, 'serviceId');
+        $this->serviceId = ResponseHelper::getStringProperty($request, 'serviceId') ?? Defaults::EMPTY;
         $this->usergroup = ResponseHelper::getStringProperty($request, 'usergroup');
-        $this->order = new Order($request['order']);
+
+        $this->order = Order::getDefault();
+        if (isset($request['order']) && is_array($request['order'])) {
+            $this->order = new Order($request['order']);
+        }
     }
 
     public function getQuery(): ?string
@@ -38,7 +44,7 @@ class Request
         return $this->first;
     }
 
-    public function getCount(): int
+    public function getCount(): ?int
     {
         return $this->count;
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FINDOLOGIC\Api\Responses\Json10\Properties;
 
+use FINDOLOGIC\Api\Definitions\Defaults;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 
 /**
@@ -35,33 +36,55 @@ class Item
      */
     public function __construct(array $item)
     {
-        $this->id = ResponseHelper::getStringProperty($item, 'id');
-        $this->score = ResponseHelper::getFloatProperty($item, 'score', true);
-        $this->url = ResponseHelper::getStringProperty($item, 'url');
-        $this->name = ResponseHelper::getStringProperty($item, 'name');
-        $this->highlightedName = ResponseHelper::getStringProperty($item, 'highlightedName');
+        $this->id = ResponseHelper::getStringProperty($item, 'id') ?? Defaults::EMPTY;
+        $this->score = ResponseHelper::getFloatProperty($item, 'score', true) ?? 0.0;
+        $this->url = ResponseHelper::getStringProperty($item, 'url') ?? Defaults::EMPTY;
+        $this->name = ResponseHelper::getStringProperty($item, 'name') ?? Defaults::EMPTY;
+        $this->highlightedName = ResponseHelper::getStringProperty($item, 'highlightedName') ?? Defaults::EMPTY;
 
-        if (isset($item['ordernumbers'])) {
+        if (isset($item['ordernumbers']) && is_array($item['ordernumbers'])) {
             foreach ($item['ordernumbers'] as $ordernumber) {
+                if (!is_string($ordernumber)) {
+                    continue;
+                }
+
                 $this->ordernumbers[] = $ordernumber;
             }
         }
         $this->matchingOrdernumber = ResponseHelper::getStringProperty($item, 'matchingOrdernumber');
-        $this->price = ResponseHelper::getFloatProperty($item, 'price', true);
+        $this->price = ResponseHelper::getFloatProperty($item, 'price', true) ?? 0.0;
         $this->summary = ResponseHelper::getStringProperty($item, 'summary');
 
-        if (isset($item['attributes'])) {
-            $this->attributes = $item['attributes'];
+        if (isset($item['attributes']) && is_array($item['attributes'])) {
+            foreach ($item['attributes'] as $key => $attribute) {
+                if (!is_array($attribute)) {
+                    continue;
+                }
+
+                $this->attributes[(string)$key] = $attribute;
+            }
         }
-        if (isset($item['properties'])) {
-            $this->properties = $item['properties'];
+        if (isset($item['properties']) && is_array($item['properties'])) {
+            foreach ($item['properties'] as $key => $value) {
+                if (!is_string($value)) {
+                    continue;
+                }
+
+                $this->properties[(string)$key] = $value;
+            }
         }
-        if (isset($item['pushRules'])) {
-            $this->pushRules = $item['pushRules'];
+        if (isset($item['pushRules']) && is_array($item['pushRules'])) {
+            foreach ($item['pushRules'] as $pushRule) {
+                if (!is_string($pushRule)) {
+                    continue;
+                }
+
+                $this->pushRules[] = $pushRule;
+            }
         }
 
         $this->productPlacement = ResponseHelper::getStringProperty($item, 'productPlacement');
-        $this->imageUrl = ResponseHelper::getStringProperty($item, 'imageUrl');
+        $this->imageUrl = ResponseHelper::getStringProperty($item, 'imageUrl') ?? Defaults::EMPTY;
     }
 
     public function getId(): string

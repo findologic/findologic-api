@@ -41,7 +41,7 @@ abstract class FilterValue
     }
 
     /**
-     * @param array<string, string|int|float|bool|null> $filterValue
+     * @param array<string, mixed> $filterValue
      */
     public static function getInstance(Filter $filter, array $filterValue): FilterValue
     {
@@ -59,17 +59,17 @@ abstract class FilterValue
         }
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function isSelected(): bool
+    public function isSelected(): ?bool
     {
         return $this->selected;
     }
 
-    public function getWeight(): float
+    public function getWeight(): ?float
     {
         return $this->weight;
     }

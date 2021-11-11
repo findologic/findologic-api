@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Item;
 
+use FINDOLOGIC\Api\Definitions\Defaults;
 use FINDOLOGIC\Api\Helpers\ResponseHelper;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\CategoryFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\ColorPickerFilter;
@@ -23,7 +24,7 @@ abstract class Item
 
     public function __construct(SimpleXMLElement $item)
     {
-        $this->name = ResponseHelper::getStringProperty($item, 'name');
+        $this->name = ResponseHelper::getStringProperty($item, 'name') ?? Defaults::EMPTY;
         $this->weight = ResponseHelper::getFloatProperty($item, 'weight');
         $this->frequency = ResponseHelper::getIntProperty($item, 'frequency', true);
         $this->selected = ResponseHelper::getBoolProperty($item->attributes(), 'selected') ? true : false;

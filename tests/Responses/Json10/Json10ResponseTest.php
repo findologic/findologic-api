@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FINDOLOGIC\Api\Tests\Responses\Json10;
 
+use Exception;
 use FINDOLOGIC\Api\Responses\Json10\Json10Response;
 use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\ColorFilter;
 use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\ImageFilter;
@@ -18,19 +19,24 @@ use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\Values\RangeSliderValue;
 use FINDOLOGIC\Api\Responses\Json10\Properties\Item;
 use FINDOLOGIC\Api\Responses\Json10\Properties\LandingPage;
 use FINDOLOGIC\Api\Responses\Json10\Properties\Promotion;
+use FINDOLOGIC\Api\Tests\ResponseDataHelper;
 use PHPUnit\Framework\TestCase;
 
 class Json10ResponseTest extends TestCase
 {
-    /**
-     * Will use a real response that could come from a request.
-     */
+    use ResponseDataHelper;
+
     public function getRealResponseData(string $filename = 'demoResponse.json'): Json10Response
     {
-        // Get contents from a real response locally.
-        $realResponseData = file_get_contents(__DIR__ . '/../../Mockdata/Json10/' . $filename);
+        $response = $this->getResponseData($filename, 'Json10', Json10Response::class);
+        if (!$response instanceof Json10Response) {
+            throw new Exception(sprintf(
+                'Response was expected to be a Json10Response, but is an instance of %s',
+                get_class($response)
+            ));
+        }
 
-        return new Json10Response($realResponseData);
+        return $response;
     }
 
     public function testRequestWillBeReturnedAsExpected(): void
@@ -208,6 +214,7 @@ class Json10ResponseTest extends TestCase
     public function testLandingPageIsReturnedAsExpected(): void
     {
         $response = $this->getRealResponseData('demoResponseWithLandingPage.json');
+        /** @var LandingPage $landingPage */
         $landingPage = $response->getResult()->getMetadata()->getLandingPage();
 
         $this->assertInstanceOf(LandingPage::class, $landingPage);
@@ -218,6 +225,7 @@ class Json10ResponseTest extends TestCase
     public function testPromotionIsReturnedAsExpected(): void
     {
         $response = $this->getRealResponseData('demoResponseWithPromotion.json');
+        /** @var Promotion $promotion */
         $promotion = $response->getResult()->getMetadata()->getPromotion();
 
         $this->assertInstanceOf(Promotion::class, $promotion);
@@ -336,5 +344,15 @@ class Json10ResponseTest extends TestCase
         $this->assertSame(0.0333, $imageFilterValue->getWeight());
         $this->assertNull($imageFilterValue->getFrequency());
         $this->assertFalse($imageFilterValue->isSelected());
+    }
+
+    public function testItemContainsInvalidFieldsAreSkipped(): void
+    {
+        $response = $this->getRealResponseData('demoResponseWithInvalidItemFields.json');
+
+        $this->assertSame(['valid :)'], $response->getResult()->getItems()[0]->getOrdernumbers());
+        $this->assertEmpty($response->getResult()->getItems()[0]->getAttributes());
+        $this->assertSame(['valid' => 'valid'], $response->getResult()->getItems()[0]->getProperties());
+        $this->assertSame(['valid!'], $response->getResult()->getItems()[0]->getPushRules());
     }
 }

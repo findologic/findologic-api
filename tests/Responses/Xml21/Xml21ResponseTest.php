@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace FINDOLOGIC\Api\Tests\Responses\Xml21;
 
+use Exception;
+use FINDOLOGIC\Api\Exceptions\ParseException;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Attributes;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\CategoryFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\ColorPickerFilter;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Filter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Item\CategoryItem;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Item\ColorItem;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\Item\RangeSliderItem;
@@ -14,20 +18,30 @@ use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\LabelTextFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\RangeSliderFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\SelectDropdownFilter;
 use FINDOLOGIC\Api\Responses\Xml21\Properties\Filter\VendorImageFilter;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\LandingPage;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Limit;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\OriginalQuery;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Promotion;
+use FINDOLOGIC\Api\Responses\Xml21\Properties\Range;
 use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
+use FINDOLOGIC\Api\Tests\ResponseDataHelper;
 use PHPUnit\Framework\TestCase;
 
 class Xml21ResponseTest extends TestCase
 {
-    /**
-     * Will use a real response that could come from a request.
-     */
+    use ResponseDataHelper;
+
     public function getRealResponseData(string $filename = 'demoResponse.xml'): Xml21Response
     {
-        // Get contents from a real response locally.
-        $realResponseData = file_get_contents(__DIR__ . '/../../Mockdata/Xml21/' . $filename);
+        $response = $this->getResponseData($filename, 'Xml21', Xml21Response::class);
+        if (!$response instanceof Xml21Response) {
+            throw new Exception(sprintf(
+                'Response was expected to be a Xml21Response, but is an instance of %s',
+                get_class($response)
+            ));
+        }
 
-        return new Xml21Response($realResponseData);
+        return $response;
     }
 
     public function testResponseWillReturnServersAsExpected(): void
@@ -66,8 +80,11 @@ class Xml21ResponseTest extends TestCase
 
         $response = $this->getRealResponseData();
 
-        $this->assertSame($expectedFirst, $response->getQuery()->getLimit()->getFirst());
-        $this->assertSame($expectedCount, $response->getQuery()->getLimit()->getCount());
+        /** @var Limit $limit */
+        $limit = $response->getQuery()->getLimit();
+
+        $this->assertSame($expectedFirst, $limit->getFirst());
+        $this->assertSame($expectedCount, $limit->getCount());
     }
 
     public function testResponseWillReturnQueryStringAsExpected(): void
@@ -97,14 +114,20 @@ class Xml21ResponseTest extends TestCase
 
         $response = $this->getRealResponseData();
 
-        $this->assertSame($expectedValue, $response->getQuery()->getOriginalQuery()->getValue());
-        $this->assertTrue($response->getQuery()->getOriginalQuery()->getAllowOverride());
+        /** @var OriginalQuery $originalQuery */
+        $originalQuery = $response->getQuery()->getOriginalQuery();
+
+        $this->assertSame($expectedValue, $originalQuery->getValue());
+        $this->assertTrue($originalQuery->getAllowOverride());
     }
 
     public function testResponseWithoutAllowOverrideWillReturnNullWhenCallingIt(): void
     {
         $response = $this->getRealResponseData('demoResponseWithoutAllowOverride.xml');
-        $actualAllowOverride = $response->getQuery()->getOriginalQuery()->getAllowOverride();
+
+        /** @var OriginalQuery $originalQuery */
+        $originalQuery = $response->getQuery()->getOriginalQuery();
+        $actualAllowOverride = $originalQuery->getAllowOverride();
 
         $this->assertFalse($actualAllowOverride);
     }
@@ -123,7 +146,10 @@ class Xml21ResponseTest extends TestCase
 
         $response = $this->getRealResponseData();
 
-        $this->assertSame($expectedLink, $response->getLandingPage()->getLink());
+        /** @var LandingPage $landingPage */
+        $landingPage = $response->getLandingPage();
+
+        $this->assertSame($expectedLink, $landingPage->getLink());
     }
 
     public function testResponseWithoutLandingPageWillReturnNullWhenCallingIt(): void
@@ -141,8 +167,11 @@ class Xml21ResponseTest extends TestCase
 
         $response = $this->getRealResponseData();
 
-        $this->assertSame($expectedLink, $response->getPromotion()->getLink());
-        $this->assertSame($expectedImage, $response->getPromotion()->getImage());
+        /** @var Promotion $promotion */
+        $promotion = $response->getPromotion();
+
+        $this->assertSame($expectedLink, $promotion->getLink());
+        $this->assertSame($expectedImage, $promotion->getImage());
     }
 
     public function testResponseWithoutPromotionWillReturnNullWhenCallingIt(): void
@@ -255,7 +284,9 @@ class Xml21ResponseTest extends TestCase
             $this->assertSame($expectedSelectedItemCount[$count], $filter->getSelectedItemCount());
             $this->assertSame($expectedFilterCount, $response->getOtherFilterCount());
             foreach ($filter->getSelectedItems() as $selectedItem) {
-                $this->assertInstanceOf($expectedSelectedItems[$count], $selectedItem);
+                if ($expectedSelectedItems[$count] !== null) {
+                    $this->assertInstanceOf($expectedSelectedItems[$count], $selectedItem);
+                }
             }
             $count++;
         }
@@ -612,9 +643,23 @@ class Xml21ResponseTest extends TestCase
 
         /** @var RangeSliderFilter $priceFilter */
         $priceFilter = $response->getMainFilters()['price'];
-        $this->assertSame(0.0, $priceFilter->getAttributes()->getSelectedRange()->getMin());
-        $this->assertSame(0.0, $priceFilter->getAttributes()->getSelectedRange()->getMax());
-        $this->assertSame(0.0, $priceFilter->getAttributes()->getTotalRange()->getMin());
-        $this->assertSame(0.0, $priceFilter->getAttributes()->getTotalRange()->getMax());
+        /** @var Attributes $attributes */
+        $attributes = $priceFilter->getAttributes();
+
+        $selectedRange = $attributes->getSelectedRange();
+        $totalRange = $attributes->getTotalRange();
+
+        $this->assertSame(0.0, $selectedRange->getMin());
+        $this->assertSame(0.0, $selectedRange->getMax());
+        $this->assertSame(0.0, $totalRange->getMin());
+        $this->assertSame(0.0, $totalRange->getMax());
+    }
+
+    public function testValidXmlButInvalidStructureWillThrowAnException(): void
+    {
+        $this->expectException(ParseException::class);
+        $this->expectExceptionMessage('Could not parse XML_2.1 response');
+
+        $this->getRealResponseData('demoResponseWithoutMandatoryFields.xml');
     }
 }

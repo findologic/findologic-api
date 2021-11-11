@@ -8,6 +8,7 @@ use BadMethodCallException;
 use FINDOLOGIC\Api\Definitions\Defaults;
 use FINDOLOGIC\Api\Definitions\Endpoint;
 use FINDOLOGIC\Api\Definitions\RequestMethod;
+use FINDOLOGIC\Api\Exceptions\InternalException;
 use FINDOLOGIC\Api\Requests\Item\Changes\PriceChange;
 use FINDOLOGIC\Api\Requests\Item\Changes\VisibilityChange;
 use FINDOLOGIC\Api\Requests\Request;
@@ -140,7 +141,9 @@ class ItemUpdateRequest extends Request
         }
 
         if (!$json = json_encode($body)) {
-            throw new \Exception('Something went wrong while trying to build the JSON body');
+            // @codeCoverageIgnoreStart
+            throw new InternalException('Something went wrong while trying to build the request body');
+            // @codeCoverageIgnoreEnd
         }
 
         return $json;
