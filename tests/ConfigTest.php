@@ -89,10 +89,14 @@ class ConfigTest extends TestBase
             $this->fail('An invalid Config should throw an exception!');
         } catch (ConfigException $e) {
             $this->assertStringStartsWith('Config parameter', $e->getMessage());
-        } catch (TypeError $e) { // Make sure type errors are caught as well (PHP 7+).
-            $this->assertStringStartsWith('Argument 1 passed to', $e->getMessage());
-        } catch (Exception $e) { // Make sure type errors are caught as well (PHP 5.6).
-            $this->assertStringStartsWith('Argument 1 passed to', $e->getMessage());
+        } catch (TypeError $e) {
+            if (PHP_VERSION_ID >= 80100) {
+                // PHP >= 8.1
+                $this->assertStringStartsWith('Argument #1', $e->getMessage());
+            } else {
+                // PHP 7.x - 8.0
+                $this->assertStringStartsWith('Argument 1 passed to', $e->getMessage());
+            }
         }
     }
 
