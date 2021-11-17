@@ -91,10 +91,10 @@ class ConfigTest extends TestBase
             $this->assertStringStartsWith('Config parameter', $e->getMessage());
         } catch (TypeError $e) {
             if (PHP_VERSION_ID >= 80000) {
-                // PHP >= 8.0
+                // For PHP >= 8.0.
                 $this->assertStringContainsString('Argument #1', $e->getMessage());
             } else {
-                // PHP 7.x
+                // For PHP 7.x.
                 $this->assertStringStartsWith('Argument 1 passed to', $e->getMessage());
             }
         }
