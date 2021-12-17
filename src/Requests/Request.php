@@ -296,13 +296,13 @@ abstract class Request
         $params = $this->getParams();
 
         if (!isset($params[QueryParameter::SHOP_URL]) || !is_string($params[QueryParameter::SHOP_URL])) {
-            throw new InvalidParamException('shopurl');
+            throw new InvalidParamException(QueryParameter::SHOP_URL);
         }
         $shopUrl = $params[QueryParameter::SHOP_URL];
 
         // If the shopkey was not manually overridden, we take the shopkey from the config.
         if (!isset($params[QueryParameter::SERVICE_ID])) {
-            $params['shopkey'] = $config->getServiceId();
+            $params[QueryParameter::SERVICE_ID] = $config->getServiceId();
         }
 
         if (isset($params[QueryParameter::ATTRIB]) && is_array($params[QueryParameter::ATTRIB])) {

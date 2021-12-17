@@ -31,7 +31,6 @@ jobs:
 
       - name: Check linting rules
         run: composer lint
-        if: ${{ matrix.php-version != '8.1' }} # PHP-CS does not yet support 8.1.
 
       - name: Run tests
         run: composer test
