@@ -10,6 +10,7 @@ use FINDOLOGIC\Api\Requests\Request;
 use FINDOLOGIC\Api\Requests\SearchNavigation\SearchNavigationRequest;
 use FINDOLOGIC\Api\Responses\Response;
 use FINDOLOGIC\GuzzleHttp\Exception\GuzzleException;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface as GuzzleResponse;
 
 class Client
@@ -28,8 +29,11 @@ class Client
 
     /**
      * Sends a request to FINDOLOGIC. An alivetest may be sent if the request is a search or a navigation request.
+     *
+     * @param Request|RequestInterface $request Using the custom Findologic-API Request class instance is considered
+     * deprecated and will be removed in version tag:v3.0.0.
      */
-    public function send(Request $request): Response
+    public function send($request): Response
     {
         $request->checkRequiredParamsAreSet();
         $alivetestResponse = $this->doAlivetest($request);

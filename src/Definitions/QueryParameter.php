@@ -25,4 +25,9 @@ class QueryParameter extends Definition
     public const OUTPUT_ATTRIB = 'outputAttrib';
     public const SELECTED = 'selected';
     public const OUTPUT_ADAPTER = 'outputAdapter';
+    public const SHOPPING_GUIDE = 'shoppingGuide';
+    public const USER_ID = 'userId';
+    public const REQUEST_ID = 'requestId';
+    public const USER_AGENT = 'userAgent';
+    public const AUTOCOMPLETE_BLOCKS = 'autocompleteblocks';
 }

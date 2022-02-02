@@ -10,7 +10,7 @@ use FINDOLOGIC\GuzzleHttp\Client;
 
 class Config
 {
-    public const DEFAULT_TEMPLATE_API_URL = 'https://service.findologic.com/ps/%s/%s';
+    public const DEFAULT_TEMPLATE_API_URL = 'https://service.findologic.com/ps/%s';
     public const DEFAULT_ALIVETEST_TIMEOUT = 1.0;
     public const DEFAULT_REQUEST_TIMEOUT = 3.0;
 
@@ -135,5 +135,10 @@ class Config
         $this->setConfigValue(self::HTTP_CLIENT, $httpClient, ['required']);
 
         return $this;
+    }
+
+    public function getFullApiUrl(): string
+    {
+        return sprintf($this->getApiUrl(), $this->getServiceId());
     }
 }

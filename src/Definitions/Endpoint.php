@@ -6,10 +6,9 @@ namespace FINDOLOGIC\Api\Definitions;
 
 class Endpoint extends Definition
 {
-    public const ALIVETEST = 'alivetest.php';
-    public const SEARCH = 'index.php';
-    public const NAVIGATION = 'selector.php';
-    public const SUGGEST = 'autocomplete.php';
-    public const TRACKING = 'tracking.php';
-    public const UPDATE = 'update.php';
+    public const ALIVETEST = '/alive';
+    public const SEARCH = '/search';
+    public const NAVIGATION = '/navigation';
+    public const SUGGEST = '/suggest';
+    public const UPDATE = '/update';
 }

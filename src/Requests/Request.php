@@ -298,7 +298,6 @@ abstract class Request
         if (!isset($params[QueryParameter::SHOP_URL]) || !is_string($params[QueryParameter::SHOP_URL])) {
             throw new InvalidParamException(QueryParameter::SHOP_URL);
         }
-        $shopUrl = $params[QueryParameter::SHOP_URL];
 
         // If the shopkey was not manually overridden, we take the shopkey from the config.
         if (!isset($params[QueryParameter::SERVICE_ID])) {
@@ -319,7 +318,7 @@ abstract class Request
         }
 
         $queryParams = http_build_query($params);
-        $apiUrl = sprintf($config->getApiUrl(), $shopUrl, $this->getEndpoint());
+        $apiUrl = sprintf($config->getApiUrl(), $config->getServiceId()) . $this->getEndpoint();
 
         return sprintf('%s?%s', $apiUrl, $queryParams);
     }
