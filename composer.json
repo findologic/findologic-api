@@ -5,13 +5,18 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Dominik Brader",
-            "email": "dominik@brader.co.at",
+            "name": "Georg M. Sorst",
+            "email": "g.sorst@findologic.com",
             "role": "Maintainer"
         },
         {
             "name": "Chris Ortner",
             "email": "chris@codexfons.com",
+            "role": "Maintainer"
+        },
+        {
+            "name": "Dominik Brader",
+            "email": "dominik@brader.co.at",
             "role": "Developer"
         },
         {
