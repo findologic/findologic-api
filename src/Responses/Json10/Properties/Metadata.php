@@ -15,6 +15,9 @@ class Metadata
     /** @var string */
     private $searchConcept;
 
+    /** @var string */
+    private $effectiveQuery;
+
     /** @var int */
     private $totalResults;
 
@@ -31,6 +34,7 @@ class Metadata
         }
 
         $this->searchConcept = ResponseHelper::getStringProperty($metadata, 'searchConcept');
+        $this->effectiveQuery = ResponseHelper::getStringProperty($metadata, 'effectiveQuery');
         $this->totalResults = ResponseHelper::getIntProperty($metadata, 'totalResults');
         $this->currencySymbol = ResponseHelper::getStringProperty($metadata, 'currencySymbol');
     }
@@ -57,6 +61,14 @@ class Metadata
     public function getSearchConcept()
     {
         return $this->searchConcept;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEffectiveQuery()
+    {
+        return $this->effectiveQuery;
     }
 
     /**

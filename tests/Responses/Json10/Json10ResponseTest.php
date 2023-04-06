@@ -63,6 +63,7 @@ class Json10ResponseTest extends TestCase
         $this->assertNull($metadata->getLandingPage());
         $this->assertNull($metadata->getPromotion());
         $this->assertNull($metadata->getSearchConcept());
+        $this->assertSame('real_query', $metadata->getEffectiveQuery());
         $this->assertSame(168, $metadata->getTotalResults());
         $this->assertSame('€', $metadata->getCurrencySymbol());
     }
