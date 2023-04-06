@@ -15,6 +15,7 @@
       "landingpage": null,
       "promotion": null,
       "searchConcept": null,
+      "effectiveQuery": "real_query",
       "totalResults": 168,
       "currencySymbol": "\u20ac"
     },
