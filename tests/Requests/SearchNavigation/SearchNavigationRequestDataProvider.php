@@ -165,7 +165,9 @@ trait SearchNavigationRequestDataProvider
             'normal version' => ['1.0.0'],
             'other version' => ['5.1.3'],
             'more different version' => ['55.3.11'],
+            'longer version' => ['1.2.3.4'],
             'release candidate' => ['1.4.3-rc.1'],
+            'longer release candidate' => ['1.1.4.3-rc.1'],
         ];
     }
 
