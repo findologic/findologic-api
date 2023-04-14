@@ -305,7 +305,7 @@ class SearchNavigationRequestTest extends TestBase
     }
 
     /**
-     * @dataProvider revisionProvider
+     * @dataProvider versionProvider
      * @param string $expectedRevision
      */
     public function testRevisionCanBeSetAndIsFormattedAsQueryString($expectedRevision)
@@ -322,7 +322,7 @@ class SearchNavigationRequestTest extends TestBase
     }
 
     /**
-     * @dataProvider invalidRevisionProvider
+     * @dataProvider invalidVersionProvider
      * @param mixed $invalidRevision
      */
     public function testInvalidRevisionWillThrowAnException($invalidRevision)
@@ -334,6 +334,70 @@ class SearchNavigationRequestTest extends TestBase
         $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
 
         $searchRequest->setRevision($invalidRevision);
+    }
+
+    /**
+     * @dataProvider versionProvider
+     * @param string $expectedVersion
+     */
+    public function testShopVersionCanBeSetAndIsFormattedAsQueryString($expectedVersion)
+    {
+        $expectedParameter = 'shopVersion';
+
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
+
+        $searchRequest->setShopVersion($expectedVersion);
+        $params = $searchRequest->getParams();
+        $this->assertArrayHasKey($expectedParameter, $params);
+        $this->assertEquals($expectedVersion, $params[$expectedParameter]);
+    }
+
+    /**
+     * @dataProvider invalidVersionProvider
+     * @param mixed $invalidVersion
+     */
+    public function testInvalidShopVersionWillThrowAnException($invalidVersion)
+    {
+        $this->expectException(InvalidParamException::class);
+        $this->expectExceptionMessage('Parameter shopVersion is not valid.');
+
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
+
+        $searchRequest->setShopVersion($invalidVersion);
+    }
+
+    /**
+     * @dataProvider shopTypeProvider
+     * @param string $expectedShopType
+     */
+    public function testShopTypeWillBeSetItInAValidFormat($expectedShopType)
+    {
+        $expectedParameter = 'shopType';
+
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
+
+        $searchRequest->setShopType($expectedShopType);
+        $params = $searchRequest->getParams();
+        $this->assertArrayHasKey($expectedParameter, $params);
+        $this->assertEquals($expectedShopType, $params[$expectedParameter]);
+    }
+
+    /**
+     * @dataProvider invalidShopTypeProvider
+     * @param mixed $invalidShopType
+     */
+    public function testInvalidShopTypeWillThrowAnException($invalidShopType)
+    {
+        $this->expectException(InvalidParamException::class);
+        $this->expectExceptionMessage('Parameter shopType is not valid.');
+
+        $searchRequest = new SearchRequest();
+        $this->setRequiredParamsForSearchNavigationRequest($searchRequest);
+
+        $searchRequest->setShopType($invalidShopType);
     }
 
     /**

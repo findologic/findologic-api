@@ -159,24 +159,42 @@ trait SearchNavigationRequestDataProvider
         ];
     }
 
-    public function revisionProvider()
+    public function versionProvider()
     {
         return [
-            'normal revision' => ['1.0.0'],
-            'other revision' => ['5.1.3'],
-            'more different revision' => ['55.3.11'],
+            'normal version' => ['1.0.0'],
+            'other version' => ['5.1.3'],
+            'more different version' => ['55.3.11'],
             'release candidate' => ['1.4.3-rc.1'],
         ];
     }
 
-    public function invalidRevisionProvider()
+    public function invalidVersionProvider()
     {
         return [
-            'revision is not a revision' => ['invalidRevision'],
-            'revision is an integer' => [5],
-            'revision is an array' => [['1.0.0']],
-            'revision is an object' => [new \stdClass()],
-            'revision with a dot after the number' => ['1.'],
+            'version is not a version' => ['invalidRevision'],
+            'version is an integer' => [5],
+            'version is an array' => [['1.0.0']],
+            'version is an object' => [new \stdClass()],
+            'version with a dot after the number' => ['1.'],
+        ];
+    }
+
+    public function shopTypeProvider()
+    {
+        return [
+            'normal type' => ['plenty'],
+            'other type' => ['plentyMarkets'],
+            'more different type' => ['Shopware 6']
+        ];
+    }
+
+    public function invalidShopTypeProvider()
+    {
+        return [
+            'type is an integer' => [6],
+            'type is an array' => [['bestType']],
+            'type is an object' => [new \stdClass()],
         ];
     }
 

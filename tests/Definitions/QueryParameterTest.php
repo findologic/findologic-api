@@ -28,7 +28,9 @@ class QueryParameterTest extends TestBase
             'FORCE_ORIGINAL_QUERY' => 'forceOriginalQuery',
             'OUTPUT_ATTRIB' => 'outputAttrib',
             'SELECTED' => 'selected',
-            'OUTPUT_ADAPTER' => 'outputAdapter'
+            'OUTPUT_ADAPTER' => 'outputAdapter',
+            'SHOP_TYPE' => 'shopType',
+            'SHOP_VERSION' => 'shopVersion',
         ];
         $availableQueryParameters = QueryParameter::getConstants();
 
