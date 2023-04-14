@@ -10,6 +10,8 @@ class QueryParameter extends Definition
         USER_IP = 'userip',
         REFERER = 'referer',
         REVISION = 'revision',
+        SHOP_TYPE = 'shopType',
+        SHOP_VERSION = 'shopVersion',
         QUERY = 'query',
         ATTRIB = 'attrib',
         ORDER = 'order',

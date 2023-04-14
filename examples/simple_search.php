@@ -45,6 +45,8 @@ function fetchProducts()
         ->setUserIp('127.0.0.1')
         ->setReferer('http://google.com/')
         ->setRevision('1.0.0')
+        ->setShopType('my-shop-system')
+        ->setShopVersion('2.1.3')
         ->setOutputAdapter('JSON_1.0');
 
     /** @var Json10Response $response */
