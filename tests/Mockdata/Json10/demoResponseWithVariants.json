@@ -1,0 +1,78 @@
+{
+  "request": {
+    "first": 0,
+    "count": 24,
+    "serviceId": "ABCD1234ABCD1234ABCD1234ABCD1234",
+    "usergroup": null,
+    "order": {
+      "field": "salesfrequency",
+      "relevanceBased": true,
+      "direction": "DESC"
+    }
+  },
+  "result": {
+    "metadata": {
+      "landingpage": null,
+      "promotion": null,
+      "searchConcept": null,
+      "effectiveQuery": "real_query",
+      "totalResults": 168,
+      "currencySymbol": "\u20ac"
+    },
+    "items": [
+      {
+        "id": "631de16d8e74471dbaa0b69a16a8bc4c",
+        "score": 2.19722,
+        "url": "http:\/\/blubbergurken.de\/detail\/631de16d8e74471dbaa0b69a16a8bc4c",
+        "name": "Click Frame 21 cm Wood",
+        "highlightedName": "Click Frame 21 cm Wood",
+        "ordernumbers": [
+          "16490.6.1"
+        ],
+        "price": 5.95,
+        "attributes": [],
+        "properties": [],
+        "productPlacement": "nice product placement",
+        "pushRules": [
+          "Awesome PushRule!"
+        ],
+        "imageUrl": "http:\/\/blubbergurken.de\/media\/7b\/ea\/45\/1585143022\/Click-Frame-21-cm-Wood-16490_6_1_001.jpg",
+        "variants": [
+          {
+            "id": "003e857f3cc24236be465df65d285a43",
+            "score": 2.19722,
+            "url": null,
+            "name": null,
+            "ordernumbers": [
+              "16490.6.1"
+            ],
+            "price": 5.95,
+            "attributes": [],
+            "properties": [],
+            "imageUrl": null
+          },
+          {
+            "id": "001a80a03b544d3fa79698fbcbaa063d",
+            "score": 2.19722,
+            "url": null,
+            "name": null,
+            "ordernumbers": [
+              "16490.6.1"
+            ],
+            "price": 5.95,
+            "attributes": [],
+            "properties": [],
+            "imageUrl": null
+          }
+        ]
+      }
+    ],
+    "variant": {
+      "name": "sdym"
+    },
+    "filters": {
+      "main": [],
+      "other": []
+    }
+  }
+}

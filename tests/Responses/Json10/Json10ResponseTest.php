@@ -14,6 +14,7 @@ use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\Values\DefaultFilterValue;
 use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\Values\ImageFilterValue;
 use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\Values\RangeSliderValue;
 use FINDOLOGIC\Api\Responses\Json10\Properties\Item;
+use FINDOLOGIC\Api\Responses\Json10\Properties\ItemVariant;
 use FINDOLOGIC\Api\Responses\Json10\Properties\LandingPage;
 use FINDOLOGIC\Api\Responses\Json10\Properties\Promotion;
 use PHPUnit\Framework\TestCase;
@@ -286,6 +287,20 @@ class Json10ResponseTest extends TestCase
 
         $expectedDefault = 'nice default!';
         $this->assertEquals($expectedDefault, $item->getAttribute('vendor', $expectedDefault));
+    }
+
+    public function testItemVariantsAreReturnedAsExpected()
+    {
+        $response = $this->getRealResponseData('demoResponseWithVariants.json');
+        $items = $response->getResult()->getItems();
+
+        $item = $items[0];
+        $this->assertInstanceOf(Item::class, $item);
+
+        $this->assertCount(2, $item->getVariants());
+        foreach ($item->getVariants() as $variant) {
+            $this->assertInstanceOf(ItemVariant::class, $variant);
+        }
     }
 
     public function testColorFilterIsReturnedAsExpected()
