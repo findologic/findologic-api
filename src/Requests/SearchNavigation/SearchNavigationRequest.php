@@ -89,6 +89,44 @@ abstract class SearchNavigationRequest extends Request
     }
 
     /**
+     * Sets the shop type param. It is used to identify the shop system of the plugin.
+     *
+     * @param string $value
+     * @return $this
+     */
+    public function setShopType($value)
+    {
+        $validator = new ParameterValidator([QueryParameter::SHOP_TYPE => $value]);
+        $validator->rule('string', QueryParameter::SHOP_TYPE);
+
+        if (!$validator->validate()) {
+            throw new InvalidParamException(QueryParameter::SHOP_TYPE);
+        }
+
+        $this->addParam(QueryParameter::SHOP_TYPE, $value);
+        return $this;
+    }
+
+    /**
+     * Sets the shop version param. It is used to identify the version of the shop system.
+     *
+     * @param string $value
+     * @return $this
+     */
+    public function setShopVersion($value)
+    {
+        $validator = new ParameterValidator([QueryParameter::SHOP_VERSION => $value]);
+        $validator->rule('version', QueryParameter::SHOP_VERSION);
+
+        if (!$validator->validate()) {
+            throw new InvalidParamException(QueryParameter::SHOP_VERSION);
+        }
+
+        $this->addParam(QueryParameter::SHOP_VERSION, $value);
+        return $this;
+    }
+
+    /**
      * Adds the attrib param. It is used to filter the search results.
      *
      * @param $filterName string
