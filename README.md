@@ -35,7 +35,7 @@ Currently, we support the following response formats:
 
 ## Requirements
 
- * [PHP](https://php.net/) >= 5.6
+ * [PHP](https://php.net/) >= 8.1
     * [PHP curl extension](https://www.php.net/manual/en/curl.installation.php) (optional)
  * [Composer](https://getcomposer.org/)
 

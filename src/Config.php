@@ -4,22 +4,22 @@ namespace FINDOLOGIC\Api;
 
 use FINDOLOGIC\Api\Exceptions\ConfigException;
 use FINDOLOGIC\Api\Validators\ConfigValidator;
-use FINDOLOGIC\GuzzleHttp\Client;
+use GuzzleHttp\Client;
 
 class Config
 {
-    const
+    public const
         SERVICE_ID = 'serviceId',
-        API_URL = 'apiUrl',
-        ALIVETEST_TIMEOUT = 'alivetestTimeout',
-        REQUEST_TIMEOUT = 'requestTimeout',
-        HTTP_CLIENT = 'httpClient',
-        ACCESS_TOKEN = 'accessToken';
+    API_URL = 'apiUrl',
+    ALIVETEST_TIMEOUT = 'alivetestTimeout',
+    REQUEST_TIMEOUT = 'requestTimeout',
+    HTTP_CLIENT = 'httpClient',
+    ACCESS_TOKEN = 'accessToken';
 
-    const
+    public const
         DEFAULT_TEMPLATE_API_URL = 'https://service.findologic.com/ps/%s/%s',
-        DEFAULT_ALIVETEST_TIMEOUT = 1.0,
-        DEFAULT_REQUEST_TIMEOUT = 3.0;
+    DEFAULT_ALIVETEST_TIMEOUT = 1.0,
+    DEFAULT_REQUEST_TIMEOUT = 3.0;
 
     /** @var string|null */
     private $serviceId;

@@ -18,7 +18,6 @@ use FINDOLOGIC\Api\Responses\Json10\Properties\ItemVariant;
 use FINDOLOGIC\Api\Responses\Json10\Properties\LandingPage;
 use FINDOLOGIC\Api\Responses\Json10\Properties\Promotion;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_Constraint_IsType as IsType;
 
 class Json10ResponseTest extends TestCase
 {
@@ -76,7 +75,7 @@ class Json10ResponseTest extends TestCase
 
         $this->assertCount(24, $items);
         foreach ($items as $item) {
-            $this->assertInternalType(IsType::TYPE_FLOAT, $item->getPrice());
+            $this->assertIsFloat($item->getPrice());
         }
 
         $firstItem = $items[0];

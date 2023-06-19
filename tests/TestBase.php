@@ -2,7 +2,7 @@
 
 namespace FINDOLOGIC\Api\Tests;
 
-use FINDOLOGIC\GuzzleHttp\Client;
+use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Stream;
 use PHPUnit\Framework\TestCase;
@@ -19,18 +19,18 @@ class TestBase extends TestCase
     /** @var Stream|PHPUnit_Framework_MockObject_MockObject */
     protected $streamMock;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->httpClientMock = $this->getMockBuilder(Client::class)
-            ->setMethods(['request'])
+            ->onlyMethods(['request'])
             ->getMock();
         $this->responseMock = $this->getMockBuilder(Response::class)
-            ->setMethods(['getBody', 'getStatusCode'])
+            ->onlyMethods(['getBody', 'getStatusCode'])
             ->getMock();
         $this->streamMock = $this->getMockBuilder(Stream::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getContents'])
+            ->onlyMethods(['getContents'])
             ->getMock();
     }
 
@@ -46,16 +46,17 @@ class TestBase extends TestCase
         $expectedRequestUrl,
         $expectedBody,
         $statusCode = 200,
-        $requestMethod = 'GET',
+        $expectedRequestMethod = 'GET',
         array $guzzleOptionsOverride = []
     ) {
         $this->httpClientMock->method('request')
-            ->with(
-                $this->equalTo($requestMethod),
-                $expectedRequestUrl,
-                array_merge(['connect_timeout' => 3.0], $guzzleOptionsOverride)
-            )
-            ->willReturnOnConsecutiveCalls($this->responseMock);
+            ->willReturnCallback(function ($requestMethod, $requestUrl, $options) use ($expectedRequestMethod, $expectedRequestUrl, $guzzleOptionsOverride) {
+                $this->assertEquals($expectedRequestMethod, $requestMethod);
+                $this->assertEquals($expectedRequestUrl, $requestUrl);
+                $this->assertEquals(array_merge(['connect_timeout' => 3.0], $guzzleOptionsOverride), $options);
+
+                return $this->responseMock;
+            });
         $this->responseMock->method('getBody')
             ->with()
             ->willReturnOnConsecutiveCalls($this->streamMock, $this->streamMock);

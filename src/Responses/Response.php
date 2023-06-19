@@ -18,8 +18,8 @@ use Psr\Http\Message\ResponseInterface as GuzzleResponse;
 
 abstract class Response
 {
-    const STATUS_OK = 200;
-    const SERVICE_ALIVE_BODY = 'alive';
+    public const STATUS_OK = 200;
+    public const SERVICE_ALIVE_BODY = 'alive';
 
     /** @var float|null */
     protected $responseTime;

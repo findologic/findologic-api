@@ -13,7 +13,7 @@ class VendorImageItem extends Item
     public function __construct(SimpleXMLElement $item)
     {
         parent::__construct($item);
-        $this->image = trim(ResponseHelper::getStringProperty($item, 'image'));
+        $this->image = trim(ResponseHelper::getStringProperty($item, 'image') ?? '');
     }
 
     /**

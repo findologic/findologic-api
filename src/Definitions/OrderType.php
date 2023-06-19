@@ -4,31 +4,31 @@ namespace FINDOLOGIC\Api\Definitions;
 
 class OrderType extends Definition
 {
-    const
+    public const
         FIELD_PRICE = 'price',
-        FIELD_LABEL = 'label',
-        FIELD_SALES_FREQUENCY = 'salesfrequency',
-        FIELD_DATE_ADDED = 'dateadded',
-        FIELD_SHOPSORT = 'shopsort';
+    FIELD_LABEL = 'label',
+    FIELD_SALES_FREQUENCY = 'salesfrequency',
+    FIELD_DATE_ADDED = 'dateadded',
+    FIELD_SHOPSORT = 'shopsort';
 
-    const
+    public const
         DIRECTION_ASCENDING = 'ASC',
-        DIRECTION_DESCENDING = 'DESC';
+    DIRECTION_DESCENDING = 'DESC';
 
-    const DEFAULT_SORT = 'rank';
+    public const DEFAULT_SORT = 'rank';
 
-    const
+    public const
         RELEVANCE = self::DEFAULT_SORT,
-        PRICE_ASCENDING = self::FIELD_PRICE . ' ' . self::DIRECTION_ASCENDING,
-        PRICE_DESCENDING = self::FIELD_PRICE . ' ' . self::DIRECTION_DESCENDING,
-        ALPHABETICAL_ASCENDING = self::FIELD_LABEL . ' ' . self::DIRECTION_ASCENDING,
-        ALPHABETICAL_DESCENDING = self::FIELD_LABEL . ' ' . self::DIRECTION_DESCENDING,
-        TOP_SELLERS_FIRST = self::FIELD_SALES_FREQUENCY . ' ' . self::DIRECTION_DESCENDING,
-        TOP_SELLERS_LAST = self::FIELD_SALES_FREQUENCY . ' ' . self::DIRECTION_ASCENDING,
-        NEWEST_FIRST = self::FIELD_DATE_ADDED . ' ' . self::DIRECTION_DESCENDING,
-        NEWEST_LAST = self::FIELD_DATE_ADDED . ' ' . self::DIRECTION_ASCENDING,
-        SHOPSORT_ASCENDING = self::FIELD_SHOPSORT . ' ' . self::DIRECTION_ASCENDING,
-        SHOPSORT_DESCENDING = self::FIELD_SHOPSORT . ' ' . self::DIRECTION_DESCENDING;
+    PRICE_ASCENDING = self::FIELD_PRICE . ' ' . self::DIRECTION_ASCENDING,
+    PRICE_DESCENDING = self::FIELD_PRICE . ' ' . self::DIRECTION_DESCENDING,
+    ALPHABETICAL_ASCENDING = self::FIELD_LABEL . ' ' . self::DIRECTION_ASCENDING,
+    ALPHABETICAL_DESCENDING = self::FIELD_LABEL . ' ' . self::DIRECTION_DESCENDING,
+    TOP_SELLERS_FIRST = self::FIELD_SALES_FREQUENCY . ' ' . self::DIRECTION_DESCENDING,
+    TOP_SELLERS_LAST = self::FIELD_SALES_FREQUENCY . ' ' . self::DIRECTION_ASCENDING,
+    NEWEST_FIRST = self::FIELD_DATE_ADDED . ' ' . self::DIRECTION_DESCENDING,
+    NEWEST_LAST = self::FIELD_DATE_ADDED . ' ' . self::DIRECTION_ASCENDING,
+    SHOPSORT_ASCENDING = self::FIELD_SHOPSORT . ' ' . self::DIRECTION_ASCENDING,
+    SHOPSORT_DESCENDING = self::FIELD_SHOPSORT . ' ' . self::DIRECTION_DESCENDING;
 
     /**
      * Builds a custom order parameter.

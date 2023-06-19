@@ -20,7 +20,7 @@ class SuggestRequestTest extends TestBase
     /** @var string */
     private $rawMockResponse;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->config = new Config();

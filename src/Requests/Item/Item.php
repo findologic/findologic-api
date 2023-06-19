@@ -10,8 +10,8 @@ use InvalidArgumentException;
 
 class Item
 {
-    const VISIBILITY_CHANGE = 0;
-    const PRICE_CHANGE = 1;
+    public const VISIBILITY_CHANGE = 0;
+    public const PRICE_CHANGE = 1;
 
     /** @var string */
     private $id;

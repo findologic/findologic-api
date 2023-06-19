@@ -29,7 +29,7 @@ class SearchNavigationRequestTest extends TestBase
     /** @var string */
     private $rawMockResponse;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->config = new Config();
@@ -85,7 +85,7 @@ class SearchNavigationRequestTest extends TestBase
 
         /** @var Xml21Response $response */
         $response = $client->send($searchRequest);
-        $this->assertEquals(0, $response->getResponseTime(), '', 0.1);
+        $this->assertEqualsWithDelta(0, $response->getResponseTime(), 0.1);
     }
 
     public function testSendingNavigationRequestsWithoutRequiredParamsWillThrowAnException()
@@ -128,7 +128,7 @@ class SearchNavigationRequestTest extends TestBase
 
         /** @var Xml21Response $response */
         $response = $client->send($navigationRequest);
-        $this->assertEquals(0, $response->getResponseTime(), '', 0.1);
+        $this->assertEqualsWithDelta(0, $response->getResponseTime(), 0.1);
     }
 
     /**

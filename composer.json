@@ -32,22 +32,22 @@
     ],
     "config": {
         "platform": {
-            "php": "5.6"
+            "php": "8.1"
         }
     },
     "require": {
-        "php": ">=5.6",
+        "php": ">=8.1",
         "vlucas/valitron": "^1.4",
         "ext-SimpleXML": "*",
         "ext-json": "*",
         "ext-dom": "*",
         "ext-libxml": "*",
         "findologic/xml-response-schema": "^2.1",
-        "findologic/guzzle": "^6.5"
+        "guzzlehttp/guzzle": "^7.4.5"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5 || ^6.5 || ^7.0",
-        "friendsofphp/php-cs-fixer": "^2.14"
+        "phpunit/phpunit": "^9.6.9",
+        "friendsofphp/php-cs-fixer": "^v3.18.0"
     },
     "autoload": {
         "psr-4": {

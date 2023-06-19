@@ -4,8 +4,8 @@ namespace FINDOLOGIC\Api\Definitions;
 
 class FilterMode extends Definition
 {
-    const
+    public const
         SINGLE = 'single',
-        MULTIPLE = 'multiple',
-        MULTISELECT = 'multiselect';
+    MULTIPLE = 'multiple',
+    MULTISELECT = 'multiselect';
 }
