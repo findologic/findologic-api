@@ -5,7 +5,7 @@ namespace FINDOLOGIC\Api\Tests;
 use Exception;
 use FINDOLOGIC\Api\Config;
 use FINDOLOGIC\Api\Exceptions\ConfigException;
-use FINDOLOGIC\GuzzleHttp\Client;
+use GuzzleHttp\Client;
 use TypeError;
 
 class ConfigTest extends TestBase
@@ -86,7 +86,10 @@ class ConfigTest extends TestBase
         } catch (ConfigException $e) {
             $this->assertStringStartsWith('Config parameter', $e->getMessage());
         } catch (TypeError $e) { // Make sure type errors are caught as well (PHP 7+).
-            $this->assertStringStartsWith('Argument 1 passed to', $e->getMessage());
+            $this->assertStringContainsString(
+                'Argument #1 ($httpClient) must be of type GuzzleHttp\\Client',
+                $e->getMessage()
+            );
         } catch (Exception $e) { // Make sure type errors are caught as well (PHP 5.6).
             $this->assertStringStartsWith('Argument 1 passed to', $e->getMessage());
         }

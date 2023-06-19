@@ -13,7 +13,7 @@ use FINDOLOGIC\Api\Responses\Autocomplete\SuggestResponse;
 use FINDOLOGIC\Api\Responses\Html\GenericHtmlResponse;
 use FINDOLOGIC\Api\Responses\Json10\Json10Response;
 use FINDOLOGIC\Api\Responses\Xml21\Xml21Response;
-use FINDOLOGIC\GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use InvalidArgumentException;
 
@@ -28,7 +28,7 @@ class ClientTest extends TestBase
     /** @var SearchRequest */
     private $searchRequest;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -197,7 +197,7 @@ class ClientTest extends TestBase
 
         // Local response time should be fast since the data will not be sent to another server, but instead it
         // will be directly read from the ram.
-        $this->assertEquals(0, $xmlResponse->getResponseTime(), '', 0.01);
+        $this->assertEqualsWithDelta(0, $xmlResponse->getResponseTime(), 0.01);
     }
 
     public function badAliveTestBodies()
