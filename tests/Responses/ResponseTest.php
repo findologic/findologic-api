@@ -30,7 +30,7 @@ class ResponseTest extends TestBase
             ->getMock();
         $request->expects($this->any())->method('getOutputAdapter')->willReturn($expectedOutputAdapter);
 
-        Response::buildInstance($request, new GuzzleResponse, null, null);
+        Response::buildInstance($request, new GuzzleResponse(), null, null);
     }
 
     public function availableResponseProvider()

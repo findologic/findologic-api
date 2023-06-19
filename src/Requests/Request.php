@@ -17,14 +17,14 @@ use Valitron\Validator;
 
 abstract class Request
 {
-    const TYPE_SEARCH = 0;
-    const TYPE_NAVIGATION = 1;
-    const TYPE_SUGGEST_V3 = 2;
-    const TYPE_ALIVETEST = 3;
-    const TYPE_ITEM_UPDATE = 4;
+    public const TYPE_SEARCH = 0;
+    public const TYPE_NAVIGATION = 1;
+    public const TYPE_SUGGEST_V3 = 2;
+    public const TYPE_ALIVETEST = 3;
+    public const TYPE_ITEM_UPDATE = 4;
 
-    const SET_VALUE = 'set';
-    const ADD_VALUE = 'add';
+    public const SET_VALUE = 'set';
+    public const ADD_VALUE = 'add';
 
     /** @var array */
     protected $params;

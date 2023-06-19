@@ -4,8 +4,8 @@ namespace FINDOLOGIC\Api\Definitions;
 
 class SuggestQueryParameter extends Definition
 {
-    const
+    public const
         AUTOCOMPLETEBLOCKS = 'autocompleteblocks',
-        USERGROUPHASH = 'usergrouphash',
-        MULTISHOP_ID = 'multishop_id';
+    USERGROUPHASH = 'usergrouphash',
+    MULTISHOP_ID = 'multishop_id';
 }

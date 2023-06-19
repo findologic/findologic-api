@@ -4,14 +4,14 @@ namespace FINDOLOGIC\Api\Definitions;
 
 class RequestMethod extends Definition
 {
-    const HEAD = 'HEAD';
-    const GET = 'GET';
-    const POST = 'POST';
-    const PUT = 'PUT';
-    const PATCH = 'PATCH';
-    const DELETE = 'DELETE';
-    const PURGE = 'PURGE';
-    const OPTIONS = 'OPTIONS';
-    const TRACE = 'TRACE';
-    const CONNECT = 'CONNECT';
+    public const HEAD = 'HEAD';
+    public const GET = 'GET';
+    public const POST = 'POST';
+    public const PUT = 'PUT';
+    public const PATCH = 'PATCH';
+    public const DELETE = 'DELETE';
+    public const PURGE = 'PURGE';
+    public const OPTIONS = 'OPTIONS';
+    public const TRACE = 'TRACE';
+    public const CONNECT = 'CONNECT';
 }

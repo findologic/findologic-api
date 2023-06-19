@@ -7,12 +7,12 @@ use FINDOLOGIC\Api\Responses\Json10\Properties\Filter\Values\FilterValue;
 
 abstract class Filter
 {
-    const
+    public const
         FILTER_TYPE_SELECT = 'select',
-        FILTER_TYPE_LABEL = 'label',
-        FILER_TYPE_RANGE = 'range-slider',
-        FILTER_TYPE_COLOR = 'color',
-        FILTER_TYPE_IMAGE = 'image';
+    FILTER_TYPE_LABEL = 'label',
+    FILER_TYPE_RANGE = 'range-slider',
+    FILTER_TYPE_COLOR = 'color',
+    FILTER_TYPE_IMAGE = 'image';
 
     /** @var string */
     protected $name;
